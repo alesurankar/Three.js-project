@@ -19,15 +19,20 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.03;
 
+const texLoader = new THREE.TextureLoader();
+const woodTex = texLoader.load('textures/wood/oak_diff.jpg');
+const metalTex = texLoader.load('textures/metal/metal_diff.jpg');
+const rockTex = texLoader.load('textures/rock/rock_diff.jpg');
+
 const geo = new THREE.BoxGeometry();
 const mat = new THREE.MeshStandardMaterial({
   color: 0xffffff,
-  flatShading: true
+  map: rockTex,
 })
 const mesh = new THREE.Mesh(geo, mat);
 scene.add(mesh);
 
-const hemiLight = new THREE.HemisphereLight(0x0099ff, 0xaa5500);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
 scene.add(hemiLight);
 
 // Sprites BG
