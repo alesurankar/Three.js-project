@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import getLayer from "./getLayer.js";
 import { OrbitControls } from "jsm/controls/OrbitControls.js";
+import { EXRLoader } from "jsm/loaders/EXRLoader.js";
 
 const w = window.innerWidth;
 const h = window.innerHeight;
@@ -20,19 +21,39 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.03;
 
 const texLoader = new THREE.TextureLoader();
-const woodTex = texLoader.load('textures/wood/oak_diff.jpg');
-const metalTex = texLoader.load('textures/metal/metal_diff.jpg');
-const rockTex = texLoader.load('textures/rock/rock_diff.jpg');
+const exrLoader = new EXRLoader();
+const path = './textures/rock/';
+const map = texLoader.load(`${path}diff.jpg`, (tex) => {
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(8, 1);
+});
+const normalMap = exrLoader.load(`${path}nor_gl.exr`, (tex) => {
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(8, 1);
+});
+const roughnessMap = exrLoader.load(`${path}rough.exr`, (tex) => {
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(8, 1);
+});
 
-const geo = new THREE.BoxGeometry();
+const geo = new THREE.TorusKnotGeometry(1, 0.4, 256, 32);
+
 const mat = new THREE.MeshStandardMaterial({
-  color: 0xffffff,
-  map: rockTex,
+  map,
+  metalness: 0.4,
+  roughness: (0.3),
+  normalScale: new THREE.Vector2(4,4),
+  normalMap,
+  roughnessMap,
 })
 const mesh = new THREE.Mesh(geo, mat);
 scene.add(mesh);
 
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
+const keyLight = new THREE.DirectionalLight(0xffffff, 2);
+keyLight.position.set(-2,2,7);
+scene.add(keyLight);
+
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
 scene.add(hemiLight);
 
 // Sprites BG
@@ -48,8 +69,8 @@ scene.add(gradientBackground);
 
 function animate(t = 0) {
   requestAnimationFrame(animate);
-  mesh.rotation.x += 0.002;
-  mesh.rotation.y = t * 0.0001;
+  mesh.rotation.x += 0.0005;
+  mesh.rotation.y = t * 0.00005;
   renderer.render(scene, camera);
   controls.update();
 }
