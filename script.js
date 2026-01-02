@@ -42,6 +42,7 @@ scene.add(lightHelper, gridHelper);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.03;
+controls.enableZoom = false;
 
 function assStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
@@ -58,13 +59,27 @@ Array(200).fill().forEach(assStar);
 
 
 
+const spaceTexture = new THREE.TextureLoader().load('/textures/space.jpg')
+scene.background = spaceTexture;
 
 
+let scrollY = 0;
+let scrollZ = 0;
 
+window.addEventListener('wheel', (event) => {
+  scrollY += event.deltaY * 0.001;
+  scrollZ += event.deltaY * 0.0001;
+});
 
 ///////////////////////////////////////////////
 function animate() {
   requestAnimationFrame(animate);
+  // yaw
+  scene.rotation.y = scrollY;
+  scene.rotation.z = scrollZ;
+
+  // optional roll
+  //torus.rotation.x = scrollY * 0.3
   renderer.render(scene, camera);
   controls.update();
 }
