@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "jsm/controls/OrbitControls.js";
-
+import { starGeometry, starMaterial } from "./stars.js";
 
 
 ///////////////////////////////////////////////
@@ -10,8 +10,9 @@ const h = window.innerHeight;
 const fov = 75;
 const aspect = w / h;
 const near = 0.1;
-const far = 1000;
+const far = 5000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+camera.position.set(0,0,0);
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
@@ -46,6 +47,12 @@ const material = new THREE.MeshStandardMaterial({
 
 const planet = new THREE.Mesh(geometry, material);
 planetGroup.add(planet);
+
+
+
+////////////////////////////////////////////
+const stars = new THREE.Points(starGeometry, starMaterial);
+scene.add(stars);
 
 
 
