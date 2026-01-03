@@ -24,9 +24,16 @@ camera.position.setZ(30);
 
 
 ///////////////////////////////////////////////
+const planetGroup = new THREE.Group();
+planetGroup.rotation.z = -23.4 * Math.PI /180;
+scene.add(planetGroup);
+
+
+
+///////////////////////////////////////////////
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.03;
+// controls.enableDamping = true;
+// controls.dampingFactor = 0.03;
 
 
 
@@ -34,11 +41,11 @@ controls.dampingFactor = 0.03;
 const loader = new THREE.TextureLoader();
 const geometry = new THREE.IcosahedronGeometry(1, 12);
 const material = new THREE.MeshStandardMaterial({
-  map: loader.load("./textures/sun.jpg")
+  map: loader.load("./textures/earth.jpg")
 });
 
-const earth = new THREE.Mesh(geometry, material);
-scene.add(earth);
+const planet = new THREE.Mesh(geometry, material);
+planetGroup.add(planet);
 
 
 
@@ -52,6 +59,8 @@ scene.add(hemiLight);
 function animate() {
   requestAnimationFrame(animate);
   
+  planet.rotation.y += 0.003
+
   renderer.render(scene, camera);
   controls.update();
 }
