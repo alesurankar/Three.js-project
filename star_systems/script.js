@@ -44,11 +44,26 @@ scene.add(stars);
 const gameControls = new GameControls(camera, document.body, 0.5);
 
 
-// Create planet
+// Create earth
 const earth = new Planet({
   scene,
   name: "earth",
+  size: 10,
   position: new THREE.Vector3(300, 300, 300),
+  rotationSpeed: 0.001,
+  cloudRotationSpeed: 0.0003,
+  nightOpacity: 0.4,
+  cloudOpacity: 0.5,
+  axialTilt: -23.4
+});
+
+// Create moon
+const moon = new Planet({
+  scene,
+  name: "moon",
+  size: 4,
+  position: new THREE.Vector3(320, 300, 290),
+  axialTilt: 1.5
 });
 
 
@@ -73,6 +88,9 @@ function animate() {
   earth.rotate();
   earth.updateNightLight(sun.light, camera);
   
+  moon.rotate();
+  moon.updateNightLight(sun.light, camera);
+
   renderer.render(scene, camera);
   controls.update();
 }
