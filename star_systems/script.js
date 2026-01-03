@@ -41,12 +41,24 @@ const controls = new OrbitControls(camera, renderer.domElement);
 ///////////////////////////////////////////////
 const loader = new THREE.TextureLoader();
 const geometry = new THREE.IcosahedronGeometry(1, 12);
-const material = new THREE.MeshStandardMaterial({
+const dayMat = new THREE.MeshStandardMaterial({
   map: loader.load("./textures/earth.jpg")
 });
+const nightMat = new THREE.MeshBasicMaterial({
+  map: loader.load("./textures/earth_night.jpg"),
+  transparent: true,
+  opacity: 0.3,
+  depthWrite: false,
+  color: new THREE.Color(1.0, 1.0, 0.3)
+});
 
-const planet = new THREE.Mesh(geometry, material);
-planetGroup.add(planet);
+const planetDay = new THREE.Mesh(geometry, dayMat);
+planetGroup.add(planetDay);
+
+
+
+const planetNight = new THREE.Mesh(geometry, nightMat);
+planetGroup.add(planetNight);
 
 
 
@@ -54,11 +66,37 @@ planetGroup.add(planet);
 const stars = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
+const sunLight = new THREE.DirectionalLight(0xffffff);
+sunLight.position.set(10,10,5);
+scene.add(sunLight);
+
+
 
 
 ///////////////////////////////////////////////
-const hemiLight = new THREE.HemisphereLight();
-scene.add(hemiLight);
+function checkVisibility() {
+  const planetWorldPos = new THREE.Vector3();
+  const sunWorldPos = new THREE.Vector3();
+  const cameraWorldPos = new THREE.Vector3();
+
+
+    // world positions
+    planetGroup.getWorldPosition(planetWorldPos);
+    sunLight.getWorldPosition(sunWorldPos);
+    camera.getWorldPosition(cameraWorldPos);
+
+    // directions from planet
+    const toSun = sunWorldPos.clone().sub(planetWorldPos).normalize();
+    const toCamera = cameraWorldPos.clone().sub(planetWorldPos).normalize();
+
+    // dot product
+    const dot = toSun.dot(toCamera);
+
+    // if sun and camera are opposite → night visible
+    const nightStrength = THREE.MathUtils.smoothstep(0.1, -0.2, dot);
+
+    planetNight.material.opacity = nightStrength * 0.4;
+}
 
 
 
@@ -66,7 +104,9 @@ scene.add(hemiLight);
 function animate() {
   requestAnimationFrame(animate);
   
-  planet.rotation.y += 0.003
+  planetGroup.rotation.y += 0.003
+
+  checkVisibility();
 
   renderer.render(scene, camera);
   controls.update();
