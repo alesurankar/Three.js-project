@@ -35,12 +35,57 @@ scene.add(stars);
 const gameControls = new GameControls(camera, document.body, 0.5);
 
 
+// Create pluton
+const pluto = new Planet({
+  scene,
+  name: "pluto",
+  size: 1.8,
+  position: new THREE.Vector3(6500, 0, 0),
+});
+
+
+// Create neptune
+const neptune = new Planet({
+  scene,
+  name: "neptune",
+  size: 19,
+  position: new THREE.Vector3(5600, 0, 0),
+});
+
+
+// Create uranus
+const uranus = new Planet({
+  scene,
+  name: "uranus",
+  size: 20,
+  position: new THREE.Vector3(4600, 0, 0),
+});
+
+
+// Create saturn
+const saturn = new Planet({
+  scene,
+  name: "saturn",
+  size: 34,
+  position: new THREE.Vector3(3600, 0, 0),
+});
+
+
+// Create jupiter
+const jupiter = new Planet({
+  scene,
+  name: "jupiter",
+  size: 38,
+  position: new THREE.Vector3(2600, 0, 0),
+});
+
+
 // Create mars
 const mars = new Planet({
   scene,
   name: "mars",
-  size: 4,
-  position: new THREE.Vector3(600, 0, 100),
+  size: 5.3,
+  position: new THREE.Vector3(1500, 0, 0),
 });
 
 
@@ -49,7 +94,7 @@ const earth = new Planet({
   scene,
   name: "earth",
   size: 10,
-  position: new THREE.Vector3(500, 0, 60),
+  position: new THREE.Vector3(1000, 0, 0),
   rotationSpeed: 0.001,
   cloudRotationSpeed: 0.0003,
   nightOpacity: 0.4,
@@ -64,8 +109,8 @@ earth.group.add(moonOrbit);
 const moon = new Planet({
   scene,
   name: "moon",
-  size: 2,
-  position: new THREE.Vector3(50, 0, 0),
+  size: 2.7,
+  position: new THREE.Vector3(30, 0, 0),
   axialTilt: 1.5
 });
 
@@ -76,8 +121,8 @@ moonOrbit.add(moon.group);
 const venus = new Planet({
   scene,
   name: "venus",
-  size: 10,
-  position: new THREE.Vector3(400, 0, 20),
+  size: 9.5,
+  position: new THREE.Vector3(700, 0, 0),
 });
 
 
@@ -86,7 +131,7 @@ const mercury = new Planet({
   scene,
   name: "mercury",
   size: 4,
-  position: new THREE.Vector3(350, 0, 0),
+  position: new THREE.Vector3(400, 0, 0),
 });
 
 
@@ -94,9 +139,9 @@ const mercury = new Planet({
 const sun = new Star({
   scene,
   name: "sun",
-  size: 40,
+  size: 100,
   position: new THREE.Vector3(0, 0, 0),
-  intensity: 1000000,
+  intensity: 4000000,
   distance: 0,
   color: 0xffffee
 });
