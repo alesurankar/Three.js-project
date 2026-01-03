@@ -35,12 +35,21 @@ scene.add(stars);
 const gameControls = new GameControls(camera, document.body, 0.5);
 
 
+// Create mars
+const mars = new Planet({
+  scene,
+  name: "mars",
+  size: 4,
+  position: new THREE.Vector3(600, 0, 100),
+});
+
+
 // Create earth
 const earth = new Planet({
   scene,
   name: "earth",
   size: 10,
-  position: new THREE.Vector3(500, 0, 0),
+  position: new THREE.Vector3(500, 0, 60),
   rotationSpeed: 0.001,
   cloudRotationSpeed: 0.0003,
   nightOpacity: 0.4,
@@ -55,12 +64,30 @@ earth.group.add(moonOrbit);
 const moon = new Planet({
   scene,
   name: "moon",
-  size: 3,
-  position: new THREE.Vector3(60, 0, 0),
+  size: 2,
+  position: new THREE.Vector3(50, 0, 0),
   axialTilt: 1.5
 });
 
 moonOrbit.add(moon.group);
+
+
+// Create venus
+const venus = new Planet({
+  scene,
+  name: "venus",
+  size: 10,
+  position: new THREE.Vector3(400, 0, 20),
+});
+
+
+// Create mercury
+const mercury = new Planet({
+  scene,
+  name: "mercury",
+  size: 4,
+  position: new THREE.Vector3(350, 0, 0),
+});
 
 
 // Add Sun to scene
