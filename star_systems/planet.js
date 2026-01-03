@@ -3,8 +3,10 @@ import * as THREE from "three";
 export class Planet {
   constructor({
     //default for earth
+    scene,
     name = "earth",
     size = 10,
+    position = new THREE.Vector3(0, 0, 0),
     rotationSpeed = 0.001,
     cloudRotationSpeed = 0.0003,
     texturesPath = "./textures",
@@ -15,12 +17,15 @@ export class Planet {
     cloudOpacity = 0.5,
     axialTilt = -23.4
   } = {}) {
+    if (!scene) throw new Error("Planet requires a scene.");
+
     this.loader = new THREE.TextureLoader();
     this.group = new THREE.Group();
-
+    this.group.position.copy(position);
     this.rotationSpeed = rotationSpeed;
     this.cloudRotationSpeed = cloudRotationSpeed;
     this.axialTilt = axialTilt * Math.PI / 180;
+    scene.add(this.group);
 
     // Geometry
     const geometry = new THREE.IcosahedronGeometry(size, 12);
@@ -32,6 +37,7 @@ export class Planet {
       metalness: 0
     });
     this.planetDay = new THREE.Mesh(geometry, dayMat);
+    this.planetDay.castShadow = true;
     this.planetDay.receiveShadow = true;
     this.group.add(this.planetDay);
 
@@ -44,7 +50,7 @@ export class Planet {
       color: new THREE.Color(1, 1, 0.3)
     });
     this.planetNight = new THREE.Mesh(geometry, nightMat);
-    this.planetNight.receiveShadow = true;
+    this.planetNight.receiveShadow = false;
     this.group.add(this.planetNight);
 
     // Cloud material
@@ -74,21 +80,30 @@ export class Planet {
   }
 
   // Update night-light visibility (optional)
-  updateNightLight(sunLight, camera, minDot = -0.2, maxDot = 0.1, opacityMultiplier = 0.4) {
-    const planetPos = new THREE.Vector3();
-    const sunPos = new THREE.Vector3();
-    const camPos = new THREE.Vector3();
+  updateNightLight(sunLight, camera, opacityMultiplier = 0.4) {
+    this._planetPos = new THREE.Vector3();
+    this._sunPos = new THREE.Vector3();
+    this._camPos = new THREE.Vector3();
 
-    this.group.getWorldPosition(planetPos);
-    sunLight.getWorldPosition(sunPos);
-    camera.getWorldPosition(camPos);
+    this.group.getWorldPosition(this._planetPos);
+    sunLight.getWorldPosition(this._sunPos);
+    camera.getWorldPosition(this._camPos);
 
-    const toSun = sunPos.clone().sub(planetPos).normalize();
-    const toCamera = camPos.clone().sub(planetPos).normalize();
+    const toSun = this._sunPos.sub(this._planetPos).normalize();
+    const toCamera = this._camPos.sub(this._planetPos).normalize();
 
     const dot = toSun.dot(toCamera);
 
-    const nightStrength = THREE.MathUtils.smoothstep(maxDot, minDot, dot);
+    const nightStrength = THREE.MathUtils.smoothstep(0.2, -0.4, dot);
     this.planetNight.material.opacity = nightStrength * opacityMultiplier;
   }
+
+    setPosition(x, y, z) {
+        if (x instanceof THREE.Vector3) {
+            this.group.position.copy(x);
+        }  
+        else {
+            this.group.position.set(x, y, z);
+        }
+    }
 }
