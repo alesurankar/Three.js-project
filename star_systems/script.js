@@ -1,9 +1,8 @@
 import * as THREE from "three";
-import { OrbitControls } from "jsm/controls/OrbitControls.js";
-import { starGeometry, starMaterial } from "./stars.js";
-import { Planet } from "./planet.js"
-import { Star } from "./star.js";
-import { GameControls } from "./gameControls.js"
+import { starGeometry, starMaterial } from "./utils/starField.js";
+import { Planet } from "./objects/planet.js"
+import { Star } from "./objects/star.js";
+import { GameControls } from "./utils/gameControls.js"
 
 
 ///////////////////////////////////////////////
@@ -13,7 +12,7 @@ const h = window.innerHeight;
 const fov = 75;
 const aspect = w / h;
 const near = 0.1;
-const far = 5000;
+const far = 20000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.set(100,-100,0);
 
@@ -26,14 +25,6 @@ renderer.setSize(w, h);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.physicallyCorrectLights = true;
-
-
-
-// ///////////////////////////////////////////////
-// const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enableDamping = true;
-// controls.dampingFactor = 0.03;
-
 
 
 ////////////////////////////////////////////
@@ -49,7 +40,7 @@ const earth = new Planet({
   scene,
   name: "earth",
   size: 10,
-  position: new THREE.Vector3(300, 300, 300),
+  position: new THREE.Vector3(500, 0, 0),
   rotationSpeed: 0.001,
   cloudRotationSpeed: 0.0003,
   nightOpacity: 0.4,
@@ -57,21 +48,26 @@ const earth = new Planet({
   axialTilt: -23.4
 });
 
+const moonOrbit = new THREE.Group();
+earth.group.add(moonOrbit);
+
 // Create moon
 const moon = new Planet({
   scene,
   name: "moon",
-  size: 4,
-  position: new THREE.Vector3(320, 300, 290),
+  size: 3,
+  position: new THREE.Vector3(60, 0, 0),
   axialTilt: 1.5
 });
+
+moonOrbit.add(moon.group);
 
 
 // Add Sun to scene
 const sun = new Star({
   scene,
   name: "sun",
-  size: 30,
+  size: 40,
   position: new THREE.Vector3(0, 0, 0),
   intensity: 1000000,
   distance: 0,
@@ -88,7 +84,11 @@ function animate() {
   earth.rotate();
   earth.updateNightLight(sun.light, camera);
   
-  moon.rotate();
+  const orbitSpeed = 0.001; 
+  moonOrbit.rotation.y += orbitSpeed;
+
+  moon.group.rotation.y += orbitSpeed; 
+
   moon.updateNightLight(sun.light, camera);
 
   renderer.render(scene, camera);

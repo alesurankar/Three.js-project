@@ -35,7 +35,7 @@ export class GameControls {
       case "KeyA": this.move.left = true; break;
       case "KeyD": this.move.right = true; break;
       case "KeyV": this.move.fast = true; break;
-      case "ControlLeft": this.move.down = true; break;
+      case "ShiftLeft": this.move.fast = true; break;
       case "Space": this.move.up = true; break;
     }
   }
@@ -47,7 +47,7 @@ export class GameControls {
       case "KeyA": this.move.left = false; break;
       case "KeyD": this.move.right = false; break;
       case "KeyV": this.move.fast = false; break;
-      case "ControlLeft": this.move.down = false; break;
+      case "ShiftLeft": this.move.fast = false; break;
       case "Space": this.move.up = false; break;
     }
   }

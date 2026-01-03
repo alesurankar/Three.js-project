@@ -1,11 +1,11 @@
 import * as THREE from "three";
 
 
-const starCount = 10000;
+const starCount = 20000;
 const positions = new Float32Array(starCount * 3);
 const colors = new Float32Array(starCount * 3);
-const radius = 5000;
-const minDistance = 1000;
+const radius = 14000;
+const minDistance = 7000;
 
 
 // generate positions inside spherical shell
@@ -37,7 +37,7 @@ starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
 
 export const starMaterial = new THREE.PointsMaterial({
-  size: 12,
+  size: 60,
   map: new THREE.TextureLoader().load("./textures/star.png"),
   transparent: true,
   alphaTest: 0.01,
