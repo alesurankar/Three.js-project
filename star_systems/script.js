@@ -26,7 +26,6 @@ camera.position.setZ(30);
 
 ///////////////////////////////////////////////
 const planetGroup = new THREE.Group();
-planetGroup.rotation.z = -23.4 * Math.PI /180;
 scene.add(planetGroup);
 
 
@@ -42,23 +41,31 @@ const controls = new OrbitControls(camera, renderer.domElement);
 const loader = new THREE.TextureLoader();
 const geometry = new THREE.IcosahedronGeometry(1, 12);
 const dayMat = new THREE.MeshStandardMaterial({
-  map: loader.load("./textures/earth.jpg")
+  map: loader.load("./textures/earth/earth.jpg"),
+  color: new THREE.Color(0.8, 1, 1),
 });
 const nightMat = new THREE.MeshBasicMaterial({
-  map: loader.load("./textures/earth_night.jpg"),
+  map: loader.load("./textures/earth/earth_night.jpg"),
   transparent: true,
   opacity: 0.3,
   depthWrite: false,
   color: new THREE.Color(1.0, 1.0, 0.3)
 });
+const cloudTex = loader.load("./textures/earth/earth_cloud2.jpg");
+const cloudMat = new THREE.MeshStandardMaterial({
+  map: cloudTex,
+  transparent: true,
+  opacity: 0.6,
+  blending: THREE.AdditiveBlending,
+}) 
 
 const planetDay = new THREE.Mesh(geometry, dayMat);
 planetGroup.add(planetDay);
-
-
-
 const planetNight = new THREE.Mesh(geometry, nightMat);
 planetGroup.add(planetNight);
+const planetClouds = new THREE.Mesh(geometry, cloudMat);
+planetClouds.scale.setScalar(1.003);
+planetGroup.add(planetClouds);
 
 
 
@@ -67,9 +74,18 @@ const stars = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
 const sunLight = new THREE.DirectionalLight(0xffffff);
-sunLight.position.set(10,10,5);
 scene.add(sunLight);
 
+
+
+///////////////////////////////////////////////
+function updatePlanet() {
+  const rot = -23.4 * Math.PI /180;
+  planetGroup.rotation.z = rot
+  planetGroup.rotation.y += 0.001
+  planetClouds.rotation.z = rot;
+  planetClouds.rotation.y += 0.0002
+}
 
 
 
@@ -104,7 +120,7 @@ function checkVisibility() {
 function animate() {
   requestAnimationFrame(animate);
   
-  planetGroup.rotation.y += 0.003
+  updatePlanet();
 
   checkVisibility();
 
