@@ -1,5 +1,6 @@
 import * as THREE from "three";
-import { starGeometry, starMaterial } from "./utils/starField.js";
+import { StarField } from "./utils/starField.js";
+import { AsteroidBelt } from "./utils/asteroidBelt.js"
 import { Planet } from "./objects/planet.js"
 import { Star } from "./objects/star.js";
 import { GameControls } from "./utils/gameControls.js"
@@ -28,8 +29,13 @@ renderer.physicallyCorrectLights = true;
 
 
 ////////////////////////////////////////////
-const stars = new THREE.Points(starGeometry, starMaterial);
-scene.add(stars);
+const stars = new StarField({
+  starCount: 20000,
+  radius: 15000,
+  minDistance: 10000,
+  starSize: 60,
+});
+stars.addToScene(scene);
 
 
 const gameControls = new GameControls(camera, document.body, 0.5);
@@ -78,6 +84,16 @@ const jupiter = new Planet({
   size: 38,
   position: new THREE.Vector3(2600, 0, 0),
 });
+
+
+const meteors = new AsteroidBelt({
+  starCount: 10000,
+  radius: 1900,
+  minDistance: 1700,
+  thickness: 50,
+  starSize: 5,
+});
+meteors.addToScene(scene);
 
 
 // Create mars

@@ -1,16 +1,18 @@
 import * as THREE from "three";
 
-export class StarField {
+export class AsteroidBelt {
   constructor({
     starCount = 20000,
     radius = 14000,
     minDistance = 7000,
+    thickness = 1000, // thickness of the belt along Z-axis
     starSize = 60,
     texturePath = "./textures/star.png",
   } = {}) {
     this.starCount = starCount;
     this.radius = radius;
     this.minDistance = minDistance;
+    this.thickness = thickness;
     this.starSize = starSize;
     this.texturePath = texturePath;
 
@@ -24,23 +26,23 @@ export class StarField {
     const colors = new Float32Array(this.starCount * 3);
 
     for (let i = 0; i < this.starCount; i++) {
-      const phi = Math.random() * 2 * Math.PI;
-      const costheta = Math.random() * 2 - 1;
-      const theta = Math.acos(costheta);
-      const r = this.minDistance + (this.radius - this.minDistance) * Math.cbrt(Math.random());
+      // Polar coordinates for a flat disk
+      const angle = Math.random() * 2 * Math.PI; // full circle
+      const r = this.minDistance + (this.radius - this.minDistance) * Math.cbrt(Math.random()); // radial distribution
 
-      const x = r * Math.sin(theta) * Math.cos(phi);
-      const y = r * Math.sin(theta) * Math.sin(phi);
-      const z = r * Math.cos(theta);
+      const x = r * Math.cos(angle);
+      const y = (Math.random() - 0.5) * this.thickness; // thin vertical spread
+      const z = r * Math.sin(angle);
 
       positions[i * 3] = x;
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
 
-      const intensity = 0.8 + Math.random() * 0.2;
-      colors[i * 3] = 1.0 * intensity;      // r
-      colors[i * 3 + 1] = 1.0 * intensity;  // g
-      colors[i * 3 + 2] = 0.8 * intensity;  // b (slightly yellowish)
+      // Slightly yellowish star/asteroid color
+      const intensity = 0.4 + Math.random() * 0.2;
+      colors[i * 3] = 1.0 * intensity;
+      colors[i * 3 + 1] = 1.0 * intensity;
+      colors[i * 3 + 2] = 0.6 * intensity;
     }
 
     const geometry = new THREE.BufferGeometry();
