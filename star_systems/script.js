@@ -3,6 +3,7 @@ import { OrbitControls } from "jsm/controls/OrbitControls.js";
 import { starGeometry, starMaterial } from "./stars.js";
 import { Planet } from "./planet.js"
 import { Star } from "./star.js";
+import { GameControls } from "./gameControls.js"
 
 
 ///////////////////////////////////////////////
@@ -14,7 +15,7 @@ const aspect = w / h;
 const near = 0.1;
 const far = 5000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.set(0,0,30);
+camera.position.set(100,-100,0);
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
@@ -29,9 +30,9 @@ renderer.physicallyCorrectLights = true;
 
 
 // ///////////////////////////////////////////////
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.03;
+// const controls = new OrbitControls(camera, renderer.domElement);
+// controls.enableDamping = true;
+// controls.dampingFactor = 0.03;
 
 
 
@@ -39,6 +40,8 @@ controls.dampingFactor = 0.03;
 const stars = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
+
+const gameControls = new GameControls(camera, document.body, 0.5);
 
 
 // Create planet
@@ -57,14 +60,16 @@ const sun = new Star({
   position: new THREE.Vector3(0, 0, 0),
   intensity: 1000000,
   distance: 0,
-  color: 0xffffff
+  color: 0xffffee
 });
 
 
 // ///////////////////////////////////////////////
 function animate() {
   requestAnimationFrame(animate);
-  
+
+  gameControls.update();
+
   earth.rotate();
   earth.updateNightLight(sun.light, camera);
   
