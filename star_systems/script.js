@@ -37,23 +37,41 @@ scene.add(ambientLight);
 
 const gameControls = new GameControls(camera, document.body, 0.5);
 
-const timeScale = 100;
-
-function rotationSpeedFromDays(days, timeScale) {
+const axialTimeScale = 100;
+function rotationSpeedFromDays(days, axialTimeScale) {
     const seconds = days * 24 * 60 * 60;
-    return (2 * Math.PI / seconds) * timeScale;
+    return (2 * Math.PI / seconds) * axialTimeScale;
 }
 
-const mercuryAxialSpeed = rotationSpeedFromDays(58.6, timeScale);
-const venusAxialSpeed   = -rotationSpeedFromDays(243, timeScale);   // retrograde
-const earthAxialSpeed   = rotationSpeedFromDays(1, timeScale);
-const moonAxialSpeed    = rotationSpeedFromDays(27.3, timeScale);
-const marsAxialSpeed    = rotationSpeedFromDays(1.03, timeScale);
-const jupiterAxialSpeed = rotationSpeedFromDays(0.41, timeScale);
-const saturnAxialSpeed  = rotationSpeedFromDays(0.45, timeScale);
-const uranusAxialSpeed  = -rotationSpeedFromDays(0.72, timeScale);  // retrograde
-const neptuneAxialSpeed = rotationSpeedFromDays(0.67, timeScale);
-const plutoAxialSpeed   = rotationSpeedFromDays(6.39, timeScale);
+const orbitalTimeScale = 10000;
+function orbitalSpeedFromDays(days, orbitalTimeScale) {
+    const seconds = days * 24 * 60 * 60;
+    return (2 * Math.PI / seconds) * orbitalTimeScale;
+}
+
+// Axial Speeds
+const mercuryAxialSpeed = rotationSpeedFromDays(58.6, axialTimeScale);
+const venusAxialSpeed   = -rotationSpeedFromDays(243, axialTimeScale);   // retrograde
+const earthAxialSpeed   = rotationSpeedFromDays(1, axialTimeScale);
+const moonAxialSpeed    = rotationSpeedFromDays(27.3, axialTimeScale);
+const marsAxialSpeed    = rotationSpeedFromDays(1.03, axialTimeScale);
+const jupiterAxialSpeed = rotationSpeedFromDays(0.41, axialTimeScale);
+const saturnAxialSpeed  = rotationSpeedFromDays(0.45, axialTimeScale);
+const uranusAxialSpeed  = -rotationSpeedFromDays(0.72, axialTimeScale);  // retrograde
+const neptuneAxialSpeed = rotationSpeedFromDays(0.67, axialTimeScale);
+const plutoAxialSpeed   = rotationSpeedFromDays(6.39, axialTimeScale);
+
+// Orbitral Speeds
+const mercuryOrbitalSpeed = orbitalSpeedFromDays(88, orbitalTimeScale);
+const venusOrbitalSpeed   = orbitalSpeedFromDays(224.7, orbitalTimeScale);
+const earthOrbitalSpeed   = orbitalSpeedFromDays(365.25, orbitalTimeScale);
+const moonOrbitalSpeed    = orbitalSpeedFromDays(27.3, orbitalTimeScale);
+const marsOrbitalSpeed    = orbitalSpeedFromDays(687, orbitalTimeScale);
+const jupiterOrbitalSpeed = orbitalSpeedFromDays(4333, orbitalTimeScale);
+const saturnOrbitalSpeed  = orbitalSpeedFromDays(10759, orbitalTimeScale);
+const uranusOrbitalSpeed  = orbitalSpeedFromDays(30687, orbitalTimeScale);
+const neptuneOrbitalSpeed = orbitalSpeedFromDays(60190, orbitalTimeScale);
+const plutoOrbitalSpeed   = orbitalSpeedFromDays(90560, orbitalTimeScale);
 
 ////////////////////////////////////////////
 const stars = new StarField({
@@ -86,7 +104,7 @@ const mercury = new Planet({
   axialTilt: 0.034,
   axialRotationSpeed: mercuryAxialSpeed,
   orbitRadius: 400,
-  orbitRotationSpeed: 0.01,
+  orbitRotationSpeed: mercuryOrbitalSpeed,
   parent: sun.group,
 });
 
@@ -98,7 +116,7 @@ const venus = new Planet({
   axialTilt: 177.36,
   axialRotationSpeed: venusAxialSpeed,
   orbitRadius: 700,
-  orbitRotationSpeed: 0.001,
+  orbitRotationSpeed: venusOrbitalSpeed,
   parent: sun.group,
 });
 
@@ -111,7 +129,7 @@ const earth = new Planet({
   axialRotationSpeed: earthAxialSpeed,
   cloudRotationSpeed: earthAxialSpeed * 1.0001,
   orbitRadius: 1000,
-  orbitRotationSpeed: 0.001,
+  orbitRotationSpeed: earthOrbitalSpeed,
   nightOpacity: 0.4,
   cloudOpacity: 0.5,
   parent: sun.group,
@@ -125,7 +143,7 @@ const moon = new Planet({
   axialTilt: 6.68,
   axialRotationSpeed: moonAxialSpeed,
   orbitRadius: 30,
-  orbitRotationSpeed: 0.001,
+  orbitRotationSpeed: moonOrbitalSpeed,
   parent: earth.group,
 });
 
@@ -137,7 +155,7 @@ const mars = new Planet({
   axialTilt: 25.19,
   axialRotationSpeed: marsAxialSpeed,
   orbitRadius: 1500,
-  orbitRotationSpeed: 0.1,
+  orbitRotationSpeed: marsOrbitalSpeed,
   parent: sun.group,
 });
 
@@ -160,7 +178,7 @@ const jupiter = new Planet({
   axialTilt: 3.13,
   axialRotationSpeed: jupiterAxialSpeed,
   orbitRadius: 2600,
-  orbitRotationSpeed: 0.02,
+  orbitRotationSpeed: jupiterOrbitalSpeed,
   parent: sun.group,
 });
 
@@ -172,7 +190,7 @@ const saturn = new Planet({
   axialTilt: 26.73,
   axialRotationSpeed: saturnAxialSpeed,
   orbitRadius: 3600,
-  orbitRotationSpeed: 0.0001,
+  orbitRotationSpeed: saturnOrbitalSpeed,
   parent: sun.group,
 });
 
@@ -197,7 +215,7 @@ const uranus = new Planet({
   axialTilt: 97.77,
   axialRotationSpeed: uranusAxialSpeed,
   orbitRadius: 4600,
-  orbitRotationSpeed: 0.001,
+  orbitRotationSpeed: uranusOrbitalSpeed,
   parent: sun.group,
 });
 
@@ -222,19 +240,19 @@ const neptune = new Planet({
   axialTilt: 28.32,
   axialRotationSpeed: neptuneAxialSpeed,
   orbitRadius: 5600,
-  orbitRotationSpeed: 0.002,
+  orbitRotationSpeed: neptuneOrbitalSpeed,
   parent: sun.group,
 });
 
 
-// Create pluton
+// Create pluto
 const pluto = new Planet({
   name: "pluto",
   size: 1.8,
   axialTilt: 119.61,
   axialRotationSpeed: plutoAxialSpeed,
   orbitRadius: 6500,
-  orbitRotationSpeed: 0.03,
+  orbitRotationSpeed: plutoOrbitalSpeed,
   parent: sun.group,
 });
 
