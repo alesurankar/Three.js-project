@@ -28,9 +28,10 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.physicallyCorrectLights = true;
 
 
+// Ambient light, for simulation purposes
 const ambientLight = new THREE.AmbientLight(
   0x404040,
-  0.3
+  10.3
 );
 
 scene.add(ambientLight);
@@ -43,7 +44,7 @@ function rotationSpeedFromDays(days, axialTimeScale) {
     return (2 * Math.PI / seconds) * axialTimeScale;
 }
 
-const orbitalTimeScale = 10000;
+const orbitalTimeScale = 1000;
 function orbitalSpeedFromDays(days, orbitalTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * orbitalTimeScale;
@@ -67,9 +68,12 @@ const venusOrbitalSpeed   = orbitalSpeedFromDays(224.7, orbitalTimeScale);
 const earthOrbitalSpeed   = orbitalSpeedFromDays(365.25, orbitalTimeScale);
 const moonOrbitalSpeed    = orbitalSpeedFromDays(27.3, orbitalTimeScale);
 const marsOrbitalSpeed    = orbitalSpeedFromDays(687, orbitalTimeScale);
+const asteroidBeltOrbitalSpeed    = orbitalSpeedFromDays(1570, orbitalTimeScale);
 const jupiterOrbitalSpeed = orbitalSpeedFromDays(4333, orbitalTimeScale);
 const saturnOrbitalSpeed  = orbitalSpeedFromDays(10759, orbitalTimeScale);
+const saturnRingOrbitalSpeed    = orbitalSpeedFromDays(0.6, orbitalTimeScale);
 const uranusOrbitalSpeed  = orbitalSpeedFromDays(30687, orbitalTimeScale);
+const uranusRingOrbitalSpeed    = orbitalSpeedFromDays(0.26, orbitalTimeScale);
 const neptuneOrbitalSpeed = orbitalSpeedFromDays(60190, orbitalTimeScale);
 const plutoOrbitalSpeed   = orbitalSpeedFromDays(90560, orbitalTimeScale);
 
@@ -127,7 +131,7 @@ const earth = new Planet({
   size: 10,
   axialTilt: 23.44,
   axialRotationSpeed: earthAxialSpeed,
-  cloudRotationSpeed: earthAxialSpeed * 1.0001,
+  cloudRotationSpeed: earthAxialSpeed * 0.3,
   orbitRadius: 1000,
   orbitRotationSpeed: earthOrbitalSpeed,
   nightOpacity: 0.4,
@@ -163,12 +167,14 @@ const mars = new Planet({
 // Create asteroid belt
 const asteroids = new Asteroids({
   asteroidCount: 10000,
-  radius: 1900,
-  minDistance: 1700,
+  orbitFarRadius: 1900,
+  orbitNearRadius: 1700,
+  axialRotationSpeed: 0.01,
+  orbitRotationSpeed: asteroidBeltOrbitalSpeed,
   thickness: 50,
   size: 0.8,
+  parent: sun.group,
 });
-scene.add(asteroids.group);
 
 
 // Create jupiter
@@ -194,18 +200,21 @@ const saturn = new Planet({
   parent: sun.group,
 });
 
-const saturnRingOrbit = new THREE.Group();
-saturn.group.add(saturnRingOrbit);
 
 // Create saturn ring
 const saturnRing = new Asteroids({
-  asteroidCount: 3000,
-  radius: 55,
-  minDistance: 38,
-  thickness: 2,
-  size: 0.6,
+  asteroidCount: 6000,
+  orbitFarRadius: 65,
+  orbitNearRadius: 40,
+  axialRotationSpeed: 0.005,
+  orbitRotationSpeed: saturnRingOrbitalSpeed * 0.1, // 10x slower for simulation purpose
+  thickness: 0.6,
+  size: 0.15,
+  roughness: 0.9,
+  metalness: 0.0,
+  color: 0xdfe6f0,
+  parent: saturn.group,
 });
-saturnRingOrbit.add(saturnRing.group);
 
 
 // Create uranus
@@ -219,18 +228,20 @@ const uranus = new Planet({
   parent: sun.group,
 });
 
-const uranusRingOrbit = new THREE.Group();
-uranus.group.add(uranusRingOrbit);
 
 // Create uranus ring
 const uranusRing = new Asteroids({
-  asteroidCount: 3000,
-  radius: 55,
-  minDistance: 38,
-  thickness: 2,
-  size: 0.6,
+  asteroidCount: 1200,
+  orbitFarRadius: 50,
+  orbitNearRadius: 42,
+  axialRotationSpeed: 0.003,
+  orbitRotationSpeed: uranusRingOrbitalSpeed * 0.1, // 10x slower for simulation purpose
+  thickness: 0.3,
+  size: 0.12,
+  //color: 0x444444, // real, to dark
+  color: 0xffffff, // not real
+  parent: uranus.group,
 });
-uranusRingOrbit.add(uranusRing.group);
 
 
 // Create neptune
@@ -273,15 +284,15 @@ function animate() {
 
   mars.rotate();
 
-  asteroids.update(1);
+  asteroids.update();
 
   jupiter.rotate();
 
   saturn.rotate();
-  saturnRing.update(1);
+  saturnRing.update();
 
   uranus.rotate();
-  uranusRing.update(1);
+  uranusRing.update();
 
   neptune.rotate();
 
