@@ -47,12 +47,12 @@ function rotationSpeedFromDays(days, timeScale) {
 const mercurySpeed = rotationSpeedFromDays(58.6, timeScale);
 const venusSpeed   = -rotationSpeedFromDays(243, timeScale);   // retrograde
 const earthSpeed   = rotationSpeedFromDays(1, timeScale);
-const moonSpeed    = rotationSpeedFromDays(27.3,timeScale);
+const moonSpeed    = rotationSpeedFromDays(27.3, timeScale);
 const marsSpeed    = rotationSpeedFromDays(1.03, timeScale);
 const jupiterSpeed = rotationSpeedFromDays(0.41, timeScale);
 const saturnSpeed  = rotationSpeedFromDays(0.45, timeScale);
 const uranusSpeed  = -rotationSpeedFromDays(0.72, timeScale);  // retrograde
-const neptuneSpeed = rotationSpeedFromDays(0.67,timeScale);
+const neptuneSpeed = rotationSpeedFromDays(0.67, timeScale);
 const plutoSpeed   = rotationSpeedFromDays(6.39, timeScale);
 
 ////////////////////////////////////////////
@@ -70,6 +70,7 @@ const pluto = new Planet({
   name: "pluto",
   size: 1.8,
   position: new THREE.Vector3(6500, 0, 0),
+  axialTilt: 119.61,
   rotationSpeed: plutoSpeed,
 });
 scene.add(pluto.group);
@@ -80,6 +81,7 @@ const neptune = new Planet({
   name: "neptune",
   size: 19,
   position: new THREE.Vector3(5600, 0, 0),
+  axialTilt: 28.32,
   rotationSpeed: neptuneSpeed,
 });
 scene.add(neptune.group);
@@ -90,12 +92,10 @@ const uranus = new Planet({
   name: "uranus",
   size: 20,
   position: new THREE.Vector3(4600, 0, 0),
+  axialTilt: 97.77,
   rotationSpeed: uranusSpeed,
 });
 scene.add(uranus.group);
-
-const uranusOrbit = new THREE.Group();
-uranus.group.add(uranusOrbit);
 
 const uranusRingOrbit = new THREE.Group();
 uranus.group.add(uranusRingOrbit);
@@ -116,7 +116,7 @@ const saturn = new Planet({
   name: "saturn",
   size: 34,
   position: new THREE.Vector3(3600, 0, 0),
-  axialTilt: 26.7,
+  axialTilt: 26.73,
   rotationSpeed: saturnSpeed,
 });
 scene.add(saturn.group);
@@ -140,6 +140,7 @@ const jupiter = new Planet({
   name: "jupiter",
   size: 38,
   position: new THREE.Vector3(2600, 0, 0),
+  axialTilt: 3.13,
   rotationSpeed: jupiterSpeed,
 });
 scene.add(jupiter.group);
@@ -161,6 +162,7 @@ const mars = new Planet({
   name: "mars",
   size: 5.3,
   position: new THREE.Vector3(1500, 0, 0),
+  axialTilt: 25.19,
   rotationSpeed: marsSpeed,
 });
 scene.add(mars.group);
@@ -175,7 +177,7 @@ const earth = new Planet({
   cloudRotationSpeed: earthSpeed * 1.0001,
   nightOpacity: 0.4,
   cloudOpacity: 0.5,
-  axialTilt: -23.4
+  axialTilt: 23.44
 });
 scene.add(earth.group);
 
@@ -187,8 +189,8 @@ const moon = new Planet({
   name: "moon",
   size: 2.7,
   position: new THREE.Vector3(30, 0, 0),
-  axialTilt: 1.5,
-  rotationSpeed: 0.0015,
+  axialTilt: 6.68,
+  rotationSpeed: moonSpeed,
 });
 moonOrbit.add(moon.group);
 
@@ -198,6 +200,7 @@ const venus = new Planet({
   name: "venus",
   size: 9.5,
   position: new THREE.Vector3(700, 0, 0),
+  axialTilt: 177.36,
   rotationSpeed: venusSpeed,
 });
 scene.add(venus.group);
@@ -208,6 +211,7 @@ const mercury = new Planet({
   name: "mercury",
   size: 4,
   position: new THREE.Vector3(400, 0, 0),
+  axialTilt: 0.034,
   rotationSpeed: mercurySpeed,
 });
 scene.add(mercury.group);
@@ -220,7 +224,7 @@ const sun = new Star({
   position: new THREE.Vector3(0, 0, 0),
   intensity: 5000000,
   distance: 0,
-  color: 0xffffee
+  color: 0xffffff
 });
 scene.add(sun.group);
 
@@ -241,16 +245,15 @@ function animate() {
   jupiter.rotate();
   mars.rotate();
   earth.rotate();
+  moon.rotate();
   venus.rotate();
   mercury.rotate();
 
-  // earth.updateNightLight(sun.light, camera);
+  earth.updateNightLight(sun.light, camera);
   
   // moonOrbit.rotation.y += orbitSpeed;
 
   // moon.group.rotation.y += orbitSpeed; 
-
-  // moon.updateNightLight(sun.light, camera);
 
   renderer.render(scene, camera);
 }
