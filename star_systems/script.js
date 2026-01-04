@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { StarField } from "./utils/starField.js";
-import { AsteroidBelt } from "./utils/asteroidBelt.js"
+import { Asteroids } from "./objects/asteroids.js"
 import { Planet } from "./objects/planet.js"
 import { Star } from "./objects/star.js";
 import { GameControls } from "./utils/gameControls.js"
@@ -28,17 +28,24 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.physicallyCorrectLights = true;
 
 
+const ambientLight = new THREE.AmbientLight(
+  0x404040,
+  0.3
+);
+
+scene.add(ambientLight);
+
+const gameControls = new GameControls(camera, document.body, 0.5);
+
+
 ////////////////////////////////////////////
 const stars = new StarField({
-  starCount: 20000,
+  starCount: 5000,
   radius: 15000,
-  minDistance: 10000,
+  minDistance: 14500,
   starSize: 60,
 });
 stars.addToScene(scene);
-
-
-const gameControls = new GameControls(camera, document.body, 0.5);
 
 
 // Create pluton
@@ -86,14 +93,15 @@ const jupiter = new Planet({
 });
 
 
-const meteors = new AsteroidBelt({
-  starCount: 10000,
+// Create asteroid belt
+const asteroids = new Asteroids({
+  scene,
+  asteroidCount: 10000,
   radius: 1900,
   minDistance: 1700,
   thickness: 50,
-  starSize: 5,
+  size: 0.8
 });
-meteors.addToScene(scene);
 
 
 // Create mars
@@ -157,7 +165,7 @@ const sun = new Star({
   name: "sun",
   size: 100,
   position: new THREE.Vector3(0, 0, 0),
-  intensity: 4000000,
+  intensity: 5000000,
   distance: 0,
   color: 0xffffee
 });
@@ -168,6 +176,8 @@ function animate() {
   requestAnimationFrame(animate);
 
   gameControls.update();
+
+  asteroids.rotate(1);
 
   earth.rotate();
   earth.updateNightLight(sun.light, camera);
