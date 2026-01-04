@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { StarField } from "./utils/starField.js";
 import { Asteroids } from "./objects/asteroids.js"
 import { Planet } from "./objects/planet.js"
 import { Star } from "./objects/star.js";
@@ -10,7 +9,7 @@ import { GameControls } from "./utils/gameControls.js"
 const scene = new THREE.Scene();
 const w = window.innerWidth;
 const h = window.innerHeight;
-const fov = 75;
+const fov = 40;
 const aspect = w / h;
 const near = 0.1;
 const far = 20000;
@@ -33,18 +32,18 @@ const ambientLight = new THREE.AmbientLight(
   0x404040,
   1.3
 );
-
 scene.add(ambientLight);
 
 const gameControls = new GameControls(camera, document.body, 0.5);
 
-const axialTimeScale = 10;
+
+const axialTimeScale = 1000;
 function rotationSpeedFromDays(days, axialTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * axialTimeScale;
 }
 
-const orbitalTimeScale = 10;
+const orbitalTimeScale = 1000;
 function orbitalSpeedFromDays(days, orbitalTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * orbitalTimeScale;
@@ -77,15 +76,19 @@ const uranusRingOrbitalSpeed    = -orbitalSpeedFromDays(0.26, orbitalTimeScale);
 const neptuneOrbitalSpeed = orbitalSpeedFromDays(60190, orbitalTimeScale);
 const plutoOrbitalSpeed   = orbitalSpeedFromDays(90560, orbitalTimeScale);
 
-////////////////////////////////////////////
-const stars = new StarField({
-  starCount: 5000,
-  radius: 15000,
-  minDistance: 14500,
-  starSize: 60,
-});
-stars.addToScene(scene);
 
+const loader = new THREE.CubeTextureLoader();
+
+const skybox = loader.load([
+  './textures/skybox/n1.png',
+  './textures/skybox/n2.png',
+  './textures/skybox/n3.png',
+  './textures/skybox/n4.png',
+  './textures/skybox/n5.png',
+  './textures/skybox/n6.png',
+]);
+
+scene.background = skybox;
 
 
 
@@ -167,7 +170,7 @@ const asteroids = new Asteroids({
   asteroidCount: 10000,
   orbitFarRadius: 1900,
   orbitNearRadius: 1700,
-  axialRotationSpeed: 0.01,
+  axialRotationSpeed: axialTimeScale * 0.000014,
   orbitRotationSpeed: asteroidBeltOrbitalSpeed,
   thickness: 50,
   size: 0.8,
