@@ -65,159 +65,141 @@ const stars = new StarField({
 stars.addToScene(scene);
 
 
-// Create pluton
-const pluto = new Planet({
-  name: "pluto",
-  size: 1.8,
-  position: new THREE.Vector3(6500, 0, 0),
-  axialTilt: 119.61,
-  rotationSpeed: plutoSpeed,
-});
-scene.add(pluto.group);
+// // Create pluton
+// const pluto = new Planet({
+//   name: "pluto",
+//   size: 1.8,
+//   position: new THREE.Vector3(6500, 0, 0),
+//   axialTilt: 119.61,
+//   rotationSpeed: plutoSpeed,
+// });
+// scene.add(pluto.group);
 
 
-// Create neptune
-const neptune = new Planet({
-  name: "neptune",
-  size: 19,
-  position: new THREE.Vector3(5600, 0, 0),
-  axialTilt: 28.32,
-  rotationSpeed: neptuneSpeed,
-});
-scene.add(neptune.group);
+// // Create neptune
+// const neptune = new Planet({
+//   name: "neptune",
+//   size: 19,
+//   position: new THREE.Vector3(5600, 0, 0),
+//   axialTilt: 28.32,
+//   rotationSpeed: neptuneSpeed,
+// });
+// scene.add(neptune.group);
 
 
-// Create uranus
-const uranus = new Planet({
-  name: "uranus",
-  size: 20,
-  position: new THREE.Vector3(4600, 0, 0),
-  axialTilt: 97.77,
-  rotationSpeed: uranusSpeed,
-});
-scene.add(uranus.group);
+// // Create uranus
+// const uranus = new Planet({
+//   name: "uranus",
+//   size: 20,
+//   position: new THREE.Vector3(4600, 0, 0),
+//   axialTilt: 97.77,
+//   rotationSpeed: uranusSpeed,
+// });
+// scene.add(uranus.group);
 
-const uranusRingOrbit = new THREE.Group();
-uranus.group.add(uranusRingOrbit);
+// const uranusRingOrbit = new THREE.Group();
+// uranus.group.add(uranusRingOrbit);
 
-// Create uranus ring
-const uranusRing = new Asteroids({
-  asteroidCount: 3000,
-  radius: 55,
-  minDistance: 38,
-  thickness: 2,
-  size: 0.6
-});
-uranusRingOrbit.add(uranusRing.group);
-
-
-// Create saturn
-const saturn = new Planet({
-  name: "saturn",
-  size: 34,
-  position: new THREE.Vector3(3600, 0, 0),
-  axialTilt: 26.73,
-  rotationSpeed: saturnSpeed,
-});
-scene.add(saturn.group);
-
-const saturnRingOrbit = new THREE.Group();
-saturn.group.add(saturnRingOrbit);
-
-// Create saturn ring
-const saturnRing = new Asteroids({
-  asteroidCount: 3000,
-  radius: 55,
-  minDistance: 38,
-  thickness: 2,
-  size: 0.6
-});
-saturnRingOrbit.add(saturnRing.group);
+// // Create uranus ring
+// const uranusRing = new Asteroids({
+//   asteroidCount: 3000,
+//   radius: 55,
+//   minDistance: 38,
+//   thickness: 2,
+//   size: 0.6
+// });
+// uranusRingOrbit.add(uranusRing.group);
 
 
-// Create jupiter
-const jupiter = new Planet({
-  name: "jupiter",
-  size: 38,
-  position: new THREE.Vector3(2600, 0, 0),
-  axialTilt: 3.13,
-  rotationSpeed: jupiterSpeed,
-});
-scene.add(jupiter.group);
+// // Create saturn
+// const saturn = new Planet({
+//   name: "saturn",
+//   size: 34,
+//   position: new THREE.Vector3(3600, 0, 0),
+//   axialTilt: 26.73,
+//   //rotationSpeed: saturnSpeed,
+// });
+// scene.add(saturn.group);
+
+// const saturnRingOrbit = new THREE.Group();
+// saturn.group.add(saturnRingOrbit);
+
+// // Create saturn ring
+// const saturnRing = new Asteroids({
+//   asteroidCount: 3000,
+//   radius: 55,
+//   minDistance: 38,
+//   thickness: 2,
+//   size: 0.6
+// });
+// saturnRingOrbit.add(saturnRing.group);
 
 
-// Create asteroid belt
-const asteroids = new Asteroids({
-  asteroidCount: 10000,
-  radius: 1900,
-  minDistance: 1700,
-  thickness: 50,
-  size: 0.8
-});
-scene.add(asteroids.group);
+// // Create jupiter
+// const jupiter = new Planet({
+//   name: "jupiter",
+//   size: 38,
+//   position: new THREE.Vector3(2600, 0, 0),
+//   axialTilt: 3.13,
+//   rotationSpeed: jupiterSpeed,
+// });
+// scene.add(jupiter.group);
 
 
-// Create mars
-const mars = new Planet({
-  name: "mars",
-  size: 5.3,
-  position: new THREE.Vector3(1500, 0, 0),
-  axialTilt: 25.19,
-  rotationSpeed: marsSpeed,
-});
-scene.add(mars.group);
+// // Create asteroid belt
+// const asteroids = new Asteroids({
+//   asteroidCount: 10000,
+//   radius: 1900,
+//   minDistance: 1700,
+//   thickness: 50,
+//   size: 0.8
+// });
+// scene.add(asteroids.group);
 
 
-// Create earth
-const earth = new Planet({
-  name: "earth",
-  size: 10,
-  position: new THREE.Vector3(1000, 0, 0),
-  rotationSpeed: earthSpeed,
-  cloudRotationSpeed: earthSpeed * 1.0001,
-  nightOpacity: 0.4,
-  cloudOpacity: 0.5,
-  axialTilt: 23.44
-});
-scene.add(earth.group);
-
-const moonOrbit = new THREE.Group();
-earth.group.add(moonOrbit);
-
-// Create moon
-const moon = new Planet({
-  name: "moon",
-  size: 2.7,
-  position: new THREE.Vector3(30, 0, 0),
-  axialTilt: 6.68,
-  rotationSpeed: moonSpeed,
-});
-moonOrbit.add(moon.group);
+// // Create mars
+// const mars = new Planet({
+//   name: "mars",
+//   size: 5.3,
+//   position: new THREE.Vector3(1500, 0, 0),
+//   axialTilt: 25.19,
+//   rotationSpeed: marsSpeed,
+// });
+// scene.add(mars.group);
 
 
-// Create venus
-const venus = new Planet({
-  name: "venus",
-  size: 9.5,
-  position: new THREE.Vector3(700, 0, 0),
-  axialTilt: 177.36,
-  rotationSpeed: venusSpeed,
-});
-scene.add(venus.group);
+// // Create earth
+// const earth = new Planet({
+//   name: "earth",
+//   size: 10,
+//   position: new THREE.Vector3(1000, 0, 0),
+//   rotationSpeed: earthSpeed,
+//   cloudRotationSpeed: earthSpeed * 1.0001,
+//   nightOpacity: 0.4,
+//   cloudOpacity: 0.5,
+//   axialTilt: 23.44
+// });
+// scene.add(earth.group);
+
+// const moonOrbit = new THREE.Group();
+// earth.group.add(moonOrbit);
+
+// // Create moon
+// const moon = new Planet({
+//   name: "moon",
+//   size: 2.7,
+//   position: new THREE.Vector3(30, 0, 0),
+//   axialTilt: 6.68,
+//   rotationSpeed: moonSpeed,
+// });
+// moonOrbit.add(moon.group);
 
 
-// Create mercury
-const mercury = new Planet({
-  name: "mercury",
-  size: 4,
-  position: new THREE.Vector3(400, 0, 0),
-  axialTilt: 0.034,
-  rotationSpeed: mercurySpeed,
-});
-scene.add(mercury.group);
 
 
-// Add Sun to scene
+
+
+// Create Sun
 const sun = new Star({
   name: "sun",
   size: 100,
@@ -229,27 +211,52 @@ const sun = new Star({
 scene.add(sun.group);
 
 
+// Create Mercury
+const mercury = new Planet({
+  name: "mercury",
+  size: 4,
+  orbitRadius: 400,
+  orbitSpeed: 0.01,
+  rotationSpeed: mercurySpeed,
+  axialTilt: 0.034,
+  parent: sun.group
+});
+
+
+// Create venus
+const venus = new Planet({
+  name: "venus",
+  size: 9.5,
+  orbitRadius: 700,
+  orbitSpeed: 0.001,
+  position: new THREE.Vector3(700, 0, 0),
+  rotationSpeed: venusSpeed,
+  axialTilt: 177.36,
+  parent: sun.group
+});
+
+
 // ///////////////////////////////////////////////
 function animate() {
   requestAnimationFrame(animate);
 
   gameControls.update();
 
-  asteroids.update(1);
+  // asteroids.update(1);
 
-  saturnRing.update(1);
-  pluto.rotate();
-  neptune.rotate();
-  uranus.rotate();
-  saturn.rotate();
-  jupiter.rotate();
-  mars.rotate();
-  earth.rotate();
-  moon.rotate();
+  // saturnRing.update(1);
+  // pluto.rotate();
+  // neptune.rotate();
+  // uranus.rotate();
+  // saturn.rotate();
+  // jupiter.rotate();
+  // mars.rotate();
+  // earth.rotate();
+  // moon.rotate();
   venus.rotate();
   mercury.rotate();
 
-  earth.updateNightLight(sun.light, camera);
+  // earth.updateNightLight(sun.light, camera);
   
   // moonOrbit.rotation.y += orbitSpeed;
 

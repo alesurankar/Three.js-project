@@ -7,6 +7,9 @@ export class Planet {
         position = new THREE.Vector3(0, 0, 0),
         rotationSpeed = 0,
         cloudRotationSpeed = 0,
+        orbitSpeed = 0,          // speed to orbit parent
+        orbitRadius = 0,         // distance from parent
+        parent = null,           // object to orbit around (THREE.Group)
         texturesPath = "./textures",
         dayTexture = "day.jpg",
         nightTexture = "night.jpg",
@@ -16,11 +19,24 @@ export class Planet {
         axialTilt = 0
     } = {}) {
         this.loader = new THREE.TextureLoader();
-        this.group = new THREE.Group();
-        this.group.position.copy(position);
         this.rotationSpeed = rotationSpeed;
         this.cloudRotationSpeed = cloudRotationSpeed;
         this.axialTilt = axialTilt * Math.PI / 180;
+        this.orbitSpeed = orbitSpeed;
+        this.orbitRadius = orbitRadius;
+
+        // Create the main group for this planet
+        this.group = new THREE.Group();
+
+        // Orbit group (handles orbit around parent)
+        this.orbitGroup = new THREE.Group();
+        if (parent) {
+            parent.add(this.orbitGroup);
+        }
+
+        // Set initial position in orbit
+        this.group.position.set(orbitRadius, 0, 0);
+        this.orbitGroup.add(this.group);
 
         // Geometry
         const geometry = new THREE.IcosahedronGeometry(size, 12);
@@ -58,14 +74,11 @@ export class Planet {
             const cloudTex = this.loader.load(`${texturesPath}/${name}/${cloudTexture}`);
             const cloudMat = new THREE.MeshStandardMaterial({
                 map: cloudTex,
-                alphaMap: cloudTex, // white areas cast shadows
                 transparent: true,
                 opacity: cloudOpacity,
                 blending: THREE.NormalBlending
             });
             this.planetClouds = new THREE.Mesh(geometry, cloudMat);
-            this.planetClouds.castShadow = true;
-            this.planetClouds.receiveShadow = false;
             this.planetClouds.scale.setScalar(1.003);
             this.group.add(this.planetClouds);
         } 
@@ -78,13 +91,7 @@ export class Planet {
         if (this.planetClouds) this.planetClouds.rotation.z = this.axialTilt;
     }   
 
-    // Animate rotation
-    rotate() {
-        this.group.rotation.y += this.rotationSpeed;
-        if (this.planetClouds) this.planetClouds.rotation.y += this.cloudRotationSpeed;
-    }
-
-    // Update night-light visibility (optional)
+    // Update night-light visibility
     updateNightLight(sunLight, camera, opacityMultiplier = 0.4) {
         if (!this.planetNight) return;
         
@@ -103,6 +110,15 @@ export class Planet {
 
         const nightStrength = THREE.MathUtils.smoothstep(0.2, -0.4, dot);
         this.planetNight.material.opacity = nightStrength * opacityMultiplier;
+    }
+
+    // Rotate on own axis + orbit parent
+    rotate(delta = 1) {
+        this.group.rotation.y += this.rotationSpeed * delta;
+        if (this.planetClouds) this.planetClouds.rotation.y += this.cloudRotationSpeed * delta;
+
+        // Orbit around parent
+        this.orbitGroup.rotation.y += this.orbitSpeed * delta;
     }
 
     setPosition(x, y, z) {
