@@ -4,25 +4,24 @@ export class Planet {
     constructor({
         name = "earth",
         size = 10,
-        position = new THREE.Vector3(0, 0, 0),
-        rotationSpeed = 0,
+        axialTilt = 0,
+        axialRotationSpeed = 0,
         cloudRotationSpeed = 0,
-        orbitSpeed = 0,          // speed to orbit parent
-        orbitRadius = 0,         // distance from parent
-        parent = null,           // object to orbit around (THREE.Group)
+        orbitRadius = 0,
+        orbitRotationSpeed = 0, 
         texturesPath = "./textures",
         dayTexture = "day.jpg",
         nightTexture = "night.jpg",
         cloudTexture = "clouds.jpg",
         nightOpacity = 0,
         cloudOpacity = 0,
-        axialTilt = 0
+        parent = null, 
     } = {}) {
         this.loader = new THREE.TextureLoader();
-        this.rotationSpeed = rotationSpeed;
+        this.axialRotationSpeed = axialRotationSpeed;
         this.cloudRotationSpeed = cloudRotationSpeed;
         this.axialTilt = axialTilt * Math.PI / 180;
-        this.orbitSpeed = orbitSpeed;
+        this.orbitRotationSpeed = orbitRotationSpeed;
         this.orbitRadius = orbitRadius;
 
         // Create the main group for this planet
@@ -113,12 +112,14 @@ export class Planet {
     }
 
     // Rotate on own axis + orbit parent
-    rotate(delta = 1) {
-        this.group.rotation.y += this.rotationSpeed * delta;
-        if (this.planetClouds) this.planetClouds.rotation.y += this.cloudRotationSpeed * delta;
-
-        // Orbit around parent
-        this.orbitGroup.rotation.y += this.orbitSpeed * delta;
+    rotate() {
+        this.group.rotation.y += this.axialRotationSpeed;
+        if (this.planetClouds) {
+            this.planetClouds.rotation.y += this.cloudRotationSpeed;
+        }
+        if (this.orbitGroup) {
+            this.orbitGroup.rotation.y += this.orbitRotationSpeed;
+        }
     }
 
     setPosition(x, y, z) {

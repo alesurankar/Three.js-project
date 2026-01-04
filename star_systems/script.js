@@ -44,16 +44,16 @@ function rotationSpeedFromDays(days, timeScale) {
     return (2 * Math.PI / seconds) * timeScale;
 }
 
-const mercurySpeed = rotationSpeedFromDays(58.6, timeScale);
-const venusSpeed   = -rotationSpeedFromDays(243, timeScale);   // retrograde
-const earthSpeed   = rotationSpeedFromDays(1, timeScale);
-const moonSpeed    = rotationSpeedFromDays(27.3, timeScale);
-const marsSpeed    = rotationSpeedFromDays(1.03, timeScale);
-const jupiterSpeed = rotationSpeedFromDays(0.41, timeScale);
-const saturnSpeed  = rotationSpeedFromDays(0.45, timeScale);
-const uranusSpeed  = -rotationSpeedFromDays(0.72, timeScale);  // retrograde
-const neptuneSpeed = rotationSpeedFromDays(0.67, timeScale);
-const plutoSpeed   = rotationSpeedFromDays(6.39, timeScale);
+const mercuryAxialSpeed = rotationSpeedFromDays(58.6, timeScale);
+const venusAxialSpeed   = -rotationSpeedFromDays(243, timeScale);   // retrograde
+const earthAxialSpeed   = rotationSpeedFromDays(1, timeScale);
+const moonAxialSpeed    = rotationSpeedFromDays(27.3, timeScale);
+const marsAxialSpeed    = rotationSpeedFromDays(1.03, timeScale);
+const jupiterAxialSpeed = rotationSpeedFromDays(0.41, timeScale);
+const saturnAxialSpeed  = rotationSpeedFromDays(0.45, timeScale);
+const uranusAxialSpeed  = -rotationSpeedFromDays(0.72, timeScale);  // retrograde
+const neptuneAxialSpeed = rotationSpeedFromDays(0.67, timeScale);
+const plutoAxialSpeed   = rotationSpeedFromDays(6.39, timeScale);
 
 ////////////////////////////////////////////
 const stars = new StarField({
@@ -74,7 +74,7 @@ const sun = new Star({
   position: new THREE.Vector3(0, 0, 0),
   intensity: 5000000,
   distance: 0,
-  color: 0xffffff
+  color: 0xffffff,
 });
 scene.add(sun.group);
 
@@ -83,11 +83,11 @@ scene.add(sun.group);
 const mercury = new Planet({
   name: "mercury",
   size: 4,
-  orbitRadius: 400,
-  orbitSpeed: 0.01,
-  rotationSpeed: mercurySpeed,
   axialTilt: 0.034,
-  parent: sun.group
+  axialRotationSpeed: mercuryAxialSpeed,
+  orbitRadius: 400,
+  orbitRotationSpeed: 0.01,
+  parent: sun.group,
 });
 
 
@@ -95,12 +95,11 @@ const mercury = new Planet({
 const venus = new Planet({
   name: "venus",
   size: 9.5,
-  orbitRadius: 700,
-  orbitSpeed: 0.001,
-  position: new THREE.Vector3(700, 0, 0),
-  rotationSpeed: venusSpeed,
   axialTilt: 177.36,
-  parent: sun.group
+  axialRotationSpeed: venusAxialSpeed,
+  orbitRadius: 700,
+  orbitRotationSpeed: 0.001,
+  parent: sun.group,
 });
 
 
@@ -108,14 +107,14 @@ const venus = new Planet({
 const earth = new Planet({
   name: "earth",
   size: 10,
+  axialTilt: 23.44,
+  axialRotationSpeed: earthAxialSpeed,
+  cloudRotationSpeed: earthAxialSpeed * 1.0001,
   orbitRadius: 1000,
-  orbitSpeed: 0.001,
-  rotationSpeed: earthSpeed,
-  cloudRotationSpeed: earthSpeed * 1.0001,
+  orbitRotationSpeed: 0.001,
   nightOpacity: 0.4,
   cloudOpacity: 0.5,
-  axialTilt: 23.44,
-  parent: sun.group
+  parent: sun.group,
 });
 
 
@@ -123,11 +122,11 @@ const earth = new Planet({
 const moon = new Planet({
   name: "moon",
   size: 2.7,
-  orbitRadius: 30,
-  orbitSpeed: 0.001,
-  rotationSpeed: moonSpeed,
   axialTilt: 6.68,
-  parent: earth.group
+  axialRotationSpeed: moonAxialSpeed,
+  orbitRadius: 30,
+  orbitRotationSpeed: 0.001,
+  parent: earth.group,
 });
 
 
@@ -135,11 +134,11 @@ const moon = new Planet({
 const mars = new Planet({
   name: "mars",
   size: 5.3,
-  orbitRadius: 1500,
-  orbitSpeed: 0.1,
-  rotationSpeed: marsSpeed,
   axialTilt: 25.19,
-  parent: sun.group
+  axialRotationSpeed: marsAxialSpeed,
+  orbitRadius: 1500,
+  orbitRotationSpeed: 0.1,
+  parent: sun.group,
 });
 
 
@@ -149,7 +148,7 @@ const asteroids = new Asteroids({
   radius: 1900,
   minDistance: 1700,
   thickness: 50,
-  size: 0.8
+  size: 0.8,
 });
 scene.add(asteroids.group);
 
@@ -158,11 +157,11 @@ scene.add(asteroids.group);
 const jupiter = new Planet({
   name: "jupiter",
   size: 38,
-  orbitRadius: 2600,
-  orbitSpeed: 0.02,
-  rotationSpeed: jupiterSpeed,
   axialTilt: 3.13,
-  parent: sun.group
+  axialRotationSpeed: jupiterAxialSpeed,
+  orbitRadius: 2600,
+  orbitRotationSpeed: 0.02,
+  parent: sun.group,
 });
 
 
@@ -170,11 +169,11 @@ const jupiter = new Planet({
 const saturn = new Planet({
   name: "saturn",
   size: 34,
-  orbitRadius: 3600,
-  orbitSpeed: 0.0001,
-  rotationSpeed: saturnSpeed,
   axialTilt: 26.73,
-  parent: sun.group
+  axialRotationSpeed: saturnAxialSpeed,
+  orbitRadius: 3600,
+  orbitRotationSpeed: 0.0001,
+  parent: sun.group,
 });
 
 const saturnRingOrbit = new THREE.Group();
@@ -186,7 +185,7 @@ const saturnRing = new Asteroids({
   radius: 55,
   minDistance: 38,
   thickness: 2,
-  size: 0.6
+  size: 0.6,
 });
 saturnRingOrbit.add(saturnRing.group);
 
@@ -195,11 +194,11 @@ saturnRingOrbit.add(saturnRing.group);
 const uranus = new Planet({
   name: "uranus",
   size: 20,
-  orbitRadius: 4600,
-  orbitSpeed: 0.001,
-  rotationSpeed: uranusSpeed,
   axialTilt: 97.77,
-  parent: sun.group
+  axialRotationSpeed: uranusAxialSpeed,
+  orbitRadius: 4600,
+  orbitRotationSpeed: 0.001,
+  parent: sun.group,
 });
 
 const uranusRingOrbit = new THREE.Group();
@@ -211,7 +210,7 @@ const uranusRing = new Asteroids({
   radius: 55,
   minDistance: 38,
   thickness: 2,
-  size: 0.6
+  size: 0.6,
 });
 uranusRingOrbit.add(uranusRing.group);
 
@@ -220,11 +219,11 @@ uranusRingOrbit.add(uranusRing.group);
 const neptune = new Planet({
   name: "neptune",
   size: 19,
-  orbitRadius: 5600,
-  orbitSpeed: 0.002,
-  rotationSpeed: neptuneSpeed,
   axialTilt: 28.32,
-  parent: sun.group
+  axialRotationSpeed: neptuneAxialSpeed,
+  orbitRadius: 5600,
+  orbitRotationSpeed: 0.002,
+  parent: sun.group,
 });
 
 
@@ -232,11 +231,11 @@ const neptune = new Planet({
 const pluto = new Planet({
   name: "pluto",
   size: 1.8,
-  orbitRadius: 6500,
-  orbitSpeed: 0.03,
-  rotationSpeed: plutoSpeed,
   axialTilt: 119.61,
-  parent: sun.group
+  axialRotationSpeed: plutoAxialSpeed,
+  orbitRadius: 6500,
+  orbitRotationSpeed: 0.03,
+  parent: sun.group,
 });
 
 
@@ -267,7 +266,7 @@ function animate() {
   uranusRing.update(1);
 
   neptune.rotate();
-  
+
   pluto.rotate();
 
 
