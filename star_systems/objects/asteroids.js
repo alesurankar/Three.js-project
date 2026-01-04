@@ -1,64 +1,72 @@
 import * as THREE from "three";
 
 export class Asteroids {
-  constructor({
-    scene,
-    asteroidCount = 2000,
-    radius = 140,
-    minDistance = 70,
-    thickness = 20,
-    size = 1
-  } = {}) {
-    if (!scene) throw new Error("Asteroids require a scene.");
+    constructor({
+        asteroidCount = 2000,
+        radius = 140,
+        minDistance = 70,
+        thickness = 20,
+        size = 1,
+        rotationSpeed = 0.0001,
+        color = 0x888888,
+        roughness = 0.9,
+        metalness = 0.1,
+    } = {}) {
+        this.group = new THREE.Group();
+        this.rotationSpeed = rotationSpeed;
 
-    const geometry = new THREE.IcosahedronGeometry(size, 0);
-    const material = new THREE.MeshStandardMaterial({
-        color: 0x888888,
-        roughness: 0.9,
-        metalness: 0.1
-    });
-    this.mesh = new THREE.InstancedMesh(
-        geometry, 
-        material,
-        asteroidCount
-    );
-    // this.mesh.castShadow = true;
-    // this.mesh.receiveShadow = true;
-
-    const dummy = new THREE.Object3D();
-
-    for (let i = 0; i < asteroidCount; i++) {
-        // Flat disk distribution
-        const angle = Math.random() * Math.PI * 2;
-        const r = minDistance + (radius - minDistance) * Math.cbrt(Math.random());
-
-        dummy.position.set(
-            Math.cos(angle) * r,
-            (Math.random() - 0.5) * thickness,
-            Math.sin(angle) * r
+        const geometry = new THREE.IcosahedronGeometry(size, 0);
+        const material = new THREE.MeshStandardMaterial({
+            color,
+            roughness,
+            metalness,
+        });
+        this.mesh = new THREE.InstancedMesh(
+            geometry, 
+            material,
+            asteroidCount,
         );
+        this.mesh.count = asteroidCount;
+        this.mesh.frustumCulled = false;
+        // this.mesh.castShadow = true;
+        // this.mesh.receiveShadow = true;
 
-        // Random rotation
-        dummy.rotation.set(
-            Math.random() * Math.PI,
-            Math.random() * Math.PI,
-            Math.random() * Math.PI
-        );
+        const dummy = new THREE.Object3D();
 
-        // Slight size variation
-        const scale = 0.5 + Math.random() * 1.5;
-        dummy.scale.setScalar(scale);
+        for (let i = 0; i < asteroidCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const r = minDistance + (radius - minDistance) * Math.cbrt(Math.random());
 
-        dummy.updateMatrix();
-        this.mesh.setMatrixAt(i, dummy.matrix);
+            dummy.position.set(
+                Math.cos(angle) * r,
+                (Math.random() - 0.5) * thickness,
+                Math.sin(angle) * r
+            );
+
+            dummy.rotation.set(
+                Math.random() * Math.PI,
+                Math.random() * Math.PI,
+                Math.random() * Math.PI
+            );
+
+            dummy.scale.setScalar(0.5 + Math.random());
+            dummy.updateMatrix();
+
+            this.mesh.setMatrixAt(i, dummy.matrix);
+        }
+        this.mesh.instanceMatrix.needsUpdate = true;
+        this.group.add(this.mesh);
     }
 
-    this.mesh.instanceMatrix.needsUpdate = true;
+    update(delta) {
+        this.group.rotation.y += this.rotationSpeed * delta;
+    }
 
-    scene.add(this.mesh);
-  }
-
-  rotate(delta) {
-        this.mesh.rotation.y += delta * 0.0001;
+    setPosition(x, y, z) {
+        if (x instanceof THREE.Vector3) {
+            this.group.position.copy(x);
+        } else {
+            this.group.position.set(x, y, z);
+        }
     }
 }

@@ -3,7 +3,6 @@ import * as THREE from "three";
 export class Star {
   constructor({
     // default for sun
-    scene,
     name = "sun",
     size = 20,
     position = new THREE.Vector3(10, 10, 50),
@@ -12,14 +11,11 @@ export class Star {
     texturesPath = "./textures",
     color = 0xffffff,
   } = {}) {
-    if (!scene) throw new Error("Star requires a scene.");
-
     this.loader = new THREE.TextureLoader();
 
     // group
     this.group = new THREE.Group();
     this.group.position.copy(position);
-    scene.add(this.group);
 
     // geometry
     const geometry = new THREE.IcosahedronGeometry(size, 12);

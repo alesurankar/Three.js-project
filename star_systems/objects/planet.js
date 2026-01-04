@@ -2,7 +2,6 @@ import * as THREE from "three";
 
 export class Planet {
     constructor({
-        scene,
         name = "earth",
         size = 10,
         position = new THREE.Vector3(0, 0, 0),
@@ -16,15 +15,12 @@ export class Planet {
         cloudOpacity = 0,
         axialTilt = 0
     } = {}) {
-        if (!scene) throw new Error("Planet requires a scene.");
-
         this.loader = new THREE.TextureLoader();
         this.group = new THREE.Group();
         this.group.position.copy(position);
         this.rotationSpeed = rotationSpeed;
         this.cloudRotationSpeed = cloudRotationSpeed;
         this.axialTilt = axialTilt * Math.PI / 180;
-        scene.add(this.group);
 
         // Geometry
         const geometry = new THREE.IcosahedronGeometry(size, 12);
@@ -36,7 +32,7 @@ export class Planet {
             metalness: 0
         });
         this.planetDay = new THREE.Mesh(geometry, dayMat);
-        this.planetDay.castShadow = true;
+        //this.planetDay.castShadow = true;
         //this.planetDay.receiveShadow = true;
         this.group.add(this.planetDay);
 
