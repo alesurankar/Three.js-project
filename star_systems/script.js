@@ -31,20 +31,20 @@ renderer.physicallyCorrectLights = true;
 // Ambient light, for simulation purposes
 const ambientLight = new THREE.AmbientLight(
   0x404040,
-  10.3
+  1.3
 );
 
 scene.add(ambientLight);
 
 const gameControls = new GameControls(camera, document.body, 0.5);
 
-const axialTimeScale = 100;
+const axialTimeScale = 10;
 function rotationSpeedFromDays(days, axialTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * axialTimeScale;
 }
 
-const orbitalTimeScale = 1000;
+const orbitalTimeScale = 10;
 function orbitalSpeedFromDays(days, orbitalTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * orbitalTimeScale;
@@ -73,7 +73,7 @@ const jupiterOrbitalSpeed = orbitalSpeedFromDays(4333, orbitalTimeScale);
 const saturnOrbitalSpeed  = orbitalSpeedFromDays(10759, orbitalTimeScale);
 const saturnRingOrbitalSpeed    = orbitalSpeedFromDays(0.6, orbitalTimeScale);
 const uranusOrbitalSpeed  = orbitalSpeedFromDays(30687, orbitalTimeScale);
-const uranusRingOrbitalSpeed    = orbitalSpeedFromDays(0.26, orbitalTimeScale);
+const uranusRingOrbitalSpeed    = -orbitalSpeedFromDays(0.26, orbitalTimeScale); //retrograde
 const neptuneOrbitalSpeed = orbitalSpeedFromDays(60190, orbitalTimeScale);
 const plutoOrbitalSpeed   = orbitalSpeedFromDays(90560, orbitalTimeScale);
 
@@ -94,9 +94,7 @@ const sun = new Star({
   name: "sun",
   size: 100,
   position: new THREE.Vector3(0, 0, 0),
-  intensity: 5000000,
-  distance: 0,
-  color: 0xffffff,
+  temperature: 5778
 });
 scene.add(sun.group);
 
@@ -207,9 +205,9 @@ const saturnRing = new Asteroids({
   orbitFarRadius: 65,
   orbitNearRadius: 40,
   axialRotationSpeed: 0.005,
-  orbitRotationSpeed: saturnRingOrbitalSpeed * 0.1, // 10x slower for simulation purpose
+  orbitRotationSpeed: saturnRingOrbitalSpeed * 0.5, // 5x slower for simulation purpose
   thickness: 0.6,
-  size: 0.15,
+  size: 0.16,
   roughness: 0.9,
   metalness: 0.0,
   color: 0xdfe6f0,
@@ -235,9 +233,9 @@ const uranusRing = new Asteroids({
   orbitFarRadius: 50,
   orbitNearRadius: 42,
   axialRotationSpeed: 0.003,
-  orbitRotationSpeed: uranusRingOrbitalSpeed * 0.1, // 10x slower for simulation purpose
+  orbitRotationSpeed: uranusRingOrbitalSpeed * 0.5, // 5x slower for simulation purpose
   thickness: 0.3,
-  size: 0.12,
+  size: 0.14,
   //color: 0x444444, // real, to dark
   color: 0xffffff, // not real
   parent: uranus.group,
@@ -278,7 +276,7 @@ function animate() {
   venus.rotate();
 
   earth.rotate();
-  earth.updateNightLight(sun.light, camera);
+  //earth.updateNightLight(sun.light, camera);
   
   moon.rotate();
 

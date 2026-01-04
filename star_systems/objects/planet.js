@@ -47,8 +47,8 @@ export class Planet {
             metalness: 0
         });
         this.planetDay = new THREE.Mesh(geometry, dayMat);
-        //this.planetDay.castShadow = true;
-        //this.planetDay.receiveShadow = true;
+        this.planetDay.castShadow = true;
+        this.planetDay.receiveShadow = true;
         this.group.add(this.planetDay);
 
         // Night material
