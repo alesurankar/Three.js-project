@@ -14,7 +14,6 @@ const aspect = w / h;
 const near = 0.1;
 const far = 20000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.set(100,-100,0);
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
@@ -37,13 +36,13 @@ scene.add(ambientLight);
 const gameControls = new GameControls(camera, document.body, 0.5);
 
 
-const axialTimeScale = 1000;
+const axialTimeScale = 100;
 function rotationSpeedFromDays(days, axialTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * axialTimeScale;
 }
 
-const orbitalTimeScale = 1000;
+const orbitalTimeScale = 400;
 function orbitalSpeedFromDays(days, orbitalTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * orbitalTimeScale;
@@ -89,8 +88,6 @@ const skybox = loader.load([
 ]);
 
 scene.background = skybox;
-
-
 
 // Create Sun
 const sun = new Star({
@@ -269,37 +266,148 @@ const pluto = new Planet({
 });
 
 
+function focusOnPlanet(index) {
+    if (index < 0 || index >= cameraTargets.length) return;
+
+    currentTargetIndex = index;
+    // Set the next target to the next planet in the array for smooth cycling
+    nextTargetIndex = (index + 1) % cameraTargets.length;
+}
+
+
+let cameraTargets = [
+    sun.group,
+    mercury.group,
+    venus.group,
+    earth.group,
+    moon.group,
+    mars.group,
+    jupiter.group,
+    saturn.group,
+    uranus.group,
+    neptune.group,
+    pluto.group,
+];
+
+let orbitAngle = 0;          // Current rotation around planet
+let orbitRadius = 160;     // Distance from planet
+let orbitHeight = 10;     // Height above planet
+let orbitSpeed = 0.003;     // Rotation speed
+
+let currentTargetIndex = 0;
+let nextTargetIndex = 1;
+
+// Lerp factor (controls speed of transition)
+const lerpSpeed = 0.01; // smaller = slower
+
+// Temporary vectors for calculations
+const camPos = new THREE.Vector3();
+const targetPos = new THREE.Vector3();
+const currentLookAt = new THREE.Vector3();
+
+
+let e = 0;
+
 // ///////////////////////////////////////////////
 function animate() {
   requestAnimationFrame(animate);
 
   gameControls.update();
 
+  gameControls.update();
   mercury.rotate();
   venus.rotate();
-
   earth.rotate();
-  //earth.updateNightLight(sun.light, camera);
-  
   moon.rotate();
-
   mars.rotate();
-
   asteroids.update();
-
   jupiter.rotate();
-
   saturn.rotate();
   saturnRing.update();
-
   uranus.rotate();
   uranusRing.update();
-
   neptune.rotate();
-
   pluto.rotate();
 
+  // Get planet position
+    cameraTargets[currentTargetIndex].getWorldPosition(targetPos);
 
+    // Orbiting offset
+    orbitAngle += orbitSpeed;
+    const offsetX = Math.cos(orbitAngle) * orbitRadius;
+    const offsetZ = Math.sin(orbitAngle) * orbitRadius;
+    const offsetY = orbitHeight;
+    const offset = new THREE.Vector3(offsetX, offsetY, offsetZ);
+
+    // Desired camera position
+    const desiredPos = targetPos.clone().add(offset);
+
+    // Smooth camera movement
+    camPos.lerpVectors(camera.position, desiredPos, lerpSpeed);
+    camera.position.copy(camPos);
+
+    // Smooth look at planet
+    currentLookAt.lerpVectors(currentLookAt, targetPos, 0.01); // faster lerp
+    camera.lookAt(currentLookAt);
+
+    // Switch to next planet if close enough
+    if (camera.position.distanceTo(desiredPos) < 1) {
+        currentTargetIndex = nextTargetIndex;
+        nextTargetIndex = (nextTargetIndex + 1) % cameraTargets.length;
+        // reset orbit angle so camera orbit continues smoothly
+        orbitAngle = 0;
+    }
+
+  if (e == -1000) {
+    focusOnPlanet(0); // Sun
+    orbitRadius = 800; 
+  }
+  if (e == 0) {
+    focusOnPlanet(1); // Mercury
+    orbitRadius = 160; 
+  }
+  if (e == 1000) {
+    focusOnPlanet(2); // Venus
+    orbitRadius = 180; 
+  }
+  if (e == 2000) {
+    focusOnPlanet(3); // Earth
+    orbitRadius = 200; 
+  }
+  if (e == 3000) {
+    focusOnPlanet(4); // Moon
+    orbitRadius = 120; 
+  }
+  if (e == 4000) {
+    focusOnPlanet(5); // Mars
+    orbitRadius = 160; 
+  }
+  if (e == 5000) {
+    focusOnPlanet(6); // Jupiter
+    orbitRadius = 260; 
+  }
+  if (e == 6000) {
+    focusOnPlanet(7); // Saturn
+    orbitRadius = 260; 
+  }
+  if (e == 7000) {
+    focusOnPlanet(8); // Uranus
+    orbitRadius = 260; 
+  }
+  if (e == 8000) {
+    focusOnPlanet(9); // Neptune
+    orbitRadius = 240; 
+  }
+  if (e == 9000) {
+    focusOnPlanet(10); // Pluto
+    orbitRadius = 80; 
+  }
+  if (e == 10000) {
+    e = -2000 
+    focusOnPlanet(0); // Reset
+    orbitRadius = 800; 
+  }
+  e++;
   renderer.render(scene, camera);
 }
 

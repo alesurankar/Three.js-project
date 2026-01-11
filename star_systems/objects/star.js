@@ -5,6 +5,7 @@ export class Star {
     // default for sun
     name = "sun",
     size = 20,
+    axialRotationSpeed = 0,
     position = new THREE.Vector3(10, 10, 50),
     temperature = 5778,
     texturesPath = "./textures",
@@ -81,8 +82,8 @@ export class Star {
     }
 
     // // --- Green ---
-    if (T <= 6000) {
-      g = (T / 6000) * 255;
+    if (T <= 5000) {
+      g = (T / 5000) * 255;
     } 
     else if (T <= 12000) {
       g = 255;
@@ -95,8 +96,8 @@ export class Star {
     }
 
     // // --- Blue ---
-    if (T <= 12000) {
-      b = (T / 12000) * 255;
+    if (T <= 7000) {
+      b = (T / 7000) * 255;
     }
     else {
       b = 255;

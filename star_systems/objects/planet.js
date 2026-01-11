@@ -33,9 +33,10 @@ export class Planet {
             parent.add(this.orbitGroup);
         }
 
-        // Set initial position in orbit
+        // // Set initial position in orbit
         this.group.position.set(orbitRadius, 0, 0);
         this.orbitGroup.add(this.group);
+
 
         // Geometry
         const geometry = new THREE.IcosahedronGeometry(size, 12);
@@ -78,14 +79,14 @@ export class Planet {
                 blending: THREE.NormalBlending
             });
             this.planetClouds = new THREE.Mesh(geometry, cloudMat);
-            this.planetClouds.scale.setScalar(1.003);
+            this.planetClouds.scale.setScalar(1.01);
             this.group.add(this.planetClouds);
         } 
         else {
             this.planetClouds = null;
         }
 
-        // Axial tilt
+        // // Axial tilt
         this.group.rotation.z = this.axialTilt;
         if (this.planetClouds) this.planetClouds.rotation.z = this.axialTilt;
     }   
