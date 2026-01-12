@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { Asteroids } from "./objects/asteroids.js"
 import { Planet } from "./objects/planet.js"
 import { Star } from "./objects/star.js";
-import { GameControls } from "./utils/gameControls.js"
+// import { GameControls } from "./utils/gameControls.js"
 
 
 ///////////////////////////////////////////////
@@ -33,7 +33,12 @@ const ambientLight = new THREE.AmbientLight(
 );
 scene.add(ambientLight);
 
-const gameControls = new GameControls(camera, document.body, 0.5);
+// const gameControls = new GameControls(camera, document.body, 0.5);
+
+const FIXED_FPS = 40;
+const FIXED_DT = 1 / FIXED_FPS;
+let lastTime = performance.now() / 1000;
+let accumulator = 0;
 
 
 const axialTimeScale = 100;
@@ -308,13 +313,11 @@ const currentLookAt = new THREE.Vector3();
 
 let e = 0;
 
-// ///////////////////////////////////////////////
-function animate() {
-  requestAnimationFrame(animate);
 
-  gameControls.update();
 
-  gameControls.update();
+function Update() {
+  // gameControls.update();
+
   mercury.rotate();
   venus.rotate();
   earth.rotate();
@@ -408,7 +411,26 @@ function animate() {
     orbitRadius = 800; 
   }
   e++;
+}
+
+
+// ///////////////////////////////////////////////
+function animate(now) {
+  requestAnimationFrame(animate);
+
+  const currentTime = now / 1000;
+  let frameTime = currentTime - lastTime;
+  lastTime = currentTime;
+
+  frameTime = Math.min(frameTime, 0.25);
+  accumulator += frameTime;
+
+  while (accumulator >= FIXED_DT) {
+    Update(); // fixed-step update
+    accumulator -= FIXED_DT;
+  }
+
   renderer.render(scene, camera);
 }
 
-animate();
+requestAnimationFrame(animate);

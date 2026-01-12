@@ -5,7 +5,7 @@ function generateStarTexture(size = 2048, starCount = 9000) {
   const ctx = canvas.getContext('2d');
 
   // Background
-  ctx.fillStyle = 'rgb(0, 0, 20)';
+  ctx.fillStyle = 'rgb(0, 0, 24)';
   ctx.fillRect(0, 0, size, size);
 
   const cx = size / 2;
@@ -26,13 +26,13 @@ function generateStarTexture(size = 2048, starCount = 9000) {
 
     // Size bias: SMALLER stars near center
     const sizeBias = 0.4 + d * 0.8; // center ~0.4, edge ~1.2
-    const radius = (Math.random() * 0.8 + 0.2) * sizeBias;
+    const radius = (Math.random() * 1.0 + 0.4) * sizeBias;
 
     // Brightness (optional subtle edge boost)
     const alpha = (Math.random() * 0.6 + 0.4) * (0.7 + d * 0.3);
 
     // Slight color variation
-    const tint = Math.random() * 30;
+    const tint = Math.random() * 40;
 
     ctx.beginPath();
     ctx.fillStyle = `rgba(${255 - tint}, ${255 - tint}, 255, ${alpha})`;
@@ -47,7 +47,7 @@ function generateStarTexture(size = 2048, starCount = 9000) {
 
 
 
-const canvas = generateStarTexture(2048, 9000);
+const canvas = generateStarTexture(2048, 6000);
 
 const link = document.createElement('a');
 link.download = 'nz.png';
