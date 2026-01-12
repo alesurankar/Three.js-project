@@ -1,7 +1,9 @@
 import * as THREE from "three";
-import { CelestialBody } from "./celestialBody.js";
+import { CelestialBody } from "./CelestialBody.js";
 
-export class Planet extends CelestialBody {
+
+export class Planet extends CelestialBody 
+{
     constructor({
         name = "planet",
         size = 4,

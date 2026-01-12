@@ -1,7 +1,9 @@
 import * as THREE from "three";
-import { CelestialBody } from "./celestialBody.js";
+import { CelestialBody } from "./CelestialBody.js";
 
-export class Star extends CelestialBody {
+
+export class Star extends CelestialBody 
+{
     constructor({
         name = "star",
         size = 20,
@@ -40,7 +42,7 @@ export class Star extends CelestialBody {
             material,
             parent,
         });
-        
+
         this.light = new THREE.Group();
 
         // Light parameters

@@ -1,6 +1,8 @@
 import * as THREE from "three";
 
-export class CelestialBody {
+
+export class CelestialBody 
+{
     constructor(
     {
         size = 1,
@@ -32,8 +34,8 @@ export class CelestialBody {
         // Set rotation and position
         this.axialTilt = axialTilt * Math.PI / 180;
         this.axialRotationSpeed = axialRotationSpeed;
-        this.body.rotation.z = this.axialTilt;
-        this.body.position.copy(posToParent)
+        this.axialFrame.rotation.z = this.axialTilt;
+        this.objectRoot.position.copy(posToParent)
 
         // Add to parent if any
         if (parent) parent.add(this.objectRoot);

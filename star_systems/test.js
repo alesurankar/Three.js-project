@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { Planet } from "./objects/testPlanet.js"
-import { Star } from "./objects/testStar.js"
+import { Planet } from "./objects/TestPlanet.js"
+import { Star } from "./objects/TestStar.js"
 import { GameControls } from "./utils/gameControls.js"
 
 
@@ -87,26 +87,27 @@ const sun = new Star({
 });
 scene.add(sun.objectRoot);
 
+
 // Create earth
 const earth = new Planet({
   name: "earth",
   size: 10,
+  posToParent: new THREE.Vector3(700, 0, 0),
   axialTilt: 23.44,
   axialRotationSpeed: earthAxialSpeed,
   parent: sun.objectRoot,
 });
 
 
-// // Create moon
-// const moon = new Planet({
-//   name: "moon",
-//   size: 2.7,
-//   axialTilt: 6.68,
-//   axialRotationSpeed: moonAxialSpeed,
-//   orbitRadius: 30,
-//   orbitRotationSpeed: moonOrbitalSpeed - earthAxialSpeed/2,
-//   parent: earth.group,
-// });
+// Create moon
+const moon = new Planet({
+  name: "moon",
+  size: 2.7,
+  posToParent: new THREE.Vector3(40, 0, 0),
+  axialTilt: 6.68,
+  axialRotationSpeed: moonAxialSpeed,
+  parent: earth.objectRoot,
+});
 
 
 
@@ -117,6 +118,7 @@ function Update() {
 
   sun.update();
   earth.update();
+  moon.update();
 }
 
 
