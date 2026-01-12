@@ -41,13 +41,13 @@ let lastTime = performance.now() / 1000;
 let accumulator = 0;
 
 
-const axialTimeScale = 100;
+const axialTimeScale = 140;
 function rotationSpeedFromDays(days, axialTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * axialTimeScale;
 }
 
-const orbitalTimeScale = 400;
+const orbitalTimeScale = 1000;
 function orbitalSpeedFromDays(days, orbitalTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * orbitalTimeScale;
@@ -150,7 +150,7 @@ const moon = new Planet({
   axialTilt: 6.68,
   axialRotationSpeed: moonAxialSpeed,
   orbitRadius: 30,
-  orbitRotationSpeed: moonOrbitalSpeed,
+  orbitRotationSpeed: moonOrbitalSpeed - earthAxialSpeed/2,
   parent: earth.group,
 });
 
@@ -363,54 +363,54 @@ function Update() {
 
   if (e == -1000) {
     focusOnPlanet(0); // Sun
-    orbitRadius = 800; 
+    orbitRadius = 1000; 
   }
   if (e == 0) {
     focusOnPlanet(1); // Mercury
-    orbitRadius = 160; 
+    orbitRadius = 200; 
   }
   if (e == 1000) {
     focusOnPlanet(2); // Venus
-    orbitRadius = 180; 
+    orbitRadius = 210; 
   }
   if (e == 2000) {
     focusOnPlanet(3); // Earth
-    orbitRadius = 200; 
+    orbitRadius = 230; 
   }
   if (e == 3000) {
     focusOnPlanet(4); // Moon
-    orbitRadius = 120; 
+    orbitRadius = 180; 
   }
   if (e == 4000) {
     focusOnPlanet(5); // Mars
-    orbitRadius = 160; 
+    orbitRadius = 200; 
   }
   if (e == 5000) {
     focusOnPlanet(6); // Jupiter
-    orbitRadius = 260; 
+    orbitRadius = 350; 
   }
   if (e == 6000) {
     focusOnPlanet(7); // Saturn
-    orbitRadius = 260; 
+    orbitRadius = 320; 
   }
   if (e == 7000) {
     focusOnPlanet(8); // Uranus
-    orbitRadius = 260; 
+    orbitRadius = 320; 
   }
   if (e == 8000) {
     focusOnPlanet(9); // Neptune
-    orbitRadius = 240; 
+    orbitRadius = 300; 
   }
   if (e == 9000) {
     focusOnPlanet(10); // Pluto
     orbitRadius = 80; 
   }
   if (e == 10000) {
-    e = -2000 
+    e = -1200 
     focusOnPlanet(0); // Reset
-    orbitRadius = 800; 
+    orbitRadius = 1000; 
   }
-  e++;
+  e+=2;
 }
 
 
