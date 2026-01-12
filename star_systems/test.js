@@ -30,7 +30,7 @@ renderer.physicallyCorrectLights = true;
 // Ambient light, for simulation purposes
 const ambientLight = new THREE.AmbientLight(
   0x404040,
-  1.3
+  10.3
 );
 scene.add(ambientLight);
 
@@ -42,7 +42,7 @@ let lastTime = performance.now() / 1000;
 let accumulator = 0;
 
 
-const axialTimeScale = 4000;
+const axialTimeScale = 1000;
 function rotationSpeedFromDays(days, axialTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * axialTimeScale;
@@ -85,7 +85,7 @@ const sun = new Star({
     axialRotationSpeed: sunAxialSpeed,
     temperature: 5778,
 });
-scene.add(sun.body);
+scene.add(sun.objectRoot);
 
 // Create earth
 const earth = new Planet({
@@ -93,12 +93,8 @@ const earth = new Planet({
   size: 10,
   axialTilt: 23.44,
   axialRotationSpeed: earthAxialSpeed,
-//   cloudRotationSpeed: earthAxialSpeed * 0.3,
-//   orbitRadius: 1000,
-//   orbitRotationSpeed: earthOrbitalSpeed,
-//   parent: sun.group,
+  parent: sun.objectRoot,
 });
-scene.add(earth.body);
 
 
 // // Create moon
@@ -120,6 +116,7 @@ function Update() {
   gameControls.update();
 
   sun.update();
+  earth.update();
 }
 
 

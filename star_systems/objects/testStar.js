@@ -13,11 +13,11 @@ export class Star extends CelestialBody {
         parent = null,
     } = {}) 
     {
+        // Prepare texture and material
         const texturePath = `./textures/${name}/${name}.jpg`;
         const starColor = Star.colorFromTemperature(temperature);
         const loader = new THREE.TextureLoader();
 
-        // material (color fallback if texture fails)
         const texture = loader.load(
             texturePath,
             undefined,
@@ -30,6 +30,7 @@ export class Star extends CelestialBody {
             color: starColor,
         });
 
+        // Call base constructor
         super({
             size,
             posToParent,
@@ -39,8 +40,40 @@ export class Star extends CelestialBody {
             material,
             parent,
         });
+        
+        this.light = new THREE.Group();
 
-        if (parent) parent.add(this.body);
+        // Light parameters
+        const scaleFactor = 0.00000000000001; 
+        const luminosity = 4 * Math.PI * Math.pow(size, 2) * Math.pow(temperature, 4);
+        const intensity = luminosity * scaleFactor;
+        const distance = Math.pow(size, 3);
+
+        // Creating lights
+        this.light1 = new THREE.PointLight(starColor, intensity, distance);
+        this.light2 = new THREE.PointLight(starColor, intensity, distance);
+        this.light3 = new THREE.PointLight(starColor, intensity, distance);
+        this.light4 = new THREE.PointLight(starColor, intensity, distance);
+        this.light5 = new THREE.PointLight(starColor, intensity, distance);
+        this.light6 = new THREE.PointLight(starColor, intensity, distance);
+
+        // Setting light positions
+        const lightPos = 3*size/2;
+        this.light1.position.set(lightPos, 0, 0);
+        this.light2.position.set(0, lightPos, 0);
+        this.light3.position.set(0, 0, lightPos);
+        this.light4.position.set(-lightPos, 0, 0);
+        this.light5.position.set(0, -lightPos, 0);
+        this.light6.position.set(0, 0, -lightPos);
+
+        // Adding light to hierarchy
+        this.axialFrame.add(this.light);
+        this.light.add(this.light1);
+        this.light.add(this.light2);
+        this.light.add(this.light3);
+        this.light.add(this.light4);
+        this.light.add(this.light5);
+        this.light.add(this.light6);
     }
 
     static colorFromTemperature(T) {

@@ -5,7 +5,7 @@ export class Planet extends CelestialBody {
     constructor({
         name = "planet",
         size = 4,
-        posToParent = new THREE.Vector3(200, 0, 0),
+        posToParent = new THREE.Vector3(700, 0, 0),
         axialTilt = 0,
         axialRotationSpeed = 0,
         detail = 10,
@@ -13,10 +13,10 @@ export class Planet extends CelestialBody {
         parent = null,
     } = {}) 
     {
+        // Prepare texture and material
         const texturePath = `./textures/${name}/day.jpg`;
         const loader = new THREE.TextureLoader();
 
-        // material (color fallback if texture fails)
         const texture = loader.load(
             texturePath,
             undefined,
@@ -40,7 +40,5 @@ export class Planet extends CelestialBody {
             material,
             parent,
         });
-
-        if (parent) parent.add(this.body);
     }
 }

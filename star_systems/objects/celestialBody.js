@@ -12,26 +12,35 @@ export class CelestialBody {
         parent = null, 
     } = {}) 
     {
-        this.axialTilt = axialTilt * Math.PI / 180;
-        this.axialRotationSpeed = axialRotationSpeed;
-
-        // geometry
+        // Create geometry
         this.geometry = new THREE.IcosahedronGeometry(size, detail);
 
         if (!material) {
             throw new Error("CelestialBody requires a material");
         }
-
+        // Create the body mesh
         this.body = new THREE.Mesh(this.geometry, material);
+
+        // Create the groups
+        this.objectRoot = new THREE.Group();   // orbit
+        this.axialFrame = new THREE.Group();   // tilt + spin
+        
+        // Assemble hierarchy
+        this.axialFrame.add(this.body);
+        this.objectRoot.add(this.axialFrame);
+
+        // Set rotation and position
+        this.axialTilt = axialTilt * Math.PI / 180;
+        this.axialRotationSpeed = axialRotationSpeed;
         this.body.rotation.z = this.axialTilt;
         this.body.position.copy(posToParent)
 
-        // Add to parent if passed
-        if (parent) parent.add(this.body);
+        // Add to parent if any
+        if (parent) parent.add(this.objectRoot);
     }
 
     update() {
-        // spin around own axis
+        // Spin around own axis
         this.body.rotation.y += this.axialRotationSpeed;
     }
 }
