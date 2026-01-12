@@ -1,54 +1,37 @@
 import * as THREE from "three";
 
 export class CelestialBody {
-constructor(
+    constructor(
     {
-        name = "",
         size = 1,
+        posToParent = new THREE.Vector3(100, 0, 0),
         axialTilt = 0,
-        orbitRadius = 0,
         axialRotationSpeed = 0,
-        orbitRotationSpeed = 0, 
-        detail = 12,
-        color = 0xffffff,
+        detail = 0,
+        material = null,
         parent = null, 
     } = {}) 
     {
-        this.name = name;
-        this.size = size;
-        this.axialTilt = axialTilt;
-        this.orbitRadius = orbitRadius;
+        this.axialTilt = axialTilt * Math.PI / 180;
         this.axialRotationSpeed = axialRotationSpeed;
-        this.orbitRotationSpeed = orbitRotationSpeed;
-        this.loader = new THREE.TextureLoader();
-        const texturePath = `./textures/${name}/${name}.jpg`;
 
-        // group
-        
         // geometry
         this.geometry = new THREE.IcosahedronGeometry(size, detail);
 
-        // material
-        this.material = new THREE.MeshStandardMaterial({ color });
-        
-        // Try to load texture
-        this.loader.load(
-            texturePath,
-            (texture) => { 
-                this.material.map = texture; 
-                this.material.needsUpdate = true;
-            },
-            undefined,
-            (err) => {
-                // Texture failed to load; fallback to color
-                console.warn(`Texture not found for ${name} at ${texturePath}, using color.`);
-            }
-        )
+        if (!material) {
+            throw new Error("CelestialBody requires a material");
+        }
 
-        // Mesh
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
-        
-        // Parent handling
-        if (parent) parent.add(this.mesh);
+        this.body = new THREE.Mesh(this.geometry, material);
+        this.body.rotation.z = this.axialTilt;
+        this.body.position.copy(posToParent)
+
+        // Add to parent if passed
+        if (parent) parent.add(this.body);
+    }
+
+    update() {
+        // spin around own axis
+        this.body.rotation.y += this.axialRotationSpeed;
     }
 }

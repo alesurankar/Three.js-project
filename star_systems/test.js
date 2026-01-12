@@ -42,7 +42,7 @@ let lastTime = performance.now() / 1000;
 let accumulator = 0;
 
 
-const axialTimeScale = 140;
+const axialTimeScale = 4000;
 function rotationSpeedFromDays(days, axialTimeScale) {
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds) * axialTimeScale;
@@ -55,6 +55,7 @@ function orbitalSpeedFromDays(days, orbitalTimeScale) {
 }
 
 // Axial Speeds
+const sunAxialSpeed   = rotationSpeedFromDays(25, axialTimeScale);
 const earthAxialSpeed   = rotationSpeedFromDays(1, axialTimeScale);
 const moonAxialSpeed    = rotationSpeedFromDays(27.3, axialTimeScale);
 
@@ -77,23 +78,27 @@ const skybox = loader.load([
 scene.background = skybox;
 
 // Create Sun
-const sun = new Star({});
-//scene.add(sun.group);
-scene.add(sun.star);
+const sun = new Star({
+    name: "sun",
+    size: 110,
+    axialTilt: 7.25,
+    axialRotationSpeed: sunAxialSpeed,
+    temperature: 5778,
+});
+scene.add(sun.body);
 
-// // Create earth
-// const earth = new Planet({
-//   name: "earth",
-//   size: 10,
-//   axialTilt: 23.44,
-//   axialRotationSpeed: earthAxialSpeed,
+// Create earth
+const earth = new Planet({
+  name: "earth",
+  size: 10,
+  axialTilt: 23.44,
+  axialRotationSpeed: earthAxialSpeed,
 //   cloudRotationSpeed: earthAxialSpeed * 0.3,
 //   orbitRadius: 1000,
 //   orbitRotationSpeed: earthOrbitalSpeed,
-//   nightOpacity: 0.4,
-//   cloudOpacity: 0.5,
 //   parent: sun.group,
-// });
+});
+scene.add(earth.body);
 
 
 // // Create moon
@@ -113,6 +118,8 @@ scene.add(sun.star);
 
 function Update() {
   gameControls.update();
+
+  sun.update();
 }
 
 
