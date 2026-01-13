@@ -9,6 +9,7 @@ export class CelestialBody
         posToParent = new THREE.Vector3(100, 0, 0),
         axialTilt = 0,
         axialRotationSpeed = 0,
+        orbitalSpeed = 0,
         detail = 0,
         material = null,
         parent = null, 
@@ -24,25 +25,31 @@ export class CelestialBody
         this.body = new THREE.Mesh(this.geometry, material);
 
         // Create the groups
-        this.objectRoot = new THREE.Group();   // orbit
-        this.axialFrame = new THREE.Group();   // tilt + spin
+        this.orbitPivot = new THREE.Group();   // orbit
+        this.objectRoot = new THREE.Group();
+        //this.axialFrame = new THREE.Group();   // tilt + spin
         
         // Assemble hierarchy
-        this.axialFrame.add(this.body);
-        this.objectRoot.add(this.axialFrame);
+        //this.axialFrame.add(this.body);
+        this.objectRoot.add(this.body);
+        this.orbitPivot.add(this.objectRoot);
 
         // Set rotation and position
-        this.axialTilt = axialTilt * Math.PI / 180;
-        this.axialRotationSpeed = axialRotationSpeed;
-        this.axialFrame.rotation.z = this.axialTilt;
+        this.orbitalSpeed = orbitalSpeed;
+        //this.axialTilt = axialTilt * Math.PI / 180;
+        //this.axialRotationSpeed = axialRotationSpeed;
+        //this.axialFrame.rotation.z = this.axialTilt;
         this.objectRoot.position.copy(posToParent)
 
         // Add to parent if any
-        if (parent) parent.add(this.objectRoot);
+        if (parent) parent.add(this.orbitPivot);
     }
 
     Update() {
+        // Orbit parent
+        this.orbitPivot.rotation.y += this.orbitalSpeed;
+
         // Spin around own axis
-        this.body.rotation.y += this.axialRotationSpeed;
+        //this.body.rotation.y += this.axialRotationSpeed;
     }
 }

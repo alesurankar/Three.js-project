@@ -10,6 +10,7 @@ export class Star extends CelestialBody
         posToParent = new THREE.Vector3(0, 0, 0),
         axialTilt = 0,
         axialRotationSpeed = 0,
+        orbitalSpeed = 0,
         detail = 12,
         temperature = 6000,
         parent = null,
@@ -38,6 +39,7 @@ export class Star extends CelestialBody
             posToParent,
             axialTilt,
             axialRotationSpeed,
+            orbitalSpeed,
             detail,
             material,
             parent,
@@ -69,7 +71,7 @@ export class Star extends CelestialBody
         this.light6.position.set(0, 0, -lightPos);
 
         // Adding light to hierarchy
-        this.axialFrame.add(this.light);
+        this.body.add(this.light);
         this.light.add(this.light1);
         this.light.add(this.light2);
         this.light.add(this.light3);
