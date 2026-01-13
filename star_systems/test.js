@@ -64,7 +64,8 @@ const earthOrbitalSpeed   = orbitalSpeedFromDays(365.25, orbitalTimeScale);
 const moonOrbitalSpeed    = orbitalSpeedFromDays(27.3, orbitalTimeScale);
 
 
-scene.background = SkyBox.Load();
+scene.background = SkyBox.Load("SpaceBox");
+//scene.background = SkyBox.Load("StarBox");
 
 
 const sunSystem = new StarSystem(

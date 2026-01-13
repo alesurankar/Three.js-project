@@ -2,16 +2,16 @@ import * as THREE from "three";
 
 export class SkyBox
 {
-    static Load() 
+    static Load(name) 
     {
         const loader = new THREE.CubeTextureLoader();
         return loader.load([
-            './textures/skybox/n1.png',
-            './textures/skybox/n2.png',
-            './textures/skybox/n3.png',
-            './textures/skybox/n4.png',
-            './textures/skybox/n5.png',
-            './textures/skybox/n6.png',
+            `./textures/${name}/n1.png`,
+            `./textures/${name}/n2.png`,
+            `./textures/${name}/n3.png`,
+            `./textures/${name}/n4.png`,
+            `./textures/${name}/n5.png`,
+            `./textures/${name}/n6.png`,
         ]);
     }
 }
