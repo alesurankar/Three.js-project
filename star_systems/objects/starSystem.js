@@ -5,13 +5,13 @@ import { Star } from "./star.js"
 
 export class StarSystem 
 {
-    static TimeScale = {axial: 2000, orbital: 2000};
-    static RotationSpeedInDays(days, scale = StarSystem.TimeScale.axial) 
+    static TimeScale = 2000;
+    static OrbitalRotationInDays(days, scale = StarSystem.TimeScale) 
     {
         const seconds = days * 24 * 60 * 60;
         return (2 * Math.PI / seconds) * scale;
     }
-    static OrbitalSpeedInDays(days, scale = StarSystem.TimeScale.orbital) 
+    static AxialRotationInDays(days, scale = StarSystem.TimeScale) 
     {
         const seconds = days * 24 * 60 * 60;
         return (2 * Math.PI / seconds) * scale;
@@ -23,8 +23,9 @@ export class StarSystem
         this.sun = new Star({
             name: "sun",
             size: 110,
+            posToParent: new THREE.Vector3(400, 0, 0),
             axialTilt: 7.25,
-            axialRotationSpeed: StarSystem.RotationSpeedInDays(25),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(25),
             orbitalSpeed: 0,
             temperature: 5778,
         });
@@ -36,8 +37,8 @@ export class StarSystem
             size: 10,
             posToParent: new THREE.Vector3(400, 0, 0),
             axialTilt: 23.44,
-            axialRotationSpeed: StarSystem.RotationSpeedInDays(1),
-            orbitalSpeed: 0.02,
+            axialRotationSpeed: StarSystem.AxialRotationInDays(1),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
             parent: this.sun.objectRoot,
         });
 
@@ -47,8 +48,8 @@ export class StarSystem
             size: 2.7,
             posToParent: new THREE.Vector3(40, 0, 0),
             axialTilt: 6.68,
-            axialRotationSpeed: StarSystem.RotationSpeedInDays(27.3),
-            orbitalSpeed: 0.02,
+            axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
             parent: this.earth.objectRoot,
         });
     }

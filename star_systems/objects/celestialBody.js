@@ -26,19 +26,19 @@ export class CelestialBody
 
         // Create the groups
         this.orbitPivot = new THREE.Group();   // orbit
-        this.objectRoot = new THREE.Group();
-        //this.axialFrame = new THREE.Group();   // tilt + spin
+        this.objectRoot = new THREE.Group();   // position
+        this.axialFrame = new THREE.Group();   // tilt
         
         // Assemble hierarchy
-        //this.axialFrame.add(this.body);
-        this.objectRoot.add(this.body);
+        this.axialFrame.add(this.body);
+        this.objectRoot.add(this.axialFrame);
         this.orbitPivot.add(this.objectRoot);
 
         // Set rotation and position
         this.orbitalSpeed = orbitalSpeed;
-        //this.axialTilt = axialTilt * Math.PI / 180;
-        //this.axialRotationSpeed = axialRotationSpeed;
-        //this.axialFrame.rotation.z = this.axialTilt;
+        this.axialTilt = axialTilt * Math.PI / 180;
+        this.axialRotationSpeed = axialRotationSpeed - orbitalSpeed;
+        this.axialFrame.rotation.z = this.axialTilt;
         this.objectRoot.position.copy(posToParent)
 
         // Add to parent if any
@@ -50,6 +50,6 @@ export class CelestialBody
         this.orbitPivot.rotation.y += this.orbitalSpeed;
 
         // Spin around own axis
-        //this.body.rotation.y += this.axialRotationSpeed;
+        this.body.rotation.y += this.axialRotationSpeed;
     }
 }

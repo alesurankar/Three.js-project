@@ -71,7 +71,7 @@ export class Star extends CelestialBody
         this.light6.position.set(0, 0, -lightPos);
 
         // Adding light to hierarchy
-        this.body.add(this.light);
+        this.objectRoot.add(this.light);
         this.light.add(this.light1);
         this.light.add(this.light2);
         this.light.add(this.light3);
