@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import { Planet } from "./objects/TestPlanet.js"
-import { Star } from "./objects/TestStar.js"
+import { Planet } from "./TestPlanet.js"
+import { Star } from "./TestStar.js"
 
 
 export class StarSystem 
 {
-    constructor(scene, sunAxialSpeed, earthAxialSpeed) 
+    constructor(scene, sunAxialSpeed, earthAxialSpeed, moonAxialSpeed) 
     {
         // Create Sun
         this.sun = new Star({
@@ -25,54 +25,21 @@ export class StarSystem
             axialRotationSpeed: earthAxialSpeed,
             parent: this.sun.objectRoot,
         });
+
+        // Create moon
+        this.moon = new Planet({
+        name: "moon",
+        size: 2.7,
+        posToParent: new THREE.Vector3(40, 0, 0),
+        axialTilt: 6.68,
+        axialRotationSpeed: moonAxialSpeed,
+        parent: this.earth.objectRoot,
+        });
     }
 
     update() {
-        sun.update();
-        earth.update();
+        this.sun.update();
+        this.earth.update();
+        this.moon.update();
     }
 }
-
-
-
-    
-        size = 1,
-        posToParent = new THREE.Vector3(100, 0, 0),
-        axialTilt = 0,
-        axialRotationSpeed = 0,
-        detail = 0,
-        material = null,
-        parent = null, 
-    
-    {
-        // Create geometry
-        this.geometry = new THREE.IcosahedronGeometry(size, detail);
-
-        if (!material) {
-            throw new Error("CelestialBody requires a material");
-        }
-        // Create the body mesh
-        this.body = new THREE.Mesh(this.geometry, material);
-
-        // Create the groups
-        this.objectRoot = new THREE.Group();   // orbit
-        this.axialFrame = new THREE.Group();   // tilt + spin
-        
-        // Assemble hierarchy
-        this.axialFrame.add(this.body);
-        this.objectRoot.add(this.axialFrame);
-
-        // Set rotation and position
-        this.axialTilt = axialTilt * Math.PI / 180;
-        this.axialRotationSpeed = axialRotationSpeed;
-        this.body.rotation.z = this.axialTilt;
-        this.body.position.copy(posToParent)
-
-        // Add to parent if any
-        if (parent) parent.add(this.objectRoot);
-    }
-
-    update() {
-        // Spin around own axis
-        this.body.rotation.y += this.axialRotationSpeed;
-    }

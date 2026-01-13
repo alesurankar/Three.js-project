@@ -1,7 +1,6 @@
 import * as THREE from "three";
-import { Planet } from "./objects/TestPlanet.js"
-import { Star } from "./objects/TestStar.js"
-import { GameControls } from "./utils/gameControls.js"
+import { StarSystem } from "./objects/StarSystem.js";
+import { GameControls } from "./utils/GameControls.js"
 
 
 ///////////////////////////////////////////////
@@ -77,48 +76,20 @@ const skybox = loader.load([
 
 scene.background = skybox;
 
-// Create Sun
-const sun = new Star({
-    name: "sun",
-    size: 110,
-    axialTilt: 7.25,
-    axialRotationSpeed: sunAxialSpeed,
-    temperature: 5778,
-});
-scene.add(sun.objectRoot);
 
 
-// Create earth
-const earth = new Planet({
-  name: "earth",
-  size: 10,
-  posToParent: new THREE.Vector3(700, 0, 0),
-  axialTilt: 23.44,
-  axialRotationSpeed: earthAxialSpeed,
-  parent: sun.objectRoot,
-});
-
-
-// Create moon
-const moon = new Planet({
-  name: "moon",
-  size: 2.7,
-  posToParent: new THREE.Vector3(40, 0, 0),
-  axialTilt: 6.68,
-  axialRotationSpeed: moonAxialSpeed,
-  parent: earth.objectRoot,
-});
-
-
-
+const sunSystem = new StarSystem(
+  scene,
+  sunAxialSpeed,
+  earthAxialSpeed,
+  moonAxialSpeed
+);
 
 
 function Update() {
   gameControls.update();
 
-  sun.update();
-  earth.update();
-  moon.update();
+  sunSystem.update();
 }
 
 
