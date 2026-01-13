@@ -41,7 +41,7 @@ export class CelestialBody
         if (parent) parent.add(this.objectRoot);
     }
 
-    update() {
+    Update() {
         // Spin around own axis
         this.body.rotation.y += this.axialRotationSpeed;
     }

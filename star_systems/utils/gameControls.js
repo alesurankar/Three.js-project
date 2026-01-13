@@ -1,12 +1,13 @@
 import * as THREE from "three";
 import { PointerLockControls } from "jsm/controls/PointerLockControls.js";
 
-export class GameControls {
-  constructor(camera, domElement = document.body, speed = 3.3) {
+export class GameControls 
+{
+  constructor(camera, domElement = document.body) 
+  {
     this.camera = camera;
-    this.speed = speed;
 
-  // PointerLockControls for mouse-look
+    // PointerLockControls for mouse-look
     this.controls = new PointerLockControls(camera, domElement);
 
     domElement.addEventListener("click", () => {
@@ -20,48 +21,45 @@ export class GameControls {
       right: false,
       up: false,
       down: false,
-      fast: false,
-      slow: false
+      fast: false
     };
 
-    document.addEventListener("keydown", (e) => this._onKeyDown(e));
-    document.addEventListener("keyup", (e) => this._onKeyUp(e));
+    document.addEventListener("keydown", (e) => this.#OnKeyDown(e));
+    document.addEventListener("keyup", (e) => this.#OnKeyUp(e));
   }
 
-  _onKeyDown(event) {
+  #OnKeyDown(event) {
     switch (event.code) {
       case "KeyW": this.move.forward = true; break;
       case "KeyS": this.move.backward = true; break;
       case "KeyA": this.move.left = true; break;
       case "KeyD": this.move.right = true; break;
-      case "KeyV": this.move.fast = true; break;
+      case "KeyV": this.move.down = true; break;
       case "ShiftLeft": this.move.fast = true; break;
       case "Space": this.move.up = true; break;
     }
   }
 
-  _onKeyUp(event) {
+  #OnKeyUp(event) {
     switch (event.code) {
       case "KeyW": this.move.forward = false; break;
       case "KeyS": this.move.backward = false; break;
       case "KeyA": this.move.left = false; break;
       case "KeyD": this.move.right = false; break;
-      case "KeyV": this.move.fast = false; break;
+      case "KeyV": this.move.down = false; break;
       case "ShiftLeft": this.move.fast = false; break;
       case "Space": this.move.up = false; break;
     }
   }
 
-  update() {
+  Update() {
     if (!this.controls.isLocked) return;
 
     const velocity = new THREE.Vector3();
     const direction = new THREE.Vector3();
     this.camera.getWorldDirection(direction);
 
-    let speed = this.speed;
-    if (this.move.fast) speed = 3;
-    if (this.move.slow) speed = 0.3;
+    const speed = this.move.fast ? 5 : 1.5;
 
     // Forward / Back
     if (this.move.forward) velocity.add(direction.clone().multiplyScalar(speed));

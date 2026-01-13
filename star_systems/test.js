@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { SkyBox } from "./objects/SkyBox.js";
 import { StarSystem } from "./objects/StarSystem.js";
 import { GameControls } from "./utils/GameControls.js"
 
@@ -33,7 +34,7 @@ const ambientLight = new THREE.AmbientLight(
 );
 scene.add(ambientLight);
 
-const gameControls = new GameControls(camera, document.body, 0.5);
+const gameControls = new GameControls(camera, document.body);
 
 const FIXED_FPS = 40;
 const FIXED_DT = 1 / FIXED_FPS;
@@ -63,19 +64,7 @@ const earthOrbitalSpeed   = orbitalSpeedFromDays(365.25, orbitalTimeScale);
 const moonOrbitalSpeed    = orbitalSpeedFromDays(27.3, orbitalTimeScale);
 
 
-const loader = new THREE.CubeTextureLoader();
-
-const skybox = loader.load([
-  './textures/skybox/n1.png',
-  './textures/skybox/n2.png',
-  './textures/skybox/n3.png',
-  './textures/skybox/n4.png',
-  './textures/skybox/n5.png',
-  './textures/skybox/n6.png',
-]);
-
-scene.background = skybox;
-
+scene.background = SkyBox.Load();
 
 
 const sunSystem = new StarSystem(
@@ -87,9 +76,9 @@ const sunSystem = new StarSystem(
 
 
 function Update() {
-  gameControls.update();
+  gameControls.Update();
 
-  sunSystem.update();
+  sunSystem.Update();
 }
 
 

@@ -17,7 +17,7 @@ export class Star extends CelestialBody
     {
         // Prepare texture and material
         const texturePath = `./textures/${name}/${name}.jpg`;
-        const starColor = Star.colorFromTemperature(temperature);
+        const starColor = Star.#ColorFromTemperature(temperature);
         const loader = new THREE.TextureLoader();
 
         const texture = loader.load(
@@ -78,7 +78,7 @@ export class Star extends CelestialBody
         this.light.add(this.light6);
     }
 
-    static colorFromTemperature(T) {
+    static #ColorFromTemperature(T) {
         let r = 0, g = 0, b = 0;
         // --- Red ---
         if (T <= 1200) r = (T / 1200) * 255;

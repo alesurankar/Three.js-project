@@ -37,9 +37,9 @@ export class StarSystem
         });
     }
 
-    update() {
-        this.sun.update();
-        this.earth.update();
-        this.moon.update();
+    Update() {
+        this.sun.Update();
+        this.earth.Update();
+        this.moon.Update();
     }
 }
