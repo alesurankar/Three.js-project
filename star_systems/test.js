@@ -26,6 +26,12 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.physicallyCorrectLights = true;
 
+const FIXED_FPS = 40;
+const FIXED_DT = 1 / FIXED_FPS;
+let lastTime = performance.now() / 1000;
+let accumulator = 0;
+///////////////////////////////////////////
+
 
 // Ambient light, for simulation purposes
 const ambientLight = new THREE.AmbientLight(
@@ -36,44 +42,9 @@ scene.add(ambientLight);
 
 const gameControls = new GameControls(camera, document.body);
 
-const FIXED_FPS = 40;
-const FIXED_DT = 1 / FIXED_FPS;
-let lastTime = performance.now() / 1000;
-let accumulator = 0;
-
-
-const axialTimeScale = 1000;
-function rotationSpeedFromDays(days, axialTimeScale) {
-    const seconds = days * 24 * 60 * 60;
-    return (2 * Math.PI / seconds) * axialTimeScale;
-}
-
-const orbitalTimeScale = 1000;
-function orbitalSpeedFromDays(days, orbitalTimeScale) {
-    const seconds = days * 24 * 60 * 60;
-    return (2 * Math.PI / seconds) * orbitalTimeScale;
-}
-
-// Axial Speeds
-const sunAxialSpeed   = rotationSpeedFromDays(25, axialTimeScale);
-const earthAxialSpeed   = rotationSpeedFromDays(1, axialTimeScale);
-const moonAxialSpeed    = rotationSpeedFromDays(27.3, axialTimeScale);
-
-// Orbitral Speeds
-const earthOrbitalSpeed   = orbitalSpeedFromDays(365.25, orbitalTimeScale);
-const moonOrbitalSpeed    = orbitalSpeedFromDays(27.3, orbitalTimeScale);
-
-
 scene.background = SkyBox.Load("SpaceBox");
-//scene.background = SkyBox.Load("StarBox");
 
-
-const sunSystem = new StarSystem(
-  scene,
-  sunAxialSpeed,
-  earthAxialSpeed,
-  moonAxialSpeed
-);
+const sunSystem = new StarSystem(scene);
 
 
 function Update() {
