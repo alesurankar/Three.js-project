@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { Planet } from "./TestPlanet.js"
-import { Star } from "./TestStar.js"
+import { Planet } from "./planet.js"
+import { Star } from "./star.js"
 
 
 export class StarSystem 

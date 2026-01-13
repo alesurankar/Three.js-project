@@ -1,5 +1,5 @@
 import { Scene, Update as SceneUpdate } from "./SceneSetup.js";
-import { GameControls } from "./utils/GameControls.js"
+import { GameControls } from "./utils/gameControls.js"
 import { Camera, Renderer } from "./RendererSetup.js";
 
 export class Engine 

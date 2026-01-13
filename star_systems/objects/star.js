@@ -1,117 +1,103 @@
 import * as THREE from "three";
+import { CelestialBody } from "./celestialBody.js";
 
-export class Star {
-  constructor({
-    // default for sun
-    name = "sun",
-    size = 20,
-    axialRotationSpeed = 0,
-    position = new THREE.Vector3(10, 10, 50),
-    temperature = 5778,
-    texturesPath = "./textures",
-  } = {}) {
-    this.loader = new THREE.TextureLoader();
 
-    // group
-    this.group = new THREE.Group();
-    this.group.position.copy(position);
+export class Star extends CelestialBody 
+{
+    constructor({
+        name = "star",
+        size = 20,
+        posToParent = new THREE.Vector3(0, 0, 0),
+        axialTilt = 0,
+        axialRotationSpeed = 0,
+        detail = 12,
+        temperature = 6000,
+        parent = null,
+    } = {}) 
+    {
+        // Prepare texture and material
+        const texturePath = `./textures/${name}/${name}.jpg`;
+        const starColor = Star.#ColorFromTemperature(temperature);
+        const loader = new THREE.TextureLoader();
 
-    const scaleFactor = 0.00000000000001; 
-    const luminosity = 4 * Math.PI * Math.pow(size, 2) * Math.pow(temperature, 4);
-    const intensity = luminosity * scaleFactor;
+        const texture = loader.load(
+            texturePath,
+            undefined,
+            undefined,
+            (err) => console.warn(`Texture not found for ${name}, using color.`)
+        );
 
-    const distance = Math.pow(size, 3);
-    const starColor = this.colorFromTemperature(temperature);
+        const material = new THREE.MeshBasicMaterial({
+            map: texture,
+            color: starColor,
+        });
 
-    // geometry
-    const geometry = new THREE.IcosahedronGeometry(size, 12);
+        // Call base constructor
+        super({
+            size,
+            posToParent,
+            axialTilt,
+            axialRotationSpeed,
+            detail,
+            material,
+            parent,
+        });
 
-    // material
-    const material = new THREE.MeshBasicMaterial({
-        map: this.loader.load(`${texturesPath}/${name}/${name}.jpg`),
-        color: starColor,
-    });
-    this.star = new THREE.Mesh(geometry, material);
-    this.star.castShadow = false;
-    this.star.receiveShadow = false;
-    this.group.add(this.star);
+        this.light = new THREE.Group();
 
-    // point light
-    this.light1 = new THREE.PointLight(starColor, intensity, distance);
-    this.light2 = new THREE.PointLight(starColor, intensity, distance);
-    this.light3 = new THREE.PointLight(starColor, intensity, distance);
-    this.light4 = new THREE.PointLight(starColor, intensity, distance);
-    this.light5 = new THREE.PointLight(starColor, intensity, distance);
-    this.light6 = new THREE.PointLight(starColor, intensity, distance);
-    //this.light.castShadow = true;
-    //this.light.shadow.mapSize.set(2048, 2048);
-    //this.light.shadow.camera.near = 0.1;
-    //this.light.shadow.camera.far = distance === 0 ? 5000 : distance;
-    const lightPos = 3*size/2;
-    this.light1.position.set(lightPos, 0, 0);
-    this.light2.position.set(0, lightPos, 0);
-    this.light3.position.set(0, 0, lightPos);
-    this.light4.position.set(-lightPos, 0, 0);
-    this.light5.position.set(0, -lightPos, 0);
-    this.light6.position.set(0, 0, -lightPos);
-    this.group.add(this.light1);
-    this.group.add(this.light2);
-    this.group.add(this.light3);
-    this.group.add(this.light4);
-    this.group.add(this.light5);
-    this.group.add(this.light6);
-  }
+        // Light parameters
+        const scaleFactor = 0.00000000000001; 
+        const luminosity = 4 * Math.PI * Math.pow(size, 2) * Math.pow(temperature, 4);
+        const intensity = luminosity * scaleFactor;
+        const distance = Math.pow(size, 3);
 
-  colorFromTemperature(T) {
-    let r = 0;
-    let g = 0;
-    let b = 0;
+        // Creating lights
+        this.light1 = new THREE.PointLight(starColor, intensity, distance);
+        this.light2 = new THREE.PointLight(starColor, intensity, distance);
+        this.light3 = new THREE.PointLight(starColor, intensity, distance);
+        this.light4 = new THREE.PointLight(starColor, intensity, distance);
+        this.light5 = new THREE.PointLight(starColor, intensity, distance);
+        this.light6 = new THREE.PointLight(starColor, intensity, distance);
 
-    // --- Red ---
-    if (T <= 1200) {
-      r = (T / 1200) * 255;
-    } 
-    else if (T <= 10000) {
-      r = 255;
-    } 
-    else {
-      let fadeStart = 20000;
-      let fadeEnd = 40000;
-      r = 255 - ((T - fadeStart) / (fadeEnd - fadeStart)) * (255 - 180);
-      if (r < 60) r = 60;
+        // Setting light positions
+        const lightPos = 3*size/2;
+        this.light1.position.set(lightPos, 0, 0);
+        this.light2.position.set(0, lightPos, 0);
+        this.light3.position.set(0, 0, lightPos);
+        this.light4.position.set(-lightPos, 0, 0);
+        this.light5.position.set(0, -lightPos, 0);
+        this.light6.position.set(0, 0, -lightPos);
+
+        // Adding light to hierarchy
+        this.axialFrame.add(this.light);
+        this.light.add(this.light1);
+        this.light.add(this.light2);
+        this.light.add(this.light3);
+        this.light.add(this.light4);
+        this.light.add(this.light5);
+        this.light.add(this.light6);
     }
 
-    // // --- Green ---
-    if (T <= 5000) {
-      g = (T / 5000) * 255;
-    } 
-    else if (T <= 12000) {
-      g = 255;
-    }
-    else {
-      let fadeStart = 12000;
-      let fadeEnd = 24000;
-      g = 255 - ((T - fadeStart) / (fadeEnd - fadeStart)) * 255;
-      if (g < 120) g = 120;
-    }
-
-    // // --- Blue ---
-    if (T <= 7000) {
-      b = (T / 7000) * 255;
-    }
-    else {
-      b = 255;
-    }
-
-    return new THREE.Color(r / 255, g / 255, b / 255);
-  }
-
-
-    setPosition(x, y, z) {
-        if (x instanceof THREE.Vector3) {
-            this.group.position.copy(x);
-        } else {
-            this.group.position.set(x, y, z);
+    static #ColorFromTemperature(T) {
+        let r = 0, g = 0, b = 0;
+        // --- Red ---
+        if (T <= 1200) r = (T / 1200) * 255;
+        else if (T <= 10000) r = 255;
+        else {
+            let fadeStart = 10000;
+            let fadeEnd = 20000;
+            r = 255 - ((T - fadeStart) / (fadeEnd - fadeStart)) * (255 - 180);
+            if (r < 80) r = 80;
         }
+
+        // // --- Green ---
+        if (T <= 5000) g = (T / 5000) * 255;
+        else  g = 255;
+
+        // // --- Blue ---
+        if (T <= 7000) b = (T / 7000) * 255;
+        else b = 255;
+
+        return new THREE.Color(r / 255, g / 255, b / 255);
     }
 }
