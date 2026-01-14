@@ -21,17 +21,29 @@ export class Star extends CelestialBody
         const starColor = Star.#ColorFromTemperature(temperature);
         const loader = new THREE.TextureLoader();
 
-        const texture = loader.load(
-            texturePath,
-            undefined,
-            undefined,
-            (err) => console.warn(`Texture not found for ${name}, using color.`)
-        );
+        let material = new THREE.MeshBasicMaterial({ color: starColor });
+        // try {
+        //     const texture = loader.load(texturePath);
+        //     material = new THREE.MeshBasicMaterial({ map: texture, color: starColor });
+        // } catch (err) {
+        //     console.warn(`Texture not found for ${name}, using color.`);
+        // }
 
-        const material = new THREE.MeshBasicMaterial({
-            map: texture,
-            color: starColor,
-        });
+
+
+
+
+        // const texture = loader.load(
+        //     texturePath,
+        //     undefined,
+        //     undefined,
+        //     (err) => console.warn(`Texture not found for ${name}, using color.`)
+        // );
+
+        // const material = new THREE.MeshBasicMaterial({
+        //     map: texture,
+        //     color: starColor,
+        // });
 
         // Call base constructor
         super({
@@ -45,39 +57,41 @@ export class Star extends CelestialBody
             parent,
         });
 
-        this.light = new THREE.Group();
+        if (!parent) {
+            this.light = new THREE.Group();
 
-        // Light parameters
-        const scaleFactor = 0.00000000000001; 
-        const luminosity = 4 * Math.PI * Math.pow(size, 2) * Math.pow(temperature, 4);
-        const intensity = luminosity * scaleFactor;
-        const distance = Math.pow(size, 3);
+            // Light parameters
+            const scaleFactor = 0.00000000000001; 
+            const luminosity = 4 * Math.PI * Math.pow(size, 2) * Math.pow(temperature, 4);
+            const intensity = luminosity * scaleFactor;
+            const distance = Math.pow(size, 3);
 
-        // Creating lights
-        this.light1 = new THREE.PointLight(starColor, intensity, distance);
-        this.light2 = new THREE.PointLight(starColor, intensity, distance);
-        this.light3 = new THREE.PointLight(starColor, intensity, distance);
-        this.light4 = new THREE.PointLight(starColor, intensity, distance);
-        this.light5 = new THREE.PointLight(starColor, intensity, distance);
-        this.light6 = new THREE.PointLight(starColor, intensity, distance);
+            // Creating lights
+            this.light1 = new THREE.PointLight(starColor, intensity, distance);
+            this.light2 = new THREE.PointLight(starColor, intensity, distance);
+            this.light3 = new THREE.PointLight(starColor, intensity, distance);
+            this.light4 = new THREE.PointLight(starColor, intensity, distance);
+            this.light5 = new THREE.PointLight(starColor, intensity, distance);
+            this.light6 = new THREE.PointLight(starColor, intensity, distance);
 
-        // Setting light positions
-        const lightPos = 3*size/2;
-        this.light1.position.set(lightPos, 0, 0);
-        this.light2.position.set(0, lightPos, 0);
-        this.light3.position.set(0, 0, lightPos);
-        this.light4.position.set(-lightPos, 0, 0);
-        this.light5.position.set(0, -lightPos, 0);
-        this.light6.position.set(0, 0, -lightPos);
+            // Setting light positions
+            const lightPos = 3*size/2;
+            this.light1.position.set(lightPos, 0, 0);
+            this.light2.position.set(0, lightPos, 0);
+            this.light3.position.set(0, 0, lightPos);
+            this.light4.position.set(-lightPos, 0, 0);
+            this.light5.position.set(0, -lightPos, 0);
+            this.light6.position.set(0, 0, -lightPos);
 
-        // Adding light to hierarchy
-        this.objectRoot.add(this.light);
-        this.light.add(this.light1);
-        this.light.add(this.light2);
-        this.light.add(this.light3);
-        this.light.add(this.light4);
-        this.light.add(this.light5);
-        this.light.add(this.light6);
+            // Adding light to hierarchy
+            this.objectRoot.add(this.light);
+            this.light.add(this.light1);
+            this.light.add(this.light2);
+            this.light.add(this.light3);
+            this.light.add(this.light4);
+            this.light.add(this.light5);
+            this.light.add(this.light6);
+        }
     }
 
     static #ColorFromTemperature(T) {

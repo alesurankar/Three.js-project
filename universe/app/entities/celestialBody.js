@@ -45,7 +45,8 @@ export class CelestialBody
         if (parent) parent.add(this.orbitPivot);
     }
 
-    Update() {
+    Update() 
+    {
         // Orbit parent
         this.orbitPivot.rotation.y += this.orbitalSpeed;
 
