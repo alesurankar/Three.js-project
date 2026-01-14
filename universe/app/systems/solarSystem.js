@@ -1,22 +1,11 @@
 import * as THREE from "three";
 import { Planet } from "../entities/planet.js";
 import { Star } from "../entities/star.js";
+import { StarSystem } from "./starSystemHelper.js"
 
 
-export class SunSystem 
+export class SolarSystem 
 {
-    static TimeScale = 500;
-    static OrbitalRotationInDays(days, scale = SunSystem.TimeScale) 
-    {
-        const seconds = days * 24 * 60 * 60;
-        return (2 * Math.PI / seconds) * scale;
-    }
-    static AxialRotationInDays(days, scale = SunSystem.TimeScale) 
-    {
-        const seconds = days * 24 * 60 * 60;
-        return (2 * Math.PI / seconds) * scale;
-    }
-
     constructor(scene) 
     {
         // Create Sun
@@ -25,11 +14,11 @@ export class SunSystem
             size: 110,
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(25),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(25),
             orbitalSpeed: 0,
             temperature: 5778,
         });
-        scene.add(this.sun.objectRoot);
+        scene.add(this.sun.orbitPivot);
 
         // Create Mercury
         this.mercury = new Planet({
@@ -37,8 +26,8 @@ export class SunSystem
             size: 4,
             posToParent: new THREE.Vector3(400, 0, 0),
             axialTilt: 0.034,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(58.6),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(88),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
             parent: this.sun.objectRoot,
         });
 
@@ -48,8 +37,8 @@ export class SunSystem
             size: 9.5,
             posToParent: new THREE.Vector3(700, 0, 0),
             axialTilt: 177.36,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(243),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(224.7),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(243),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(224.7),
             parent: this.sun.objectRoot,
         });
 
@@ -59,8 +48,8 @@ export class SunSystem
             size: 10,
             posToParent: new THREE.Vector3(1000, 0, 0),
             axialTilt: 23.44,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(1),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(365.25),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(1),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
             parent: this.sun.objectRoot,
         });
 
@@ -70,8 +59,8 @@ export class SunSystem
             size: 2.7,
             posToParent: new THREE.Vector3(30, 0, 0),
             axialTilt: 6.68,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(27.3),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(27.3),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
             parent: this.earth.objectRoot,
         });
 
@@ -81,8 +70,8 @@ export class SunSystem
             size: 5.3,
             posToParent: new THREE.Vector3(1500, 0, 0),
             axialTilt: 25.19,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(1.03),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(687),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(1.03),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(687),
             parent: this.sun.objectRoot,
         });
 
@@ -104,8 +93,8 @@ export class SunSystem
             size: 38,
             posToParent: new THREE.Vector3(2600, 0, 0),
             axialTilt: 3.13,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(0.41),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(4333),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(0.41),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(4333),
             parent: this.sun.objectRoot,
         });
         
@@ -115,8 +104,8 @@ export class SunSystem
             size: 34,
             posToParent: new THREE.Vector3(3600, 0, 0),
             axialTilt: 26.73,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(0.45),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(10759),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
             parent: this.sun.objectRoot,
         });
         
@@ -141,8 +130,8 @@ export class SunSystem
             size: 20,
             posToParent: new THREE.Vector3(4600, 0, 0),
             axialTilt: 97.77,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(0.72),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(30687),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(0.72),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(30687),
             parent: this.sun.objectRoot,
         });
         
@@ -166,8 +155,8 @@ export class SunSystem
             size: 19,
             posToParent: new THREE.Vector3(5600, 0, 0),
             axialTilt: 28.32,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(0.67),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(60190),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(0.67),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(60190),
             parent: this.sun.objectRoot,
         });
         
@@ -177,8 +166,8 @@ export class SunSystem
             size: 1.8,
             posToParent: new THREE.Vector3(6500, 0, 0),
             axialTilt: 119.61,
-            axialRotationSpeed: SunSystem.AxialRotationInDays(6.39),
-            orbitalSpeed: SunSystem.OrbitalRotationInDays(90560),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(6.39),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(90560),
             parent: this.sun.objectRoot,
         });
     }
