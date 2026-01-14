@@ -1,8 +1,3 @@
-import * as THREE from "three";
-import { Planet } from "../entities/planet.js";
-import { Star } from "../entities/star.js";
-
-
 export class StarSystem 
 {
     static TimeScale = 500;
@@ -17,11 +12,25 @@ export class StarSystem
         return (2 * Math.PI / seconds) * scale;
     }
 
-    constructor(scene) 
+    constructor (scene) 
     {
+        this.scene = scene;
+        this.bodies = [];
+        this.bodiesMap = {};
+    }
+
+    
+    AddBody(body) 
+    {
+        this.bodies.push(body);
+        if (!body.parent) this.scene.add(body.orbitPivot);
+        //this.bodiesMap = body;
     }
 
     Update() 
     {
+        for (const body of this.bodies) {
+            body.Update();
+        }
     }
 }
