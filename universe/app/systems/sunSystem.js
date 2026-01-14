@@ -1,0 +1,208 @@
+import * as THREE from "three";
+import { Planet } from "../entities/planet.js";
+import { Star } from "../entities/star.js";
+
+
+export class SunSystem 
+{
+    static TimeScale = 500;
+    static OrbitalRotationInDays(days, scale = SunSystem.TimeScale) 
+    {
+        const seconds = days * 24 * 60 * 60;
+        return (2 * Math.PI / seconds) * scale;
+    }
+    static AxialRotationInDays(days, scale = SunSystem.TimeScale) 
+    {
+        const seconds = days * 24 * 60 * 60;
+        return (2 * Math.PI / seconds) * scale;
+    }
+
+    constructor(scene) 
+    {
+        // Create Sun
+        this.sun = new Star({
+            name: "sun",
+            size: 110,
+            posToParent: new THREE.Vector3(0, 0, 0),
+            axialTilt: 7.25,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(25),
+            orbitalSpeed: 0,
+            temperature: 5778,
+        });
+        scene.add(this.sun.objectRoot);
+
+        // Create Mercury
+        this.mercury = new Planet({
+            name: "mercury",
+            size: 4,
+            posToParent: new THREE.Vector3(400, 0, 0),
+            axialTilt: 0.034,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(58.6),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(88),
+            parent: this.sun.objectRoot,
+        });
+
+        // Create venus
+        this.venus = new Planet({
+            name: "venus",
+            size: 9.5,
+            posToParent: new THREE.Vector3(700, 0, 0),
+            axialTilt: 177.36,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(243),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(224.7),
+            parent: this.sun.objectRoot,
+        });
+
+        // Create Earth
+        this.earth = new Planet({
+            name: "earth",
+            size: 10,
+            posToParent: new THREE.Vector3(1000, 0, 0),
+            axialTilt: 23.44,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(1),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(365.25),
+            parent: this.sun.objectRoot,
+        });
+
+        // Create moon
+        this.moon = new Planet({
+            name: "moon",
+            size: 2.7,
+            posToParent: new THREE.Vector3(30, 0, 0),
+            axialTilt: 6.68,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(27.3),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(27.3),
+            parent: this.earth.objectRoot,
+        });
+
+        // Create mars
+        this.mars = new Planet({
+            name: "mars",
+            size: 5.3,
+            posToParent: new THREE.Vector3(1500, 0, 0),
+            axialTilt: 25.19,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(1.03),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(687),
+            parent: this.sun.objectRoot,
+        });
+
+        // // Create asteroid belt
+        // this.asteroids = new Asteroids({
+        //   asteroidCount: 10000,
+        //   orbitFarRadius: 1900,
+        //   orbitNearRadius: 1700,
+        //   axialRotationSpeed: axialTimeScale * 0.000014,
+        //   orbitRotationSpeed: asteroidBeltOrbitalSpeed,
+        //   thickness: 50,
+        //   size: 0.8,
+        //   parent: sun.group,
+        // });
+        
+        // Create jupiter
+        this.jupiter = new Planet({
+            name: "jupiter",
+            size: 38,
+            posToParent: new THREE.Vector3(2600, 0, 0),
+            axialTilt: 3.13,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(0.41),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(4333),
+            parent: this.sun.objectRoot,
+        });
+        
+        // Create saturn
+        this.saturn = new Planet({
+            name: "saturn",
+            size: 34,
+            posToParent: new THREE.Vector3(3600, 0, 0),
+            axialTilt: 26.73,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(0.45),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(10759),
+            parent: this.sun.objectRoot,
+        });
+        
+        // // Create saturn ring
+        // this.saturnRing = new Asteroids({
+        //   asteroidCount: 6000,
+        //   orbitFarRadius: 65,
+        //   orbitNearRadius: 40,
+        //   axialRotationSpeed: 0.005,
+        //   orbitRotationSpeed: saturnRingOrbitalSpeed * 0.5, // 5x slower for simulation purpose
+        //   thickness: 0.6,
+        //   size: 0.16,
+        //   roughness: 0.9,
+        //   metalness: 0.0,
+        //   color: 0xdfe6f0,
+        //   parent: saturn.group,
+        // });
+        
+        // Create uranus
+        this.uranus = new Planet({
+            name: "uranus",
+            size: 20,
+            posToParent: new THREE.Vector3(4600, 0, 0),
+            axialTilt: 97.77,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(0.72),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(30687),
+            parent: this.sun.objectRoot,
+        });
+        
+        // // Create uranus ring
+        // this.uranusRing = new Asteroids({
+        //   asteroidCount: 1200,
+        //   orbitFarRadius: 50,
+        //   orbitNearRadius: 42,
+        //   axialRotationSpeed: 0.003,
+        //   orbitRotationSpeed: uranusRingOrbitalSpeed * 0.5, // 5x slower for simulation purpose
+        //   thickness: 0.3,
+        //   size: 0.14,
+        //   //color: 0x444444, // real, to dark
+        //   color: 0xffffff, // not real
+        //   parent: uranus.group,
+        // });
+        
+        // Create neptune
+        this.neptune = new Planet({
+            name: "neptune",
+            size: 19,
+            posToParent: new THREE.Vector3(5600, 0, 0),
+            axialTilt: 28.32,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(0.67),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(60190),
+            parent: this.sun.objectRoot,
+        });
+        
+        // Create pluto
+        this.pluto = new Planet({
+            name: "pluto",
+            size: 1.8,
+            posToParent: new THREE.Vector3(6500, 0, 0),
+            axialTilt: 119.61,
+            axialRotationSpeed: SunSystem.AxialRotationInDays(6.39),
+            orbitalSpeed: SunSystem.OrbitalRotationInDays(90560),
+            parent: this.sun.objectRoot,
+        });
+    }
+
+    Update() 
+    {
+        this.sun.Update();
+        this.mercury.Update();
+        this.venus.Update();
+        this.earth.Update();
+        this.moon.Update();
+        this.mars.Update();
+        //this.asteroids.Update();
+        this.jupiter.Update();
+        this.saturn.Update();
+        //this.saturnRing.Update();
+        this.uranus.Update();
+        //this.uranusRing.Update();
+        this.neptune.Update();
+        this.pluto.Update();
+    }
+}
+
+// // Orbitral Speeds
+// const asteroidBeltOrbitalSpeed    = orbitalSpeedFromDays(1570, orbitalTimeScale);
+// const saturnRingOrbitalSpeed    = orbitalSpeedFromDays(0.6, orbitalTimeScale);
+// const uranusRingOrbitalSpeed    = -orbitalSpeedFromDays(0.26, orbitalTimeScale); //retrograde

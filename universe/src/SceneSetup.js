@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { SkyBox } from "../app/visuals/skyBox.js";
-import { StarSystem } from "../app/systems/starSystem.js";
+import { SunSystem } from "../app/systems/sunSystem.js";
 
 
 // Scene
@@ -10,7 +10,7 @@ const ambientLight = new THREE.AmbientLight(0x404040, 10.3);
 Scene.add(ambientLight);
 
 Scene.background = SkyBox.Load("SpaceBox");
-const sunSystem = new StarSystem(Scene);
+const sunSystem = new SunSystem(Scene);
 
 export function Update() 
 {
