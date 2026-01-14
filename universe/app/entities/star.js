@@ -17,7 +17,7 @@ export class Star extends CelestialBody
     } = {}) 
     {
         // Prepare texture and material
-        const texturePath = `./textures/${name}/${name}.jpg`;
+        const texturePath = `./app/textures/${name}/${name}.jpg`;
         const starColor = Star.#ColorFromTemperature(temperature);
         const loader = new THREE.TextureLoader();
 

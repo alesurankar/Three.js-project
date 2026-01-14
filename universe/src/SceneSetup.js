@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { SkyBox } from "../entities/skyBox.js";
-import { StarSystem } from "../systems/starSystem.js";
+import { SkyBox } from "../app/visuals/skyBox.js";
+import { StarSystem } from "../app/systems/starSystem.js";
 
 
 // Scene

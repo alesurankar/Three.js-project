@@ -17,7 +17,7 @@ export class Planet extends CelestialBody
     } = {}) 
     {
         // Prepare texture and material
-        const texturePath = `./textures/${name}/day.jpg`;
+        const texturePath = `./app/textures/${name}/day.jpg`;
         const loader = new THREE.TextureLoader();
 
         const texture = loader.load(
