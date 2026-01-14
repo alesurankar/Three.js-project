@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import { Planet } from "./planet.js"
-import { Star } from "./star.js"
+import { Planet } from "../entities/planet.js";
+import { Star } from "../entities/star.js";
 
 
 export class StarSystem 
 {
-    static TimeScale = 2000;
+    static TimeScale = 500;
     static OrbitalRotationInDays(days, scale = StarSystem.TimeScale) 
     {
         const seconds = days * 24 * 60 * 60;
@@ -23,7 +23,7 @@ export class StarSystem
         this.sun = new Star({
             name: "sun",
             size: 110,
-            posToParent: new THREE.Vector3(400, 0, 0),
+            posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
             axialRotationSpeed: StarSystem.AxialRotationInDays(25),
             orbitalSpeed: 0,

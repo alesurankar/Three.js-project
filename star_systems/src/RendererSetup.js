@@ -10,7 +10,7 @@ const far = 20000;
 
 // Camera
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.set(0, 200, 600);
+camera.position.set(0, 2000, 6000);
 camera.lookAt(0, 0, 0);
 
 // Renderer
