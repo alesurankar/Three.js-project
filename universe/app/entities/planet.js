@@ -11,7 +11,7 @@ export class Planet extends CelestialBody
         axialTilt = 0,
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
-        detail = 10,
+        detail = 5,
         color = 0xffffff,
         parent = null,
     } = {}) 

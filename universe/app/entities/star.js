@@ -11,7 +11,7 @@ export class Star extends CelestialBody
         axialTilt = 0,
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
-        detail = 12,
+        detail = 3,
         temperature = 6000,
         parent = null,
     } = {}) 

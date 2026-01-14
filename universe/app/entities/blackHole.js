@@ -11,7 +11,7 @@ export class BlackHole extends CelestialBody
         axialTilt = 0,
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
-        detail = 2,
+        detail = 1,
         color = 0x000000,
         parent = null,
     } = {}) 
