@@ -7,48 +7,186 @@ export class MilkyWay
 {
     constructor(scene) 
     {
+        const SMBH_Size = 140;
+
+        const baseSpeed = 0.01;
+        const starNum = 10000;
+        const redDwarfNum = starNum * 0.72;
+        const K_typeNum = starNum * 0.14;
+        const G_typeNum = starNum * 0.08;
+        const F_typeNum = starNum * 0.03;
+        const A_typeNum = starNum * 0.007;
+        const redMasiveNum = starNum * 0.0006;
+        this.stars = [];
+        this.redDwarf = [];
+        this.K_type = [];
+        this.G_type = [];
+        this.F_type = [];
+        this.A_type = [];
+        this.redMasive = [];
+
+
         // Create SMBH
         this.SMBH = new BlackHole({
             name: "SMBH",
-            size: 100,
+            size: SMBH_Size,
             posToParent: new THREE.Vector3(0, 0, 0),
         });
         scene.add(this.SMBH.orbitPivot);
 
         // Create Sun
-        this.sun = new Star({
+        const sun = new Star({
             name: "sun",
             size: 1,
-            posToParent: new THREE.Vector3(100, 0, 0),
-            orbitalSpeed: 0.002,
-            detail: 1,
+            posToParent: new THREE.Vector3(10 * SMBH_Size, SMBH_Size, SMBH_Size),
+            orbitalSpeed: baseSpeed,
+            detail: 0,
             temperature: 5778,
             parent: this.SMBH.objectRoot,
         });
-        this.stars = [];
-        for (let i = 0, z = 1000; i < 1000; i++, z--) {
-            const angle = i * 0.15; // spiral twist
-            const radius = 200 + i;
-            this.stars.push(new Star({
-                name: `star${i}`,
-                size: 1,
+        this.G_type.push(sun);
+        this.stars.push(sun);
+
+        // Create redDwarfs
+        for (let i = 0, z = redDwarfNum; i < redDwarfNum; i++, z--) {
+            const size = this.randomBetween(0.1, 0.5);
+            const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
+            const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
+            const star = new Star({
+                name: `redDwarf${i}`,
+                size: size,
                 posToParent: new THREE.Vector3(
-                    Math.cos(angle) * radius,
-                    0,
-                    Math.sin(angle) * radius
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
                 ),
-                orbitalSpeed: 0.001 * z/100,
-                detail: 1,
-                temperature: 9000 + i*10,
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(2500, 3300),
                 parent: this.SMBH.objectRoot,
-            }));
-        }
+            });
+            this.redDwarf.push(star);
+            this.stars.push(star);
+        }   
+
+        // Create K_type stars
+        for (let i = 0, z = K_typeNum; i < K_typeNum; i++, z--) {
+            const size = this.randomBetween(0.5, 0.9);
+            const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
+            const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
+            const star = new Star({
+                name: `K_type${i}`,
+                size: size,
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(3300, 4600),
+                parent: this.SMBH.objectRoot,
+            });
+            this.K_type.push(star);
+            this.stars.push(star);
+        }  
+
+        // Create G_type stars
+        for (let i = 0, z = G_typeNum; i < G_typeNum; i++, z--) {
+            const size = this.randomBetween(0.9, 1.2);
+            const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
+            const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
+            const star = new Star({
+                name: `G_type${i}`,
+                size: size,
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(4600, 6200),
+                parent: this.SMBH.objectRoot,
+            });
+            this.G_type.push(star);
+            this.stars.push(star);
+        }   
+
+        // Create F_type stars
+        for (let i = 0, z = F_typeNum; i < F_typeNum; i++, z--) {
+            const size = this.randomBetween(1.2, 2.0);
+            const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
+            const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
+            const star = new Star({
+                name: `F_type${i}`,
+                size: size,
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(6200, 7500),
+                parent: this.SMBH.objectRoot,
+            });
+            this.F_type.push(star);
+            this.stars.push(star);
+        }   
+
+        // Create A_type stars
+        for (let i = 0, z = A_typeNum; i < A_typeNum; i++, z--) {
+            const size = this.randomBetween(2.0, 5.0);
+            const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
+            const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
+            const star = new Star({
+                name: `A_type${i}`,
+                size: size,
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(7500, 10000),
+                parent: this.SMBH.objectRoot,
+            });
+            this.A_type.push(star);
+            this.stars.push(star);
+        }   
+
+        // Create redMasive stars
+        for (let i = 0, z = redMasiveNum; i < redMasiveNum; i++, z--) {
+            const size = this.randomBetween(5, 10);
+            const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
+            const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
+            const star = new Star({
+                name: `redMasive${i}`,
+                size: size,
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(2000, 3000),
+                parent: this.SMBH.objectRoot,
+            });
+            this.redMasive.push(star);
+            this.stars.push(star);
+        }   
+    }
+    
+    randomBetween(min, max) {
+        return Math.random() * (max - min) + min;
     }
 
     Update() 
     {
         this.SMBH.Update();
-        this.sun.Update();
         for (const star of this.stars) {
             star.Update();
         }
