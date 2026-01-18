@@ -41,8 +41,7 @@ export class Planet extends CelestialBody
                 map: cloudTex,
                 transparent: true,
                 opacity: 0.4,
-                blending: THREE.NormalBlending,
-                side: THREE.DoubleSide,
+                blending: THREE.NormalBlending
             });
         }
 

@@ -191,6 +191,24 @@ export class SolarSystem
         this.neptune.Update();
         this.pluto.Update();
     }
+
+    Dispose() {
+        const bodies = [
+            this.sun, this.mercury, this.venus, this.earth, this.moon,
+            this.mars, this.jupiter, this.saturn, this.uranus, this.neptune, this.pluto
+        ];
+
+        for (const b of bodies) {
+            if (!b) continue;
+            b.orbitPivot.parent?.remove(b.orbitPivot);
+            b.body.geometry.dispose();
+            b.body.material.dispose();
+            if (b.clouds) {
+                b.clouds.geometry.dispose();
+                b.clouds.material.dispose();
+            }
+        }
+    }
 }
 
 // // Orbitral Speeds

@@ -14,4 +14,9 @@ export class SkyBox
             `./app/textures/${name}/n6.png`,
         ]);
     }
+
+    static Dispose(cubeTexture) 
+    {
+        if (cubeTexture) cubeTexture.dispose();
+    }
 }

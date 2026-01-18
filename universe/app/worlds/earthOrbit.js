@@ -4,7 +4,7 @@ import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 
 
-export class EarthAtmosphere 
+export class EarthOrbit
 {
     constructor(scene) 
     {
@@ -38,4 +38,22 @@ export class EarthAtmosphere
         this.earth.Update();
         this.moon.Update();
     }
+
+    Dispose() 
+    {
+        // Remove Earth
+        if (this.earth) {
+            this.earth.orbitPivot.parent?.remove(this.earth.orbitPivot);
+            this.earth.Dispose();
+            this.earth = null;
+        }
+
+        // Remove Moon
+        if (this.moon) {
+            this.moon.orbitPivot.parent?.remove(this.moon.orbitPivot);
+            this.moon.Dispose();
+            this.moon = null;
+        }
+    }
+
 }

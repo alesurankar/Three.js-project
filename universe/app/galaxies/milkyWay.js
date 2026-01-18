@@ -191,4 +191,41 @@ export class MilkyWay
             star.Update();
         }
     }
+
+    Dispose() 
+    {
+        // Dispose all stars
+        for (const star of this.stars) {
+            if (star.body) {
+                star.body.geometry.dispose();
+                if (Array.isArray(star.body.material)) {
+                    star.body.material.forEach(m => m.dispose());
+                } else star.body.material.dispose();
+            }
+            if (star.clouds) {
+                star.clouds.geometry.dispose();
+                if (Array.isArray(star.clouds.material)) {
+                    star.clouds.material.forEach(m => m.dispose());
+                } else star.clouds.material.dispose();
+            }
+            // Remove from parent
+            if (star.objectRoot && star.objectRoot.parent) {
+                star.objectRoot.parent.remove(star.objectRoot);
+            }
+        }
+
+        // Dispose SMBH
+        if (this.SMBH.orbitPivot && this.SMBH.orbitPivot.parent) {
+            this.SMBH.orbitPivot.parent.remove(this.SMBH.orbitPivot);
+        }
+
+        // Clear arrays
+        this.stars = [];
+        this.redDwarf = [];
+        this.K_type = [];
+        this.G_type = [];
+        this.F_type = [];
+        this.A_type = [];
+        this.redMasive = [];
+    }
 }
