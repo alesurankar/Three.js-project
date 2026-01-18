@@ -1,13 +1,15 @@
 import * as THREE from "three";
 import { Planet } from "../entities/planet.js";
 import { Star } from "../entities/star.js";
-import { StarSystem } from "./starSystemHelper.js"
+import { StarSystem } from "../utils/starSystemHelper.js"
+import { SkyBox } from "..//visuals/skyBox.js";
 
 
 export class SolarSystem 
 {
     constructor(scene) 
     {
+        scene.background = SkyBox.Load("SpaceBox");
         // Create Sun
         this.sun = new Star({
             name: "sun",

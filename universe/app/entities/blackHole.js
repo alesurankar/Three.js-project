@@ -16,7 +16,7 @@ export class BlackHole extends CelestialBody
         parent = null,
     } = {}) 
     {
-        const material = new THREE.MeshStandardMaterial({ 
+        const surfMat = new THREE.MeshStandardMaterial({ 
             color,
             transparent: true,
             opacity: 0.8,
@@ -30,7 +30,7 @@ export class BlackHole extends CelestialBody
             axialRotationSpeed,
             orbitalSpeed,
             detail,
-            material,
+            surfMat,
             parent,
         });
     }

@@ -11,18 +11,21 @@ export class CelestialBody
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
         detail = 0,
-        material = null,
+        surfMat = null,
+        cloudMat = null,
         parent = null, 
     } = {}) 
     {
         // Create geometry
         this.geometry = new THREE.IcosahedronGeometry(size, detail);
 
-        if (!material) {
-            throw new Error("CelestialBody requires a material");
-        }
         // Create the body mesh
-        this.body = new THREE.Mesh(this.geometry, material);
+        this.body = new THREE.Mesh(this.geometry, surfMat);
+        if (cloudMat) {
+            this.clouds = new THREE.Mesh(this.geometry, cloudMat);
+            this.clouds.scale.set(1.03, 1.03, 1.03);
+        }
+        
 
         // Create the groups
         this.orbitPivot = new THREE.Group();   // orbit
@@ -31,6 +34,9 @@ export class CelestialBody
         
         // Assemble hierarchy
         this.axialFrame.add(this.body);
+        if (this.clouds) {
+            this.axialFrame.add(this.clouds);
+        }
         this.objectRoot.add(this.axialFrame);
         this.orbitPivot.add(this.objectRoot);
 
@@ -52,5 +58,8 @@ export class CelestialBody
 
         // Spin around own axis
         this.body.rotation.y += this.axialRotationSpeed;
+        if (this.clouds) {
+            this.clouds.rotation.y += this.axialRotationSpeed * 1.1;
+        }
     }
 }

@@ -59,7 +59,7 @@ export class GameControls
     const direction = new THREE.Vector3();
     this.camera.getWorldDirection(direction);
 
-    const speed = this.move.fast ? 40 : 5;
+    const speed = this.move.fast ? 1000 : 10;
 
     // Forward / Back
     if (this.move.forward) velocity.add(direction.clone().multiplyScalar(speed));

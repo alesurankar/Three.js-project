@@ -17,33 +17,18 @@ export class Star extends CelestialBody
     } = {}) 
     {
         // Prepare texture and material
-        const texturePath = `./app/textures/${name}/${name}.jpg`;
+        //const surfTexture = `./app/textures/${name}/${name}.jpg`;
+        let surfMat = null;
         const starColor = Star.#ColorFromTemperature(temperature);
         const loader = new THREE.TextureLoader();
 
-        let material = new THREE.MeshBasicMaterial({ color: starColor });
-        // try {
-        //     const texture = loader.load(texturePath);
-        //     material = new THREE.MeshBasicMaterial({ map: texture, color: starColor });
-        // } catch (err) {
-        //     console.warn(`Texture not found for ${name}, using color.`);
-        // }
-
-
-
-
-
-        // const texture = loader.load(
-        //     texturePath,
-        //     undefined,
-        //     undefined,
-        //     (err) => console.warn(`Texture not found for ${name}, using color.`)
-        // );
-
-        // const material = new THREE.MeshBasicMaterial({
-        //     map: texture,
-        //     color: starColor,
-        // });
+        //if (surfTexture) {
+        //   const surfTex = loader.load(surfTexture);
+        //   surfMat = new THREE.MeshBasicMaterial({ map: surfTex, color: starColor });
+        //}
+        //else {
+            surfMat = new THREE.MeshBasicMaterial({ color: starColor });
+        //}
 
         // Call base constructor
         super({
@@ -53,7 +38,7 @@ export class Star extends CelestialBody
             axialRotationSpeed,
             orbitalSpeed,
             detail,
-            material,
+            surfMat,
             parent,
         });
 

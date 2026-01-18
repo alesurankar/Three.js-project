@@ -17,22 +17,34 @@ export class Planet extends CelestialBody
     } = {}) 
     {
         // Prepare texture and material
-        const texturePath = `./app/textures/${name}/day.jpg`;
+        const surfTexture = `./app/textures/${name}/day.jpg`;
+        const cloudTexture = `./app/textures/${name}/clouds.jpg`;
+        let surfMat = null;
+        let cloudMat = null;
         const loader = new THREE.TextureLoader();
 
-        const texture = loader.load(
-            texturePath,
-            undefined,
-            undefined,
-            (err) => console.warn(`Texture not found for ${name}, using color.`)
-        );
+        
+        if (surfTexture) {
+            const surfTex = loader.load(surfTexture);
+            surfMat = new THREE.MeshStandardMaterial({
+                map: surfTex,
+                roughness: 1,
+                metalness: 0,
+                color,  
+            });
+        }
 
-        const material = new THREE.MeshStandardMaterial({
-            map: texture,
-            roughness: 1,
-            metalness: 0,
-            color,
-        });
+        // Cloud material
+        if (cloudTexture) {
+            const cloudTex = loader.load(cloudTexture);
+            cloudMat = new THREE.MeshStandardMaterial({
+                map: cloudTex,
+                transparent: true,
+                opacity: 0.4,
+                blending: THREE.NormalBlending,
+                side: THREE.DoubleSide,
+            });
+        }
 
         super({
             size,
@@ -41,7 +53,8 @@ export class Planet extends CelestialBody
             axialRotationSpeed,
             orbitalSpeed,
             detail,
-            material,
+            surfMat,
+            cloudMat,
             parent,
         });
     }
