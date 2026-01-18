@@ -13,22 +13,23 @@ export class Star extends CelestialBody
         orbitalSpeed = 0,
         detail = 3,
         temperature = 6000,
+        hasTexture = false,
         parent = null,
     } = {}) 
     {
         // Prepare texture and material
-        //const surfTexture = `./app/textures/${name}/${name}.jpg`;
         let surfMat = null;
         const starColor = Star.#ColorFromTemperature(temperature);
         const loader = new THREE.TextureLoader();
 
-        //if (surfTexture) {
-        //   const surfTex = loader.load(surfTexture);
-        //   surfMat = new THREE.MeshBasicMaterial({ map: surfTex, color: starColor });
-        //}
-        //else {
+        if (hasTexture) {
+            const surfTexture = `./app/textures/${name}/${name}.jpg`;
+            const surfTex = loader.load(surfTexture);
+            surfMat = new THREE.MeshBasicMaterial({ map: surfTex, color: starColor });
+        }
+        else {
             surfMat = new THREE.MeshBasicMaterial({ color: starColor });
-        //}
+        }
 
         // Call base constructor
         super({
@@ -100,5 +101,15 @@ export class Star extends CelestialBody
         else b = 255;
 
         return new THREE.Color(r / 255, g / 255, b / 255);
+    }
+
+    Dispose() 
+    {
+        if (this.light) {
+            this.light.clear();
+            this.objectRoot.remove(this.light);
+            this.light = null;
+        }
+        super.Dispose();
     }
 }

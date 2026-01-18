@@ -9,10 +9,6 @@ export class Test
     constructor(scene) 
     {
         this.scene = scene;
-        if (this.scene.background) {
-            SkyBox.Dispose(this.scene.background);
-            this.scene.background = null;
-        }
         this.scene.background = SkyBox.Load("SpaceBox");
         // Create Mars
         this.mars = new Planet({
@@ -33,12 +29,13 @@ export class Test
 
     Dispose() 
     {
-        // // Remove Earth
-        // if (this.mars) {
-        //     this.mars.orbitPivot.parent?.remove(this.mars.orbitPivot);
-        //     this.mars.Dispose();
-        //     this.mars = null;
-        // }
+        // Remove Earth
+        if (this.mars) {
+            this.mars.orbitPivot.parent?.remove(this.mars.orbitPivot);
+            this.mars.Dispose();
+            this.mars = null;
+        }
+
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);
             this.scene.background = null;

@@ -9,10 +9,6 @@ export class Test2
     constructor(scene) 
     {
         this.scene = scene;
-        if (this.scene.background) {
-            SkyBox.Dispose(this.scene.background);
-            this.scene.background = null;
-        }
         this.scene.background = SkyBox.Load("StarBox");
         // Create Venus
         this.venus = new Planet({
@@ -33,11 +29,12 @@ export class Test2
 
     Dispose() 
     {
-        // // Remove Earth
-        // if (this.venus) {
-        //     this.venus.orbitPivot.parent?.remove(this.venus.orbitPivot);
-        //    this.venus = null;
-        // }   this.venus.Dispose();
+        // Remove Earth
+        if (this.venus) {
+            this.venus.orbitPivot.parent?.remove(this.venus.orbitPivot);
+            this.venus.Dispose();
+            this.venus = null;
+        }   
           
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);

@@ -62,4 +62,48 @@ export class CelestialBody
             this.clouds.rotation.y += this.axialRotationSpeed * 1.1;
         }
     }
+
+    Dispose() 
+    {
+        if (this.body) {
+            if (this.body.geometry) this.body.geometry.dispose();
+            if (this.body.material) {
+                if (Array.isArray(this.body.material)) {
+                    this.body.material.forEach(m => {
+                        if (m.map) m.map.dispose();
+                        m.dispose();
+                    });
+                } else {
+                    if (this.body.material.map) this.body.material.map.dispose();
+                    this.body.material.dispose();
+                }
+            }
+        }
+
+        if (this.clouds) {
+            if (this.clouds.geometry) this.clouds.geometry.dispose();
+            if (this.clouds.material) {
+                if (Array.isArray(this.clouds.material)) {
+                    this.clouds.material.forEach(m => {
+                        if (m.map) m.map.dispose();
+                        m.dispose();
+                    });
+                } else {
+                    if (this.clouds.material.map) this.clouds.material.map.dispose();
+                    this.clouds.material.dispose();
+                }
+            }
+        }
+
+        // Remove from parent
+        this.orbitPivot.parent?.remove(this.orbitPivot);
+
+        // Null references
+        this.body = null;
+        this.clouds = null;
+        this.geometry = null;
+        this.orbitPivot = null;
+        this.objectRoot = null;
+        this.axialFrame = null;
+    }
 }

@@ -13,29 +13,27 @@ export class Planet extends CelestialBody
         orbitalSpeed = 0,
         detail = 5,
         color = 0xffffff,
+        hasClouds = false,
         parent = null,
     } = {}) 
     {
         // Prepare texture and material
-        const surfTexture = `./app/textures/${name}/day.jpg`;
-        const cloudTexture = `./app/textures/${name}/clouds.jpg`;
         let surfMat = null;
         let cloudMat = null;
         const loader = new THREE.TextureLoader();
-
-        
-        if (surfTexture) {
-            const surfTex = loader.load(surfTexture);
-            surfMat = new THREE.MeshStandardMaterial({
-                map: surfTex,
-                roughness: 1,
-                metalness: 0,
-                color,  
-            });
-        }
+    
+        const surfTexture = `./app/textures/${name}/day.jpg`;   
+        const surfTex = loader.load(surfTexture);
+        surfMat = new THREE.MeshStandardMaterial({
+            map: surfTex,
+            roughness: 1,
+            metalness: 0,
+            color,  
+        });
 
         // Cloud material
-        if (cloudTexture) {
+        if (hasClouds) {
+            const cloudTexture = `./app/textures/${name}/clouds.jpg`;
             const cloudTex = loader.load(cloudTexture);
             cloudMat = new THREE.MeshStandardMaterial({
                 map: cloudTex,
@@ -56,5 +54,10 @@ export class Planet extends CelestialBody
             cloudMat,
             parent,
         });
+    }
+
+    Dispose()
+    {
+        super.Dispose();
     }
 }
