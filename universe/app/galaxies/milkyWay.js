@@ -18,12 +18,6 @@ export class MilkyWay
         const A_typeNum = starNum * 0.007;
         const redMasiveNum = starNum * 0.0006;
         this.stars = [];
-        this.redDwarf = [];
-        this.K_type = [];
-        this.G_type = [];
-        this.F_type = [];
-        this.A_type = [];
-        this.redMasive = [];
 
 
         // Create SMBH
@@ -44,7 +38,6 @@ export class MilkyWay
             temperature: 5778,
             parent: this.SMBH.objectRoot,
         });
-        this.G_type.push(sun);
         this.stars.push(sun);
 
         // Create redDwarfs
@@ -65,7 +58,6 @@ export class MilkyWay
                 temperature: this.randomBetween(2500, 3300),
                 parent: this.SMBH.objectRoot,
             });
-            this.redDwarf.push(star);
             this.stars.push(star);
         }   
 
@@ -87,7 +79,6 @@ export class MilkyWay
                 temperature: this.randomBetween(3300, 4600),
                 parent: this.SMBH.objectRoot,
             });
-            this.K_type.push(star);
             this.stars.push(star);
         }  
 
@@ -109,7 +100,6 @@ export class MilkyWay
                 temperature: this.randomBetween(4600, 6200),
                 parent: this.SMBH.objectRoot,
             });
-            this.G_type.push(star);
             this.stars.push(star);
         }   
 
@@ -131,7 +121,6 @@ export class MilkyWay
                 temperature: this.randomBetween(6200, 7500),
                 parent: this.SMBH.objectRoot,
             });
-            this.F_type.push(star);
             this.stars.push(star);
         }   
 
@@ -153,7 +142,6 @@ export class MilkyWay
                 temperature: this.randomBetween(7500, 10000),
                 parent: this.SMBH.objectRoot,
             });
-            this.A_type.push(star);
             this.stars.push(star);
         }   
 
@@ -175,7 +163,6 @@ export class MilkyWay
                 temperature: this.randomBetween(2000, 3000),
                 parent: this.SMBH.objectRoot,
             });
-            this.redMasive.push(star);
             this.stars.push(star);
         }   
     }
@@ -194,38 +181,17 @@ export class MilkyWay
 
     Dispose() 
     {
-        // Dispose all stars
+        // Remove stars
         for (const star of this.stars) {
-            if (star.body) {
-                star.body.geometry.dispose();
-                if (Array.isArray(star.body.material)) {
-                    star.body.material.forEach(m => m.dispose());
-                } else star.body.material.dispose();
-            }
-            if (star.clouds) {
-                star.clouds.geometry.dispose();
-                if (Array.isArray(star.clouds.material)) {
-                    star.clouds.material.forEach(m => m.dispose());
-                } else star.clouds.material.dispose();
-            }
-            // Remove from parent
-            if (star.objectRoot && star.objectRoot.parent) {
-                star.objectRoot.parent.remove(star.objectRoot);
-            }
+            star.Dispose();
         }
 
-        // Dispose SMBH
-        if (this.SMBH.orbitPivot && this.SMBH.orbitPivot.parent) {
-            this.SMBH.orbitPivot.parent.remove(this.SMBH.orbitPivot);
+        // Remove SMBH
+        if (this.SMBH) {
+            this.SMBH.Dispose();
+            this.SMBH = null;
         }
 
-        // Clear arrays
         this.stars = [];
-        this.redDwarf = [];
-        this.K_type = [];
-        this.G_type = [];
-        this.F_type = [];
-        this.A_type = [];
-        this.redMasive = [];
     }
 }

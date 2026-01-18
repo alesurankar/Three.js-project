@@ -8,7 +8,8 @@ export class EarthOrbit
 {
     constructor(scene) 
     {
-        scene.background = SkyBox.Load("StarBox");
+        this.scene = scene;
+        this.scene.background = SkyBox.Load("StarBox");
         // Create Earth
         this.earth = new Planet({
             name: "earth",
@@ -16,9 +17,10 @@ export class EarthOrbit
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 23.44,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
-            detail: 10
+            detail: 10,
+            hasClouds: true,
         });
-        scene.add(this.earth.orbitPivot);
+        this.scene.add(this.earth.orbitPivot);
 
         // Create moon
         this.moon = new Planet({
@@ -43,16 +45,18 @@ export class EarthOrbit
     {
         // Remove Earth
         if (this.earth) {
-            this.earth.orbitPivot.parent?.remove(this.earth.orbitPivot);
             this.earth.Dispose();
             this.earth = null;
         }
-
         // Remove Moon
         if (this.moon) {
-            this.moon.orbitPivot.parent?.remove(this.moon.orbitPivot);
             this.moon.Dispose();
             this.moon = null;
+        }
+        // Dispose skybox
+        if (this.scene?.background) {
+            SkyBox.Dispose(this.scene.background);
+            this.scene.background = null;
         }
     }
 

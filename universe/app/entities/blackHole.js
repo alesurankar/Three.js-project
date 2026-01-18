@@ -34,4 +34,9 @@ export class BlackHole extends CelestialBody
             parent,
         });
     }
+    
+    Dispose()
+    {
+        super.Dispose();
+    }
 }

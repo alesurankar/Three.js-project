@@ -9,7 +9,8 @@ export class SolarSystem
 {
     constructor(scene) 
     {
-        scene.background = SkyBox.Load("SpaceBox");
+        this.scene = scene;
+        this.scene.background = SkyBox.Load("SpaceBox");
         // Create Sun
         this.sun = new Star({
             name: "sun",
@@ -19,8 +20,9 @@ export class SolarSystem
             axialRotationSpeed: StarSystem.AxialRotationInDays(25),
             orbitalSpeed: 0,
             temperature: 5778,
+            hasTexture: true,
         });
-        scene.add(this.sun.orbitPivot);
+        this.scene.add(this.sun.orbitPivot);
 
         // Create Mercury
         this.mercury = new Planet({
@@ -192,21 +194,67 @@ export class SolarSystem
         this.pluto.Update();
     }
 
-    Dispose() {
-        const bodies = [
-            this.sun, this.mercury, this.venus, this.earth, this.moon,
-            this.mars, this.jupiter, this.saturn, this.uranus, this.neptune, this.pluto
-        ];
-
-        for (const b of bodies) {
-            if (!b) continue;
-            b.orbitPivot.parent?.remove(b.orbitPivot);
-            b.body.geometry.dispose();
-            b.body.material.dispose();
-            if (b.clouds) {
-                b.clouds.geometry.dispose();
-                b.clouds.material.dispose();
-            }
+    Dispose() 
+    {
+        // Remove Sun
+        if (this.sun) {
+            this.sun.Dispose();
+            this.sun = null;
+        }
+        // Remove Mercury
+        if (this.mercury) {
+            this.mercury.Dispose();
+            this.mercury = null;
+        }
+        // Remove Venus
+        if (this.venus) {
+            this.venus.Dispose();
+            this.venus = null;
+        }
+        // Remove Earth
+        if (this.earth) {
+            this.earth.Dispose();
+            this.earth = null;
+        }
+        // Remove Moon
+        if (this.moon) {
+            this.moon.Dispose();
+            this.moon = null;
+        }
+        // Remove Mars
+        if (this.mars) {
+            this.mars.Dispose();
+            this.mars = null;
+        }
+        // Remove Jupiter
+        if (this.jupiter) {
+            this.jupiter.Dispose();
+            this.jupiter = null;
+        }
+        // Remove Saturn
+        if (this.saturn) {
+            this.saturn.Dispose();
+            this.saturn = null;
+        }
+        // Remove Uranus
+        if (this.uranus) {
+            this.uranus.Dispose();
+            this.uranus = null;
+        }
+        // Remove Neptune
+        if (this.neptune) {
+            this.neptune.Dispose();
+            this.neptune = null;
+        }
+        // Remove Pluto
+        if (this.pluto) {
+            this.pluto.Dispose();
+            this.pluto = null;
+        }
+        // Dispose skybox
+        if (this.scene?.background) {
+            SkyBox.Dispose(this.scene.background);
+            this.scene.background = null;
         }
     }
 }

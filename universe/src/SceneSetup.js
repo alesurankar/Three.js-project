@@ -3,8 +3,6 @@ import { SolarSystem } from "../app/systems/solarSystem.js";
 import { MilkyWay } from "../app/galaxies/milkyWay.js";
 import { EarthOrbit } from "../app/worlds/earthOrbit.js";
 import { SceneManager } from "./SceneManager.js";
-import { Test } from "../app/worlds/test.js";
-import { Test2 } from "../app/worlds/test2.js";
 
 
 // Scene
@@ -15,8 +13,7 @@ Scene.add(ambientLight);
 
 const manager = new SceneManager(Scene);
 
-//const scenes = [EarthOrbit, SolarSystem, MilkyWay];
-const scenes = [Test, Test2];
+const scenes = [EarthOrbit, SolarSystem, MilkyWay];
 
 let currentIndex = 1;
 manager.LoadScene(scenes[currentIndex]);
