@@ -7,6 +7,7 @@ export class Planet extends CelestialBody
     constructor({
         name = "planet",
         size = 4,
+        renderMode = "mesh",
         posToParent = new THREE.Vector3(700, 0, 0),
         axialTilt = 0,
         axialRotationSpeed = 0,
@@ -48,6 +49,7 @@ export class Planet extends CelestialBody
 
         super({
             size,
+            renderMode,
             posToParent,
             axialTilt,
             axialRotationSpeed,

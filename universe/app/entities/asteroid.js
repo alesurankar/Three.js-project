@@ -4,6 +4,7 @@ import { CelestialBody } from "./celestialBody.js";
 export class Asteroid extends CelestialBody {
     constructor({
         size = 1,
+        renderMode = "mesh",
         orbitNearRadius = 100,
         orbitFarRadius = 200,
         orbitalSpeed = 0.001,
@@ -24,7 +25,7 @@ export class Asteroid extends CelestialBody {
         );
 
         // Random size variation
-        const finalSize = size * (0.5 + Math.random() * 0.5);
+        const finalSize = size * (0.5 + Math.random());
 
         // Create geometry
         const geometry = new THREE.IcosahedronGeometry(size, detail);
@@ -32,6 +33,7 @@ export class Asteroid extends CelestialBody {
 
         super({
             size: finalSize,
+            renderMode,
             posToParent,
             axialRotationSpeed,
             orbitalSpeed,

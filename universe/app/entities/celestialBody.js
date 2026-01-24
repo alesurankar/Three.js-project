@@ -6,6 +6,7 @@ export class CelestialBody
     constructor(
     {
         size = 1,
+        renderMode = "mesh",
         posToParent = new THREE.Vector3(100, 0, 0),
         axialTilt = 0,
         axialRotationSpeed = 0,
@@ -16,7 +17,7 @@ export class CelestialBody
         parent = null, 
     } = {}) 
     {
-        if (size <= 1) {
+        if (renderMode === "points") {
            this.body = new THREE.Points(geometry, surfMat);
         }
         else {

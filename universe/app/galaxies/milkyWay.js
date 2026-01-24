@@ -48,6 +48,7 @@ export class MilkyWay
         this.sun = new Star({
             name: "sun",
             size: 1,
+            renderMode: "points",
             posToParent: new THREE.Vector3(10 * SMBH_Size, SMBH_Size, SMBH_Size),
             orbitalSpeed: baseSpeed,
             detail: 0,
@@ -64,6 +65,7 @@ export class MilkyWay
             const star = new Star({
                 name: `redDwarf${i}`,
                 size: size,
+                renderMode: "points",
                 posToParent: new THREE.Vector3(
                     Math.cos(i) * radius,
                     this.randomBetween(-5, 5),
@@ -85,6 +87,7 @@ export class MilkyWay
             const star = new Star({
                 name: `K_type${i}`,
                 size: size,
+                renderMode: "points",
                 posToParent: new THREE.Vector3(
                     Math.cos(i) * radius,
                     this.randomBetween(-5, 5),
@@ -106,6 +109,7 @@ export class MilkyWay
             const star = new Star({
                 name: `G_type${i}`,
                 size: size,
+                renderMode: "points",
                 posToParent: new THREE.Vector3(
                     Math.cos(i) * radius,
                     this.randomBetween(-5, 5),
@@ -127,6 +131,7 @@ export class MilkyWay
             const star = new Star({
                 name: `F_type${i}`,
                 size: size,
+                renderMode: "points",
                 posToParent: new THREE.Vector3(
                     Math.cos(i) * radius,
                     this.randomBetween(-5, 5),
@@ -148,6 +153,7 @@ export class MilkyWay
             const star = new Star({
                 name: `A_type${i}`,
                 size: size,
+                renderMode: "points",
                 posToParent: new THREE.Vector3(
                     Math.cos(i) * radius,
                     this.randomBetween(-5, 5),
@@ -169,6 +175,7 @@ export class MilkyWay
             const star = new Star({
                 name: `redMasive${i}`,
                 size: size,
+                renderMode: "points",
                 posToParent: new THREE.Vector3(
                     Math.cos(i) * radius,
                     this.randomBetween(-5, 5),

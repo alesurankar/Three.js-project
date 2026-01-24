@@ -17,8 +17,8 @@ export class EarthOrbit
             look_y: 0,
             look_z: 0,
             fov: 40,
-            near: 20,
-            far: 200000
+            near: 40,
+            far: 20000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");

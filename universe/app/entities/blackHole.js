@@ -7,6 +7,7 @@ export class BlackHole extends CelestialBody
     constructor({
         name = "blackHole",
         size = 10,
+        renderMode = "mesh",
         posToParent = new THREE.Vector3(0, 0, 0),
         axialTilt = 0,
         axialRotationSpeed = 0,
@@ -28,6 +29,7 @@ export class BlackHole extends CelestialBody
         // Call base constructor
         super({
             size,
+            renderMode,
             posToParent,
             axialTilt,
             axialRotationSpeed,

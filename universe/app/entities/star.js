@@ -7,6 +7,7 @@ export class Star extends CelestialBody
     constructor({
         name = "star",
         size = 20,
+        renderMode = "mesh",
         posToParent = new THREE.Vector3(0, 0, 0),
         axialTilt = 0,
         axialRotationSpeed = 0,
@@ -23,7 +24,7 @@ export class Star extends CelestialBody
         const starColor = Star.#ColorFromTemperature(temperature);
         const loader = new THREE.TextureLoader();
 
-        if (size <= 1) {
+        if (renderMode === "points") {
             const maxSize = 100
             const spriteSize = THREE.MathUtils.clamp(size * maxSize, 2, maxSize);
             const surfTexture = "./app/textures/star.png";
@@ -55,6 +56,7 @@ export class Star extends CelestialBody
         // Call base constructor
         super({
             size,
+            renderMode,
             posToParent,
             axialTilt,
             axialRotationSpeed,

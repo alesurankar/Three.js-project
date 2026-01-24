@@ -98,10 +98,10 @@ export class SolarSystem
 
         // Create asteroid belt
         this.asteroids = [];
-        const asteroidCount = 500;
+        const asteroidCount = 3000;
         for (let i = 0; i < asteroidCount; i++) {
             const asteroid = new Asteroid({
-                size: 0.8,
+                size: 1,
                 orbitFarRadius: 1900,
                 orbitNearRadius: 1700,
                 axialRotationSpeed: 0.0004,
@@ -219,13 +219,13 @@ export class SolarSystem
         const sunWorldPos = new THREE.Vector3();
         this.sun.objectRoot.getWorldPosition(sunWorldPos);
         const distanceToSun = this.camera.position.distanceTo(sunWorldPos);
-        if (distanceToSun <= 140) {
+        if (distanceToSun <= 150) {
             this.requestedScene = "MilkyWay";
         }
         const earthWorldPos = new THREE.Vector3();
         this.earth.objectRoot.getWorldPosition(earthWorldPos);
         const distanceToEarth = this.camera.position.distanceTo(earthWorldPos);
-        if (distanceToEarth <= 20) {
+        if (distanceToEarth <= 30) {
             this.requestedScene = "EarthOrbit";
         } 
         
