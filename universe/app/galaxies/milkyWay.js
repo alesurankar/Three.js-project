@@ -7,6 +7,18 @@ export class MilkyWay
 {
     constructor(scene) 
     {
+        this.cameraSettings = {
+            pos_x: -1000,
+            pos_y: 1000,
+            pos_z: 1000,
+            look_x: 0,
+            look_y: 0,
+            look_z: 0,
+            fov: 40,
+            near: 20,
+            far: 20000
+        };
+        this.scene = scene;
         const SMBH_Size = 140;
 
         const baseSpeed = 0.01;
@@ -26,7 +38,7 @@ export class MilkyWay
             size: SMBH_Size,
             posToParent: new THREE.Vector3(0, 0, 0),
         });
-        scene.add(this.SMBH.orbitPivot);
+        this.scene.add(this.SMBH.orbitPivot);
 
         // Create Sun
         const sun = new Star({

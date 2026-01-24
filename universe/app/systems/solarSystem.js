@@ -9,6 +9,17 @@ export class SolarSystem
 {
     constructor(scene) 
     {
+        this.cameraSettings = {
+            pos_x: -1000,
+            pos_y: 400,
+            pos_z: 0,
+            look_x: 0,
+            look_y: 0,
+            look_z: 0,
+            fov: 40,
+            near: 20,
+            far: 20000
+        };
         this.scene = scene;
         this.scene.background = SkyBox.Load("SpaceBox");
         // Create Sun

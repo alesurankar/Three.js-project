@@ -8,6 +8,17 @@ export class EarthOrbit
 {
     constructor(scene) 
     {
+        this.cameraSettings = {
+            pos_x: 500000,
+            pos_y: 0,
+            pos_z: 0,
+            look_x: 0,
+            look_y: 0,
+            look_z: 0,
+            fov: 40,
+            near: 40,
+            far: 2000000
+        };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         // Create Earth
