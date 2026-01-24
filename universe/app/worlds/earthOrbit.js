@@ -3,6 +3,7 @@ import { Planet } from "../entities/planet.js";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { SpaceStation } from "../entities/spaceStation.js";
+import { Star } from "../entities/star.js";
 
 
 export class EarthOrbit
@@ -65,6 +66,21 @@ export class EarthOrbit
             parent: this.earth.objectRoot,
         });
         this.objects.push(this.moon);
+
+        // Create Sun
+        this.sun = new Star({
+            name: "sun",
+            size: 100,
+            renderMode: "points",
+            lightType: "directionalLight",
+            targetObject: this.earth.objectRoot,
+            posToParent: new THREE.Vector3(10000, 0, 10000),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(365),
+            temperature: 5778,
+            sizeAtenuation: false,
+            parent: this.earth.objectRoot,
+        });
+        this.objects.push(this.sun);
     }
 
     Update() 

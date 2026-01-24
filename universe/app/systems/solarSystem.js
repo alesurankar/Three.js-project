@@ -32,6 +32,7 @@ export class SolarSystem
         this.sun = new Star({
             name: "sun",
             size: 110,
+            lightType: "pointLight",
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
             axialRotationSpeed: StarSystem.AxialRotationInDays(25),

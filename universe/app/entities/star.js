@@ -8,12 +8,15 @@ export class Star extends CelestialBody
         name = "star",
         size = 20,
         renderMode = "mesh",
+        lightType = "none",
+        targetObject = null,
         posToParent = new THREE.Vector3(0, 0, 0),
         axialTilt = 0,
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
         detail = 3,
         temperature = 6000,
+        sizeAtenuation = true,
         hasTexture = false,
         parent = null,
     } = {}) 
@@ -33,7 +36,8 @@ export class Star extends CelestialBody
                 size: spriteSize,
                 map: surfTex, 
                 vertexColors: true, 
-                transparent: true, 
+                transparent: true,
+                sizeAttenuation: sizeAtenuation,
             });
             
             geometry = new THREE.BufferGeometry();
@@ -66,7 +70,7 @@ export class Star extends CelestialBody
             parent,
         });
 
-        if (!parent) {
+        if (lightType === "pointLight") {
             this.light = new THREE.Group();
 
             // Light parameters
@@ -100,6 +104,20 @@ export class Star extends CelestialBody
             this.light.add(this.light4);
             this.light.add(this.light5);
             this.light.add(this.light6);
+        }
+        else if (lightType === "directionalLight") {
+            const intensity = 6; // scale with star size
+            this.light = new THREE.DirectionalLight(starColor, intensity);
+
+            // Place the light at the star's position
+            this.light.position.copy(posToParent);
+
+            // Set target: if none provided, default to origin
+            const target = targetObject || new THREE.Object3D();
+            if (!target.parent) this.objectRoot.add(target); // make sure it's in scene graph
+            this.light.target = target;
+
+            this.objectRoot.add(this.light);
         }
     }
 
