@@ -7,7 +7,7 @@ export class MilkyWay
 {
     constructor(scene, camera) 
     {
-        StarSystem.timeScale=8145075000
+        StarSystem.timeFactor=5000
         this.cameraSettings = {
             pos_x: -1000,
             pos_y: 1000,
@@ -25,7 +25,7 @@ export class MilkyWay
 
         const SMBH_Size = 140;
 
-        const baseSpeed = StarSystem.OrbitalRotationInDays(81450750000);
+        const baseSpeed = StarSystem.OrbitalRotationInDays(250);
         const starNum = 6000;
         const redDwarfNum = starNum * 0.72;
         const K_typeNum = starNum * 0.14;

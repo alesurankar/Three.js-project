@@ -9,7 +9,7 @@ export class SolarSystem
 {
     constructor(scene, camera) 
     {
-        StarSystem.timeScale=100
+        StarSystem.timeFactor=1000
         this.cameraSettings = {
             pos_x: -1000,
             pos_y: 400,

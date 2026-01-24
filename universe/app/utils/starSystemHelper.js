@@ -1,8 +1,8 @@
 export class StarSystem
 {
-    static timeScale = 1
+    static timeFactor = 1
     static get Sclae() {
-        return this.timeScale * 10;  // now it’s always recalculated
+        return this.timeFactor;  // now it’s always recalculated
     }
     static OrbitalRotationInDays(days, scale = StarSystem.Sclae) 
     {
