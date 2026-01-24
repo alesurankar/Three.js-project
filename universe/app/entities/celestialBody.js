@@ -20,13 +20,16 @@ export class CelestialBody
         if (renderMode === "points") {
            this.body = new THREE.Points(geometry, surfMat);
         }
-        else {
+        else if (renderMode === "mesh") {
             // Create the body mesh
             this.body = new THREE.Mesh(geometry, surfMat);
             if (cloudMat) {
                 this.clouds = new THREE.Mesh(geometry, cloudMat);
                 this.clouds.scale.set(1.03, 1.03, 1.03);
             }
+        }
+        else if (renderMode === "model") {
+            this.body = new THREE.Group(); // placeholder
         }
         
         

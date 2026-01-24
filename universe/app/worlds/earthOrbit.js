@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Planet } from "../entities/planet.js";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
+import { SpaceStation } from "../entities/spaceStation.js";
 
 
 export class EarthOrbit
@@ -17,7 +18,7 @@ export class EarthOrbit
             look_y: 0,
             look_z: 0,
             fov: 40,
-            near: 40,
+            near: 30,
             far: 20000
         };
         this.scene = scene;
@@ -39,6 +40,18 @@ export class EarthOrbit
         });
         this.scene.add(this.earth.orbitPivot);
         this.objects.push(this.earth);
+
+        // Create SpaceStation
+        this.spaceStation = new SpaceStation({
+            name: "sword",
+            size: 50,
+            posToParent: new THREE.Vector3(1200, 0, 0),
+            orbitRadius: 1100,
+            axialRotationSpeed: StarSystem.AxialRotationInDays(0.3),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.3),
+            parent: this.earth.objectRoot
+        });
+        this.objects.push(this.spaceStation);
 
         // Create moon
         this.moon = new Planet({
