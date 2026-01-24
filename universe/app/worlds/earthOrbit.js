@@ -35,7 +35,7 @@ export class EarthOrbit
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 23.44,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
-            detail: 10,
+            detail: 8,
             hasClouds: true,
         });
         this.scene.add(this.earth.orbitPivot);
@@ -47,8 +47,8 @@ export class EarthOrbit
             size: 50,
             posToParent: new THREE.Vector3(1200, 0, 0),
             orbitRadius: 1100,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.3),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.3),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(0.06),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.06),
             parent: this.earth.objectRoot
         });
         this.objects.push(this.spaceStation);
@@ -61,7 +61,7 @@ export class EarthOrbit
             axialTilt: 6.68,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
-            detail: 6,
+            detail: 3,
             parent: this.earth.objectRoot,
         });
         this.objects.push(this.moon);
