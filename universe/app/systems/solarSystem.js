@@ -3,7 +3,7 @@ import { Planet } from "../entities/planet.js";
 import { Star } from "../entities/star.js";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "..//visuals/skyBox.js";
-
+import { Asteroid } from "../entities/asteroid.js";
 
 export class SolarSystem 
 {
@@ -96,17 +96,21 @@ export class SolarSystem
             parent: this.sun.objectRoot,
         });
 
-        // // Create asteroid belt
-        // this.asteroids = new Asteroids({
-        //   asteroidCount: 10000,
-        //   orbitFarRadius: 1900,
-        //   orbitNearRadius: 1700,
-        //   axialRotationSpeed: axialTimeScale * 0.000014,
-        //   orbitRotationSpeed: asteroidBeltOrbitalSpeed,
-        //   thickness: 50,
-        //   size: 0.8,
-        //   parent: sun.group,
-        // });
+        // Create asteroid belt
+        this.asteroids = [];
+        const asteroidCount = 500;
+        for (let i = 0; i < asteroidCount; i++) {
+            const asteroid = new Asteroid({
+                size: 0.8,
+                orbitFarRadius: 1900,
+                orbitNearRadius: 1700,
+                axialRotationSpeed: 0.0004,
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
+                thickness: 50,
+                parent: this.sun.objectRoot
+            });
+            this.asteroids.push(asteroid);
+        }
         
         // Create jupiter
         this.jupiter = new Planet({
@@ -129,7 +133,7 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
             parent: this.sun.objectRoot,
         });
-        
+
         // // Create saturn ring
         // this.saturnRing = new Asteroids({
         //   asteroidCount: 6000,
@@ -201,7 +205,9 @@ export class SolarSystem
         this.earth.Update();
         this.moon.Update();
         this.mars.Update();
-        //this.asteroids.Update();
+        for (const asteroid of this.asteroids) {
+            asteroid.Update();
+        }
         this.jupiter.Update();
         this.saturn.Update();
         //this.saturnRing.Update();
@@ -257,6 +263,11 @@ export class SolarSystem
             this.mars.Dispose();
             this.mars = null;
         }
+        // Remove Asteroid Belt
+        for (const asteroid of this.asteroids) {
+            asteroid.Dispose();
+        }
+        this.asteroids = [];
         // Remove Jupiter
         if (this.jupiter) {
             this.jupiter.Dispose();

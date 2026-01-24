@@ -33,7 +33,6 @@ export class Star extends CelestialBody
                 map: surfTex, 
                 vertexColors: true, 
                 transparent: true, 
-                //depthWrite: false,
             });
             
             geometry = new THREE.BufferGeometry();
