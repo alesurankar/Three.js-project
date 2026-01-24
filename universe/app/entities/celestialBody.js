@@ -10,21 +10,24 @@ export class CelestialBody
         axialTilt = 0,
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
-        detail = 0,
         surfMat = null,
         cloudMat = null,
+        geometry = null,
         parent = null, 
     } = {}) 
     {
-        // Create geometry
-        this.geometry = new THREE.IcosahedronGeometry(size, detail);
-
-        // Create the body mesh
-        this.body = new THREE.Mesh(this.geometry, surfMat);
-        if (cloudMat) {
-            this.clouds = new THREE.Mesh(this.geometry, cloudMat);
-            this.clouds.scale.set(1.03, 1.03, 1.03);
+        if (size <= 1) {
+           this.body = new THREE.Points(geometry, surfMat);
         }
+        else {
+            // Create the body mesh
+            this.body = new THREE.Mesh(geometry, surfMat);
+            if (cloudMat) {
+                this.clouds = new THREE.Mesh(geometry, cloudMat);
+                this.clouds.scale.set(1.03, 1.03, 1.03);
+            }
+        }
+        
         
 
         // Create the groups
@@ -96,6 +99,7 @@ export class CelestialBody
         }
 
         // Remove from parent
+        this.orbitPivot.clear();
         this.orbitPivot.parent?.remove(this.orbitPivot);
 
         // Null references

@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { SolarSystem } from "../app/systems/solarSystem.js";
 import { MilkyWay } from "../app/galaxies/milkyWay.js";
 import { EarthOrbit } from "../app/worlds/earthOrbit.js";
+import { EmptyScene } from "../app/visuals/EmptyScene.js";
 import { SceneManager } from "./SceneManager.js";
 
 
@@ -13,9 +14,9 @@ Scene.add(ambientLight);
 
 const manager = new SceneManager(Scene);
 
-const scenes = [EarthOrbit, SolarSystem, MilkyWay];
+const scenes = [EmptyScene, EarthOrbit, SolarSystem, MilkyWay];
 
-let currentIndex = 1;
+let currentIndex = 0;
 manager.LoadScene(scenes[currentIndex]);
 
 window.addEventListener("keydown", (e) => {

@@ -10,7 +10,7 @@ export class MilkyWay
         const SMBH_Size = 140;
 
         const baseSpeed = 0.01;
-        const starNum = 10000;
+        const starNum = 6000;
         const redDwarfNum = starNum * 0.72;
         const K_typeNum = starNum * 0.14;
         const G_typeNum = starNum * 0.08;
@@ -42,7 +42,7 @@ export class MilkyWay
 
         // Create redDwarfs
         for (let i = 0, z = redDwarfNum; i < redDwarfNum; i++, z--) {
-            const size = this.randomBetween(0.1, 0.5);
+            const size = this.randomBetween(0.01, 0.05);
             const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
             const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
             const star = new Star({
@@ -63,7 +63,7 @@ export class MilkyWay
 
         // Create K_type stars
         for (let i = 0, z = K_typeNum; i < K_typeNum; i++, z--) {
-            const size = this.randomBetween(0.5, 0.9);
+            const size = this.randomBetween(0.05, 0.09);
             const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
             const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
             const star = new Star({
@@ -84,7 +84,7 @@ export class MilkyWay
 
         // Create G_type stars
         for (let i = 0, z = G_typeNum; i < G_typeNum; i++, z--) {
-            const size = this.randomBetween(0.9, 1.2);
+            const size = this.randomBetween(0.09, 0.12);
             const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
             const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
             const star = new Star({
@@ -105,7 +105,7 @@ export class MilkyWay
 
         // Create F_type stars
         for (let i = 0, z = F_typeNum; i < F_typeNum; i++, z--) {
-            const size = this.randomBetween(1.2, 2.0);
+            const size = this.randomBetween(0.1, 0.2);
             const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
             const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
             const star = new Star({
@@ -126,7 +126,7 @@ export class MilkyWay
 
         // Create A_type stars
         for (let i = 0, z = A_typeNum; i < A_typeNum; i++, z--) {
-            const size = this.randomBetween(2.0, 5.0);
+            const size = this.randomBetween(0.2, 0.5);
             const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
             const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
             const star = new Star({
@@ -147,7 +147,7 @@ export class MilkyWay
 
         // Create redMasive stars
         for (let i = 0, z = redMasiveNum; i < redMasiveNum; i++, z--) {
-            const size = this.randomBetween(5, 10);
+            const size = this.randomBetween(0.5, 1);
             const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
             const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
             const star = new Star({

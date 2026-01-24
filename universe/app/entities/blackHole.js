@@ -22,6 +22,9 @@ export class BlackHole extends CelestialBody
             opacity: 0.8,
         });
 
+        // Create geometry
+        const geometry = new THREE.IcosahedronGeometry(size, detail);
+
         // Call base constructor
         super({
             size,
@@ -29,8 +32,8 @@ export class BlackHole extends CelestialBody
             axialTilt,
             axialRotationSpeed,
             orbitalSpeed,
-            detail,
             surfMat,
+            geometry,
             parent,
         });
     }

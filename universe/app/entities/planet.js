@@ -42,6 +42,9 @@ export class Planet extends CelestialBody
                 blending: THREE.NormalBlending
             });
         }
+        
+         // Create geometry
+        const geometry = new THREE.IcosahedronGeometry(size, detail);
 
         super({
             size,
@@ -49,9 +52,9 @@ export class Planet extends CelestialBody
             axialTilt,
             axialRotationSpeed,
             orbitalSpeed,
-            detail,
             surfMat,
             cloudMat,
+            geometry,
             parent,
         });
     }

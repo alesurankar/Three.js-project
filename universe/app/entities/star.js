@@ -19,16 +19,38 @@ export class Star extends CelestialBody
     {
         // Prepare texture and material
         let surfMat = null;
+        let geometry = null;
         const starColor = Star.#ColorFromTemperature(temperature);
         const loader = new THREE.TextureLoader();
 
-        if (hasTexture) {
-            const surfTexture = `./app/textures/${name}/${name}.jpg`;
+        if (size <= 1) {
+            const maxSize = 100
+            const spriteSize = THREE.MathUtils.clamp(size * maxSize, 2, maxSize);
+            const surfTexture = "./app/textures/star.png";
             const surfTex = loader.load(surfTexture);
-            surfMat = new THREE.MeshBasicMaterial({ map: surfTex, color: starColor });
+            surfMat = new THREE.PointsMaterial({ 
+                size: spriteSize,
+                map: surfTex, 
+                vertexColors: true, 
+                transparent: true, 
+                //depthWrite: false,
+            });
+            
+            geometry = new THREE.BufferGeometry();
+            geometry.setAttribute("position",new THREE.Float32BufferAttribute([0, 0, 0], 3));
+            geometry.setAttribute("color", new THREE.Float32BufferAttribute([starColor.r, starColor.g, starColor.b], 3));
         }
         else {
-            surfMat = new THREE.MeshBasicMaterial({ color: starColor });
+            if (hasTexture) {
+                const surfTexture = `./app/textures/${name}/${name}.jpg`;
+                const surfTex = loader.load(surfTexture);
+                surfMat = new THREE.MeshBasicMaterial({ map: surfTex, color: starColor });
+            }
+            else {
+                surfMat = new THREE.MeshBasicMaterial({ color: starColor });
+            }
+            // Create geometry
+            geometry = new THREE.IcosahedronGeometry(size, detail);
         }
 
         // Call base constructor
@@ -38,8 +60,8 @@ export class Star extends CelestialBody
             axialTilt,
             axialRotationSpeed,
             orbitalSpeed,
-            detail,
             surfMat,
+            geometry,
             parent,
         });
 
