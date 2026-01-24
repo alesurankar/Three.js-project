@@ -9,6 +9,7 @@ export class SolarSystem
 {
     constructor(scene, camera) 
     {
+        StarSystem.timeScale=100
         this.cameraSettings = {
             pos_x: -1000,
             pos_y: 400,
@@ -209,7 +210,6 @@ export class SolarSystem
         this.neptune.Update();
         this.pluto.Update();
 
-        
         const sunWorldPos = new THREE.Vector3();
         this.sun.objectRoot.getWorldPosition(sunWorldPos);
         const distanceToSun = this.camera.position.distanceTo(sunWorldPos);

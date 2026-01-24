@@ -8,6 +8,7 @@ export class EarthOrbit
 {
     constructor(scene, camera) 
     {
+        StarSystem.timeScale=1
         this.cameraSettings = {
             pos_x: 200000,
             pos_y: 0,

@@ -1,12 +1,13 @@
 import * as THREE from "three";
 import { BlackHole } from "../entities/blackHole.js";
 import { Star } from "../entities/star.js";
-
+import { StarSystem } from "../utils/starSystemHelper.js"
 
 export class MilkyWay
 {
     constructor(scene, camera) 
     {
+        StarSystem.timeScale=8145075000
         this.cameraSettings = {
             pos_x: -1000,
             pos_y: 1000,
@@ -24,7 +25,7 @@ export class MilkyWay
 
         const SMBH_Size = 140;
 
-        const baseSpeed = 0.002;
+        const baseSpeed = StarSystem.OrbitalRotationInDays(81450750000);
         const starNum = 6000;
         const redDwarfNum = starNum * 0.72;
         const K_typeNum = starNum * 0.14;
