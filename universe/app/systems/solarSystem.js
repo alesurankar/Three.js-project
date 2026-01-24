@@ -7,7 +7,7 @@ import { SkyBox } from "..//visuals/skyBox.js";
 
 export class SolarSystem 
 {
-    constructor(scene) 
+    constructor(scene, camera) 
     {
         this.cameraSettings = {
             pos_x: -1000,
@@ -16,12 +16,17 @@ export class SolarSystem
             look_x: 0,
             look_y: 0,
             look_z: 0,
+            //position: { x, y, z },
+            //lookAt: { x, y, z },
             fov: 40,
             near: 20,
             far: 20000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("SpaceBox");
+        this.camera = camera;
+        this.requestedScene = null;
+
         // Create Sun
         this.sun = new Star({
             name: "sun",
@@ -203,6 +208,21 @@ export class SolarSystem
         //this.uranusRing.Update();
         this.neptune.Update();
         this.pluto.Update();
+
+        
+        const sunWorldPos = new THREE.Vector3();
+        this.sun.objectRoot.getWorldPosition(sunWorldPos);
+        const distanceToSun = this.camera.position.distanceTo(sunWorldPos);
+        if (distanceToSun <= 140) {
+            this.requestedScene = "MilkyWay";
+        }
+        const earthWorldPos = new THREE.Vector3();
+        this.earth.objectRoot.getWorldPosition(earthWorldPos);
+        const distanceToEarth = this.camera.position.distanceTo(earthWorldPos);
+        if (distanceToEarth <= 20) {
+            this.requestedScene = "EarthOrbit";
+        } 
+        
     }
 
     Dispose() 

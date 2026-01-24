@@ -5,7 +5,7 @@ import { Star } from "../entities/star.js";
 
 export class MilkyWay
 {
-    constructor(scene) 
+    constructor(scene, camera) 
     {
         this.cameraSettings = {
             pos_x: -1000,
@@ -19,9 +19,12 @@ export class MilkyWay
             far: 20000
         };
         this.scene = scene;
+        this.camera = camera;
+        this.requestedScene = null;
+
         const SMBH_Size = 140;
 
-        const baseSpeed = 0.01;
+        const baseSpeed = 0.002;
         const starNum = 6000;
         const redDwarfNum = starNum * 0.72;
         const K_typeNum = starNum * 0.14;
@@ -41,7 +44,7 @@ export class MilkyWay
         this.scene.add(this.SMBH.orbitPivot);
 
         // Create Sun
-        const sun = new Star({
+        this.sun = new Star({
             name: "sun",
             size: 1,
             posToParent: new THREE.Vector3(10 * SMBH_Size, SMBH_Size, SMBH_Size),
@@ -50,7 +53,7 @@ export class MilkyWay
             temperature: 5778,
             parent: this.SMBH.objectRoot,
         });
-        this.stars.push(sun);
+        this.stars.push(this.sun);
 
         // Create redDwarfs
         for (let i = 0, z = redDwarfNum; i < redDwarfNum; i++, z--) {
@@ -189,6 +192,13 @@ export class MilkyWay
         for (const star of this.stars) {
             star.Update();
         }
+
+        const sunWorldPos = new THREE.Vector3();
+        this.sun.objectRoot.getWorldPosition(sunWorldPos);
+        const distanceToSun = this.camera.position.distanceTo(sunWorldPos);
+        if (distanceToSun <= 100) {
+           this.requestedScene = "SolarSystem";
+        } 
     }
 
     Dispose() 

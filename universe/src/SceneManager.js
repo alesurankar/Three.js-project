@@ -1,3 +1,7 @@
+import { SolarSystem } from "../app/systems/solarSystem.js";
+import { MilkyWay } from "../app/galaxies/milkyWay.js";
+import { EarthOrbit } from "../app/worlds/earthOrbit.js";
+
 export class SceneManager 
 {
     constructor(scene, camera) 
@@ -20,7 +24,7 @@ export class SceneManager
 
     LoadScene(sceneClass) 
     {
-        this.currentScene = new sceneClass(this.scene);
+        this.currentScene = new sceneClass(this.scene, this.camera);
         this.UpdateCamera();
     }
 
@@ -34,5 +38,20 @@ export class SceneManager
     Update() 
     {
         if (this.currentScene) this.currentScene.Update();
+
+        if (!this.currentScene?.requestedScene) return;
+        switch (this.currentScene.requestedScene) {
+            case "EarthOrbit":
+                this.SwitchScene(EarthOrbit);
+                break;
+            case "SolarSystem":
+                this.SwitchScene(SolarSystem);
+                break;
+            case "MilkyWay":
+                this.SwitchScene(MilkyWay);
+                break;
+        }
+        // Reset the request after switching
+        this.currentScene.requestedScene = null;
     }
 }

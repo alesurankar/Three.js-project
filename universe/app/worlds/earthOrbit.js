@@ -6,10 +6,10 @@ import { SkyBox } from "../visuals/skyBox.js";
 
 export class EarthOrbit
 {
-    constructor(scene) 
+    constructor(scene, camera) 
     {
         this.cameraSettings = {
-            pos_x: 500000,
+            pos_x: 200000,
             pos_y: 0,
             pos_z: 0,
             look_x: 0,
@@ -21,6 +21,9 @@ export class EarthOrbit
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
+        this.camera = camera;
+        this.requestedScene = null;
+
         // Create Earth
         this.earth = new Planet({
             name: "earth",
@@ -50,6 +53,13 @@ export class EarthOrbit
     {
         this.earth.Update();
         this.moon.Update();
+
+        const earthWorldPos = new THREE.Vector3();
+        this.earth.objectRoot.getWorldPosition(earthWorldPos);
+        const distanceToEarth = this.camera.position.distanceTo(earthWorldPos);
+        if (distanceToEarth > 400000) {
+            this.requestedScene = "SolarSystem";
+        } 
     }
 
     Dispose() 
