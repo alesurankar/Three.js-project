@@ -28,7 +28,7 @@ export class MilkyWay
         const galaxyRadius = 100000;
 
         const baseSpeed = StarSystem.OrbitalRotationInDays(250);
-        const starNum = 6000;
+        const starNum = 3000;
         const redDwarfNum = starNum * 0.72;
         const K_typeNum = starNum * 0.14;
         const G_typeNum = starNum * 0.08;
@@ -48,7 +48,7 @@ export class MilkyWay
             name: "SMBH",
             size: 100 * SIZE_SCALE,
             posToParent: new THREE.Vector3(0, 0, 0),
-            axialRotationSpeed: baseSpeed,
+            axialRotationSpeed: baseSpeed * DISTANCE_SCALE * 30,
         });
         this.scene.add(this.SMBH.orbitPivot);
 
@@ -97,137 +97,143 @@ export class MilkyWay
         });
         this.stars.push(this.proximaCentauri);
 
-        // // Create redDwarfs
-        // for (let i = 0, z = redDwarfNum; i < redDwarfNum; i++, z--) {
-        //     const size = this.randomBetween(0.01, 0.05);
-        //     const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
-        //     const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
-        //     const star = new Star({
-        //         name: `redDwarf${i}`,
-        //         size: size,
-        //         renderMode: "points",
-        //         posToParent: new THREE.Vector3(
-        //             Math.cos(i) * radius,
-        //             this.randomBetween(-5, 5),
-        //             Math.sin(i) * radius
-        //         ),
-        //         orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-        //         detail: 0,
-        //         temperature: this.randomBetween(2500, 3300),
-        //         parent: this.SMBH.objectRoot,
-        //     });
-        //     this.stars.push(star);
-        // }   
+        // Create redDwarfs
+        for (let i = 0, z = redDwarfNum; i < redDwarfNum; i++, z--) {
+            const size = this.randomBetween(0.01 * SIZE_SCALE, 0.05 * SIZE_SCALE);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const falloff = 0.7;
+            const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
+            const star = new Star({
+                name: `redDwarf${i}`,
+                size: size,
+                renderMode: "points",
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(2500, 3300),
+                parent: this.SMBH.objectRoot,
+            });
+            this.stars.push(star);
+        }   
 
-        // // Create K_type stars
-        // for (let i = 0, z = K_typeNum; i < K_typeNum; i++, z--) {
-        //     const size = this.randomBetween(0.05, 0.09);
-        //     const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
-        //     const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
-        //     const star = new Star({
-        //         name: `K_type${i}`,
-        //         size: size,
-        //         renderMode: "points",
-        //         posToParent: new THREE.Vector3(
-        //             Math.cos(i) * radius,
-        //             this.randomBetween(-5, 5),
-        //             Math.sin(i) * radius
-        //         ),
-        //         orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-        //         detail: 0,
-        //         temperature: this.randomBetween(3300, 4600),
-        //         parent: this.SMBH.objectRoot,
-        //     });
-        //     this.stars.push(star);
-        // }  
+        // Create K_type stars
+        for (let i = 0, z = K_typeNum; i < K_typeNum; i++, z--) {
+            const size = this.randomBetween(0.05 * SIZE_SCALE, 0.09 * SIZE_SCALE);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const falloff = 0.7;
+            const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
+            const star = new Star({
+                name: `K_type${i}`,
+                size: size,
+                renderMode: "points",
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(3300, 4600),
+                parent: this.SMBH.objectRoot,
+            });
+            this.stars.push(star);
+        }  
 
-        // // Create G_type stars
-        // for (let i = 0, z = G_typeNum; i < G_typeNum; i++, z--) {
-        //     const size = this.randomBetween(0.09, 0.12);
-        //     const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
-        //     const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
-        //     const star = new Star({
-        //         name: `G_type${i}`,
-        //         size: size,
-        //         renderMode: "points",
-        //         posToParent: new THREE.Vector3(
-        //             Math.cos(i) * radius,
-        //             this.randomBetween(-5, 5),
-        //             Math.sin(i) * radius
-        //         ),
-        //         orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-        //         detail: 0,
-        //         temperature: this.randomBetween(4600, 6200),
-        //         parent: this.SMBH.objectRoot,
-        //     });
-        //     this.stars.push(star);
-        // }   
+        // Create G_type stars
+        for (let i = 0, z = G_typeNum; i < G_typeNum; i++, z--) {
+            const size = this.randomBetween(0.09 * SIZE_SCALE, 0.12 * SIZE_SCALE);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const falloff = 0.7;
+            const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
+            const star = new Star({
+                name: `G_type${i}`,
+                size: size,
+                renderMode: "points",
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(4600, 6200),
+                parent: this.SMBH.objectRoot,
+            });
+            this.stars.push(star);
+        }   
 
-        // // Create F_type stars
-        // for (let i = 0, z = F_typeNum; i < F_typeNum; i++, z--) {
-        //     const size = this.randomBetween(0.1, 0.2);
-        //     const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
-        //     const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
-        //     const star = new Star({
-        //         name: `F_type${i}`,
-        //         size: size,
-        //         renderMode: "points",
-        //         posToParent: new THREE.Vector3(
-        //             Math.cos(i) * radius,
-        //             this.randomBetween(-5, 5),
-        //             Math.sin(i) * radius
-        //         ),
-        //         orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-        //         detail: 0,
-        //         temperature: this.randomBetween(6200, 7500),
-        //         parent: this.SMBH.objectRoot,
-        //     });
-        //     this.stars.push(star);
-        // }   
+        // Create F_type stars
+        for (let i = 0, z = F_typeNum; i < F_typeNum; i++, z--) {
+            const size = this.randomBetween(0.1 * SIZE_SCALE, 0.2 * SIZE_SCALE);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const falloff = 0.7;
+            const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
+            const star = new Star({
+                name: `F_type${i}`,
+                size: size,
+                renderMode: "points",
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(6200, 7500),
+                parent: this.SMBH.objectRoot,
+            });
+            this.stars.push(star);
+        }   
 
-        // // Create A_type stars
-        // for (let i = 0, z = A_typeNum; i < A_typeNum; i++, z--) {
-        //     const size = this.randomBetween(0.2, 0.5);
-        //     const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
-        //     const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
-        //     const star = new Star({
-        //         name: `A_type${i}`,
-        //         size: size,
-        //         renderMode: "points",
-        //         posToParent: new THREE.Vector3(
-        //             Math.cos(i) * radius,
-        //             this.randomBetween(-5, 5),
-        //             Math.sin(i) * radius
-        //         ),
-        //         orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-        //         detail: 0,
-        //         temperature: this.randomBetween(7500, 10000),
-        //         parent: this.SMBH.objectRoot,
-        //     });
-        //     this.stars.push(star);
-        // }   
+        // Create A_type stars
+        for (let i = 0, z = A_typeNum; i < A_typeNum; i++, z--) {
+            const size = this.randomBetween(0.2 * SIZE_SCALE, 0.5 * SIZE_SCALE);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const falloff = 0.7;
+            const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
+            const star = new Star({
+                name: `A_type${i}`,
+                size: size,
+                renderMode: "points",
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(7500, 10000),
+                parent: this.SMBH.objectRoot,
+            });
+            this.stars.push(star);
+        }   
 
-        // // Create redMasive stars
-        // for (let i = 0, z = redMasiveNum; i < redMasiveNum; i++, z--) {
-        //     const size = this.randomBetween(0.5, 1);
-        //     const radius = this.randomBetween(SMBH_Size + size, 20 * SMBH_Size);
-        //     const angularSpeed = baseSpeed * Math.sqrt(SMBH_Size / radius);
-        //     const star = new Star({
-        //         name: `redMasive${i}`,
-        //         size: size,
-        //         renderMode: "points",
-        //         posToParent: new THREE.Vector3(
-        //             Math.cos(i) * radius,
-        //             this.randomBetween(-5, 5),
-        //             Math.sin(i) * radius
-        //         ),
-        //         orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-        //         detail: 0,
-        //         temperature: this.randomBetween(2000, 3000),
-        //         parent: this.SMBH.objectRoot,
-        //     });
-        //     this.stars.push(star);
-        // }   
+        // Create redMasive stars
+        for (let i = 0, z = redMasiveNum; i < redMasiveNum; i++, z--) {
+            const size = this.randomBetween(0.5 * SIZE_SCALE, 1 * SIZE_SCALE);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 100000);
+            const falloff = 0.7;
+            const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
+            const star = new Star({
+                name: `redMasive${i}`,
+                size: size,
+                renderMode: "points",
+                posToParent: new THREE.Vector3(
+                    Math.cos(i) * radius,
+                    this.randomBetween(-5, 5),
+                    Math.sin(i) * radius
+                ),
+                orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+                detail: 0,
+                temperature: this.randomBetween(2000, 3000),
+                parent: this.SMBH.objectRoot,
+            });
+            this.stars.push(star);
+        }   
     }
     
     randomBetween(min, max) {
