@@ -47,8 +47,9 @@ export class MilkyWay
         // Create SMBH
         this.SMBH = new BlackHole({
             name: "SMBH",
-            size: 1.8 * SIZE_SCALE,
+            size: 100 * SIZE_SCALE,
             posToParent: new THREE.Vector3(0, 0, 0),
+            axialRotationSpeed: baseSpeed,
         });
         this.scene.add(this.SMBH.orbitPivot);
 

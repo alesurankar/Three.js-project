@@ -7,37 +7,42 @@ export class BlackHole extends CelestialBody
     constructor({
         name = "blackHole",
         size = 10,
-        renderMode = "mesh",
         posToParent = new THREE.Vector3(0, 0, 0),
-        axialTilt = 0,
-        axialRotationSpeed = 0,
+        facingTo = new THREE.Vector3(0, 1, 0),
+        axialRotationSpeed = 0.01,
         orbitalSpeed = 0,
-        detail = 1,
-        color = 0x000000,
         parent = null,
     } = {}) 
     {
-        const surfMat = new THREE.MeshStandardMaterial({ 
-            color,
-            transparent: true,
-            opacity: 0.8,
-        });
+        // Prepare texture and material
+        const texture = new THREE.TextureLoader().load("./app/textures/blackHole.png");
 
-        // Create geometry
-        const geometry = new THREE.IcosahedronGeometry(size, detail);
+        // Use a plane as the geometry
+        const geometry = new THREE.PlaneGeometry(size, size);
+
+        const surfMat = new THREE.MeshBasicMaterial({
+            map: texture,
+            transparent: true,
+            side: THREE.DoubleSide,
+        });
 
         // Call base constructor
         super({
             size,
-            renderMode,
+            renderMode: "mesh",
             posToParent,
-            axialTilt,
             axialRotationSpeed,
             orbitalSpeed,
             surfMat,
             geometry,
             parent,
         });
+        this.body.lookAt(facingTo);
+    }
+
+    Update(dt) 
+    {
+        this.body.rotation.z += this.axialRotationSpeed * dt;
     }
     
     Dispose()
