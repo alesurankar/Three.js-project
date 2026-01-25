@@ -11,14 +11,16 @@ export class Engine
         this.lastTime = performance.now() / 1000;
         this.accumulator = 0;
 
-        this.gameControls = new GameControls(Camera, document.body);
+        this.timeScale = 1;
 
+        this.gameControls = new GameControls(Camera, document.body);
         this.MainLoop = this.MainLoop.bind(this);
     }
 
     MainLoop(now) 
     {
         now /= 1000;
+
         const frameTime = now - this.lastTime;
         this.lastTime = now;
 
@@ -27,7 +29,7 @@ export class Engine
         // Fixed-step updates
         while (this.accumulator >= this.FIXED_DT) {
             this.gameControls.Update();
-            SceneUpdate();
+            SceneUpdate(this.timeScale);
             this.accumulator -= this.FIXED_DT;
         }
 
@@ -39,5 +41,19 @@ export class Engine
     Start() 
     {
         requestAnimationFrame(this.MainLoop);
+    }
+
+    ToggleLock() 
+    {
+        this.gameControls.ToggleLock();
+    }
+
+    get locked() 
+    {
+        return this.gameControls.isLocked();
+    }
+
+    SetTimeScale(scale) {
+        this.timeScale = Math.max(0, scale);
     }
 }

@@ -7,7 +7,8 @@ export class MilkyWay
 {
     constructor(scene, camera) 
     {
-        StarSystem.timeFactor=5000
+        StarSystem.timeFactor=500
+
         this.cameraSettings = {
             pos_x: -1000,
             pos_y: 1000,
@@ -194,7 +195,7 @@ export class MilkyWay
         return Math.random() * (max - min) + min;
     }
 
-    Update() 
+    Update(timeScale) 
     {
         this.SMBH.Update();
         for (const star of this.stars) {

@@ -6,12 +6,19 @@ export class GameControls
   constructor(camera, domElement = document.body) 
   {
     this.camera = camera;
+    this.domElement = domElement;
 
-    // PointerLockControls for mouse-look
     this.controls = new PointerLockControls(camera, domElement);
+    
+    this.onLock = null;
+    this.onUnlock = null;
 
-    domElement.addEventListener("click", () => {
-      this.controls.lock();
+    this.controls.addEventListener("lock", () => {
+      this.onLock?.();
+    });
+
+    this.controls.addEventListener("unlock", () => {
+      this.onUnlock?.();
     });
 
     this.move = {
@@ -26,33 +33,40 @@ export class GameControls
 
     document.addEventListener("keydown", (e) => this.#OnKeyDown(e));
     document.addEventListener("keyup", (e) => this.#OnKeyUp(e));
+ 
+    // ESC unlock support
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Escape") this.Unlock();
+    });
   }
 
-  #OnKeyDown(event) {
-    switch (event.code) {
-      case "KeyW": this.move.forward = true; break;
-      case "KeyS": this.move.backward = true; break;
-      case "KeyA": this.move.left = true; break;
-      case "KeyD": this.move.right = true; break;
-      case "KeyV": this.move.down = true; break;
-      case "ShiftLeft": this.move.fast = true; break;
-      case "Space": this.move.up = true; break;
+  ToggleLock() 
+  {
+    if (this.controls.isLocked) {
+      this.controls.unlock();
+    } 
+    else {
+      this.controls.lock();
     }
   }
 
-  #OnKeyUp(event) {
-    switch (event.code) {
-      case "KeyW": this.move.forward = false; break;
-      case "KeyS": this.move.backward = false; break;
-      case "KeyA": this.move.left = false; break;
-      case "KeyD": this.move.right = false; break;
-      case "KeyV": this.move.down = false; break;
-      case "ShiftLeft": this.move.fast = false; break;
-      case "Space": this.move.up = false; break;
-    }
+  Lock() 
+  {
+    this.controls.lock();
   }
 
-  Update() {
+  Unlock() 
+  {
+    this.controls.unlock();
+  }
+
+  IsLocked() 
+  {
+    return this.controls.isLocked;
+  }
+
+  Update() 
+  {
     if (!this.controls.isLocked) return;
 
     const velocity = new THREE.Vector3();
@@ -75,5 +89,31 @@ export class GameControls
     if (this.move.down) velocity.y -= speed;
 
     this.controls.getObject().position.add(velocity);
+  }
+
+  #OnKeyDown(event) 
+  {
+    switch (event.code) {
+      case "KeyW": this.move.forward = true; break;
+      case "KeyS": this.move.backward = true; break;
+      case "KeyA": this.move.left = true; break;
+      case "KeyD": this.move.right = true; break;
+      case "KeyV": this.move.down = true; break;
+      case "ShiftLeft": this.move.fast = true; break;
+      case "Space": this.move.up = true; break;
+    }
+  }
+
+  #OnKeyUp(event) 
+  {
+    switch (event.code) {
+      case "KeyW": this.move.forward = false; break;
+      case "KeyS": this.move.backward = false; break;
+      case "KeyA": this.move.left = false; break;
+      case "KeyD": this.move.right = false; break;
+      case "KeyV": this.move.down = false; break;
+      case "ShiftLeft": this.move.fast = false; break;
+      case "Space": this.move.up = false; break;
+    }
   }
 }

@@ -35,9 +35,9 @@ export class SceneManager
         this.LoadScene(sceneClass);
     }
 
-    Update() 
+    Update(timeScale) 
     {
-        if (this.currentScene) this.currentScene.Update();
+        if (this.currentScene) this.currentScene.Update(timeScale);
 
         if (!this.currentScene?.requestedScene) return;
         switch (this.currentScene.requestedScene) {

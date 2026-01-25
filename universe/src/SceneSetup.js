@@ -14,7 +14,7 @@ const manager = new SceneManager(Scene, Camera);
 
 manager.LoadScene(SolarSystem);
 
-export function Update() 
+export function Update(timeScale) 
 {
-    manager.Update();
+    manager.Update(timeScale);
 }

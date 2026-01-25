@@ -9,7 +9,8 @@ export class SolarSystem
 {
     constructor(scene, camera) 
     {
-        StarSystem.timeFactor=1000
+        StarSystem.timeFactor=100
+       
         this.cameraSettings = {
             pos_x: -1000,
             pos_y: 400,
@@ -198,7 +199,7 @@ export class SolarSystem
         });
     }
 
-    Update() 
+    Update(timeScale) 
     {
         this.sun.Update();
         this.mercury.Update();

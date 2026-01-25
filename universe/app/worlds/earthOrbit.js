@@ -10,7 +10,7 @@ export class EarthOrbit
 {
     constructor(scene, camera) 
     {
-        StarSystem.timeFactor=10
+        StarSystem.timeFactor=1
         this.cameraSettings = {
             pos_x: 2000,
             pos_y: 0,
@@ -83,7 +83,7 @@ export class EarthOrbit
         this.objects.push(this.sun);
     }
 
-    Update() 
+    Update(timeScale) 
     {
         this.objects.forEach(obj => obj.Update());
 

@@ -1,6 +1,6 @@
 export class StarSystem
 {
-    static timeFactor = 1
+    timeFactor = 1
     static get Sclae() {
         return this.timeFactor;  // now it’s always recalculated
     }
