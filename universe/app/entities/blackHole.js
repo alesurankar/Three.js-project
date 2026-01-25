@@ -8,7 +8,7 @@ export class BlackHole extends CelestialBody
         name = "blackHole",
         size = 10,
         posToParent = new THREE.Vector3(0, 0, 0),
-        facingTo = new THREE.Vector3(0, 1, 0),
+        facingTo = new THREE.Vector3(0, -1, 0),
         axialRotationSpeed = 0.01,
         orbitalSpeed = 0,
         parent = null,
@@ -42,7 +42,7 @@ export class BlackHole extends CelestialBody
 
     Update(dt) 
     {
-        this.body.rotation.z += this.axialRotationSpeed * dt;
+        this.body.rotation.z -= this.axialRotationSpeed * dt;
     }
     
     Dispose()

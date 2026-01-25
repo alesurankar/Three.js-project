@@ -4,6 +4,7 @@ import { Star } from "../entities/star.js";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { Asteroid } from "../entities/asteroid.js";
+import { BlackHole } from "../entities/blackHole.js";
 
 export class SolarSystem 
 {
@@ -12,8 +13,8 @@ export class SolarSystem
         StarSystem.timeFactor=100
        
         this.cameraSettings = {
-            pos_x: -1000,
-            pos_y: 400,
+            pos_x: 1500,
+            pos_y: 1500,
             pos_z: 0,
             look_x: 0,
             look_y: 0,
@@ -42,6 +43,14 @@ export class SolarSystem
             hasTexture: true,
         });
         this.scene.add(this.sun.orbitPivot);
+
+        // Create Wormhole
+        this.wormhole = new BlackHole({
+            size: 200,
+            posToParent: new THREE.Vector3(2000, 2000, 0),
+            facingTo: new THREE.Vector3(0, 0, 0),
+            parent: this.sun.objectRoot,
+        });
 
         // Create Mercury
         this.mercury = new Planet({
@@ -202,6 +211,7 @@ export class SolarSystem
     Update(dt) 
     {
         this.sun.Update(dt);
+        this.wormhole.Update(dt);
         this.mercury.Update(dt);
         this.venus.Update(dt);
         this.earth.Update(dt);
@@ -218,10 +228,10 @@ export class SolarSystem
         this.neptune.Update(dt);
         this.pluto.Update(dt);
 
-        const sunWorldPos = new THREE.Vector3();
-        this.sun.objectRoot.getWorldPosition(sunWorldPos);
-        const distanceToSun = this.camera.position.distanceTo(sunWorldPos);
-        if (distanceToSun <= 150) {
+        const wormholeWorldPos = new THREE.Vector3();
+        this.wormhole.objectRoot.getWorldPosition(wormholeWorldPos);
+        const distanceToWrmhole = this.camera.position.distanceTo(wormholeWorldPos);
+        if (distanceToWrmhole <= 100) {
             this.requestedScene = "MilkyWay";
         }
         const earthWorldPos = new THREE.Vector3();
@@ -239,6 +249,11 @@ export class SolarSystem
         if (this.sun) {
             this.sun.Dispose();
             this.sun = null;
+        }
+        // Remove Wormhole
+        if (this.wormhole) {
+            this.wormhole.Dispose();
+            this.wormhole = null;
         }
         // Remove Mercury
         if (this.mercury) {
@@ -304,6 +319,5 @@ export class SolarSystem
 }
 
 // // Orbitral Speeds
-// const asteroidBeltOrbitalSpeed    = orbitalSpeedFromDays(1570, orbitalTimeScale);
 // const saturnRingOrbitalSpeed    = orbitalSpeedFromDays(0.6, orbitalTimeScale);
 // const uranusRingOrbitalSpeed    = -orbitalSpeedFromDays(0.26, orbitalTimeScale); //retrograde
