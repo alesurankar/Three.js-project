@@ -8,6 +8,7 @@ engine.Start();
 // --- GUI hooks---
 const lockIn = document.getElementById("lockIn");
 const timeScale = document.getElementById("timeScale");
+const sceneLevel = document.getElementById("sceneLevel");
 
 lockIn.onclick = () => {
   engine.ToggleLock();
