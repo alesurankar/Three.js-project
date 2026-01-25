@@ -25,7 +25,7 @@ export class SolarSystem
             far: 20000
         };
         this.scene = scene;
-        this.scene.background = SkyBox.Load("SpaceBox");
+        this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this.requestedScene = null;
 
