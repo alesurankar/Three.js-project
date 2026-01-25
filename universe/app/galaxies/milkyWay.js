@@ -22,7 +22,7 @@ export class MilkyWay
             far: 20000
         };
         this.scene = scene;
-        this.scene.background = SkyBox.Load("BlueBox");
+        this.scene.background = SkyBox.Load("GalaxyBox");
         this.camera = camera;
         this.requestedScene = null;
 
