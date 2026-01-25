@@ -28,7 +28,6 @@ export class SolarSystem
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
-        this.requestedScene = null;
 
         // Create Sun
         this.sun = new Star({

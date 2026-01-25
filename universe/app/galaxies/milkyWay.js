@@ -24,7 +24,6 @@ export class MilkyWay
         this.scene = scene;
         this.scene.background = SkyBox.Load("GalaxyBox");
         this.camera = camera;
-        this.requestedScene = null;
 
         const galaxyRadius = 100000;
 
@@ -248,6 +247,12 @@ export class MilkyWay
         if (distanceToSun <= 25) {
            this.requestedScene = "SolarSystem";
         } 
+        const AlphaCenturyWorldPos = new THREE.Vector3();
+        this.alphaCentauriA.objectRoot.getWorldPosition(AlphaCenturyWorldPos);
+        const distanceToAlphaCentury = this.camera.position.distanceTo(AlphaCenturyWorldPos);
+        if (distanceToAlphaCentury <= 25) {
+           this.requestedScene = "AlphaCenturySystem";
+        } 
     }
 
     Dispose() 
@@ -256,13 +261,18 @@ export class MilkyWay
         for (const star of this.stars) {
             star.Dispose();
         }
+        this.stars = [];
 
         // Remove SMBH
         if (this.SMBH) {
             this.SMBH.Dispose();
             this.SMBH = null;
         }
-
-        this.stars = [];
+        
+        // Dispose skybox
+        if (this.scene?.background) {
+            SkyBox.Dispose(this.scene.background);
+            this.scene.background = null;
+        }
     }
 }

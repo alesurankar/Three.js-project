@@ -1,4 +1,5 @@
 import { SolarSystem } from "../app/starSystems/solarSystem.js";
+import { AlphaCenturySystem } from "../app/starSystems/alphaCentauriSystem.js";
 import { MilkyWay } from "../app/galaxies/milkyWay.js";
 import { EarthOrbit } from "../app/worlds/earthOrbit.js";
 
@@ -46,6 +47,9 @@ export class SceneManager
                 break;
             case "SolarSystem":
                 this.SwitchScene(SolarSystem);
+                break;
+            case "AlphaCenturySystem":
+                this.SwitchScene(AlphaCenturySystem);
                 break;
             case "MilkyWay":
                 this.SwitchScene(MilkyWay);
