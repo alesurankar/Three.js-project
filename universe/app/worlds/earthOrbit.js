@@ -83,9 +83,9 @@ export class EarthOrbit
         this.objects.push(this.sun);
     }
 
-    Update(timeScale) 
+    Update(dt) 
     {
-        this.objects.forEach(obj => obj.Update());
+        this.objects.forEach(obj => obj.Update(dt));
 
         const earthWorldPos = new THREE.Vector3();
         this.earth.objectRoot.getWorldPosition(earthWorldPos);

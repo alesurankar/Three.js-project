@@ -58,15 +58,15 @@ export class CelestialBody
         if (parent) parent.add(this.orbitPivot);
     }
 
-    Update() 
+    Update(dt) 
     {
         // Orbit parent
-        this.orbitPivot.rotation.y += this.orbitalSpeed;
+        this.orbitPivot.rotation.y += this.orbitalSpeed * dt;
 
         // Spin around own axis
-        this.body.rotation.y += this.axialRotationSpeed;
+        this.body.rotation.y += this.axialRotationSpeed * dt;
         if (this.clouds) {
-            this.clouds.rotation.y += this.axialRotationSpeed * 1.1;
+            this.clouds.rotation.y += this.axialRotationSpeed * 1.1 * dt;
         }
     }
 

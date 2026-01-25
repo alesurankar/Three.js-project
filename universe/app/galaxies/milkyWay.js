@@ -7,7 +7,7 @@ export class MilkyWay
 {
     constructor(scene, camera) 
     {
-        StarSystem.timeFactor=500
+        StarSystem.timeFactor=250
 
         this.cameraSettings = {
             pos_x: -1000,
@@ -195,11 +195,11 @@ export class MilkyWay
         return Math.random() * (max - min) + min;
     }
 
-    Update(timeScale) 
+    Update(dt) 
     {
-        this.SMBH.Update();
+        this.SMBH.Update(dt);
         for (const star of this.stars) {
-            star.Update();
+            star.Update(dt);
         }
 
         const sunWorldPos = new THREE.Vector3();

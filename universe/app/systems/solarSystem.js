@@ -199,24 +199,24 @@ export class SolarSystem
         });
     }
 
-    Update(timeScale) 
+    Update(dt) 
     {
-        this.sun.Update();
-        this.mercury.Update();
-        this.venus.Update();
-        this.earth.Update();
-        this.moon.Update();
-        this.mars.Update();
+        this.sun.Update(dt);
+        this.mercury.Update(dt);
+        this.venus.Update(dt);
+        this.earth.Update(dt);
+        this.moon.Update(dt);
+        this.mars.Update(dt);
         for (const asteroid of this.asteroids) {
-            asteroid.Update();
+            asteroid.Update(dt);
         }
-        this.jupiter.Update();
-        this.saturn.Update();
-        //this.saturnRing.Update();
-        this.uranus.Update();
-        //this.uranusRing.Update();
-        this.neptune.Update();
-        this.pluto.Update();
+        this.jupiter.Update(dt);
+        this.saturn.Update(dt);
+        //this.saturnRing.Update(dt);
+        this.uranus.Update(dt);
+        //this.uranusRing.Update(dt);
+        this.neptune.Update(dt);
+        this.pluto.Update(dt);
 
         const sunWorldPos = new THREE.Vector3();
         this.sun.objectRoot.getWorldPosition(sunWorldPos);
