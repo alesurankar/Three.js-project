@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { SolarSystem } from "../app/systems/solarSystem.js";
+import { SolarSystem } from "../app/starSystems/solarSystem.js";
 import { SceneManager } from "./SceneManager.js";
 import { Camera } from "./RendererSetup.js";
 

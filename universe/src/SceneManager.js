@@ -1,4 +1,4 @@
-import { SolarSystem } from "../app/systems/solarSystem.js";
+import { SolarSystem } from "../app/starSystems/solarSystem.js";
 import { MilkyWay } from "../app/galaxies/milkyWay.js";
 import { EarthOrbit } from "../app/worlds/earthOrbit.js";
 
