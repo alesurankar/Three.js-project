@@ -36,7 +36,7 @@ export class AlphaCenturySystem
         this.acA = new Star({
             size: 110,
             posToParent: new THREE.Vector3(900, 0, 0),
-            orbitalSpeed: 0.02,
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
             temperature: 5790,
             parent: this.barycenter,
         });
@@ -46,7 +46,7 @@ export class AlphaCenturySystem
         this.acB = new Star({
             size: 90,
             posToParent: new THREE.Vector3(-720, 0, 0),
-            orbitalSpeed: 0.02,
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
             temperature: 5200,
             parent: this.barycenter,
         });
@@ -56,7 +56,7 @@ export class AlphaCenturySystem
         this.pc = new Star({
             size: 30,
             posToParent: new THREE.Vector3(8000, 0, 0),
-            orbitalSpeed: 0.00002,
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(365000),
             temperature: 3000,
             parent: this.barycenter,
         });
