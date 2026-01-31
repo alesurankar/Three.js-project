@@ -94,6 +94,7 @@ export class AlphaCenturySystem
     {
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
+        this.sceneTriggers = [];
 
         if (this.barycenter) {
             this.barycenter.clear();

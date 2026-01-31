@@ -24,7 +24,7 @@ export class SolarSystem
         this.camera = camera;
 
         this.objects = [];
-        const sizeFactor = 0.5
+        const sizeFactor = 1
         const sunSize = 110 * sizeFactor; 
         const wormholeSize = 100 * sizeFactor;
         const mercurySize = 4 * sizeFactor;
@@ -131,7 +131,7 @@ export class SolarSystem
         this.objects.push(this.mars);
 
         // Create asteroid belt
-        const asteroidCount = 3000;
+        const asteroidCount = 2000;
         for (let i = 0; i < asteroidCount; i++) {
             const asteroid = new Asteroid({
                 size: asteroidBeltSize,
@@ -173,7 +173,7 @@ export class SolarSystem
         this.objects.push(this.saturn);
 
         // Create saturn ring
-        const saturnRingCount = 3000;
+        const saturnRingCount = 2000;
         for (let i = 0; i < saturnRingCount; i++) {
             const saturnRing = new Asteroid({
                 size: saturnRingSize,
@@ -204,7 +204,7 @@ export class SolarSystem
 
         // // Create uranus ring
         this.uranusRing = [];
-        const uranusRingCount = 1200;
+        const uranusRingCount = 600;
         for (let i = 0; i < uranusRingCount; i++) {
             const uranusRing = new Asteroid({
                 size: uranusRingSize,
@@ -273,7 +273,8 @@ export class SolarSystem
     {
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
-        
+        this.sceneTriggers = [];
+
         // Dispose skybox
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);

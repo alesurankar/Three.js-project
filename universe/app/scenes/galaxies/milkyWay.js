@@ -21,17 +21,17 @@ export class MilkyWay
         this.scene.background = SkyBox.Load("GalaxyBox");
         this.camera = camera;
 
-        const galaxyRadius = 100000;
+        const galaxyRadius = 60000;
 
         const baseSpeed = StarSystem.OrbitalRotationInDays(250);
-        const starNum = 3000;
+        const starNum = 2000;
         const redDwarfNum = starNum * 0.72;
         const K_typeNum = starNum * 0.14;
         const G_typeNum = starNum * 0.08;
         const F_typeNum = starNum * 0.03;
         const A_typeNum = starNum * 0.007;
         const redMasiveNum = starNum * 0.0006;
-        this.stars = [];
+
 
         // Scale constants
         const SIZE_SCALE = 4;
@@ -39,18 +39,27 @@ export class MilkyWay
         const LOCAL_SCALE = 200; // scale down small interstellar distances
         const sunPos = new THREE.Vector3(26700 * DISTANCE_SCALE, 0, 0);
 
+        this.objects = [];
+        const SMBHSize = 100 * SIZE_SCALE;
+        const sunSize = 0.1 * SIZE_SCALE;
+        const alphaCentauriASize = 0.08 * SIZE_SCALE;
+        const alphaCentauriBSize = 0.08 * SIZE_SCALE;
+        const proximaCentauri = 0.07 * SIZE_SCALE;
+
+
         // Create SMBH
         this.SMBH = new BlackHole({
             name: "SMBH",
-            size: 100 * SIZE_SCALE,
+            size: SMBHSize,
             posToParent: new THREE.Vector3(0, 0, 0),
             axialRotationSpeed: baseSpeed * DISTANCE_SCALE * 30,
         });
         this.scene.add(this.SMBH.orbitPivot);
+        this.objects.push(this.SMBH);
 
         // Create Sun
         this.sun = new Star({
-            size: 0.1 * SIZE_SCALE,
+            size: sunSize,
             renderMode: "points",
             posToParent: sunPos,
             orbitalSpeed: baseSpeed,
@@ -58,10 +67,10 @@ export class MilkyWay
             temperature: 5778,
             parent: this.SMBH.objectRoot,
         });
-        this.stars.push(this.sun);
+        this.objects.push(this.sun);
 
         this.alphaCentauriA = new Star({
-            size: 0.08 * SIZE_SCALE,
+            size: alphaCentauriASize,
             renderMode: "points",
             posToParent: new THREE.Vector3(sunPos.x + 3.5*LOCAL_SCALE, sunPos.y - 1.2*LOCAL_SCALE + 0.02*LOCAL_SCALE, sunPos.z-1.0*LOCAL_SCALE + 0.02*LOCAL_SCALE),
             orbitalSpeed: baseSpeed,
@@ -69,10 +78,10 @@ export class MilkyWay
             temperature: 5790,
             parent: this.SMBH.objectRoot,
         });
-        this.stars.push(this.alphaCentauriA);
+        this.objects.push(this.alphaCentauriA);
 
         this.alphaCentauriB = new Star({
-            size: 0.08 * SIZE_SCALE,
+            size: alphaCentauriBSize,
             renderMode: "points",
             posToParent: new THREE.Vector3(sunPos.x + 3.5*LOCAL_SCALE, sunPos.y - 1.2*LOCAL_SCALE - 0.02*LOCAL_SCALE, sunPos.z - 1.0*LOCAL_SCALE + 0.02*LOCAL_SCALE),
             orbitalSpeed: baseSpeed,
@@ -80,10 +89,10 @@ export class MilkyWay
             temperature: 5200,
             parent: this.SMBH.objectRoot,
         });
-        this.stars.push(this.alphaCentauriB);
+        this.objects.push(this.alphaCentauriB);
 
         this.proximaCentauri = new Star({
-            size: 0.07 * SIZE_SCALE,
+            size: proximaCentauri,
             renderMode: "points",
             posToParent: new THREE.Vector3(sunPos.x + 3.5*LOCAL_SCALE, sunPos.y - 1.2*LOCAL_SCALE, sunPos.z - 1.05*LOCAL_SCALE - 0.02*LOCAL_SCALE),
             orbitalSpeed: baseSpeed,
@@ -91,12 +100,12 @@ export class MilkyWay
             temperature: 3000,
             parent: this.SMBH.objectRoot,
         });
-        this.stars.push(this.proximaCentauri);
+        this.objects.push(this.proximaCentauri);
 
         // Create redDwarfs
         for (let i = 0, z = redDwarfNum; i < redDwarfNum; i++, z--) {
             const size = this.randomBetween(0.01 * SIZE_SCALE, 0.05 * SIZE_SCALE);
-            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * galaxyRadius);
             const falloff = 0.7;
             const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
             const star = new Star({
@@ -113,13 +122,13 @@ export class MilkyWay
                 temperature: this.randomBetween(2500, 3300),
                 parent: this.SMBH.objectRoot,
             });
-            this.stars.push(star);
+            this.objects.push(star);
         }   
 
         // Create K_type stars
         for (let i = 0, z = K_typeNum; i < K_typeNum; i++, z--) {
             const size = this.randomBetween(0.05 * SIZE_SCALE, 0.09 * SIZE_SCALE);
-            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * galaxyRadius);
             const falloff = 0.7;
             const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
             const star = new Star({
@@ -136,13 +145,13 @@ export class MilkyWay
                 temperature: this.randomBetween(3300, 4600),
                 parent: this.SMBH.objectRoot,
             });
-            this.stars.push(star);
+            this.objects.push(star);
         }  
 
         // Create G_type stars
         for (let i = 0, z = G_typeNum; i < G_typeNum; i++, z--) {
             const size = this.randomBetween(0.09 * SIZE_SCALE, 0.12 * SIZE_SCALE);
-            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * galaxyRadius);
             const falloff = 0.7;
             const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
             const star = new Star({
@@ -159,13 +168,13 @@ export class MilkyWay
                 temperature: this.randomBetween(4600, 6200),
                 parent: this.SMBH.objectRoot,
             });
-            this.stars.push(star);
+            this.objects.push(star);
         }   
 
         // Create F_type stars
         for (let i = 0, z = F_typeNum; i < F_typeNum; i++, z--) {
             const size = this.randomBetween(0.1 * SIZE_SCALE, 0.2 * SIZE_SCALE);
-            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * galaxyRadius);
             const falloff = 0.7;
             const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
             const star = new Star({
@@ -182,13 +191,13 @@ export class MilkyWay
                 temperature: this.randomBetween(6200, 7500),
                 parent: this.SMBH.objectRoot,
             });
-            this.stars.push(star);
+            this.objects.push(star);
         }   
 
         // Create A_type stars
         for (let i = 0, z = A_typeNum; i < A_typeNum; i++, z--) {
             const size = this.randomBetween(0.2 * SIZE_SCALE, 0.5 * SIZE_SCALE);
-            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 60000);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * galaxyRadius);
             const falloff = 0.7;
             const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
             const star = new Star({
@@ -205,13 +214,13 @@ export class MilkyWay
                 temperature: this.randomBetween(7500, 10000),
                 parent: this.SMBH.objectRoot,
             });
-            this.stars.push(star);
+            this.objects.push(star);
         }   
 
         // Create redMasive stars
         for (let i = 0, z = redMasiveNum; i < redMasiveNum; i++, z--) {
             const size = this.randomBetween(0.5 * SIZE_SCALE, 1 * SIZE_SCALE);
-            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * 100000);
+            const radius = this.randomBetween(DISTANCE_SCALE * 700, DISTANCE_SCALE * galaxyRadius);
             const falloff = 0.7;
             const angularSpeed = baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
             const star = new Star({
@@ -228,8 +237,13 @@ export class MilkyWay
                 temperature: this.randomBetween(2000, 3000),
                 parent: this.SMBH.objectRoot,
             });
-            this.stars.push(star);
+            this.objects.push(star);
         }   
+
+        this.sceneTriggers = [
+            { obj: this.sun, threshold: sunSize * 100, scene: "SolarSystem" },
+            { obj: this.alphaCentauriA, threshold: alphaCentauriASize * 100, scene: "AlphaCenturySystem" },
+        ];
     }
     
     randomBetween(min, max) {
@@ -238,38 +252,28 @@ export class MilkyWay
 
     Update(dt) 
     {
-        this.SMBH.Update(dt);
-        for (const star of this.stars) {
-            star.Update(dt);
+        for (const obj of this.objects) {
+            obj.Update(dt);
         }
 
-        const sunWorldPos = new THREE.Vector3();
-        this.sun.objectRoot.getWorldPosition(sunWorldPos);
-        const distanceToSun = this.camera.position.distanceTo(sunWorldPos);
-        if (distanceToSun <= 25) {
-           this.requestedScene = "SolarSystem";
-        } 
-        const AlphaCenturyWorldPos = new THREE.Vector3();
-        this.alphaCentauriA.objectRoot.getWorldPosition(AlphaCenturyWorldPos);
-        const distanceToAlphaCentury = this.camera.position.distanceTo(AlphaCenturyWorldPos);
-        if (distanceToAlphaCentury <= 25) {
-           this.requestedScene = "AlphaCenturySystem";
-        } 
+        for (const trigger of this.sceneTriggers) {
+            const worldPos = new THREE.Vector3();
+            trigger.obj.objectRoot.getWorldPosition(worldPos);
+            const distance = this.camera.position.distanceTo(worldPos);
+            if (distance <= trigger.threshold) {
+                this.requestedScene = trigger.scene;
+                break; 
+            }
+        }
     }
 
     Dispose() 
     {
-        // Remove stars
-        for (const star of this.stars) {
-            star.Dispose();
+        for (const obj of this.objects) {
+            obj.Dispose();
         }
-        this.stars = [];
-
-        // Remove SMBH
-        if (this.SMBH) {
-            this.SMBH.Dispose();
-            this.SMBH = null;
-        }
+        this.objects = [];
+        this.sceneTriggers = [];
         
         // Dispose skybox
         if (this.scene?.background) {
