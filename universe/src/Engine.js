@@ -28,7 +28,7 @@ export class Engine
 
         // Fixed-step updates
         while (this.accumulator >= this.FIXED_DT) {
-            this.gameControls.Update();
+            this.gameControls.Update(this.timeScale);
             SceneUpdate(this.timeScale);
             this.accumulator -= this.FIXED_DT;
         }
@@ -46,11 +46,6 @@ export class Engine
     ToggleLock() 
     {
         this.gameControls.ToggleLock();
-    }
-
-    get locked() 
-    {
-        return this.gameControls.isLocked();
     }
 
     SetTimeScale(scale) {

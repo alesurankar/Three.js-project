@@ -14,10 +14,12 @@ export class GameControls
     this.onUnlock = null;
 
     this.controls.addEventListener("lock", () => {
+      document.activeElement?.blur();
       this.onLock?.();
     });
 
     this.controls.addEventListener("unlock", () => {
+      document.activeElement?.blur();
       this.onUnlock?.();
     });
 
@@ -60,12 +62,7 @@ export class GameControls
     this.controls.unlock();
   }
 
-  IsLocked() 
-  {
-    return this.controls.isLocked;
-  }
-
-  Update() 
+  Update(dt) 
   {
     if (!this.controls.isLocked) return;
 
@@ -73,7 +70,7 @@ export class GameControls
     const direction = new THREE.Vector3();
     this.camera.getWorldDirection(direction);
 
-    const speed = this.move.fast ? 50 : 5;
+    const speed = this.move.fast ? 50 : 5 * dt;
 
     // Forward / Back
     if (this.move.forward) velocity.add(direction.clone().multiplyScalar(speed));
