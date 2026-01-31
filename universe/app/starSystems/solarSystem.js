@@ -152,7 +152,7 @@ export class SolarSystem
             parent: this.sun.objectRoot,
         });
 
-        // // Create saturn ring
+        // Create saturn ring
         this.saturnRing = [];
         const saturnRingCount = 3000;
         for (let i = 0; i < saturnRingCount; i++) {
@@ -181,20 +181,25 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(30687),
             parent: this.sun.objectRoot,
         });
-        
+
         // // Create uranus ring
-        // this.uranusRing = new Asteroids({
-        //   asteroidCount: 1200,
-        //   orbitFarRadius: 50,
-        //   orbitNearRadius: 42,
-        //   axialRotationSpeed: 0.003,
-        //   orbitRotationSpeed: uranusRingOrbitalSpeed * 0.5, // 5x slower for simulation purpose
-        //   thickness: 0.3,
-        //   size: 0.14,
-        //   //color: 0x444444, // real, to dark
-        //   color: 0xffffff, // not real
-        //   parent: uranus.group,
-        // });
+        this.uranusRing = [];
+        const uranusRingCount = 1200;
+        for (let i = 0; i < uranusRingCount; i++) {
+            const ringParticle = new Asteroid({
+                size: 0.14,
+                orbitFarRadius: 50,
+                orbitNearRadius: 42,
+                orbitalTilt: 0,
+                axialRotationSpeed: 0.003,
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(0.26),
+                thickness: 0.3,   
+                //color: 0x444444, // real, to dark
+                color: 0xffffff, // not real
+                parent: this.uranus.axialFrame
+            });
+            this.uranusRing.push(ringParticle);
+        }
         
         // Create neptune
         this.neptune = new Planet({
@@ -238,7 +243,9 @@ export class SolarSystem
             ringParticle.Update(dt);
         }
         this.uranus.Update(dt);
-        //this.uranusRing.Update(dt);
+        for (const ringParticle of this.uranusRing) {
+            ringParticle.Update(dt);
+        }
         this.neptune.Update(dt);
         this.pluto.Update(dt);
 
@@ -317,6 +324,10 @@ export class SolarSystem
         if (this.uranus) {
             this.uranus.Dispose();
             this.uranus = null;
+        }
+        // Remove Saturn Ring
+        for (const ringParticle  of this.uranusRing) {
+            ringParticle.Dispose();
         }
         // Remove Neptune
         if (this.neptune) {
