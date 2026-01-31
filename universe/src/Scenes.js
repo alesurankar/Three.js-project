@@ -1,14 +1,22 @@
+import { TestScene } from "../app/scenes/testScene.js";
+//Galaxies
+import { MilkyWay } from "../app/scenes/galaxies/milkyWay.js";
+//Systems
 import { SolarSystem } from "../app/scenes/starSystems/solarSystem.js";
 import { AlphaCenturySystem } from "../app/scenes/starSystems/alphaCentaurySystem.js";
-import { MilkyWay } from "../app/scenes/galaxies/milkyWay.js";
+//Worlds
 import { EarthOrbit } from "../app/scenes/worlds/earthOrbit.js";
-import { TestScene } from "../app/scenes/testScene.js";
+import { MercuryOrbit } from "../app/scenes/worlds/mercuryOrbit.js";
 
 
 export const Scenes = {
+    TestScene,
+    //Galaxies
+    MilkyWay,
+    //Systems
     SolarSystem,
     AlphaCenturySystem,
-    MilkyWay,
+    //Worlds
     EarthOrbit,
-    TestScene,
+    MercuryOrbit,
 };

@@ -248,6 +248,12 @@ export class SolarSystem
         if (distanceToEarth <= 30) {
             this.requestedScene = "EarthOrbit";
         } 
+        const mercuryWorldPos = new THREE.Vector3();
+        this.mercury.objectRoot.getWorldPosition(mercuryWorldPos);
+        const distanceToMercury = this.camera.position.distanceTo(mercuryWorldPos);
+        if (distanceToMercury <= 30) {
+            this.requestedScene = "MercuryOrbit";
+        } 
         
     }
 

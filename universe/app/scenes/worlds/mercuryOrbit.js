@@ -1,0 +1,79 @@
+import * as THREE from "three";
+import { Planet } from "../../entities/planet.js";
+import { StarSystem } from "../../utils/starSystemHelper.js"
+import { SkyBox } from "../../visuals/skyBox.js";
+import { SpaceStation } from "../../entities/spaceStation.js";
+import { Star } from "../../entities/star.js";
+
+
+export class MercuryOrbit
+{
+    constructor(scene, camera) 
+        {
+            StarSystem.timeFactor=1
+            this.cameraSettings = {
+                pos: { x:2000, y:0, z:0 },
+                lookAt: { x:0, y:0, z:0 },
+                fov: 40,
+                near: 30,
+                far: 20000
+            };
+            this.scene = scene;
+            this.scene.background = SkyBox.Load("StarBox");
+            this.camera = camera;
+    
+            this.objects = [];
+        
+            // Create Mercury
+            this.mercury = new Planet({
+                name: "mercury",
+                size: 400,
+                posToParent: new THREE.Vector3(0, 0, 0),
+                axialTilt: 0.034,
+                axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
+                detail: 8,
+                hasClouds: false,
+            });
+            this.scene.add(this.mercury.orbitPivot);
+            this.objects.push(this.mercury);
+
+            // Create Sun
+            this.sun = new Star({
+                name: "sun",
+                size: 100,
+                renderMode: "points",
+                lightType: "directionalLight",
+                targetObject: this.mercury.objectRoot,
+                posToParent: new THREE.Vector3(10000, 0, 10000),
+                //orbitalTilt: 7.00,
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
+                temperature: 5778,
+                sizeAtenuation: false,
+                parent: this.mercury.objectRoot,
+            });
+            this.objects.push(this.sun);
+        }
+    Update(dt) 
+        {
+            this.objects.forEach(obj => obj.Update(dt));
+
+            const mercuryWorldPos = new THREE.Vector3();
+            this.mercury.objectRoot.getWorldPosition(mercuryWorldPos);
+            const distanceToMercury = this.camera.position.distanceTo(mercuryWorldPos);
+            if (distanceToMercury > 4000) {
+                this.requestedScene = "SolarSystem";
+            } 
+        }
+    
+        Dispose() 
+        {
+            this.objects.forEach(obj => obj?.Dispose());
+            this.objects = [];
+            
+            // Dispose skybox
+            if (this.scene?.background) {
+                SkyBox.Dispose(this.scene.background);
+                this.scene.background = null;
+            }
+        }
+}

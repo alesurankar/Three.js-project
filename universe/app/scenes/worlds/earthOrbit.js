@@ -121,5 +121,4 @@ export class EarthOrbit
             this.scene.background = null;
         }
     }
-
 }
