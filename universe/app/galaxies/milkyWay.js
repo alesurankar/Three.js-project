@@ -11,12 +11,8 @@ export class MilkyWay
         StarSystem.timeFactor=250
 
         this.cameraSettings = {
-            pos_x: -1000,
-            pos_y: 1000,
-            pos_z: 1000,
-            look_x: 0,
-            look_y: 0,
-            look_z: 0,
+            pos: { x:-1000, y:1000, z:1000 },
+            lookAt: { x:0, y:0, z:0 },
             fov: 40,
             near: 20,
             far: 20000

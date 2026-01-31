@@ -12,12 +12,8 @@ export class EarthOrbit
     {
         StarSystem.timeFactor=1
         this.cameraSettings = {
-            pos_x: 2000,
-            pos_y: 0,
-            pos_z: 0,
-            look_x: 0,
-            look_y: 0,
-            look_z: 0,
+            pos: { x:2000, y:0, z:0 },
+            lookAt: { x:0, y:0, z:0 },
             fov: 40,
             near: 30,
             far: 20000

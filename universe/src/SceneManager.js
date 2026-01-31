@@ -16,8 +16,8 @@ export class SceneManager
     UpdateCamera()
     {
         const settings = this.currentScene.cameraSettings || {};
-        this.camera.position.set(settings.pos_x, settings.pos_y, settings.pos_z);
-        this.camera.lookAt(settings.look_x, settings.look_y, settings.look_z);
+        this.camera.position.set(settings.pos.x, settings.pos.y, settings.pos.z);
+        this.camera.lookAt(settings.lookAt.x, settings.lookAt.y, settings.lookAt.z);
         this.camera.fov = settings.fov ?? this.camera.fov;
         this.camera.near = settings.near ?? this.camera.near;
         this.camera.far = settings.far ?? this.camera.far;

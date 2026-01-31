@@ -13,7 +13,7 @@ Scene.add(ambientLight);
 
 const manager = new SceneManager(Scene, Camera);
 
-//manager.LoadScene(SolarSystem);
+//manager.LoadScene(TestSystem);
 manager.LoadScene(SolarSystem);
 
 export function Update(timeScale) 

@@ -12,12 +12,8 @@ export class TestSystem
         StarSystem.timeFactor=100
        
         this.cameraSettings = {
-            pos_x: 1000,
-            pos_y: 100,
-            pos_z: -200,
-            look_x: 800,
-            look_y: 0,
-            look_z: 0,
+            pos: { x:1000, y:100, z:-200 },
+            lookAt: { x:800, y:0, z:0 },
             fov: 40,
             near: 20,
             far: 20000
