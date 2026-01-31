@@ -11,14 +11,8 @@ export class AlphaCenturySystem
         StarSystem.timeFactor=100
        
         this.cameraSettings = {
-            pos_x: 1500,
-            pos_y: 1500,
-            pos_z: 0,
-            look_x: 0,
-            look_y: 0,
-            look_z: 0,
-            //position: { x, y, z },
-            //lookAt: { x, y, z },
+            pos: { x:1500, y:1500, z:0 },
+            lookAt: { x:0, y:0, z:0 },
             fov: 40,
             near: 20,
             far: 20000

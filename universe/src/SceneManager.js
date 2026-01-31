@@ -1,8 +1,4 @@
-import { SolarSystem } from "../app/scenes/starSystems/solarSystem.js";
-import { AlphaCenturySystem } from "../app/scenes/starSystems/alphaCentauriSystem.js";
-import { MilkyWay } from "../app/scenes/galaxies/milkyWay.js";
-import { EarthOrbit } from "../app/scenes/worlds/earthOrbit.js";
-import { TestScene } from "../app/scenes/testScene.js";
+import { Scenes } from "./Scenes.js";
 
 export class SceneManager 
 {
@@ -30,33 +26,28 @@ export class SceneManager
         this.UpdateCamera();
     }
 
-    SwitchScene(sceneClass) 
+    SwitchScene(sceneName) 
     {
-        this.currentScene.Dispose();
-        this.currentScene = null;
-        this.LoadScene(sceneClass);
+        if (this.currentScene) this.currentScene.Dispose();
+
+        const SceneClass = Scenes[sceneName];
+        if (!SceneClass) {
+            console.warn(`Scene "${sceneName}" not found in Scenes.js`);
+            return;
+        }
+
+        this.currentScene = new SceneClass(this.scene, this.camera);
+        this.UpdateCamera();
     }
 
     Update(timeScale) 
     {
         if (this.currentScene) this.currentScene.Update(timeScale);
 
-        if (!this.currentScene?.requestedScene) return;
-        switch (this.currentScene.requestedScene) {
-            case "EarthOrbit":
-                this.SwitchScene(EarthOrbit);
-                break;
-            case "SolarSystem":
-                this.SwitchScene(SolarSystem);
-                break;
-            case "AlphaCenturySystem":
-                this.SwitchScene(AlphaCenturySystem);
-                break;
-            case "MilkyWay":
-                this.SwitchScene(MilkyWay);
-                break;
-        }
-        // Reset the request after switching
+        const requested = this.currentScene?.requestedScene;
+        if (!requested) return;
+
+        this.SwitchScene(requested);
         this.currentScene.requestedScene = null;
     }
 }
