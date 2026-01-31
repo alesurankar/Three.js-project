@@ -8,7 +8,7 @@ import { Camera } from "./RendererSetup.js";
 // Scene
 export const Scene = new THREE.Scene();
  
-const ambientLight = new THREE.AmbientLight(0x404040, 3);
+const ambientLight = new THREE.AmbientLight(0x404040, 2);
 Scene.add(ambientLight);
 
 const manager = new SceneManager(Scene, Camera);

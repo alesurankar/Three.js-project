@@ -72,7 +72,7 @@ export class EarthOrbit
         this.moon = new Planet({
             name: "moon",
             size: 270,
-            posToParent: new THREE.Vector3(9000, 0, 0),
+            posToParent: new THREE.Vector3(14000, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
@@ -86,10 +86,11 @@ export class EarthOrbit
         this.sun = new Star({
             name: "sun",
             size: 100,
+            maxSizeOnScreen: 0.52,
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.earth.objectRoot,
-            posToParent: new THREE.Vector3(10000, 0, 10000),
+            posToParent: new THREE.Vector3(15000, 0, 10000),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365),
             temperature: 5778,
             sizeAtenuation: false,

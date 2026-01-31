@@ -40,10 +40,11 @@ export class MercuryOrbit
             this.sun = new Star({
                 name: "sun",
                 size: 100,
+                maxSizeOnScreen: 1.37,
                 renderMode: "points",
                 lightType: "directionalLight",
                 targetObject: this.mercury.objectRoot,
-                posToParent: new THREE.Vector3(10000, 0, 10000),
+                posToParent: new THREE.Vector3(15000, 0, 10000),
                 orbitalTilt: 7.00,
                 orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
                 temperature: 5778,

@@ -7,6 +7,7 @@ export class Star extends CelestialBody
     constructor({
         name = "star",
         size = 20,
+        maxSizeOnScreen = 1,
         renderMode = "mesh",
         lightType = "none",
         targetObject = null,
@@ -29,7 +30,7 @@ export class Star extends CelestialBody
         const loader = new THREE.TextureLoader();
 
         if (renderMode === "points") {
-            const maxSize = 100
+            const maxSize = maxSizeOnScreen * 100;
             const spriteSize = THREE.MathUtils.clamp(size * maxSize, 2, maxSize);
             const surfTexture = "./app/textures/star.png";
             const surfTex = loader.load(surfTexture);
@@ -108,7 +109,7 @@ export class Star extends CelestialBody
             this.light.add(this.light6);
         }
         else if (lightType === "directionalLight") {
-            const intensity = 6; // scale with star size
+            const intensity = maxSizeOnScreen * 10; // scale with star size
             this.light = new THREE.DirectionalLight(starColor, intensity);
 
             // Place the light at the star's position
