@@ -119,6 +119,7 @@ export class SolarSystem
                 size: 1,
                 orbitFarRadius: 1900,
                 orbitNearRadius: 1700,
+                orbitalTilt: 0.0,
                 axialRotationSpeed: 0.0004,
                 orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
                 thickness: 50,
@@ -152,19 +153,22 @@ export class SolarSystem
         });
 
         // // Create saturn ring
-        // this.saturnRing = new Asteroids({
-        //   asteroidCount: 6000,
-        //   orbitFarRadius: 65,
-        //   orbitNearRadius: 40,
-        //   axialRotationSpeed: 0.005,
-        //   orbitRotationSpeed: saturnRingOrbitalSpeed * 0.5, // 5x slower for simulation purpose
-        //   thickness: 0.6,
-        //   size: 0.16,
-        //   roughness: 0.9,
-        //   metalness: 0.0,
-        //   color: 0xdfe6f0,
-        //   parent: saturn.group,
-        // });
+        this.saturnRing = [];
+        const saturnRingCount = 3000;
+        for (let i = 0; i < saturnRingCount; i++) {
+            const ringParticle = new Asteroid({
+                size: 0.16,
+                orbitFarRadius: 65,
+                orbitNearRadius: 40,
+                orbitalTilt: 0,
+                axialRotationSpeed: 0.005,
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
+                thickness: 0.6,   
+                color: 0xdfe6f0,
+                parent: this.saturn.axialFrame
+            });
+            this.saturnRing.push(ringParticle);
+        }
         
         // Create uranus
         this.uranus = new Planet({
@@ -230,7 +234,9 @@ export class SolarSystem
         }
         this.jupiter.Update(dt);
         this.saturn.Update(dt);
-        //this.saturnRing.Update(dt);
+        for (const ringParticle of this.saturnRing) {
+            ringParticle.Update(dt);
+        }
         this.uranus.Update(dt);
         //this.uranusRing.Update(dt);
         this.neptune.Update(dt);
@@ -302,6 +308,10 @@ export class SolarSystem
         if (this.saturn) {
             this.saturn.Dispose();
             this.saturn = null;
+        }
+        // Remove Saturn Ring
+        for (const ringParticle  of this.saturnRing) {
+            ringParticle.Dispose();
         }
         // Remove Uranus
         if (this.uranus) {

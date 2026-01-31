@@ -2,6 +2,7 @@ import { SolarSystem } from "../app/starSystems/solarSystem.js";
 import { AlphaCenturySystem } from "../app/starSystems/alphaCentauriSystem.js";
 import { MilkyWay } from "../app/galaxies/milkyWay.js";
 import { EarthOrbit } from "../app/worlds/earthOrbit.js";
+import { TestSystem } from "../app/starSystems/testSystem.js";
 
 export class SceneManager 
 {

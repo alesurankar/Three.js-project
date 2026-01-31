@@ -51,9 +51,10 @@ export class CelestialBody
         // Set rotation and position
         this.orbitalSpeed = orbitalSpeed;
         this.axialTilt = axialTilt * Math.PI / 180;
+        this.orbitalTilt = orbitalTilt * Math.PI / 180;
         this.axialRotationSpeed = axialRotationSpeed - orbitalSpeed;
         this.axialFrame.rotation.z = this.axialTilt;
-        this.orbitPivot.rotation.x = orbitalTilt * Math.PI / 180;
+        this.orbitPivot.rotation.x = this.orbitalTilt;
         this.objectRoot.position.copy(posToParent)
 
         // Add to parent if any
