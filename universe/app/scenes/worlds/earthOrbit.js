@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { Planet } from "../entities/planet.js";
-import { StarSystem } from "../utils/starSystemHelper.js"
-import { SkyBox } from "../visuals/skyBox.js";
-import { SpaceStation } from "../entities/spaceStation.js";
-import { Star } from "../entities/star.js";
+import { Planet } from "../../entities/planet.js";
+import { StarSystem } from "../../utils/starSystemHelper.js"
+import { SkyBox } from "../../visuals/skyBox.js";
+import { SpaceStation } from "../../entities/spaceStation.js";
+import { Star } from "../../entities/star.js";
 
 
 export class EarthOrbit

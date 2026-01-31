@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import { Star } from "../entities/star.js";
-import { StarSystem } from "../utils/starSystemHelper.js"
-import { SkyBox } from "../visuals/skyBox.js";
-import { BlackHole } from "../entities/blackHole.js";
+import { Star } from "../../entities/star.js";
+import { StarSystem } from "../../utils/starSystemHelper.js"
+import { SkyBox } from "../../visuals/skyBox.js";
+import { BlackHole } from "../../entities/blackHole.js";
 
 export class AlphaCenturySystem 
 {

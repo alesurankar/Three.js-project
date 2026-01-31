@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { GLTFLoader } from "jsm/loaders/GLTFLoader.js";
-import { CelestialBody } from "./celestialBody.js";
+import { ArtificialObject } from "./artificialObject.js";
 
-export class SpaceStation extends CelestialBody {
+export class SpaceStation extends ArtificialObject {
     constructor({
         name = "station",
         size = 1,

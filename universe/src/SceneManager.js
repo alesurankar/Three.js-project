@@ -1,8 +1,8 @@
-import { SolarSystem } from "../app/starSystems/solarSystem.js";
-import { AlphaCenturySystem } from "../app/starSystems/alphaCentauriSystem.js";
-import { MilkyWay } from "../app/galaxies/milkyWay.js";
-import { EarthOrbit } from "../app/worlds/earthOrbit.js";
-import { TestSystem } from "../app/starSystems/testSystem.js";
+import { SolarSystem } from "../app/scenes/starSystems/solarSystem.js";
+import { AlphaCenturySystem } from "../app/scenes/starSystems/alphaCentauriSystem.js";
+import { MilkyWay } from "../app/scenes/galaxies/milkyWay.js";
+import { EarthOrbit } from "../app/scenes/worlds/earthOrbit.js";
+import { TestScene } from "../app/scenes/testScene.js";
 
 export class SceneManager 
 {

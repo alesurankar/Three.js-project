@@ -5,7 +5,7 @@ import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { Asteroid } from "../entities/asteroid.js";
 
-export class TestSystem 
+export class TestScene
 {
     constructor(scene, camera) 
     {

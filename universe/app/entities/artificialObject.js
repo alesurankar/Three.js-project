@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 
-export class CelestialBody 
+export class ArtificialObject
 {
     constructor(
     {
@@ -12,7 +12,6 @@ export class CelestialBody
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
         surfMat = null,
-        cloudMat = null,
         geometry = null,
         parent = null, 
     } = {}) 
@@ -22,15 +21,11 @@ export class CelestialBody
         }
         else if (renderMode === "mesh") {
             this.body = new THREE.Mesh(geometry, surfMat);
-            if (cloudMat) {
-                this.clouds = new THREE.Mesh(geometry, cloudMat);
-                this.clouds.scale.set(1.03, 1.03, 1.03);
-            }
         }
         else if (renderMode === "model") {
             this.body = new THREE.Group(); // placeholder
         }
-
+        
         // Create the groups
         this.orbitPivot = new THREE.Group();   // orbit
         this.objectRoot = new THREE.Group();   // position
@@ -38,9 +33,6 @@ export class CelestialBody
         
         // Assemble hierarchy
         this.axialFrame.add(this.body);
-        if (this.clouds) {
-            this.axialFrame.add(this.clouds);
-        }
         this.objectRoot.add(this.axialFrame);
         this.orbitPivot.add(this.objectRoot);
 
@@ -64,9 +56,6 @@ export class CelestialBody
 
         // Spin around own axis
         this.body.rotation.y += this.axialRotationSpeed * dt;
-        if (this.clouds) {
-            this.clouds.rotation.y += this.axialRotationSpeed * 1.1 * dt;
-        }
     }
 
     Dispose() 
@@ -86,28 +75,12 @@ export class CelestialBody
             }
         }
 
-        if (this.clouds) {
-            if (this.clouds.geometry) this.clouds.geometry.dispose();
-            if (this.clouds.material) {
-                if (Array.isArray(this.clouds.material)) {
-                    this.clouds.material.forEach(m => {
-                        if (m.map) m.map.dispose();
-                        m.dispose();
-                    });
-                } else {
-                    if (this.clouds.material.map) this.clouds.material.map.dispose();
-                    this.clouds.material.dispose();
-                }
-            }
-        }
-
         // Remove from parent
         this.orbitPivot.clear();
         this.orbitPivot.parent?.remove(this.orbitPivot);
 
         // Null references
         this.body = null;
-        this.clouds = null;
         this.geometry = null;
         this.orbitPivot = null;
         this.objectRoot = null;
