@@ -11,12 +11,15 @@ export class EarthOrbit
     constructor(scene, camera) 
     {
         StarSystem.timeFactor=1
+        const sizeFactor = 1;
+        this.earthSize = 1000 * sizeFactor;
+
         this.cameraSettings = {
-            pos: { x:2000, y:0, z:0 },
-            lookAt: { x:0, y:0, z:0 },
+            pos: { x:-this.earthSize * 2, y:0, z:this.earthSize * 2 },
+            lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
-            near: 30,
-            far: 20000
+            near: 40,
+            far: 25000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
@@ -27,7 +30,7 @@ export class EarthOrbit
         // Create Earth
         this.earth = new Planet({
             name: "earth",
-            size: 1000,
+            size: this.earthSize,
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 23.44,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
@@ -106,7 +109,7 @@ export class EarthOrbit
         const earthWorldPos = new THREE.Vector3();
         this.earth.objectRoot.getWorldPosition(earthWorldPos);
         const distanceToEarth = this.camera.position.distanceTo(earthWorldPos);
-        if (distanceToEarth > 4000) {
+        if (distanceToEarth > this.earthSize * 5) {
             this.requestedScene = "SolarSystem";
         } 
     }

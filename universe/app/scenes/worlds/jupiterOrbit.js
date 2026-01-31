@@ -5,20 +5,20 @@ import { SkyBox } from "../../visuals/skyBox.js";
 import { Star } from "../../entities/star.js";
 
 
-export class MercuryOrbit
+export class JupiterOrbit
 {
     constructor(scene, camera) 
         {
             StarSystem.timeFactor=1
             const sizeFactor = 1;
-            this.mercurySize = 400 * sizeFactor;
+            this.jupiterSize = 3800 * sizeFactor;
 
             this.cameraSettings = {
-                pos: { x:-this.mercurySize * 2, y:0, z:this.mercurySize * 2 },
+                pos: { x:-this.jupiterSize * 2, y:0, z:this.jupiterSize * 2 },
                 lookAt: { x:15000, y:0, z:10000 },
                 fov: 40,
-                near: 30,
-                far: 20000
+                near: 100,
+                far: 34000
             };
             this.scene = scene;
             this.scene.background = SkyBox.Load("StarBox");
@@ -26,33 +26,35 @@ export class MercuryOrbit
     
             this.objects = [];
         
-            // Create Mercury
-            this.mercury = new Planet({
-                name: "mercury",
-                size: this.mercurySize,
+
+            // Create Jupiter
+            this.jupiter = new Planet({
+                name: "jupiter",
+                size: this.jupiterSize,
                 posToParent: new THREE.Vector3(0, 0, 0),
-                axialTilt: 0.034,
-                axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
+                axialTilt: 3.13,
+                orbitalTilt: 1.31,
+                axialRotationSpeed: StarSystem.AxialRotationInDays(0.41),
                 detail: 8,
                 hasClouds: false,
             });
-            this.scene.add(this.mercury.orbitPivot);
-            this.objects.push(this.mercury);
+            this.scene.add(this.jupiter.orbitPivot);
+            this.objects.push(this.jupiter);
 
             // Create Sun
             this.sun = new Star({
                 name: "sun",
                 size: 100,
-                maxSizeOnScreen: 1.37,
+                maxSizeOnScreen: 0.1018,
                 renderMode: "points",
                 lightType: "directionalLight",
-                targetObject: this.mercury.objectRoot,
+                targetObject: this.jupiter.objectRoot,
                 posToParent: new THREE.Vector3(15000, 0, 10000),
-                orbitalTilt: 7.00,
-                orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
+                orbitalTilt: 1.31,
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(4333),
                 temperature: 5778,
                 sizeAtenuation: false,
-                parent: this.mercury.objectRoot,
+                parent: this.jupiter.objectRoot,
             });
             this.objects.push(this.sun);
         }
@@ -60,10 +62,10 @@ export class MercuryOrbit
         {
             this.objects.forEach(obj => obj.Update(dt));
 
-            const mercuryWorldPos = new THREE.Vector3();
-            this.mercury.objectRoot.getWorldPosition(mercuryWorldPos);
-            const distanceToMercury = this.camera.position.distanceTo(mercuryWorldPos);
-            if (distanceToMercury > this.mercurySize * 5) {
+            const jupiterWorldPos = new THREE.Vector3();
+            this.jupiter.objectRoot.getWorldPosition(jupiterWorldPos);
+            const distanceToJupiter = this.camera.position.distanceTo(jupiterWorldPos);
+            if (distanceToJupiter > this.jupiterSize * 5) {
                 this.requestedScene = "SolarSystem";
             } 
         }

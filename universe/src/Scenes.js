@@ -7,6 +7,7 @@ import { AlphaCenturySystem } from "../app/scenes/starSystems/alphaCentaurySyste
 //Worlds
 import { EarthOrbit } from "../app/scenes/worlds/earthOrbit.js";
 import { MercuryOrbit } from "../app/scenes/worlds/mercuryOrbit.js";
+import { JupiterOrbit } from "../app/scenes/worlds/jupiterOrbit.js";
 
 
 export const Scenes = {
@@ -19,4 +20,5 @@ export const Scenes = {
     //Worlds
     EarthOrbit,
     MercuryOrbit,
+    JupiterOrbit,
 };

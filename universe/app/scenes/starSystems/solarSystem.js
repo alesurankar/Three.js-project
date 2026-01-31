@@ -249,8 +249,9 @@ export class SolarSystem
 
         this.sceneTriggers = [
             { obj: this.wormhole, threshold: wormholeSize / 2, scene: "MilkyWay" },
-            { obj: this.mercury, threshold: mercurySize * 4, scene: "MercuryOrbit" },
-            { obj: this.earth, threshold: earthSize * 4, scene: "EarthOrbit" },
+            { obj: this.mercury, threshold: mercurySize * 5, scene: "MercuryOrbit" },
+            { obj: this.earth, threshold: earthSize * 5, scene: "EarthOrbit" },
+            { obj: this.jupiter, threshold: jupiterSize * 5, scene: "JupiterOrbit" },
         ];
     }
 
