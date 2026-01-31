@@ -20,7 +20,10 @@ export class AlphaCenturySystem
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
-        this.stars = [];
+
+        this.objects = [];
+        const sizeFactor = 0.5
+        const wormholeSize = 100 * sizeFactor;
 
         // Create BaryCenter
         this.barycenter = new THREE.Group();
@@ -34,7 +37,7 @@ export class AlphaCenturySystem
             temperature: 5790,
             parent: this.barycenter,
         });
-        this.stars.push(this.acA);
+        this.objects.push(this.acA);
 
         // Create Alpha Century B
         this.acB = new Star({
@@ -44,7 +47,7 @@ export class AlphaCenturySystem
             temperature: 5200,
             parent: this.barycenter,
         });
-        this.stars.push(this.acB);
+        this.objects.push(this.acB);
 
         // Create Proxima Centauri
         this.pc = new Star({
@@ -54,49 +57,50 @@ export class AlphaCenturySystem
             temperature: 3000,
             parent: this.barycenter,
         });
-        this.stars.push(this.pc);
+        this.objects.push(this.pc);
 
         // Create Wormhole
         this.wormhole = new BlackHole({
-            size: 200,
+            size: wormholeSize,
             posToParent: new THREE.Vector3(2000, 2000, 0),
             facingTo: new THREE.Vector3(0, 0, 0),
             parent: this.barycenter,
         });
+        this.objects.push(this.wormhole);
+
+        this.sceneTriggers = [
+            { obj: this.wormhole, threshold: wormholeSize / 2, scene: "MilkyWay" },
+        ];
     }
     
     Update(dt) 
     {
-        for (const star of this.stars) {
-            star.Update(dt);
+        for (const obj of this.objects) {
+            obj.Update(dt);
         }
-        this.wormhole.Update(dt);
 
-        const wormholeWorldPos = new THREE.Vector3();
-        this.wormhole.objectRoot.getWorldPosition(wormholeWorldPos);
-        const distanceToWrmhole = this.camera.position.distanceTo(wormholeWorldPos);
-        if (distanceToWrmhole <= 100) {
-            this.requestedScene = "MilkyWay";
+        for (const trigger of this.sceneTriggers) {
+            const worldPos = new THREE.Vector3();
+            trigger.obj.objectRoot.getWorldPosition(worldPos);
+            const distance = this.camera.position.distanceTo(worldPos);
+            if (distance <= trigger.threshold) {
+                this.requestedScene = trigger.scene;
+                break; 
+            }
         }
     }
 
     Dispose() 
     {
-        // Remove stars
-        for (const star of this.stars) {
-            star.Dispose();
-        }
-        this.stars.length = 0;
-        // Remove Wormhole
-        if (this.wormhole) {
-            this.wormhole.Dispose();
-            this.wormhole = null;
-        }
+        this.objects.forEach(obj => obj?.Dispose());
+        this.objects = [];
+
         if (this.barycenter) {
             this.barycenter.clear();
             this.scene.remove(this.barycenter);
             this.barycenter = null;
         }
+
         // Dispose skybox
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);

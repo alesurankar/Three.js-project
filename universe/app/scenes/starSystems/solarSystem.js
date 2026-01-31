@@ -273,6 +273,7 @@ export class SolarSystem
     {
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
+        
         // Dispose skybox
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);
