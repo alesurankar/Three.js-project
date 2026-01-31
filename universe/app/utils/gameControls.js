@@ -62,7 +62,7 @@ export class GameControls
     this.controls.unlock();
   }
 
-  Update(dt) 
+  Update() 
   {
     if (!this.controls.isLocked) return;
 
@@ -70,7 +70,7 @@ export class GameControls
     const direction = new THREE.Vector3();
     this.camera.getWorldDirection(direction);
 
-    const speed = this.move.fast ? 50 : 5 * dt;
+    const speed = this.move.fast ? 50 : 5;
 
     // Forward / Back
     if (this.move.forward) velocity.add(direction.clone().multiplyScalar(speed));

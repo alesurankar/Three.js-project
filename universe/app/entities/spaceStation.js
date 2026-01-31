@@ -10,6 +10,7 @@ export class SpaceStation extends CelestialBody {
         pitch = 0,  // rotation around X
         yaw = 0,    // rotation around Y
         roll = 0,   // rotation around Z
+        orbitalTilt = 0,
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
         parent = null
@@ -18,6 +19,7 @@ export class SpaceStation extends CelestialBody {
             size,
             renderMode: "model",
             posToParent,
+            orbitalTilt,
             axialRotationSpeed,
             orbitalSpeed,
             geometry: null,

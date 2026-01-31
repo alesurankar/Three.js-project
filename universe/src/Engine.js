@@ -28,7 +28,7 @@ export class Engine
 
         // Fixed-step updates
         while (this.accumulator >= this.FIXED_DT) {
-            this.gameControls.Update(this.timeScale);
+            this.gameControls.Update();
             SceneUpdate(this.timeScale);
             this.accumulator -= this.FIXED_DT;
         }

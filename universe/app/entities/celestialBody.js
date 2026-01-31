@@ -9,6 +9,7 @@ export class CelestialBody
         renderMode = "mesh",
         posToParent = new THREE.Vector3(100, 0, 0),
         axialTilt = 0,
+        orbitalTilt = 0,
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
         surfMat = null,
@@ -52,6 +53,7 @@ export class CelestialBody
         this.axialTilt = axialTilt * Math.PI / 180;
         this.axialRotationSpeed = axialRotationSpeed - orbitalSpeed;
         this.axialFrame.rotation.z = this.axialTilt;
+        this.orbitPivot.rotation.x = orbitalTilt * Math.PI / 180;
         this.objectRoot.position.copy(posToParent)
 
         // Add to parent if any
