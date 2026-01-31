@@ -7,6 +7,9 @@ export class SpaceStation extends CelestialBody {
         name = "station",
         size = 1,
         posToParent = new THREE.Vector3(700, 0, 0),
+        pitch = 0,  // rotation around X
+        yaw = 0,    // rotation around Y
+        roll = 0,   // rotation around Z
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
         parent = null
@@ -22,9 +25,12 @@ export class SpaceStation extends CelestialBody {
             parent
         });
 
+        // Apply full 3D orientation
+        this.body.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, roll, "YXZ"));
+
         this.loader = new GLTFLoader();
         this.model = null;
-        const modelPath = `./app/models/${name}.gltf`;  
+        const modelPath = `./app/models/SpaceShip/${name}.gltf`;  
         this.loader.load(modelPath, (gltf) => {
             this.model = gltf.scene;
             this.model.scale.setScalar(size);

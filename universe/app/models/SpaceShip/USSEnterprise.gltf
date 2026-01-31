@@ -15,12 +15,28 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Cube"
+			"name":"Enterprise"
+		}
+	],
+	"materials":[
+		{
+			"doubleSided":true,
+			"name":"Material",
+			"pbrMetallicRoughness":{
+				"baseColorFactor":[
+					0.800000011920929,
+					0.800000011920929,
+					0.800000011920929,
+					1
+				],
+				"metallicFactor":0,
+				"roughnessFactor":0.5
+			}
 		}
 	],
 	"meshes":[
 		{
-			"name":"Cube.001",
+			"name":"Cylinder.003",
 			"primitives":[
 				{
 					"attributes":{
@@ -28,7 +44,8 @@
 						"NORMAL":1,
 						"TEXCOORD_0":2
 					},
-					"indices":3
+					"indices":3,
+					"material":0
 				}
 			]
 		}
@@ -37,68 +54,68 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":492,
+			"count":3905,
 			"max":[
-				0.2121882438659668,
-				5.220686912536621,
-				1.1988840103149414
+				2.27112078666687,
+				3.1232049465179443,
+				4.866311073303223
 			],
 			"min":[
-				-0.2121882438659668,
-				-0.512323260307312,
-				-1.1988840103149414
+				-2.27112078666687,
+				0.8089104890823364,
+				-4.7899274826049805
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":492,
+			"count":3905,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":492,
+			"count":3905,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5123,
-			"count":1260,
+			"count":16116,
 			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":5904,
+			"byteLength":46860,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":5904,
-			"byteOffset":5904,
+			"byteLength":46860,
+			"byteOffset":46860,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":3936,
-			"byteOffset":11808,
+			"byteLength":31240,
+			"byteOffset":93720,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":2520,
-			"byteOffset":15744,
+			"byteLength":32232,
+			"byteOffset":124960,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":18264,
-			"uri":"sword.bin"
+			"byteLength":157192,
+			"uri":"USSEnterprise.bin"
 		}
 	]
 }

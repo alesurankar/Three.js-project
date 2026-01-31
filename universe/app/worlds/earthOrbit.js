@@ -43,9 +43,13 @@ export class EarthOrbit
 
         // Create SpaceStation
         this.spaceStation = new SpaceStation({
-            name: "sword",
-            size: 50,
+            name: "USSEnterprise",
+            //name: "sword",
+            size: 5,
             posToParent: new THREE.Vector3(1200, 0, 0),
+            pitch: 0,
+            yaw: Math.PI,
+            roll: Math.PI /2,
             orbitRadius: 1100,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.06),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.06),
