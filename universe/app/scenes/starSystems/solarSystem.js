@@ -24,11 +24,27 @@ export class SolarSystem
         this.camera = camera;
 
         this.objects = [];
+        const sizeFactor = 0.5
+        const sunSize = 110 * sizeFactor; 
+        const wormholeSize = 100 * sizeFactor;
+        const mercurySize = 4 * sizeFactor;
+        const venusSize = 9.5 * sizeFactor;
+        const earthSize = 10 * sizeFactor;
+        const moonSize = 2.7 * sizeFactor;
+        const asteroidBeltSize = 1 * sizeFactor;
+        const marsSize = 5.3 * sizeFactor;
+        const jupiterSize = 38 * sizeFactor;
+        const saturnSize = 34 * sizeFactor;
+        const saturnRingSize = 0.16 * sizeFactor;
+        const uranusSize = 20 * sizeFactor;
+        const uranusRingSize = 0.14 * sizeFactor;
+        const neptuneSize = 19 * sizeFactor;
+        const plutoSize = 1.8 * sizeFactor;
 
         // Create Sun
         this.sun = new Star({
             name: "sun",
-            size: 110,
+            size: sunSize,
             lightType: "pointLight",
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
@@ -42,7 +58,7 @@ export class SolarSystem
 
         // Create Wormhole
         this.wormhole = new BlackHole({
-            size: 200,
+            size: wormholeSize,
             posToParent: new THREE.Vector3(2000, 2000, 0),
             facingTo: new THREE.Vector3(0, 0, 0),
             parent: this.sun.objectRoot,
@@ -52,7 +68,7 @@ export class SolarSystem
         // Create Mercury
         this.mercury = new Planet({
             name: "mercury",
-            size: 4,
+            size: mercurySize,
             posToParent: new THREE.Vector3(400, 0, 0),
             axialTilt: 0.034,
             orbitalTilt: 7.00,
@@ -65,7 +81,7 @@ export class SolarSystem
         // Create venus
         this.venus = new Planet({
             name: "venus",
-            size: 9.5,
+            size: venusSize,
             posToParent: new THREE.Vector3(700, 0, 0),
             axialTilt: 177.36,
             orbitalTilt: 3.39,
@@ -78,7 +94,7 @@ export class SolarSystem
         // Create Earth
         this.earth = new Planet({
             name: "earth",
-            size: 10,
+            size: earthSize,
             posToParent: new THREE.Vector3(1000, 0, 0),
             axialTilt: 23.44,
             orbitalTilt: 0,
@@ -91,7 +107,7 @@ export class SolarSystem
         // Create moon
         this.moon = new Planet({
             name: "moon",
-            size: 2.7,
+            size: moonSize,
             posToParent: new THREE.Vector3(30, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
@@ -104,7 +120,7 @@ export class SolarSystem
         // Create mars
         this.mars = new Planet({
             name: "mars",
-            size: 5.3,
+            size: marsSize,
             posToParent: new THREE.Vector3(1500, 0, 0),
             axialTilt: 25.19,
             orbitalTilt: 1.85,
@@ -118,7 +134,7 @@ export class SolarSystem
         const asteroidCount = 3000;
         for (let i = 0; i < asteroidCount; i++) {
             const asteroid = new Asteroid({
-                size: 1,
+                size: asteroidBeltSize,
                 orbitFarRadius: 1900,
                 orbitNearRadius: 1700,
                 orbitalTilt: 0.0,
@@ -133,7 +149,7 @@ export class SolarSystem
         // Create jupiter
         this.jupiter = new Planet({
             name: "jupiter",
-            size: 38,
+            size: jupiterSize,
             posToParent: new THREE.Vector3(2600, 0, 0),
             axialTilt: 3.13,
             orbitalTilt: 1.31,
@@ -146,7 +162,7 @@ export class SolarSystem
         // Create saturn
         this.saturn = new Planet({
             name: "saturn",
-            size: 34,
+            size: saturnSize,
             posToParent: new THREE.Vector3(3600, 0, 0),
             axialTilt: 26.73,
             orbitalTilt: 2.49,
@@ -160,7 +176,7 @@ export class SolarSystem
         const saturnRingCount = 3000;
         for (let i = 0; i < saturnRingCount; i++) {
             const saturnRing = new Asteroid({
-                size: 0.16,
+                size: saturnRingSize,
                 orbitFarRadius: 65,
                 orbitNearRadius: 40,
                 orbitalTilt: 0,
@@ -176,7 +192,7 @@ export class SolarSystem
         // Create uranus
         this.uranus = new Planet({
             name: "uranus",
-            size: 20,
+            size: uranusSize,
             posToParent: new THREE.Vector3(4600, 0, 0),
             axialTilt: 97.77,
             orbitalTilt: 0.77,
@@ -191,7 +207,7 @@ export class SolarSystem
         const uranusRingCount = 1200;
         for (let i = 0; i < uranusRingCount; i++) {
             const uranusRing = new Asteroid({
-                size: 0.14,
+                size: uranusRingSize,
                 orbitFarRadius: 50,
                 orbitNearRadius: 42,
                 orbitalTilt: 0,
@@ -208,7 +224,7 @@ export class SolarSystem
         // Create neptune
         this.neptune = new Planet({
             name: "neptune",
-            size: 19,
+            size: neptuneSize,
             posToParent: new THREE.Vector3(5600, 0, 0),
             axialTilt: 28.32,
             orbitalTilt: 1.77,
@@ -221,7 +237,7 @@ export class SolarSystem
         // Create pluto
         this.pluto = new Planet({
             name: "pluto",
-            size: 1.8,
+            size: plutoSize,
             posToParent: new THREE.Vector3(6500, 0, 0),
             axialTilt: 119.61,
             orbitalTilt: 17.16,
@@ -230,31 +246,27 @@ export class SolarSystem
             parent: this.sun.objectRoot,
         });
         this.objects.push(this.pluto);
+
+        this.sceneTriggers = [
+            { obj: this.wormhole, threshold: wormholeSize / 2, scene: "MilkyWay" },
+            { obj: this.mercury, threshold: mercurySize * 4, scene: "MercuryOrbit" },
+            { obj: this.earth, threshold: earthSize * 4, scene: "EarthOrbit" },
+        ];
     }
 
     Update(dt) 
     {
         this.objects.forEach(obj => obj.Update(dt));
 
-        const wormholeWorldPos = new THREE.Vector3();
-        this.wormhole.objectRoot.getWorldPosition(wormholeWorldPos);
-        const distanceToWrmhole = this.camera.position.distanceTo(wormholeWorldPos);
-        if (distanceToWrmhole <= 100) {
-            this.requestedScene = "MilkyWay";
+        for (const trigger of this.sceneTriggers) {
+            const worldPos = new THREE.Vector3();
+            trigger.obj.objectRoot.getWorldPosition(worldPos);
+            const distance = this.camera.position.distanceTo(worldPos);
+            if (distance <= trigger.threshold) {
+                this.requestedScene = trigger.scene;
+                break; 
+            }
         }
-        const earthWorldPos = new THREE.Vector3();
-        this.earth.objectRoot.getWorldPosition(earthWorldPos);
-        const distanceToEarth = this.camera.position.distanceTo(earthWorldPos);
-        if (distanceToEarth <= 30) {
-            this.requestedScene = "EarthOrbit";
-        } 
-        const mercuryWorldPos = new THREE.Vector3();
-        this.mercury.objectRoot.getWorldPosition(mercuryWorldPos);
-        const distanceToMercury = this.camera.position.distanceTo(mercuryWorldPos);
-        if (distanceToMercury <= 30) {
-            this.requestedScene = "MercuryOrbit";
-        } 
-        
     }
 
     Dispose() 
