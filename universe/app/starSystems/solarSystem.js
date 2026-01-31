@@ -29,6 +29,8 @@ export class SolarSystem
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
 
+        this.objects = [];
+
         // Create Sun
         this.sun = new Star({
             name: "sun",
@@ -42,6 +44,7 @@ export class SolarSystem
             hasTexture: true,
         });
         this.scene.add(this.sun.orbitPivot);
+        this.objects.push(this.sun);
 
         // Create Wormhole
         this.wormhole = new BlackHole({
@@ -50,6 +53,7 @@ export class SolarSystem
             facingTo: new THREE.Vector3(0, 0, 0),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.wormhole);
 
         // Create Mercury
         this.mercury = new Planet({
@@ -62,6 +66,7 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.mercury);
 
         // Create venus
         this.venus = new Planet({
@@ -74,6 +79,7 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(224.7),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.venus);
 
         // Create Earth
         this.earth = new Planet({
@@ -86,6 +92,7 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.earth);
 
         // Create moon
         this.moon = new Planet({
@@ -98,6 +105,7 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
             parent: this.earth.objectRoot,
         });
+        this.objects.push(this.moon);
 
         // Create mars
         this.mars = new Planet({
@@ -110,9 +118,9 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(687),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.mars);
 
         // Create asteroid belt
-        this.asteroids = [];
         const asteroidCount = 3000;
         for (let i = 0; i < asteroidCount; i++) {
             const asteroid = new Asteroid({
@@ -125,7 +133,7 @@ export class SolarSystem
                 thickness: 50,
                 parent: this.sun.objectRoot
             });
-            this.asteroids.push(asteroid);
+            this.objects.push(asteroid);
         }
         
         // Create jupiter
@@ -139,6 +147,7 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(4333),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.jupiter);
         
         // Create saturn
         this.saturn = new Planet({
@@ -151,12 +160,12 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.saturn);
 
         // Create saturn ring
-        this.saturnRing = [];
         const saturnRingCount = 3000;
         for (let i = 0; i < saturnRingCount; i++) {
-            const ringParticle = new Asteroid({
+            const saturnRing = new Asteroid({
                 size: 0.16,
                 orbitFarRadius: 65,
                 orbitNearRadius: 40,
@@ -167,7 +176,7 @@ export class SolarSystem
                 color: 0xdfe6f0,
                 parent: this.saturn.axialFrame
             });
-            this.saturnRing.push(ringParticle);
+            this.objects.push(saturnRing);
         }
         
         // Create uranus
@@ -181,12 +190,13 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(30687),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.uranus);
 
         // // Create uranus ring
         this.uranusRing = [];
         const uranusRingCount = 1200;
         for (let i = 0; i < uranusRingCount; i++) {
-            const ringParticle = new Asteroid({
+            const uranusRing = new Asteroid({
                 size: 0.14,
                 orbitFarRadius: 50,
                 orbitNearRadius: 42,
@@ -198,7 +208,7 @@ export class SolarSystem
                 color: 0xffffff, // not real
                 parent: this.uranus.axialFrame
             });
-            this.uranusRing.push(ringParticle);
+            this.objects.push(uranusRing);
         }
         
         // Create neptune
@@ -207,11 +217,12 @@ export class SolarSystem
             size: 19,
             posToParent: new THREE.Vector3(5600, 0, 0),
             axialTilt: 28.32,
-            orbitalTilt: 17.16,
+            orbitalTilt: 1.77,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.67),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(60190),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.neptune);
         
         // Create pluto
         this.pluto = new Planet({
@@ -219,35 +230,17 @@ export class SolarSystem
             size: 1.8,
             posToParent: new THREE.Vector3(6500, 0, 0),
             axialTilt: 119.61,
+            orbitalTilt: 17.16,
             axialRotationSpeed: StarSystem.AxialRotationInDays(6.39),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(90560),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.pluto);
     }
 
     Update(dt) 
     {
-        this.sun.Update(dt);
-        this.wormhole.Update(dt);
-        this.mercury.Update(dt);
-        this.venus.Update(dt);
-        this.earth.Update(dt);
-        this.moon.Update(dt);
-        this.mars.Update(dt);
-        for (const asteroid of this.asteroids) {
-            asteroid.Update(dt);
-        }
-        this.jupiter.Update(dt);
-        this.saturn.Update(dt);
-        for (const ringParticle of this.saturnRing) {
-            ringParticle.Update(dt);
-        }
-        this.uranus.Update(dt);
-        for (const ringParticle of this.uranusRing) {
-            ringParticle.Update(dt);
-        }
-        this.neptune.Update(dt);
-        this.pluto.Update(dt);
+        this.objects.forEach(obj => obj.Update(dt));
 
         const wormholeWorldPos = new THREE.Vector3();
         this.wormhole.objectRoot.getWorldPosition(wormholeWorldPos);
@@ -266,79 +259,8 @@ export class SolarSystem
 
     Dispose() 
     {
-        // Remove Sun
-        if (this.sun) {
-            this.sun.Dispose();
-            this.sun = null;
-        }
-        // Remove Wormhole
-        if (this.wormhole) {
-            this.wormhole.Dispose();
-            this.wormhole = null;
-        }
-        // Remove Mercury
-        if (this.mercury) {
-            this.mercury.Dispose();
-            this.mercury = null;
-        }
-        // Remove Venus
-        if (this.venus) {
-            this.venus.Dispose();
-            this.venus = null;
-        }
-        // Remove Earth
-        if (this.earth) {
-            this.earth.Dispose();
-            this.earth = null;
-        }
-        // Remove Moon
-        if (this.moon) {
-            this.moon.Dispose();
-            this.moon = null;
-        }
-        // Remove Mars
-        if (this.mars) {
-            this.mars.Dispose();
-            this.mars = null;
-        }
-        // Remove Asteroid Belt
-        for (const asteroid of this.asteroids) {
-            asteroid.Dispose();
-        }
-        this.asteroids = [];
-        // Remove Jupiter
-        if (this.jupiter) {
-            this.jupiter.Dispose();
-            this.jupiter = null;
-        }
-        // Remove Saturn
-        if (this.saturn) {
-            this.saturn.Dispose();
-            this.saturn = null;
-        }
-        // Remove Saturn Ring
-        for (const ringParticle  of this.saturnRing) {
-            ringParticle.Dispose();
-        }
-        // Remove Uranus
-        if (this.uranus) {
-            this.uranus.Dispose();
-            this.uranus = null;
-        }
-        // Remove Saturn Ring
-        for (const ringParticle  of this.uranusRing) {
-            ringParticle.Dispose();
-        }
-        // Remove Neptune
-        if (this.neptune) {
-            this.neptune.Dispose();
-            this.neptune = null;
-        }
-        // Remove Pluto
-        if (this.pluto) {
-            this.pluto.Dispose();
-            this.pluto = null;
-        }
+        this.objects.forEach(obj => obj?.Dispose());
+        this.objects = [];
         // Dispose skybox
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);
@@ -346,7 +268,3 @@ export class SolarSystem
         }
     }
 }
-
-// // Orbitral Speeds
-// const saturnRingOrbitalSpeed    = orbitalSpeedFromDays(0.6, orbitalTimeScale);
-// const uranusRingOrbitalSpeed    = -orbitalSpeedFromDays(0.26, orbitalTimeScale); //retrograde
