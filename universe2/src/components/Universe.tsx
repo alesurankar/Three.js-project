@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
-import { Engine } from "../lib/Engine.js";
+import { Engine } from "../engine/Engine.js";
 
 export default function Universe() {
   const containerRef = useRef<HTMLDivElement>(null);
