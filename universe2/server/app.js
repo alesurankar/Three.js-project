@@ -17,7 +17,7 @@ app.use(cors({
 }));
 
 // JSON middleware
-app.use(json());
+app.use(express.json());
 
 // API Routes
 app.use("/api/v1/objects", objectRoutes);
