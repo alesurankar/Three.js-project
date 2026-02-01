@@ -32,10 +32,17 @@ export default function Universe() {
           color: "white",
           display: "flex",
           flexDirection: "column",
-          gap: "10px",
+          gap: "20px",
+          fontSize: "1.4rem",
         }}
       >
-        <button onClick={() => engineRef.current?.gameControls.controls.lock()}>
+        <button onClick={() => engineRef.current?.gameControls.controls.lock()}
+          style={{
+            padding: "10px 12px",
+            fontSize: "1.2rem",
+            borderRadius: "8px",
+            cursor: "pointer",
+          }}>
           🔒 Lock In
         </button>
         <label>
@@ -50,6 +57,7 @@ export default function Universe() {
               setTimeScale(val);
               engineRef.current?.SetTimeScale(val);
             }}
+            style={{ width: "240px", height: "16px" }}
           />
         </label>
       </div>
