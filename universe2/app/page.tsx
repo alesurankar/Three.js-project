@@ -1,4 +1,5 @@
-export default function Test() 
-{
-  return <h1>Test</h1>
+import Universe from "../src/components/Universe";
+
+export default function Home() {
+  return <Universe />;
 }
