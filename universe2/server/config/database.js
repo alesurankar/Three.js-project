@@ -1,25 +1,18 @@
 import mongoose from "mongoose";
 
 const MONGO_URI = process.env.MONGO_URI;
-let cached = global.mongoose;
 
-if (!cached) cached = global.mongoose = { conn: null, promise: null };
+if (!MONGO_URI) {
+  throw new Error("MONGO_URI is not defined in .env");
+}
 
 export async function connectDatabase() {
-  if (cached.conn) return cached.conn;
-
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-      .then((mongoose) => {
-        console.log("Mongoose connected");
-        return mongoose;
-      })
-      .catch((err) => {
-        console.error("Mongoose connection error:", err);
-        throw err;
-      });
+  try {
+    const conn = await mongoose.connect(MONGO_URI);
+    console.log("✅ Mongoose connected");
+    return conn;
+  } catch (err) {
+    console.error("❌ Mongoose connection error:", err);
+    throw err;
   }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
 }
