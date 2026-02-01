@@ -86,7 +86,7 @@ export class GameControls
     if (this.move.up) velocity.y += speed;
     if (this.move.down) velocity.y -= speed;
 
-    this.controls.getObject().position.add(velocity);
+    this.controls.object.position.add(velocity);
   }
 
   #OnKeyDown(event) 

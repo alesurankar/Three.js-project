@@ -1,6 +1,6 @@
 import { Scene, Update as SceneUpdate, CreateSceneManager } from "./SceneSetup.js";
 import { GameControls } from "../utils/gameControls.js";
-import { CreateRenderer, CreateCamera } from "./RendererSetup.js";
+import { CreateRenderer } from "./RendererSetup.js";
 
 export class Engine 
 {

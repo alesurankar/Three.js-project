@@ -1,15 +1,18 @@
 'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Engine } from "../lib/Engine.js";
 
 export default function Universe() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const engineRef = useRef<Engine | null>(null);
+  const [timeScale, setTimeScale] = useState(1);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    let engine = new Engine(containerRef.current, { fps: 60 });
+    const engine = new Engine(containerRef.current, { fps: 60 });
+    engineRef.current = engine;
     engine.Start();
 
     return () => {
@@ -18,9 +21,38 @@ export default function Universe() {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      style={{ width: "100vw", height: "100vh" }}
-    />
+    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+      <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
+
+      <div
+        style={{
+          position: "absolute",
+          top: 20,
+          left: 20,
+          color: "white",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        <button onClick={() => engineRef.current?.gameControls.controls.lock()}>
+          🔒 Lock In
+        </button>
+        <label>
+          Time Scale
+          <input
+            type="range"
+            min="1"
+            max="1000"
+            value={timeScale}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setTimeScale(val);
+              engineRef.current?.SetTimeScale(val);
+            }}
+          />
+        </label>
+      </div>
+    </div>
   );
 }
