@@ -1,19 +1,19 @@
 'use client';
 
 import { useEffect, useRef } from "react";
-import { Engine } from "../lib/Engine";
+import { Engine } from "../lib/Engine.js";
 
 export default function Universe() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const engine = new Engine(containerRef.current, { fps: 60 });
+    let engine = new Engine(containerRef.current, { fps: 60 });
     engine.Start();
 
     return () => {
-      containerRef.current?.removeChild(engine.renderer.domElement);
+      engine?.Dispose();
     };
   }, []);
 

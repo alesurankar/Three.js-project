@@ -1,4 +1,4 @@
-import { TestScene } from "../scenes/testScene";
+import { TestScene } from "../scenes/testScene.js";
 //Galaxies
 //Systems
 //Worlds
