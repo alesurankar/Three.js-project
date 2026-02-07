@@ -7,31 +7,31 @@ import api from "../../src/utils/api";
 interface CreateObjectResponse {
   success: boolean;
   object: {
-    id: string;
+    key: string;
     name: string;
   };
   message: string;
 }
 
 export default function Helper() {
-  const [id, setId] = useState("");
+  const [key, setKey] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!id || !name) {
+    if (!key || !name) {
       setMessage("Both fields are required");
       return;
     }
 
     try {
       // Tell Axios what type to expect
-      const response = await api.post<CreateObjectResponse>("/objects", { id, name });
+      const response = await api.post<CreateObjectResponse>("/objects", { key, name });
 
       setMessage(`Object "${response.data.object.name}" created successfully!`);
-      setId("");
+      setKey("");
       setName("");
     } catch (err: any) {
       console.error(err);
@@ -53,9 +53,9 @@ export default function Helper() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="ID"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          placeholder="Key"
+          value={key}
+          onChange={(e) => setKey(e.target.value)}
           style={{
             display: "block",
             marginBottom: "15px",

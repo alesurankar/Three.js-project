@@ -9,7 +9,7 @@ import app from "./app.js";
 import { connectDatabase } from "./config/database.js";
 
 // Port
-const PORT = process.env.PORT || 4001;
+const PORT = process.env.PORT || 4000;
 
 // Connect to MongoDB
 connectDatabase()

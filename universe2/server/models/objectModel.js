@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const objectSchema = new mongoose.Schema(
   {
-    id: {
+    key: {
       type: String,
       required: true,
       unique: true,
@@ -12,6 +12,11 @@ const objectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    // type: {
+    //   type: String,
+    //   default: "object",
+    // },
   },
   //{
   //  timestamps: true,

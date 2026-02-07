@@ -11,21 +11,21 @@ import asyncErrorHandler from "../middlewares/helpers/asyncErrorHandler.js";
 export const createObject = asyncErrorHandler(async (req, res, next) => {
     console.log("🔥 createObject triggered");
 
-    const { id, name } = req.body;
+    const { key, name } = req.body;
 
     // Basic validation
-    if (!id || !name) {
-        return res.status(400).json({ message: "Both id and name are required" });
+    if (!key || !name) {
+        return res.status(400).json({ message: "Both key and name are required" });
     }
 
     // Check if object already exists
-    const existingObject = await ObjectModel.findOne({ id });
+    const existingObject = await ObjectModel.findOne({ key });
     if (existingObject) {
-        return res.status(400).json({ message: "Object with this ID already exists" });
+        return res.status(400).json({ message: "Object with this Key already exists" });
     }
 
     // Create new object
-    const object = await ObjectModel.create({ id, name });
+    const object = await ObjectModel.create({ key, name });
 
     res.status(201).json({
         success: true,
