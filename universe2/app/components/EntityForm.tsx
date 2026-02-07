@@ -48,8 +48,8 @@ const EntityForm = ({ type, onSuccess }: EntityFormProps) => {
       <div className="bg-black flex items-center justify-center p-4 h-full">
         <div className="text-white font-bold text-xl text-center">
           {type === "star"
-            ? "Create your shining star in the universe"
-            : "Create a beautiful planet to explore"}
+            ? "Create a star"
+            : "Create a planet"}
         </div>
       </div>
 

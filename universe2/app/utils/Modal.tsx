@@ -6,7 +6,7 @@ interface ModalProps {
 }
 
 const Modal = ({ onClose, children, maxWidth = "max-w-3xl", padding = "p-0" }: ModalProps) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className={`relative bg-white rounded-lg w-full ${maxWidth} ${padding}`}>
         {/* Close button */}
         <button
