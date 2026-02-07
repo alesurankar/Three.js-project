@@ -7,7 +7,8 @@ import EntityForm from "../components/EntityForm";
 
 
 
-export default function Helper() {
+export default function Helper() 
+{
   const [show, setShow] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
 

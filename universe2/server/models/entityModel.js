@@ -8,12 +8,22 @@ const entitySchema = new mongoose.Schema(
       unique: true,
     },
 
+    type: {
+      type: String,
+      required: true,
+    },
+
     name: {
       type: String,
       required: true,
     },
 
-    type: {
+    system: {
+      type: String,
+      required: true,
+    },
+
+    galaxy: {
       type: String,
       required: true,
     },

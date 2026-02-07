@@ -19,18 +19,20 @@ function slugify(text) {
 export const createEntity = asyncErrorHandler(async (req, res, next) => {
     console.log("🔥 createEntity triggered");
 
-    const { name, type } = req.body;
+    const { type, name, system, galaxy } = req.body;
 
     // Basic validation
-    if (!name || !type) {
+    if (!type ||!name || !system || !galaxy) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    const safeName = slugify(name);
     const safeType = slugify(type);
+    const safeName = slugify(name);
+    const safeSystem = slugify(system);
+    const safeGalaxy = slugify(galaxy);
 
     // base key: type_name
-    let baseKey = `${safeType}_${safeName}`;
+    let baseKey = `${safeGalaxy}_${safeSystem}_${safeName}_${safeType}`;
     let key = baseKey;
 
     // ensure unique key
@@ -43,8 +45,10 @@ export const createEntity = asyncErrorHandler(async (req, res, next) => {
     // Create new entity
     const entity = await EntityModel.create({ 
         key, 
-        name, 
-        type: safeType, 
+        type: safeType,
+        name,  
+        system: safeSystem,
+        galaxy: safeGalaxy,
     });
 
     res.status(201).json({

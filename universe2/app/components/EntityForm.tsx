@@ -7,8 +7,10 @@ import api from "../../src/utils/api";
 interface CreateEntityResponse {
   success: boolean;
   entity: {
-    name: string;
     type: string;
+    name: string;
+    system: string;
+    galaxy: string;
   };
   message: string;
 }
@@ -20,19 +22,23 @@ interface EntityFormProps {
 
 const EntityForm = ({ type, onSuccess }: EntityFormProps) => {
   const [name, setName] = useState("");
+  const [system, setSystem] = useState("");
+  const [galaxy, setGalaxy] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!name) {
+      if (!name || !system || !galaxy) {
           setMessage("all fields are required");
           return;
       }
 
       try {
-          const { data } = await api.post<CreateEntityResponse>("/entities", { name, type });
+          const { data } = await api.post<CreateEntityResponse>("/entities", { type, name, system, galaxy });
           setMessage(`Entity "${data.entity.name}" created successfully!`);
           setName("");
+          setSystem("");
+          setGalaxy("");
           if (onSuccess) onSuccess();
       } 
       catch (err: any) {
@@ -63,6 +69,22 @@ const EntityForm = ({ type, onSuccess }: EntityFormProps) => {
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
+            className="mb-1 w-full max-w-sm border rounded px-2 lg:px-3 py-0 lg:py-2 placeholder:text-sm lg:placeholder:text-lg"
+          />
+          <input
+            type="text"
+            placeholder="System"
+            value={system}
+            onChange={(e) => setSystem(e.target.value)}
+            required
+            className="mb-1 w-full max-w-sm border rounded px-2 lg:px-3 py-0 lg:py-2 placeholder:text-sm lg:placeholder:text-lg"
+          />
+          <input
+            type="text"
+            placeholder="Galaxy"
+            value={galaxy}
+            onChange={(e) => setGalaxy(e.target.value)}
             required
             className="mb-1 w-full max-w-sm border rounded px-2 lg:px-3 py-0 lg:py-2 placeholder:text-sm lg:placeholder:text-lg"
           />
