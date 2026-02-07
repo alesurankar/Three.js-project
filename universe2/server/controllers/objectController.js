@@ -1,6 +1,4 @@
-// server/controllers/objectController.js
-
-import ObjectModel from "../models/objectModel.js"; // your Mongoose model
+import ObjectModel from "../models/objectModel.js";
 import asyncErrorHandler from "../middlewares/helpers/asyncErrorHandler.js";
 
 /**
@@ -11,11 +9,11 @@ import asyncErrorHandler from "../middlewares/helpers/asyncErrorHandler.js";
 export const createObject = asyncErrorHandler(async (req, res, next) => {
     console.log("🔥 createObject triggered");
 
-    const { key, name } = req.body;
+    const { key, name, type } = req.body;
 
     // Basic validation
-    if (!key || !name) {
-        return res.status(400).json({ message: "Both key and name are required" });
+    if (!key || !name || !type) {
+        return res.status(400).json({ message: "All fields are required" });
     }
 
     // Check if object already exists
@@ -25,7 +23,7 @@ export const createObject = asyncErrorHandler(async (req, res, next) => {
     }
 
     // Create new object
-    const object = await ObjectModel.create({ key, name });
+    const object = await ObjectModel.create({ key, name, type });
 
     res.status(201).json({
         success: true,

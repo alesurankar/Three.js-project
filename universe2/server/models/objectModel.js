@@ -13,10 +13,10 @@ const objectSchema = new mongoose.Schema(
       required: true,
     },
 
-    // type: {
-    //   type: String,
-    //   default: "object",
-    // },
+    type: {
+      type: String,
+      default: "object",
+    },
   },
   //{
   //  timestamps: true,

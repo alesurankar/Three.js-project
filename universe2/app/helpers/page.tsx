@@ -9,6 +9,7 @@ interface CreateObjectResponse {
   object: {
     key: string;
     name: string;
+    type: string;
   };
   message: string;
 }
@@ -16,23 +17,25 @@ interface CreateObjectResponse {
 export default function Helper() {
   const [key, setKey] = useState("");
   const [name, setName] = useState("");
+  const [type, setType] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!key || !name) {
-      setMessage("Both fields are required");
+    if (!key || !name || !type) {
+      setMessage("all fields are required");
       return;
     }
 
     try {
       // Tell Axios what type to expect
-      const response = await api.post<CreateObjectResponse>("/objects", { key, name });
+      const response = await api.post<CreateObjectResponse>("/objects", { key, name, type });
 
       setMessage(`Object "${response.data.object.name}" created successfully!`);
       setKey("");
       setName("");
+      setType("");
     } catch (err: any) {
       console.error(err);
       setMessage(err?.response?.data?.message || "Something went wrong");
@@ -70,6 +73,20 @@ export default function Helper() {
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          style={{
+            display: "block",
+            marginBottom: "15px",
+            padding: "12px 16px",  // more space inside
+            fontSize: "18px",      // bigger text
+            width: "300px",        // wider
+            borderRadius: "8px",   // slightly rounded corners
+          }}
+        />
+        <input
+          type="text"
+          placeholder="Type"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
           style={{
             display: "block",
             marginBottom: "15px",
