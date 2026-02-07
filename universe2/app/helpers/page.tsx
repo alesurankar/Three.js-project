@@ -4,9 +4,9 @@ import { useState } from "react";
 import api from "../../src/utils/api";
 
 // Define the expected response shape
-interface CreateObjectResponse {
+interface CreateEntityResponse {
   success: boolean;
-  object: {
+  entity: {
     name: string;
     type: string;
   };
@@ -28,9 +28,9 @@ export default function Helper() {
 
     try {
       // Tell Axios what type to expect
-      const response = await api.post<CreateObjectResponse>("/objects", { name, type });
+      const response = await api.post<CreateEntityResponse>("/entities", { name, type });
 
-      setMessage(`Object "${response.data.object.name}" created successfully!`);
+      setMessage(`Entity "${response.data.entity.name}" created successfully!`);
       setName("");
       setType("");
     } catch (err: any) {
@@ -49,7 +49,7 @@ export default function Helper() {
       backgroundColor: "#2e484f",
       color: "white",
     }}>
-      <h1>Create Object</h1>
+      <h1>Create Entity</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -88,7 +88,7 @@ export default function Helper() {
           backgroundColor: "#4CAF50",
           color: "white",
           border: "none",
-        }}>Create Object</button>
+        }}>Create Entity</button>
       </form>
       {message && <p>{message}</p>}
     </div>

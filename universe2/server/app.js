@@ -6,7 +6,7 @@
 import express from "express";
 import cors from "cors";
 
-import objectRoutes from "./routes/objectRoutes.js";
+import entityRoutes from "./routes/entityRoutes.js";
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.use(cors({
 app.use(express.json());
 
 // API Routes
-app.use("/api/v1/objects", objectRoutes);
+app.use("/api/v1/entities", entityRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {

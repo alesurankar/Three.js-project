@@ -1,4 +1,4 @@
-import ObjectModel from "../models/objectModel.js";
+import EntityModel from "../models/entityModel.js";
 import asyncErrorHandler from "../middlewares/helpers/asyncErrorHandler.js";
 
 
@@ -12,12 +12,12 @@ function slugify(text) {
 }
 
 /**
- * Create a new Object
- * @route POST /api/objects
+ * Create a new Entity
+ * @route POST /api/entities
  * @access Public (for now)
  */
-export const createObject = asyncErrorHandler(async (req, res, next) => {
-    console.log("🔥 createObject triggered");
+export const createEntity = asyncErrorHandler(async (req, res, next) => {
+    console.log("🔥 createEntity triggered");
 
     const { name, type } = req.body;
 
@@ -35,13 +35,13 @@ export const createObject = asyncErrorHandler(async (req, res, next) => {
 
     // ensure unique key
     let counter = 1;
-    while (await ObjectModel.findOne({ key })) {
+    while (await EntityModel.findOne({ key })) {
         key = `${baseKey}_${counter}`;
         counter++;
     }
 
-    // Create new object
-    const object = await ObjectModel.create({ 
+    // Create new entity
+    const entity = await EntityModel.create({ 
         key, 
         name, 
         type: safeType, 
@@ -49,21 +49,21 @@ export const createObject = asyncErrorHandler(async (req, res, next) => {
 
     res.status(201).json({
         success: true,
-        object,
-        message: "Object created successfully",
+        entity,
+        message: "Entity created successfully",
     });
 });
 
 /**
- * Get all Objects
- * @route GET /api/objects
+ * Get all entities
+ * @route GET /api/entities
  * @access Public
  */
-export const getAllObjects = asyncErrorHandler(async (req, res, next) => {
-    const objects = await ObjectModel.find({});
+export const getAllEntities = asyncErrorHandler(async (req, res, next) => {
+    const entities = await EntityModel.find({});
     res.status(200).json({
         success: true,
-        count: objects.length,
-        objects,
+        count: entities.length,
+        entities,
     });
 });

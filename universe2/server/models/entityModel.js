@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const objectSchema = new mongoose.Schema(
+const entitySchema = new mongoose.Schema(
   {
     key: {
       type: String,
@@ -15,7 +15,7 @@ const objectSchema = new mongoose.Schema(
 
     type: {
       type: String,
-      default: "object",
+      required: true,
     },
   },
   //{
@@ -23,4 +23,4 @@ const objectSchema = new mongoose.Schema(
   //}
 );
 
-export default mongoose.model("Object", objectSchema);
+export default mongoose.model("Entity", entitySchema);
