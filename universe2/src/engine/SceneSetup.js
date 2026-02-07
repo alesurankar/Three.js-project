@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { SceneManager } from "./SceneManager.js";
 import { CreateCamera } from "./RendererSetup.js";
-import { TestScene } from "../scenes/testScene.js";
+//import { TestScene } from "../scenes/testScene.js";
 import { SolarSystem } from "../scenes/starSystems/solarSystem.js"
 
 export const Scene = new THREE.Scene();
