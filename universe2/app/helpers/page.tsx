@@ -7,7 +7,6 @@ import api from "../../src/utils/api";
 interface CreateObjectResponse {
   success: boolean;
   object: {
-    key: string;
     name: string;
     type: string;
   };
@@ -15,7 +14,6 @@ interface CreateObjectResponse {
 }
 
 export default function Helper() {
-  const [key, setKey] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [message, setMessage] = useState("");
@@ -23,17 +21,16 @@ export default function Helper() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!key || !name || !type) {
+    if (!name || !type) {
       setMessage("all fields are required");
       return;
     }
 
     try {
       // Tell Axios what type to expect
-      const response = await api.post<CreateObjectResponse>("/objects", { key, name, type });
+      const response = await api.post<CreateObjectResponse>("/objects", { name, type });
 
       setMessage(`Object "${response.data.object.name}" created successfully!`);
-      setKey("");
       setName("");
       setType("");
     } catch (err: any) {
@@ -44,30 +41,16 @@ export default function Helper() {
 
   return (
     <div style={{
-      padding: "40px",          // bigger outer space
-      maxWidth: "400px",        // constrain width
-      margin: "50px auto",      // center horizontally
-      border: "2px solid #ccc", // optional: visual border
-      borderRadius: "12px",     // rounded corners
-      backgroundColor: "#2e484f",  // optional: dark background
+      padding: "40px",
+      maxWidth: "400px",
+      margin: "50px auto",
+      border: "2px solid #ccc",
+      borderRadius: "12px",
+      backgroundColor: "#2e484f",
       color: "white",
     }}>
       <h1>Create Object</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Key"
-          value={key}
-          onChange={(e) => setKey(e.target.value)}
-          style={{
-            display: "block",
-            marginBottom: "15px",
-            padding: "12px 16px",  // more space inside
-            fontSize: "18px",      // bigger text
-            width: "300px",        // wider
-            borderRadius: "8px",   // slightly rounded corners
-          }}
-        />
         <input
           type="text"
           placeholder="Name"
@@ -76,10 +59,10 @@ export default function Helper() {
           style={{
             display: "block",
             marginBottom: "15px",
-            padding: "12px 16px",  // more space inside
-            fontSize: "18px",      // bigger text
-            width: "300px",        // wider
-            borderRadius: "8px",   // slightly rounded corners
+            padding: "12px 16px",
+            fontSize: "18px",
+            width: "300px",
+            borderRadius: "8px",
           }}
         />
         <input
@@ -90,10 +73,10 @@ export default function Helper() {
           style={{
             display: "block",
             marginBottom: "15px",
-            padding: "12px 16px",  // more space inside
-            fontSize: "18px",      // bigger text
-            width: "300px",        // wider
-            borderRadius: "8px",   // slightly rounded corners
+            padding: "12px 16px",
+            fontSize: "18px",
+            width: "300px",
+            borderRadius: "8px",
           }}
         />
         <button type="submit"

@@ -1,6 +1,16 @@
 import ObjectModel from "../models/objectModel.js";
 import asyncErrorHandler from "../middlewares/helpers/asyncErrorHandler.js";
 
+
+// helper: convert text to safe slug
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
+
 /**
  * Create a new Object
  * @route POST /api/objects
@@ -9,21 +19,33 @@ import asyncErrorHandler from "../middlewares/helpers/asyncErrorHandler.js";
 export const createObject = asyncErrorHandler(async (req, res, next) => {
     console.log("🔥 createObject triggered");
 
-    const { key, name, type } = req.body;
+    const { name, type } = req.body;
 
     // Basic validation
-    if (!key || !name || !type) {
+    if (!name || !type) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Check if object already exists
-    const existingObject = await ObjectModel.findOne({ key });
-    if (existingObject) {
-        return res.status(400).json({ message: "Object with this Key already exists" });
+    const safeName = slugify(name);
+    const safeType = slugify(type);
+
+    // base key: type_name
+    let baseKey = `${safeType}_${safeName}`;
+    let key = baseKey;
+
+    // ensure unique key
+    let counter = 1;
+    while (await ObjectModel.findOne({ key })) {
+        key = `${baseKey}_${counter}`;
+        counter++;
     }
 
     // Create new object
-    const object = await ObjectModel.create({ key, name, type });
+    const object = await ObjectModel.create({ 
+        key, 
+        name, 
+        type: safeType, 
+    });
 
     res.status(201).json({
         success: true,
