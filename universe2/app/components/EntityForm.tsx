@@ -1,9 +1,8 @@
 'use client';
 
 import { useState } from "react";
+import Button from "../utils/Button";
 import api from "../../src/utils/api";
-
-// Define the expected response shape
 
 interface CreateEntityResponse {
   success: boolean;
@@ -13,68 +12,77 @@ interface CreateEntityResponse {
   };
   message: string;
 }
+
 interface EntityFormProps {
+  type: "star" | "planet";
   onSuccess: () => void;
-  defaultType?: string;
 }
 
-const EntityForm = ({ onSuccess, defaultType }: EntityFormProps) => {
-    const [name, setName] = useState("");
-    const [type, setType] = useState(defaultType);
-    const [message, setMessage] = useState("");
+const EntityForm = ({ type, onSuccess }: EntityFormProps) => {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!name) {
+          setMessage("all fields are required");
+          return;
+      }
 
-        if (!name || !type) {
-        setMessage("all fields are required");
-        return;
-        }
+      try {
+          const { data } = await api.post<CreateEntityResponse>("/entities", { name, type });
+          setMessage(`Entity "${data.entity.name}" created successfully!`);
+          setName("");
+          if (onSuccess) onSuccess();
+      } 
+      catch (err: any) {
+          console.error(err);
+          setMessage(err?.response?.data?.message || "Something went wrong");
+      }
+  };
+  const title = type === "star" ? "Add a Star" : "Add a Planet";
 
-        try {
-            // Tell Axios what type to expect
-            const response = await api.post<CreateEntityResponse>("/entities", { name, type });
+  return (
+    <div className="rounded-xl w-full max-w-4xl bg-white grid grid-cols-1 lg:grid-cols-2 min-h-[400px]">
+      {/* LEFT PANEL */}
+      <div className="bg-black flex items-center justify-center p-4 h-full">
+        <div className="text-white font-bold text-xl text-center">
+          {type === "star"
+            ? "Create your shining star in the universe"
+            : "Create a beautiful planet to explore"}
+        </div>
+      </div>
 
-            setMessage(`Entity "${response.data.entity.name}" created successfully!`);
-            setName("");
-            setType("");
-            onSuccess();
-        } 
-        catch (err: any) {
-            console.error(err);
-            setMessage(err?.response?.data?.message || "Something went wrong");
-        }
-    };
+      {/* RIGHT PANEL */}
+      <div className="bg-[#4a5748] py-6 lg:py-12 px-10 lg:px-12 flex flex-col justify-center">
+        <form onSubmit={handleSubmit} className="text-center">
+          <h2 className="text-black text-xl lg:text-4xl mb-4 lg:mb-8">{title}</h2>
+          
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="mb-1 w-full max-w-sm border rounded px-2 lg:px-3 py-0 lg:py-2 placeholder:text-sm lg:placeholder:text-lg"
+          />
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={{
-                display: "block",
-                marginBottom: "15px",
-                padding: "12px 16px",
-                fontSize: "18px",
-                width: "300px",
-                borderRadius: "8px",
-                }}
+          <div className="flex justify-center mt-4 -mb-2">
+            <Button
+              type="submit"
+              title="Create"
+              mainClassName="bg-[#7c2923] hover:bg-[#d5453a] px-6 py-2 rounded-lg"
+              titleClassName="text-black font-bold"
             />
-            <button type="submit"
-            style={{
-                padding: "14px 20px",
-                fontSize: "18px",
-                borderRadius: "8px",
-                cursor: "pointer",
-                backgroundColor: "#4CAF50",
-                color: "white",
-                border: "none",
-            }}>Create Entity</button>
-            {message && <p>{message}</p>}
+          </div>
+
+          {message && (
+            <p className="mt-4 text-white font-semibold">{message}</p>
+          )}
         </form>
-    );
-}
+      </div>
+    </div>
+  );
+};
 
 export default EntityForm;

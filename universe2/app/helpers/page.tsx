@@ -31,7 +31,7 @@ export default function Helper() {
 
       <Button
           title='Add Star'
-          mainClassName='bg-red-500 hover:bg-red-600'
+          mainClassName='bg-[#7c2923] hover:bg-[#d5453a]'
           titleClassName='text-3xl text-white font-bold uppercase'
           onClick={() => { openModal("star"); setShow(true); }}
       />
@@ -44,10 +44,7 @@ export default function Helper() {
       {/* Modal */}
       {show && selectedType &&(
           <Modal onClose={() => setShow(false)} maxWidth="max-w-3xl">
-              <EntityForm 
-              defaultType={selectedType}
-              onSuccess={() => setShow(false)} 
-              />
+              <EntityForm type={selectedType as "star" | "planet"} onSuccess={() => setShow(false)} />
           </Modal>
       )}
     </div>
