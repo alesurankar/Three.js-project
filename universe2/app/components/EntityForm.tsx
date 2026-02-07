@@ -15,11 +15,12 @@ interface CreateEntityResponse {
 }
 interface EntityFormProps {
   onSuccess: () => void;
+  defaultType?: string;
 }
 
-const EntityForm = ({ onSuccess }: EntityFormProps) => {
+const EntityForm = ({ onSuccess, defaultType }: EntityFormProps) => {
     const [name, setName] = useState("");
-    const [type, setType] = useState("");
+    const [type, setType] = useState(defaultType);
     const [message, setMessage] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -52,20 +53,6 @@ const EntityForm = ({ onSuccess }: EntityFormProps) => {
                 placeholder="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                style={{
-                display: "block",
-                marginBottom: "15px",
-                padding: "12px 16px",
-                fontSize: "18px",
-                width: "300px",
-                borderRadius: "8px",
-                }}
-            />
-            <input
-                type="text"
-                placeholder="Type"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
                 style={{
                 display: "block",
                 marginBottom: "15px",

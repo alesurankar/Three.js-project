@@ -9,6 +9,12 @@ import EntityForm from "../components/EntityForm";
 
 export default function Helper() {
   const [show, setShow] = useState(false);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  const openModal = (type: string) => {
+    setSelectedType(type);
+    setShow(true);
+  };
 
   return (
     <div style={{
@@ -27,18 +33,21 @@ export default function Helper() {
           title='Add Star'
           mainClassName='bg-red-500 hover:bg-red-600'
           titleClassName='text-3xl text-white font-bold uppercase'
-          onClick={() => setShow(true)}
+          onClick={() => { openModal("star"); setShow(true); }}
       />
       <Button
           title='Add Planet'
           mainClassName='bg-[#7c2923] hover:bg-[#d5453a]'
           titleClassName='text-3xl text-white font-bold uppercase'
-          onClick={() => setShow(true)}
+          onClick={() => { openModal("planet"); setShow(true); }}
       />
       {/* Modal */}
-      {show && (
+      {show && selectedType &&(
           <Modal onClose={() => setShow(false)} maxWidth="max-w-3xl">
-              <EntityForm onSuccess={() => setShow(false)} />
+              <EntityForm 
+              defaultType={selectedType}
+              onSuccess={() => setShow(false)} 
+              />
           </Modal>
       )}
     </div>
