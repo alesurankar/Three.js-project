@@ -1,10 +1,7 @@
 import * as THREE from "three";
-import { Planet } from "../entities/planet.js";
-import { Star } from "../entities/star.js";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { AsteroidBelt } from "../entities/asteroidBelt.js";
-import { TestObject } from "../entities/testObject.js";
 import { createEntity } from "../entities/entityFactory.js";
 import api from "../utils/api";
 
@@ -33,27 +30,11 @@ export class TestScene
     {
         const res = await api.get("/entities");
         this.entities = res.data.entities;
-        this.moonEntity = this.entities.find(e => e.name === "moon");
         this.CreateObjects();
     }
 
     CreateObjects()
     {
-        // // Create Sun
-        // this.sun = new Star({
-        //     name: "sun",
-        //     size: 110,
-        //     lightType: "pointLight",
-        //     posToParent: new THREE.Vector3(0, 0, 0),
-        //     axialTilt: 7.25,
-        //     axialRotationSpeed: StarSystem.AxialRotationInDays(25),
-        //     orbitalSpeed: 0,
-        //     temperature: 5778,
-        //     hasTexture: true,
-        // });
-        // this.scene.add(this.sun.orbitPivot);
-        // this.objects.push(this.sun);
-
         // Create Sun using factory
         this.sun = createEntity(
             { name: "sun", type: "star" },
@@ -72,29 +53,33 @@ export class TestScene
         this.objects.push(this.sun);
         
         // Create Earth
-        this.earth = new Planet({
-            name: "earth",
-            size: 10,
-            posToParent: new THREE.Vector3(500, 0, 0),
-            axialTilt: 23.44,
-            orbitalTilt: 0,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(1),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
-            parent: this.sun.objectRoot,
-        });
+        this.earth = createEntity(
+            { name: "earth", type: "planet" },
+            {
+                size: 10,
+                posToParent: new THREE.Vector3(500, 0, 0),
+                axialTilt: 23.44,
+                orbitalTilt: 0,
+                axialRotationSpeed: StarSystem.AxialRotationInDays(1),
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
+                parent: this.sun.objectRoot,
+            }
+        );
         this.objects.push(this.earth);
 
         // Create moon
-        this.moon = new TestObject({
-            entity: this.moonEntity,
-            size: 2.7,
-            posToParent: new THREE.Vector3(30, 0, 0),
-            axialTilt: 6.68,
-            orbitalTilt: 5.145,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
-            parent: this.earth.objectRoot,
-        });
+        this.moon = createEntity(
+            { name: "moon", type: "planet" },
+            {
+                size: 2.7,
+                posToParent: new THREE.Vector3(30, 0, 0),
+                axialTilt: 6.68,
+                orbitalTilt: 5.145,
+                axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
+                parent: this.earth.objectRoot,
+            }
+        );
         this.objects.push(this.moon);
 
         // Create asteroid belt
@@ -112,16 +97,18 @@ export class TestScene
         this.objects.push(this.asteroidBelt);
         
         // Create saturn
-        this.saturn = new Planet({
-            name: "saturn",
-            size: 34,
-            posToParent: new THREE.Vector3(800, 0, 0),
-            axialTilt: 26.73,
-            orbitalTilt: 2.49,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
-            parent: this.sun.objectRoot,
-        });
+        this.saturn = createEntity(
+            { name: "saturn", type: "planet" },
+            {
+                size: 34,
+                posToParent: new THREE.Vector3(800, 0, 0),
+                axialTilt: 26.73,
+                orbitalTilt: 2.49,
+                axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
+                parent: this.sun.objectRoot,
+            }
+        );
         this.objects.push(this.saturn);
 
         // Create saturn ring
@@ -148,6 +135,7 @@ export class TestScene
     {
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
+
         // Dispose skybox
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);
