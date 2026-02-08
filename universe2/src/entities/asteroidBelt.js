@@ -97,8 +97,12 @@ export class AsteroidBelt
 
   Dispose() 
   {
-    this.body.geometry.dispose();
-    this.body.material.dispose();
-    if (this.body.parent) this.body.parent.remove(this.body);
+    if (this.body) {
+        this.body.geometry.dispose();
+        this.body.material.dispose();
+        if (this.body.parent) this.body.parent.remove(this.body);
+        this.body = null;
+    }
+    this.instanceData = null;
   }
 }
