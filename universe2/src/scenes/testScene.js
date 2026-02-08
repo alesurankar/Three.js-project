@@ -3,7 +3,7 @@ import { Planet } from "../entities/planet.js";
 import { Star } from "../entities/star.js";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
-import { Asteroid } from "../entities/asteroid.js";
+import { AsteroidBelt } from "../entities/asteroidBelt.js";
 import { TestObject } from "../entities/testObject.js";
 import api from "../utils/api";
 
@@ -80,21 +80,19 @@ export class TestScene
         });
         this.objects.push(this.moon);
 
-        // Create asteroid belt
-        const asteroidCount = 3000;
-        for (let i = 0; i < asteroidCount; i++) {
-            const asteroid = new Asteroid({
-                size: 1,
-                orbitFarRadius: 1300,
-                orbitNearRadius: 1000,
-                orbitalTilt: 0.0,
-                axialRotationSpeed: 0.0004,
-                orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
-                thickness: 50,
-                parent: this.sun.objectRoot
-            });
-            this.objects.push(asteroid);
-        }
+        // // Create asteroid belt
+        this.asteroidBelt = new AsteroidBelt({
+            count: 3000,
+            size: 1,
+            orbitFarRadius: 1300,
+            orbitNearRadius: 1000,
+            axialRotationSpeed: 0.0004,
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
+            thickness: 50,
+            color: 0x888888,
+            parent: this.sun.objectRoot,
+        });
+        this.objects.push(this.asteroidBelt);
         
         // Create saturn
         this.saturn = new Planet({
@@ -110,21 +108,18 @@ export class TestScene
         this.objects.push(this.saturn);
 
         // // Create saturn ring
-        const saturnRingCount = 3000;
-        for (let i = 0; i < saturnRingCount; i++) {
-            const ringParticle  = new Asteroid({
-                size: 0.5,
-                orbitFarRadius: 65,
-                orbitNearRadius: 40,
-                orbitalTilt: 0,
-                axialRotationSpeed: 0.005,
-                orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
-                thickness: 0.6,   
-                color: 0xdfe6f0,
-                parent: this.saturn.axialFrame
-            });
-            this.objects.push(ringParticle);
-        }
+        this.saturnRing = new AsteroidBelt({
+            count: 3000,
+            size: 0.5,
+            orbitNearRadius: 65,
+            orbitFarRadius: 40,
+            axialRotationSpeed: 0.005,
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
+            thickness: 0.6,   
+            color: 0xdfe6f0,
+            parent: this.saturn.axialFrame
+        });
+        this.objects.push(this.saturnRing);
     }
 
     Update(dt) 
