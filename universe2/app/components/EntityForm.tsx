@@ -29,21 +29,21 @@ const EntityForm = ({ type, onSuccess }: EntityFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!name || !system || !galaxy) {
-          setMessage("all fields are required");
-          return;
+        setMessage("all fields are required");
+        return;
       }
 
       try {
-          const { data } = await api.post<CreateEntityResponse>("/entities", { type, name, system, galaxy });
-          setMessage(`Entity "${data.entity.name}" created successfully!`);
-          setName("");
-          setSystem("");
-          setGalaxy("");
-          if (onSuccess) onSuccess();
+        const { data } = await api.post<CreateEntityResponse>("/entities", { type, name, system, galaxy });
+        setMessage(`Entity "${data.entity.name}" created successfully!`);
+        setName("");
+        setSystem("");
+        setGalaxy("");
+        if (onSuccess) onSuccess();
       } 
       catch (err: any) {
-          console.error(err);
-          setMessage(err?.response?.data?.message || "Something went wrong");
+        console.error(err);
+        setMessage(err?.response?.data?.message || "Something went wrong");
       }
   };
   const title = type === "star" ? "Add a Star" : "Add a Planet";

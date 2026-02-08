@@ -4,6 +4,10 @@ import { Star } from "../entities/star.js";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { Asteroid } from "../entities/asteroid.js";
+import { TestObject } from "../entities/testObject.js";
+import api from "../utils/api";
+
+
 
 export class TestScene
 {
@@ -23,7 +27,18 @@ export class TestScene
         this.camera = camera;
 
         this.objects = [];
+    }
 
+    async init() 
+    {
+        const res = await api.get("/entities");
+        this.entities = res.data.entities;
+        this.moonEntity = this.entities.find(e => e.name === "moon");
+        this.CreateObjects();
+    }
+
+    CreateObjects()
+    {
         // Create Sun
         this.sun = new Star({
             name: "sun",
@@ -53,8 +68,8 @@ export class TestScene
         this.objects.push(this.earth);
 
         // Create moon
-        this.moon = new Planet({
-            name: "moon",
+        this.moon = new TestObject({
+            entity: this.moonEntity,
             size: 2.7,
             posToParent: new THREE.Vector3(30, 0, 0),
             axialTilt: 6.68,

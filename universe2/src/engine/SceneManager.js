@@ -20,9 +20,12 @@ export class SceneManager
         this.camera.updateProjectionMatrix();
     }
 
-    LoadScene(sceneClass) 
+    async LoadScene(sceneClass) 
     {
         this.currentScene = new sceneClass(this.scene, this.camera);
+        if (this.currentScene.init) {
+            await this.currentScene.init();
+        }
         this.UpdateCamera();
     }
 

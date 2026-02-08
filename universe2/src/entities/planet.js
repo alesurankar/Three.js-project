@@ -45,7 +45,7 @@ export class Planet extends CelestialBody
             });
         }
         
-         // Create geometry
+        // Create geometry
         const geometry = new THREE.IcosahedronGeometry(size, detail);
 
         super({
