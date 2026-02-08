@@ -5,8 +5,8 @@ import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { AsteroidBelt } from "../entities/asteroidBelt.js";
 import { TestObject } from "../entities/testObject.js";
+import { createEntity } from "../entities/entityFactory.js";
 import api from "../utils/api";
-
 
 
 export class TestScene
@@ -39,21 +39,38 @@ export class TestScene
 
     CreateObjects()
     {
-        // Create Sun
-        this.sun = new Star({
-            name: "sun",
-            size: 110,
-            lightType: "pointLight",
-            posToParent: new THREE.Vector3(0, 0, 0),
-            axialTilt: 7.25,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(25),
-            orbitalSpeed: 0,
-            temperature: 5778,
-            hasTexture: true,
-        });
+        // // Create Sun
+        // this.sun = new Star({
+        //     name: "sun",
+        //     size: 110,
+        //     lightType: "pointLight",
+        //     posToParent: new THREE.Vector3(0, 0, 0),
+        //     axialTilt: 7.25,
+        //     axialRotationSpeed: StarSystem.AxialRotationInDays(25),
+        //     orbitalSpeed: 0,
+        //     temperature: 5778,
+        //     hasTexture: true,
+        // });
+        // this.scene.add(this.sun.orbitPivot);
+        // this.objects.push(this.sun);
+
+        // Create Sun using factory
+        this.sun = createEntity(
+            { name: "sun", type: "star" },
+            {
+                size: 110,
+                lightType: "pointLight",
+                posToParent: new THREE.Vector3(0, 0, 0),
+                axialTilt: 7.25,
+                axialRotationSpeed: StarSystem.AxialRotationInDays(25),
+                orbitalSpeed: 0,
+                temperature: 5778,
+                hasTexture: true,
+            }
+        );
         this.scene.add(this.sun.orbitPivot);
         this.objects.push(this.sun);
-
+        
         // Create Earth
         this.earth = new Planet({
             name: "earth",
