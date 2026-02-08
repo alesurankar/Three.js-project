@@ -8,22 +8,27 @@ const entitySchema = new mongoose.Schema(
       unique: true,
     },
 
-    type: {
-      type: String,
-      required: true,
-    },
-
     name: {
       type: String,
       required: true,
     },
 
-    system: {
+    type: {
       type: String,
       required: true,
     },
 
-    galaxy: {
+    parentKey: {
+      type: String,
+      required: true,
+    },
+
+    systemKey: {
+      type: String,
+      required: true,
+    },
+
+    galaxyKey: {
       type: String,
       required: true,
     },

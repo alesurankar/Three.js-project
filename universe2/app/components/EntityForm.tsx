@@ -7,10 +7,12 @@ import api from "../../src/utils/api";
 interface CreateEntityResponse {
   success: boolean;
   entity: {
-    type: string;
+    key: string,
     name: string;
-    system: string;
-    galaxy: string;
+    type: string;
+    parentKey: string,
+    systemKey: string;
+    galaxyKey: string;
   };
   message: string;
 }
@@ -21,24 +23,30 @@ interface EntityFormProps {
 }
 
 const EntityForm = ({ type, onSuccess }: EntityFormProps) => {
+  const [key, setKey] = useState("");
   const [name, setName] = useState("");
-  const [system, setSystem] = useState("");
-  const [galaxy, setGalaxy] = useState("");
+  const [parentKey, setParentKey] = useState("");
+  const [systemKey, setSystemKey] = useState("");
+  const [galaxyKey, setGalaxyKey] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!name || !system || !galaxy) {
+      if (!key || !name || !parentKey || !systemKey || !galaxyKey) {
         setMessage("all fields are required");
         return;
       }
 
       try {
-        const { data } = await api.post<CreateEntityResponse>("/entities", { type, name, system, galaxy });
+        const { data } = await api.post<CreateEntityResponse>("/entities", 
+          { key, name, type, parentKey, systemKey, galaxyKey });
+
         setMessage(`Entity "${data.entity.name}" created successfully!`);
+        setKey("");
         setName("");
-        setSystem("");
-        setGalaxy("");
+        setParentKey("");
+        setSystemKey("");
+        setGalaxyKey("");
         if (onSuccess) onSuccess();
       } 
       catch (err: any) {
@@ -66,6 +74,14 @@ const EntityForm = ({ type, onSuccess }: EntityFormProps) => {
           
           <input
             type="text"
+            placeholder="Key (lower_case)"
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            required
+            className="mb-1 w-full max-w-sm border rounded px-2 lg:px-3 py-0 lg:py-2 placeholder:text-sm lg:placeholder:text-lg"
+          />
+          <input
+            type="text"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -74,17 +90,25 @@ const EntityForm = ({ type, onSuccess }: EntityFormProps) => {
           />
           <input
             type="text"
-            placeholder="System"
-            value={system}
-            onChange={(e) => setSystem(e.target.value)}
+            placeholder="Parent Key (lower_case)"
+            value={parentKey}
+            onChange={(e) => setParentKey(e.target.value)}
             required
             className="mb-1 w-full max-w-sm border rounded px-2 lg:px-3 py-0 lg:py-2 placeholder:text-sm lg:placeholder:text-lg"
           />
           <input
             type="text"
-            placeholder="Galaxy"
-            value={galaxy}
-            onChange={(e) => setGalaxy(e.target.value)}
+            placeholder="System Key (lower_case)"
+            value={systemKey}
+            onChange={(e) => setSystemKey(e.target.value)}
+            required
+            className="mb-1 w-full max-w-sm border rounded px-2 lg:px-3 py-0 lg:py-2 placeholder:text-sm lg:placeholder:text-lg"
+          />
+          <input
+            type="text"
+            placeholder="Galaxy Key (lower_case)"
+            value={galaxyKey}
+            onChange={(e) => setGalaxyKey(e.target.value)}
             required
             className="mb-1 w-full max-w-sm border rounded px-2 lg:px-3 py-0 lg:py-2 placeholder:text-sm lg:placeholder:text-lg"
           />
