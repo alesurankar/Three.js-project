@@ -74,7 +74,7 @@ export class AsteroidBelt
       const data = this.instanceData[i];
 
       // Update orbital angle
-      data.angle += this.orbitalSpeed * dt;
+      data.angle -= this.orbitalSpeed * dt;
       const x = Math.cos(data.angle) * data.radius;
       const z = Math.sin(data.angle) * data.radius;
       const y = data.position.y;

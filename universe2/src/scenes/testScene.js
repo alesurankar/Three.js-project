@@ -80,7 +80,7 @@ export class TestScene
         });
         this.objects.push(this.moon);
 
-        // // Create asteroid belt
+        // Create asteroid belt
         this.asteroidBelt = new AsteroidBelt({
             count: 3000,
             size: 1,
@@ -107,7 +107,7 @@ export class TestScene
         });
         this.objects.push(this.saturn);
 
-        // // Create saturn ring
+        // Create saturn ring
         this.saturnRing = new AsteroidBelt({
             count: 3000,
             size: 0.5,
