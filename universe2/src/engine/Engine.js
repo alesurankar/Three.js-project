@@ -12,6 +12,7 @@ export class Engine
     this.lastTime = performance.now() / 1000;
     this.accumulator = 0;
     this.timeScale = 1;
+    this.rafId = null;
 
     this.manager = CreateSceneManager();
     this.Camera = this.manager.camera;
@@ -35,12 +36,12 @@ export class Engine
     }
 
     this.Renderer.render(Scene, this.Camera);
-    requestAnimationFrame(this.MainLoop);
+    this.rafId = requestAnimationFrame(this.MainLoop);
   }
 
   Start() 
   {
-    requestAnimationFrame(this.MainLoop);
+    this.rafId = requestAnimationFrame(this.MainLoop);
   }
 
   ToggleLock() 
@@ -55,13 +56,50 @@ export class Engine
 
   Dispose() 
   {
+    // Stop the animation loop
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+
     // Dispose controls first
     if (this.gameControls) {
       this.gameControls.Dispose();
       this.gameControls = null;
     }
+
     // Dispose renderer
-    this.Renderer.dispose();
-    this.container.removeChild(this.Renderer.domElement);
+    if (this.Renderer) {
+      this.Renderer.dispose();
+      this.container.removeChild(this.Renderer.domElement);
+      this.Renderer = null;
+    }
+
+    // Dispose the current scene and clear all objects
+    if (this.manager?.currentScene) {
+      this.manager.currentScene.Dispose();
+      this.manager.currentScene = null;
+    }
+
+    // Clear the global THREE.Scene
+    Scene.traverse((obj) => {
+      if (obj.geometry) obj.geometry.dispose();
+      if (obj.material) {
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach((m) => {
+            if (m.map) m.map.dispose();
+            m.dispose();
+          });
+        } 
+        else {
+          if (obj.material.map) obj.material.map.dispose();
+          obj.material.dispose();
+        }
+      }
+    });
+    Scene.clear();
+
+    // Remove manager reference
+    this.manager = null;
   }
 }

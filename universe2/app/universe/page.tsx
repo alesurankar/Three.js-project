@@ -18,6 +18,7 @@ export default function Universe()
 
     return () => {
       engine?.Dispose();
+      engineRef.current = null;
     };
   }, []);
 
