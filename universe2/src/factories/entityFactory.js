@@ -1,9 +1,10 @@
-import { Planet } from "./planet.js";
-import { Star } from "./star.js";
-import { BlackHole } from "./blackHole.js";
-import { TestObject } from "./testObject.js";
+import { Planet } from "../entities/planet.js";
+import { Star } from "../entities/star.js";
+import { BlackHole } from "../entities/blackHole.js";
+import { TestObject } from "../entities/testObject.js";
 
-export function createEntity(entityData, extraOptions = {}) {
+export function createEntity(entityData, extraOptions = {}) 
+{
     const options = { ...entityData, ...extraOptions };
 
     switch(entityData.type) {

@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { AsteroidBelt } from "../entities/asteroidBelt.js";
-import { createEntity } from "../entities/entityFactory.js";
+import { createEntity } from "../factories/entityFactory.js";
 import api from "../utils/api";
 
 
@@ -30,10 +30,10 @@ export class TestScene
     {
         const res = await api.get("/entities");
         this.entities = res.data.entities;
-        this.sunEntity = this.entities.find(e => e.name === "sun");
-        this.earthEntity = this.entities.find(e => e.name === "earth");
-        this.moonEntity = this.entities.find(e => e.name === "moon");
-        this.saturnEntity = this.entities.find(e => e.name === "saturn");
+        this.sunEntity = this.entities.find(e => e.key === "sun");
+        this.earthEntity = this.entities.find(e => e.key === "earth");
+        this.moonEntity = this.entities.find(e => e.key === "moon");
+        this.saturnEntity = this.entities.find(e => e.key === "saturn");
         this.CreateObjects();
     }
 
