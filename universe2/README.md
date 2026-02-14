@@ -48,10 +48,14 @@ This will:
 
 ⚠️ Requirements
 
-Make sure your .env file contains:
-MONGO_URI=your_connection_string
-.env should not be committed to GitHub (added to .gitignore).
+Make sure your .env file contains: MONGO_URI=your_connection_string
 
+
+
+⚠️ Warning
+
+- Your .env file contains sensitive information (like MONGO_URI) and should not be committed to GitHub.
+- It is already included in .gitignore, so it will be ignored by Git.
 
 
 🚀 Start Development
