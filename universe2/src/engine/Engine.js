@@ -1,4 +1,5 @@
-import { Scene, Update as SceneUpdate, CreateSceneManager } from "./SceneSetup.js";
+import * as THREE from "three";
+import { Update as SceneUpdate, CreateSceneManager } from "./SceneSetup.js";
 import { GameControls } from "../utils/gameControls.js";
 import { CreateRenderer } from "./RendererSetup.js";
 
@@ -6,6 +7,11 @@ export class Engine
 {
   constructor(container, { fps = 60 } = {}) 
   {
+    this.Scene = new THREE.Scene();
+
+    const ambientLight = new THREE.AmbientLight(0x404040, 2);
+    this.Scene.add(ambientLight);
+
     this.container = container;
     this.FIXED_FPS = fps;
     this.FIXED_DT = 1 / this.FIXED_FPS;
@@ -14,7 +20,7 @@ export class Engine
     this.timeScale = 1;
     this.rafId = null;
 
-    this.manager = CreateSceneManager();
+    this.manager = CreateSceneManager(this.Scene);
     this.Camera = this.manager.camera;
     this.Renderer = CreateRenderer(container);
     this.gameControls = new GameControls(this.Camera, container);
@@ -35,7 +41,7 @@ export class Engine
       this.accumulator -= this.FIXED_DT;
     }
 
-    this.Renderer.render(Scene, this.Camera);
+    this.Renderer.render(this.Scene, this.Camera);
     this.rafId = requestAnimationFrame(this.MainLoop);
   }
 
@@ -82,11 +88,11 @@ export class Engine
     }
 
     // Clear the global THREE.Scene
-    Scene.traverse((obj) => {
+    this.Scene.traverse((obj) => {
       if (obj.geometry) obj.geometry.dispose();
       if (obj.material) {
         if (Array.isArray(obj.material)) {
-          obj.material.forEach((m) => {
+          obj.material.forEach(m => {
             if (m.map) m.map.dispose();
             m.dispose();
           });
@@ -97,7 +103,8 @@ export class Engine
         }
       }
     });
-    Scene.clear();
+    this.Scene.clear();
+    this.Scene = null;
 
     // Remove manager reference
     this.manager = null;
