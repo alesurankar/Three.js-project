@@ -1,43 +1,24 @@
 import "dotenv/config";
 import mongoose from "mongoose";
+import { belts } from "./seed/belts.js";
+import { blackholes } from "./seed/blackholes.js";
+import { planets } from "./seed/planets.js";
+import { moons } from "./seed/moons.js";
+import { rings } from "./seed/rings.js";
+import { stars } from "./seed/stars.js";
 import Entity from "./models/entityModel.js";
 
 const MONGO_URI = process.env.MONGO_URI;
 
 const entities = [
-  { 
-    key: "sun", 
-    name: "Sun", 
-    type: "star", 
-    parentKey: "smbh", 
-    systemKey: "solarsystem", 
-    galaxyKey: "milkyway" 
-  },
-  { 
-    key: "earth", 
-    name: "Earth", 
-    type: "planet", 
-    parentKey: "sun", 
-    systemKey: "solarsystem", 
-    galaxyKey: "milkyway" 
-  },
-  { 
-    key: "moon", 
-    name: "Moon", 
-    type: "planet", 
-    parentKey: "earth", 
-    systemKey: "solarsystem", 
-    galaxyKey: "milkyway" 
-  },
-  { 
-    key: "saturn", 
-    name: "Saturn", 
-    type: "planet", 
-    parentKey: "sun", 
-    systemKey: "solarsystem", 
-    galaxyKey: "milkyway" 
-  },
+  ...belts,
+  ...blackholes,
+  ...planets,
+  ...moons,
+  ...rings,
+  ...stars,
 ];
+
 
 async function seed() 
 {
@@ -45,7 +26,7 @@ async function seed()
     await mongoose.connect(MONGO_URI);
     console.log("✅ Connected to DB");
 
-    // Clear existing data (optional)
+    // Clear existing data
     await Entity.deleteMany({});
     console.log("🗑️  Cleared existing entities");
 
