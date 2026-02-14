@@ -1,4 +1,31 @@
-# Three.js Universe Project
+# Three.js Universe Projects
+
+This repository contains **two versions** of a 3D Universe project:
+
+---
+
+## Universe (vanilla JS)
+
+- Location: `universe/`
+- Simple 3D universe using plain JavaScript and Three.js.
+- Open `index.html` in your browser to run.
+
+## Universe2 (Next.js)
+
+- Location: `universe2/`
+- React + Next.js version with modular scene management.
+- Uses MongoDB to store entities.
+- For detailed setup instructions, see [universe2/README.md](./universe2/README.md).
+
+### Quick Start
+
+```bash
+cd universe2
+npm install
+```
+
+
+# Overview
 
 A scalable Three.js-based system for managing and rendering multiple independent 3D scenes.
 This project explores how to design frontend architectures that remain performant and maintainable as visual complexity grows.

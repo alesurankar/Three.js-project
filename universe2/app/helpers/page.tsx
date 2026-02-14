@@ -6,8 +6,6 @@ import Button from "../utils/Button";
 import Modal from '../utils/Modal';
 import EntityForm from "../components/EntityForm";
 
-
-
 export default function Helper() 
 {
   const router = useRouter();
