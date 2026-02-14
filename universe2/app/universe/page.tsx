@@ -1,10 +1,13 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from "react";
 import { Engine } from "../../src/engine/Engine.js";
+import Button from '../utils/Button';
 
 export default function Universe() 
 {
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Engine | null>(null);
   const [timeScale, setTimeScale] = useState(1);
@@ -38,6 +41,12 @@ export default function Universe()
           fontSize: "1.4rem",
         }}
       >
+        <Button
+          title="Back to Landing Page"
+          mainClassName="bg-[#1e5a8a] hover:bg-[#3b7db5] py-4 rounded"
+          titleClassName="text-2xl font-bold uppercase"
+          onClick={() => router.push('/')}
+        />
         <button onClick={() => engineRef.current?.gameControls.controls.lock()}
           style={{
             padding: "10px 12px",

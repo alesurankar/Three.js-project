@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import Button from "../utils/Button";
 import Modal from '../utils/Modal';
@@ -9,6 +10,7 @@ import EntityForm from "../components/EntityForm";
 
 export default function Helper() 
 {
+  const router = useRouter();
   const [show, setShow] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
 
@@ -29,7 +31,12 @@ export default function Helper()
     }}>
       <h1>Create Entity</h1>
       <div className='flex items-center justify-between'></div>
-
+      <Button
+        title="Back to Landing Page"
+        mainClassName="bg-[#1e5a8a] hover:bg-[#3b7db5] py-4 rounded"
+        titleClassName="text-2xl font-bold uppercase"
+        onClick={() => router.push('/')}
+      />
       <Button
           title='Add Star'
           mainClassName='bg-[#7c2923] hover:bg-[#d5453a]'

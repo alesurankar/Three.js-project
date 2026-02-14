@@ -23,7 +23,6 @@ export class TestScene
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
-
         this.objects = [];
     }
 
@@ -53,7 +52,7 @@ export class TestScene
 
     CreateObjects()
     {
-        // Create Sun using factory
+        // Create Sun
         this.sun = createEntity(this.sunEntity, {
             size: 110,
             lightType: "pointLight",
