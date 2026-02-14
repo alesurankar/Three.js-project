@@ -17,13 +17,6 @@ This repository contains **two versions** of a 3D Universe project:
 - Uses MongoDB to store entities.
 - For detailed setup instructions, see [universe2/README.md](./universe2/README.md).
 
-### Quick Start
-
-```bash
-cd universe2
-npm install
-```
-
 
 # Overview
 
