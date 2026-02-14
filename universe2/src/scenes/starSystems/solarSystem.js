@@ -22,8 +22,8 @@ export class SolarSystem
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
-
         this.objects = [];
+        
         const sizeFactor = 1
         const sunSize = 110 * sizeFactor; 
         const wormholeSize = 100 * sizeFactor;

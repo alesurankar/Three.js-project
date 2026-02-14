@@ -3,7 +3,7 @@ import { Planet } from "../entities/planet.js";
 import { Star } from "../entities/star.js";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
-import { Asteroid } from "../entities/asteroid.js";
+import { AsteroidBelt } from "../entities/asteroidBelt.js";
 
 export class TestScene
 {
@@ -21,6 +21,7 @@ export class TestScene
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
+        this.objects = [];
 
         // Create Sun
         this.sun = new Star({
@@ -35,6 +36,7 @@ export class TestScene
             hasTexture: true,
         });
         this.scene.add(this.sun.orbitPivot);
+        this.objects.push(this.sun);
 
         // Create Earth
         this.earth = new Planet({
@@ -47,6 +49,7 @@ export class TestScene
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.earth);
 
         // Create moon
         this.moon = new Planet({
@@ -59,23 +62,20 @@ export class TestScene
             orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
             parent: this.earth.objectRoot,
         });
+        this.objects.push(this.moon);
 
         // Create asteroid belt
-        this.asteroids = [];
-        const asteroidCount = 3000;
-        for (let i = 0; i < asteroidCount; i++) {
-            const asteroid = new Asteroid({
-                size: 1,
-                orbitFarRadius: 1300,
-                orbitNearRadius: 1000,
-                orbitalTilt: 0.0,
-                axialRotationSpeed: 0.0004,
-                orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
-                thickness: 50,
-                parent: this.sun.objectRoot
-            });
-            this.asteroids.push(asteroid);
-        }
+        this.asteroidBelt = new AsteroidBelt({
+            count: 6000,
+            size: asteroidBeltSize,
+            orbitFarRadius: 1900,
+            orbitNearRadius: 1700,
+            axialRotationSpeed: 0.0004,
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
+            thickness: 50,
+            parent: this.sun.objectRoot
+        });
+        this.objects.push(this.asteroidBelt);
         
         // Create saturn
         this.saturn = new Planet({
@@ -88,73 +88,33 @@ export class TestScene
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
             parent: this.sun.objectRoot,
         });
+        this.objects.push(this.saturn);
 
-        // // Create saturn ring
-        this.saturnRing = [];
-        const saturnRingCount = 3000;
-        for (let i = 0; i < saturnRingCount; i++) {
-            const ringParticle  = new Asteroid({
-                size: 0.5,
-                orbitFarRadius: 65,
-                orbitNearRadius: 40,
-                orbitalTilt: 0,
-                axialRotationSpeed: 0.005,
-                orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
-                thickness: 0.6,   
-                color: 0xdfe6f0,
-                parent: this.saturn.axialFrame
-            });
-            this.saturnRing.push(ringParticle );
-        }
+        // Create saturn ring
+        this.saturnRing = new AsteroidBelt({
+            count: 6000,
+            size: saturnRingSize,
+            orbitFarRadius: 65,
+            orbitNearRadius: 40,
+            axialRotationSpeed: 0.005,
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
+            thickness: 0.6,   
+            color: 0xdfe6f0,
+            parent: this.saturn.axialFrame
+        });
+        this.objects.push(this.saturnRing);
     }
 
     Update(dt) 
     {
-        this.sun.Update(dt);
-        this.earth.Update(dt);
-        this.moon.Update(dt);
-        for (const asteroid of this.asteroids) {
-            asteroid.Update(dt);
-        }
-        this.saturn.Update(dt);
-        for (const ringParticle of this.saturnRing) {
-            ringParticle.Update(dt);
-        }
-
+        this.objects.forEach(obj => obj.Update(dt));
     }
 
     Dispose() 
     {
-        // Remove Sun
-        if (this.sun) {
-            this.sun.Dispose();
-            this.sun = null;
-        }
-        // Remove Earth
-        if (this.earth) {
-            this.earth.Dispose();
-            this.earth = null;
-        }
-        // Remove Moon
-        if (this.moon) {
-            this.moon.Dispose();
-            this.moon = null;
-        }
-        // Remove Asteroid Belt
-        for (const asteroid of this.asteroids) {
-            asteroid.Dispose();
-        }
-        this.asteroids = [];
-        // Remove Saturn
-        if (this.saturn) {
-            this.saturn.Dispose();
-            this.saturn = null;
-        }
-        // Remove Saturn Ring
-        for (const ringParticle  of this.saturnRing) {
-            ringParticle.Dispose();
-        }
-        this.saturnRing = [];
+        this.objects.forEach(obj => obj?.Dispose());
+        this.objects = [];
+
         // Dispose skybox
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);

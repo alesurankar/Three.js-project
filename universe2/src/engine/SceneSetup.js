@@ -13,8 +13,8 @@ export function CreateSceneManager()
   const camera = CreateCamera();
   const manager = new SceneManager(Scene, camera);
 
-  manager.LoadScene(TestScene);
-  //manager.LoadScene(SolarSystem);
+  //manager.LoadScene(TestScene);
+  manager.LoadScene(SolarSystem);
 
   return manager;
 }
