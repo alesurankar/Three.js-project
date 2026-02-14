@@ -5,6 +5,7 @@ import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { AsteroidBelt } from "../entities/asteroidBelt.js";
 
+
 export class TestScene
 {
     constructor(scene, camera) 
