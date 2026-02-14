@@ -1,5 +1,6 @@
-import Universe from "../src/components/Universe";
+import LandingPage from "../app/components/LandingPage";
 
-export default function Home() {
-  return <Universe />;
+export default function Home() 
+{
+  return <LandingPage />;
 }

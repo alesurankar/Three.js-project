@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
-import { Engine } from "../engine/Engine.js";
+import { Engine } from "../../src/engine/Engine.js";
 
-export default function Universe() {
+export default function Universe() 
+{
   const containerRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Engine | null>(null);
   const [timeScale, setTimeScale] = useState(1);
