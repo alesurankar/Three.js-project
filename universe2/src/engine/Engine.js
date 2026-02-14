@@ -81,12 +81,6 @@ export class Engine
       this.Renderer = null;
     }
 
-    // Dispose the current scene and clear all objects
-    if (this.manager?.currentScene) {
-      this.manager.currentScene.Dispose();
-      this.manager.currentScene = null;
-    }
-
     // Clear the global THREE.Scene
     this.Scene.traverse((obj) => {
       if (obj.geometry) obj.geometry.dispose();
@@ -107,6 +101,7 @@ export class Engine
     this.Scene = null;
 
     // Remove manager reference
+    this.manager?.Dispose();
     this.manager = null;
   }
 }

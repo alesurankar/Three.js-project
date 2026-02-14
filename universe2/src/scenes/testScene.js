@@ -9,7 +9,8 @@ import api from "../utils/api";
 export class TestScene
 {
     constructor(scene, camera) 
-    {
+    {   
+        this.active = true;
         StarSystem.timeFactor=100
        
         this.cameraSettings = {
@@ -28,13 +29,26 @@ export class TestScene
 
     async init() 
     {
-        const res = await api.get("/entities");
-        this.entities = res.data.entities;
-        this.sunEntity = this.entities.find(e => e.key === "sun");
-        this.earthEntity = this.entities.find(e => e.key === "earth");
-        this.moonEntity = this.entities.find(e => e.key === "moon");
-        this.saturnEntity = this.entities.find(e => e.key === "saturn");
-        this.CreateObjects();
+        try {
+            const res = await api.get("/entities");
+            if (!this.active) return;
+
+            this.entities = res.data.entities;
+            this.sunEntity = this.entities.find(e => e.key === "sun");
+            this.earthEntity = this.entities.find(e => e.key === "earth");
+            this.moonEntity = this.entities.find(e => e.key === "moon");
+            this.saturnEntity = this.entities.find(e => e.key === "saturn");
+            
+            if (!this.sunEntity) throw new Error("Sun entity missing");
+            if (!this.earthEntity) throw new Error("Earth entity missing");
+            if (!this.moonEntity) throw new Error("Moon entity missing");
+            if (!this.saturnEntity) throw new Error("Saturn entity missing");
+            
+            this.CreateObjects();
+        }
+        catch (err) {
+            console.error("Failed to load entities", err);
+        }
     }
 
     CreateObjects()
@@ -125,6 +139,8 @@ export class TestScene
 
     Dispose() 
     {
+        this.active = false;
+
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
 

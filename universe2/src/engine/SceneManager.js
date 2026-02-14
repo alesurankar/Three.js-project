@@ -11,6 +11,8 @@ export class SceneManager
 
     UpdateCamera()
     {
+        if (!this.currentScene) return;
+
         const settings = this.currentScene.cameraSettings || {};
         this.camera.position.set(settings.pos.x, settings.pos.y, settings.pos.z);
         this.camera.lookAt(settings.lookAt.x, settings.lookAt.y, settings.lookAt.z);
@@ -22,9 +24,13 @@ export class SceneManager
 
     async LoadScene(sceneClass) 
     {
-        this.currentScene = new sceneClass(this.scene, this.camera);
-        if (this.currentScene.init) {
-            await this.currentScene.init();
+        const sceneInstance = new sceneClass(this.scene, this.camera);
+        this.currentScene = sceneInstance;
+        if (sceneInstance.init) {
+            await sceneInstance.init();
+        }
+        if (this.currentScene !== sceneInstance || !this.currentScene) {
+            return;
         }
         this.UpdateCamera();
     }
@@ -53,4 +59,11 @@ export class SceneManager
         this.SwitchScene(requested);
         this.currentScene.requestedScene = null;
     }
+
+    Dispose()   
+    {
+        this.currentScene?.Dispose();
+        this.currentScene = null;
+    }
+
 }
