@@ -16,12 +16,15 @@ cd ..
 🌱 Database Setup
 
 This project uses MongoDB to store universe entities (stars, planets, etc.). 
-Before running the app for the first time, you must configure your environment variables.
-- here [/server/example.env](./server/example.env).
+Before running the app for the first time you must: 
+
+1. configure your environment variables.
+- open [/server/example.env](./server/example.env).
+
+2. Run the seed script:
 ```bash
 npm run seed
 ```
-
 
 This will:
 - connect to MongoDB
@@ -43,7 +46,6 @@ After seeding:
 ```bash
 npm run dev
 ```
-
 
 Open:
 http://localhost:3000
