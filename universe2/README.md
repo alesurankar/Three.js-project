@@ -2,15 +2,22 @@
 ### Quick Start
 
 ```bash
+# install client dependencies 
 cd universe2
 npm install
+
+# install server dependencies
+cd server
+npm install
+cd ..
 ```
 
 
 🌱 Database Setup
 
-This project uses MongoDB to store universe entities (stars, planets, etc.).
-Before running the app for the first time, seed the database:
+This project uses MongoDB to store universe entities (stars, planets, etc.). 
+Before running the app for the first time, you must configure your environment variables.
+- here [/server/example.env](./server/example.env).
 ```bash
 npm run seed
 ```
