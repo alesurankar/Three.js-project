@@ -237,6 +237,20 @@ export class SolarSystem
         });
         this.objects.push(this.pluto);
 
+        // Create kuiper belt
+        this.kuiperBelt = new AsteroidBelt({
+            count: 6000,
+            size: asteroidBeltSize * 1.2,
+            orbitFarRadius: 7000,
+            orbitNearRadius: 5500,
+            axialRotationSpeed: 0.0003,
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(100000),
+            thickness: 250,
+            color: 0xdddddd,
+            parent: this.sun.objectRoot
+        });
+        this.objects.push(this.kuiperBelt);
+
         this.sceneTriggers = [
             { obj: this.wormhole, threshold: wormholeSize / 2, scene: "MilkyWay" },
             { obj: this.mercury, threshold: mercurySize * 5, scene: "MercuryOrbit" },
