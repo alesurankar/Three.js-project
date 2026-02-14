@@ -8,7 +8,7 @@ This repository contains **two versions** of a 3D Universe project:
 
 - Location: `universe/`
 - Simple 3D universe using plain JavaScript and Three.js.
-- Open `index.html` in your browser to run.
+- For detailed setup instructions, see [universe/README.md](./universe/README.md).
 
 ## Universe2 (Next.js)
 
