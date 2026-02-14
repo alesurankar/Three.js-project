@@ -19,17 +19,20 @@ This project uses MongoDB to store universe entities (stars, planets, etc.).
 Before running the app for the first time you must: 
 
 1. Create a free MongoDB Atlas account (or use a local MongoDB instance)
-[MongoDB Atlas Signup](https://account.mongodb.com/account/login)
+
+- [MongoDB Atlas Signup](https://account.mongodb.com/account/login)
 Follow instructions to create a cluster.
 
 2. Get your connection string
-In Atlas, go to Database → Connect → Connect your application
-Copy the connection string, it will look like:
-mongodb+srv://<username>:<password>@cluster0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+- In Atlas, go to Database → Connect → Connect your application.
+Copy the connection string, it will look like this:
+mongodb+srv://<"username">:<"password">@cluster0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
 
 3. configure your environment variables.
 - open [/server/example.env](./server/example.env).
+- rename "example.env" to ".env"
 
 4. Run the seed script:
 ```bash
