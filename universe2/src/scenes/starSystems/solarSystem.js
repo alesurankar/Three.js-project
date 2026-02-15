@@ -54,7 +54,7 @@ export class SolarSystem
             
             this.entities = res.data.entities;
             this.sunEntity = this.entities.find(e => e.key === "sun");
-            this.wormholeEntity = this.entities.find(e => e.key === "wormhole");
+            this.wormholeEntity = this.entities.find(e => e.key === "wormhole_sol");
             this.mercuryEntity = this.entities.find(e => e.key === "mercury");
             this.venusEntity = this.entities.find(e => e.key === "venus");
             this.earthEntity = this.entities.find(e => e.key === "earth");

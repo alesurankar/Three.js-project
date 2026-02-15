@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import { BlackHole } from "../../entities/blackHole.js";
 import { Star } from "../../entities/star.js";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
+import { createEntity } from "../../factories/entityFactory.js";
 import api from "../../utils/api";
 
 
@@ -62,7 +62,19 @@ export class MilkyWay
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
+            this.entities = this.entities.filter(e => e.galaxyKey === "milkyway");
             
+            this.smbhEntity = this.entities.find(e => e.key === "sagittariusA");
+            this.sunEntity = this.entities.find(e => e.key === "sun");
+            this.alphacentauriAEntity = this.entities.find(e => e.key === "alphacentauriA");
+            this.alphacentauriBEntity = this.entities.find(e => e.key === "alphacentauriB");
+            this.proximacenturiEntity = this.entities.find(e => e.key === "proximacentauri");
+            
+            if (!this.smbhEntity) throw new Error("Sagittarius A* entity missing");
+            if (!this.sunEntity) throw new Error("Sun entity missing");
+            if (!this.acAEntity) throw new Error("Alpha Centauri A entity missing");
+            if (!this.acBEntity) throw new Error("Alpha Centauri B entity missing");
+            if (!this.pcEntity) throw new Error("Proxima Centuri entity missing");
 
             this.CreateObjects();
             this.Portals();
@@ -75,8 +87,7 @@ export class MilkyWay
      CreateObjects()
     {
         // Create SMBH
-        this.SMBH = new BlackHole({
-            name: "SMBH",
+        this.SMBH = createEntity(this.smbhEntity, {
             size: this.SMBHSize,
             posToParent: new THREE.Vector3(0, 0, 0),
             axialRotationSpeed: this.baseSpeed * this.DISTANCE_SCALE * 30,
@@ -85,7 +96,7 @@ export class MilkyWay
         this.objects.push(this.SMBH);
 
         // Create Sun
-        this.sun = new Star({
+        this.sun = createEntity(this.sunEntity, {
             size: this.sunSize,
             renderMode: "points",
             posToParent: this.sunPos,
@@ -96,7 +107,7 @@ export class MilkyWay
         });
         this.objects.push(this.sun);
 
-        this.alphaCentauriA = new Star({
+        this.alphaCentauriA = createEntity(this.acAEntity, {
             size: this.alphaCentauriASize,
             renderMode: "points",
             posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE, this.sunPos.z-1.0*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE),
@@ -107,7 +118,7 @@ export class MilkyWay
         });
         this.objects.push(this.alphaCentauriA);
 
-        this.alphaCentauriB = new Star({
+        this.alphaCentauriB = createEntity(this.acBEntity, {
             size: this.alphaCentauriBSize,
             renderMode: "points",
             posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE - 0.02*this.LOCAL_SCALE, this.sunPos.z - 1.0*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE),
@@ -118,7 +129,7 @@ export class MilkyWay
         });
         this.objects.push(this.alphaCentauriB);
 
-        this.proximaCentauri = new Star({
+        this.proximaCentauri = createEntity(this.pcEntity, {
             size: this.proximaCentauri,
             renderMode: "points",
             posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE, this.sunPos.z - 1.05*this.LOCAL_SCALE - 0.02*this.LOCAL_SCALE),

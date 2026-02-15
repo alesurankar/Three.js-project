@@ -5,7 +5,7 @@ import { createEntity } from "../../factories/entityFactory.js";
 import api from "../../utils/api";
 
 
-export class AlphaCenturiSystem 
+export class AlphaCentauriSystem 
 {
     constructor(scene, camera) 
     {
@@ -36,15 +36,16 @@ export class AlphaCenturiSystem
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
+            this.entities = this.entities.filter(e => e.systemKey === "alphacentauri" && e.galaxyKey === "milkyway");
             
-            this.acAEntity = this.entities.find(e => e.key === "alphacenturiA");
-            this.acBEntity = this.entities.find(e => e.key === "alphacenturiB");
-            this.pcEntity = this.entities.find(e => e.key === "proximacenturi");
-            this.wormholeEntity = this.entities.find(e => e.key === "sun");
+            this.acAEntity = this.entities.find(e => e.key === "alphacentauriA");
+            this.acBEntity = this.entities.find(e => e.key === "alphacentauriB");
+            this.pcEntity = this.entities.find(e => e.key === "proximacentauri");
+            this.wormholeEntity = this.entities.find(e => e.key === "wormhole_alphacentauri");
             
-            if (!this.acAEntity) throw new Error("Alpha Centuri A entity missing");
-            if (!this.acBEntity) throw new Error("Alpha Centuri B entity missing");
-            if (!this.pcEntity) throw new Error("Proxyma Centuri entity missing");
+            if (!this.acAEntity) throw new Error("Alpha Centauri A entity missing");
+            if (!this.acBEntity) throw new Error("Alpha Centauri B entity missing");
+            if (!this.pcEntity) throw new Error("Proxyma Centauri entity missing");
             if (!this.wormholeEntity) throw new Error("Wormhole entity missing");
 
             this.CreateObjects();
@@ -55,14 +56,14 @@ export class AlphaCenturiSystem
         }
     }
     
-     CreateObjects()
+    CreateObjects()
     {
         // Create BaryCenter
         this.barycenter = new THREE.Group();
         this.scene.add(this.barycenter);
 
         // Create Alpha Centuri A
-        this.acA = createEntity(this.earthEntity, {
+        this.acA = createEntity(this.acAEntity, {
             size: 110,
             posToParent: new THREE.Vector3(900, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
@@ -72,7 +73,7 @@ export class AlphaCenturiSystem
         this.objects.push(this.acA);
 
         // Create Alpha Centuri B
-        this.acB = createEntity(this.earthEntity, {
+        this.acB = createEntity(this.acBEntity, {
             size: 90,
             posToParent: new THREE.Vector3(-720, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
@@ -82,7 +83,7 @@ export class AlphaCenturiSystem
         this.objects.push(this.acB);
 
         // Create Proxima Centauri
-        this.pc = createEntity(this.earthEntity, {
+        this.pc = createEntity(this.pcEntity, {
             size: 30,
             posToParent: new THREE.Vector3(8000, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365000),
@@ -92,7 +93,7 @@ export class AlphaCenturiSystem
         this.objects.push(this.pc);
 
         // Create Wormhole
-        this.wormhole = createEntity(this.earthEntity, {
+        this.wormhole = createEntity(this.wormholeEntity, {
             size: this.wormholeSize,
             posToParent: new THREE.Vector3(2000, 2000, 0),
             facingTo: new THREE.Vector3(0, 0, 0),

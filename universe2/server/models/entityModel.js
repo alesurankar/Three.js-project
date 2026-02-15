@@ -20,17 +20,17 @@ const entitySchema = new mongoose.Schema(
 
     parentKey: {
       type: String,
-      required: true,
+      default: null,
     },
 
     systemKey: {
       type: String,
-      required: true,
+      default: null,
     },
 
     galaxyKey: {
       type: String,
-      required: true,
+      default: null,
     },
   },
   //{
