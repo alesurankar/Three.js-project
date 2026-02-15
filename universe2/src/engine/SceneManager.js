@@ -8,6 +8,31 @@ export class SceneManager
         this.camera = camera;
         this.currentScene = null;
     }
+    
+    async SwitchScene(sceneName) 
+    {
+        const SceneClass = Scenes[sceneName];
+        if (!SceneClass) {
+            console.warn(`Scene "${sceneName}" not found in Scenes.js`);
+            return;
+        }
+        await this.LoadScene(SceneClass);
+    }
+
+    async LoadScene(sceneClass) 
+    {
+        if (this.currentScene) this.currentScene.Dispose();
+
+        const sceneInstance = new sceneClass(this.scene, this.camera);
+        this.currentScene = sceneInstance;
+        if (sceneInstance.init) {
+            await sceneInstance.init();
+        }
+        if (this.currentScene !== sceneInstance || !this.currentScene) {
+            return;
+        }
+        this.UpdateCamera();
+    }
 
     UpdateCamera()
     {
@@ -22,41 +47,14 @@ export class SceneManager
         this.camera.updateProjectionMatrix();
     }
 
-    async LoadScene(sceneClass) 
-    {
-        const sceneInstance = new sceneClass(this.scene, this.camera);
-        this.currentScene = sceneInstance;
-        if (sceneInstance.init) {
-            await sceneInstance.init();
-        }
-        if (this.currentScene !== sceneInstance || !this.currentScene) {
-            return;
-        }
-        this.UpdateCamera();
-    }
-
-    SwitchScene(sceneName) 
-    {
-        if (this.currentScene) this.currentScene.Dispose();
-
-        const SceneClass = Scenes[sceneName];
-        if (!SceneClass) {
-            console.warn(`Scene "${sceneName}" not found in Scenes.js`);
-            return;
-        }
-
-        this.currentScene = new SceneClass(this.scene, this.camera);
-        this.UpdateCamera();
-    }
-
-    Update(timeScale) 
+    async Update(timeScale) 
     {
         if (this.currentScene) this.currentScene.Update(timeScale);
 
         const requested = this.currentScene?.requestedScene;
         if (!requested) return;
 
-        this.SwitchScene(requested);
+        await this.SwitchScene(requested);
         this.currentScene.requestedScene = null;
     }
 
