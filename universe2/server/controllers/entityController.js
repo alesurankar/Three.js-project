@@ -1,5 +1,6 @@
 import EntityModel from "../models/entityModel.js";
 import asyncErrorHandler from "../middlewares/helpers/asyncErrorHandler.js";
+import { getEntities } from "../data/entityProvider.js";
 
 
 // helper: convert text to safe slug
@@ -55,7 +56,8 @@ export const createEntity = asyncErrorHandler(async (req, res, next) => {
  * @access Public
  */
 export const getAllEntities = asyncErrorHandler(async (req, res, next) => {
-    const entities = await EntityModel.find({});
+    const entities = await getEntities();
+    
     res.status(200).json({
         success: true,
         count: entities.length,
