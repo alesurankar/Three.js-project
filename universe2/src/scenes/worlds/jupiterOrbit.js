@@ -94,8 +94,8 @@ export class JupiterOrbit
         const pos = this._tempVec;
         this.jupiter.objectRoot.getWorldPosition(pos);
 
-        const distanceToJupiter = this.camera.position.distanceTo(pos);
-        if (distanceToJupiter > this.exitDistance) {
+        const distanceToParent = this.camera.position.distanceTo(pos);
+        if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
         } 
     }

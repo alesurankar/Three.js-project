@@ -5,8 +5,10 @@ import { MilkyWay } from "../scenes/galaxies/milkyWay.js";
 import { SolarSystem } from "../scenes/starSystems/solarSystem.js";
 import { AlphaCentauriSystem } from "../scenes/starSystems/alphaCentauriSystem.js";
 //Worlds
-import { EarthOrbit } from "../scenes/worlds/earthOrbit.js";
 import { MercuryOrbit } from "../scenes/worlds/mercuryOrbit.js";
+import { VenusOrbit } from "../scenes/worlds/venusOrbit.js";
+import { EarthOrbit } from "../scenes/worlds/earthOrbit.js";
+import { MoonOrbit } from "../scenes/worlds/moonOrbit.js";
 import { JupiterOrbit } from "../scenes/worlds/jupiterOrbit.js";
 
 
@@ -18,7 +20,9 @@ export const Scenes = {
     SolarSystem,
     AlphaCentauriSystem,
     //Worlds
-    EarthOrbit,
     MercuryOrbit,
+    VenusOrbit,
+    EarthOrbit,
+    MoonOrbit,
     JupiterOrbit,
 };

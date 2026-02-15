@@ -159,7 +159,7 @@ export class SolarSystem
         // Create moon
         this.moon = createEntity(this.moonEntity, {
             size: this.moonSize,
-            posToParent: new THREE.Vector3(30, 0, 0),
+            posToParent: new THREE.Vector3(40, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
@@ -302,8 +302,10 @@ export class SolarSystem
         this.sceneTriggers = [
             { obj: this.wormhole, threshold: this.wormholeSize / 2, scene: "MilkyWay" },
             { obj: this.mercury, threshold: this.mercurySize * 5, scene: "MercuryOrbit" },
-            { obj: this.earth, threshold: this.earthSize * 5, scene: "EarthOrbit" },
-            { obj: this.jupiter, threshold: this.jupiterSize * 5, scene: "JupiterOrbit" },
+            { obj: this.venus, threshold: this.venusSize * 4, scene: "VenusOrbit" },
+            { obj: this.earth, threshold: this.earthSize * 4, scene: "EarthOrbit" },
+            { obj: this.moon, threshold: this.moonSize * 4, scene: "MoonOrbit" },
+            { obj: this.jupiter, threshold: this.jupiterSize * 3, scene: "JupiterOrbit" },
         ];
     }
 
