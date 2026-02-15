@@ -1,3 +1,17 @@
+## Prerequisites
+
+Before running the project, make sure you have the Node.js (with npm) installed:
+
+Download and install from https://nodejs.org/
+
+Recommended: LTS version (e.g., 20.x)
+
+Verify installation:
+
+```bash
+node -v
+npm -v
+```
 
 ### Quick Start
 
