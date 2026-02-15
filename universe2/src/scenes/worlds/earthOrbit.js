@@ -4,16 +4,16 @@ import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
 import { SpaceStation } from "../../entities/spaceStation.js";
 import { Star } from "../../entities/star.js";
+import api from "../../utils/api";
 
 
 export class EarthOrbit
 {
     constructor(scene, camera) 
     {
+        this.active = true;
         StarSystem.timeFactor=1
-        const sizeFactor = 1;
-        this.earthSize = 1000 * sizeFactor;
-
+        
         this.cameraSettings = {
             pos: { x:-this.earthSize * 2, y:0, z:this.earthSize * 2 },
             lookAt: { x:15000, y:0, z:10000 },
@@ -26,7 +26,31 @@ export class EarthOrbit
         this.camera = camera;
 
         this.objects = [];
+        const sizeFactor = 1;
+        this.earthSize = 1000 * sizeFactor;
+    }
 
+    async init() 
+    {
+        try {
+            if (!this.active) return;
+
+            const res = await api.get("/entities");
+            this.entities = res.data.entities;
+            
+            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
+        
+            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
+
+            this.CreateObjects();
+        }
+        catch (err) {
+            console.error("Failed to load entities", err);
+        }
+    }
+    
+    CreateObjects()
+    {
         // Create Earth
         this.earth = new Planet({
             name: "earth",
@@ -104,7 +128,9 @@ export class EarthOrbit
 
     Update(dt) 
     {
-        this.objects.forEach(obj => obj.Update(dt));
+        for (const obj of this.objects) {
+            obj.Update(dt);
+        }
 
         const earthWorldPos = new THREE.Vector3();
         this.earth.objectRoot.getWorldPosition(earthWorldPos);
@@ -116,6 +142,7 @@ export class EarthOrbit
 
     Dispose() 
     {
+        this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
         

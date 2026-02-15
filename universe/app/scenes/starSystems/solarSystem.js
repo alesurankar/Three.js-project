@@ -242,7 +242,7 @@ export class SolarSystem
             count: 6000,
             size: asteroidBeltSize * 1.2,
             orbitFarRadius: 7000,
-            orbitNearRadius: 5500,
+            orbitNearRadius: 6000,
             axialRotationSpeed: 0.0003,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(100000),
             thickness: 250,

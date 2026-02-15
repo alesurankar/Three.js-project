@@ -3,11 +3,14 @@ import { Star } from "../../entities/star.js";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
 import { BlackHole } from "../../entities/blackHole.js";
+import api from "../../utils/api";
+
 
 export class AlphaCenturySystem 
 {
     constructor(scene, camera) 
     {
+        this.active = true;
         StarSystem.timeFactor=100
        
         this.cameraSettings = {
@@ -23,8 +26,31 @@ export class AlphaCenturySystem
 
         this.objects = [];
         const sizeFactor = 0.5
-        const wormholeSize = 100 * sizeFactor;
+        this.wormholeSize = 100 * sizeFactor;
+    }
 
+    async init() 
+    {
+        try {
+            if (!this.active) return;
+
+            const res = await api.get("/entities");
+            this.entities = res.data.entities;
+            
+            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
+        
+            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
+
+            this.CreateObjects();
+            this.Portals();
+        }
+        catch (err) {
+            console.error("Failed to load entities", err);
+        }
+    }
+    
+     CreateObjects()
+    {
         // Create BaryCenter
         this.barycenter = new THREE.Group();
         this.scene.add(this.barycenter);
@@ -61,26 +87,31 @@ export class AlphaCenturySystem
 
         // Create Wormhole
         this.wormhole = new BlackHole({
-            size: wormholeSize,
+            size: this.wormholeSize,
             posToParent: new THREE.Vector3(2000, 2000, 0),
             facingTo: new THREE.Vector3(0, 0, 0),
             parent: this.barycenter,
         });
         this.objects.push(this.wormhole);
+    }
 
+    Portals()
+    {
         this.sceneTriggers = [
-            { obj: this.wormhole, threshold: wormholeSize / 2, scene: "MilkyWay" },
+            { obj: this.wormhole, threshold: this.wormholeSize / 2, scene: "MilkyWay" },
         ];
     }
-    
+
     Update(dt) 
     {
         for (const obj of this.objects) {
             obj.Update(dt);
         }
-
+        if (!this.sceneTriggers) return;
+        
+        this._tempVec ??= new THREE.Vector3();
+        const worldPos = this._tempVec;
         for (const trigger of this.sceneTriggers) {
-            const worldPos = new THREE.Vector3();
             trigger.obj.objectRoot.getWorldPosition(worldPos);
             const distance = this.camera.position.distanceTo(worldPos);
             if (distance <= trigger.threshold) {
@@ -92,6 +123,7 @@ export class AlphaCenturySystem
 
     Dispose() 
     {
+        this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
         this.sceneTriggers = [];

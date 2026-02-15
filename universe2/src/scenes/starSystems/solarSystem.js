@@ -5,11 +5,14 @@ import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
 import { AsteroidBelt } from "../../entities/asteroidBelt.js";
 import { BlackHole } from "../../entities/blackHole.js";
+import api from "../../utils/api";
+
 
 export class SolarSystem 
 {
     constructor(scene, camera) 
     {
+        this.active = true;
         StarSystem.timeFactor=100
        
         this.cameraSettings = {
@@ -25,26 +28,49 @@ export class SolarSystem
         this.objects = [];
         
         const sizeFactor = 1
-        const sunSize = 110 * sizeFactor; 
-        const wormholeSize = 100 * sizeFactor;
-        const mercurySize = 4 * sizeFactor;
-        const venusSize = 9.5 * sizeFactor;
-        const earthSize = 10 * sizeFactor;
-        const moonSize = 2.7 * sizeFactor;
-        const asteroidBeltSize = 1.2 * sizeFactor;
-        const marsSize = 5.3 * sizeFactor;
-        const jupiterSize = 38 * sizeFactor;
-        const saturnSize = 34 * sizeFactor;
-        const saturnRingSize = 0.2 * sizeFactor;
-        const uranusSize = 20 * sizeFactor;
-        const uranusRingSize = 0.16 * sizeFactor;
-        const neptuneSize = 19 * sizeFactor;
-        const plutoSize = 1.8 * sizeFactor;
+        this.sunSize = 110 * sizeFactor; 
+        this.wormholeSize = 100 * sizeFactor;
+        this.mercurySize = 4 * sizeFactor;
+        this.venusSize = 9.5 * sizeFactor;
+        this.earthSize = 10 * sizeFactor;
+        this.moonSize = 2.7 * sizeFactor;
+        this.asteroidBeltSize = 1.2 * sizeFactor;
+        this.marsSize = 5.3 * sizeFactor;
+        this.jupiterSize = 38 * sizeFactor;
+        this.saturnSize = 34 * sizeFactor;
+        this.saturnRingSize = 0.2 * sizeFactor;
+        this.uranusSize = 20 * sizeFactor;
+        this.uranusRingSize = 0.16 * sizeFactor;
+        this.neptuneSize = 19 * sizeFactor;
+        this.plutoSize = 1.8 * sizeFactor;
+    }
 
+    async init() 
+    {
+        try {
+            if (!this.active) return;
+
+            const res = await api.get("/entities");
+            this.entities = res.data.entities;
+            
+            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
+        
+            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
+
+            this.CreateObjects();
+            this.Portals();
+        }
+        catch (err) {
+            console.error("Failed to load entities", err);
+        }
+    }
+
+    CreateObjects()
+    {
         // Create Sun
         this.sun = new Star({
             name: "sun",
-            size: sunSize,
+            size: this.sunSize,
             lightType: "pointLight",
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
@@ -58,7 +84,7 @@ export class SolarSystem
 
         // Create Wormhole
         this.wormhole = new BlackHole({
-            size: wormholeSize,
+            size: this.wormholeSize,
             posToParent: new THREE.Vector3(2000, 2000, 0),
             facingTo: new THREE.Vector3(0, 0, 0),
             parent: this.sun.objectRoot,
@@ -68,7 +94,7 @@ export class SolarSystem
         // Create Mercury
         this.mercury = new Planet({
             name: "mercury",
-            size: mercurySize,
+            size: this.mercurySize,
             posToParent: new THREE.Vector3(400, 0, 0),
             axialTilt: 0.034,
             orbitalTilt: 7.00,
@@ -81,7 +107,7 @@ export class SolarSystem
         // Create venus
         this.venus = new Planet({
             name: "venus",
-            size: venusSize,
+            size: this.venusSize,
             posToParent: new THREE.Vector3(700, 0, 0),
             axialTilt: 177.36,
             orbitalTilt: 3.39,
@@ -94,7 +120,7 @@ export class SolarSystem
         // Create Earth
         this.earth = new Planet({
             name: "earth",
-            size: earthSize,
+            size: this.earthSize,
             posToParent: new THREE.Vector3(1000, 0, 0),
             axialTilt: 23.44,
             orbitalTilt: 0,
@@ -107,7 +133,7 @@ export class SolarSystem
         // Create moon
         this.moon = new Planet({
             name: "moon",
-            size: moonSize,
+            size: this.moonSize,
             posToParent: new THREE.Vector3(30, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
@@ -120,7 +146,7 @@ export class SolarSystem
         // Create mars
         this.mars = new Planet({
             name: "mars",
-            size: marsSize,
+            size: this.marsSize,
             posToParent: new THREE.Vector3(1500, 0, 0),
             axialTilt: 25.19,
             orbitalTilt: 1.85,
@@ -133,7 +159,7 @@ export class SolarSystem
         // Create asteroid belt
         this.asteroidBelt = new AsteroidBelt({
             count: 6000,
-            size: asteroidBeltSize,
+            size: this.asteroidBeltSize,
             orbitFarRadius: 1900,
             orbitNearRadius: 1700,
             axialRotationSpeed: 0.0004,
@@ -146,7 +172,7 @@ export class SolarSystem
         // Create jupiter
         this.jupiter = new Planet({
             name: "jupiter",
-            size: jupiterSize,
+            size: this.jupiterSize,
             posToParent: new THREE.Vector3(2600, 0, 0),
             axialTilt: 3.13,
             orbitalTilt: 1.31,
@@ -159,7 +185,7 @@ export class SolarSystem
         // Create saturn
         this.saturn = new Planet({
             name: "saturn",
-            size: saturnSize,
+            size: this.saturnSize,
             posToParent: new THREE.Vector3(3600, 0, 0),
             axialTilt: 26.73,
             orbitalTilt: 2.49,
@@ -171,8 +197,8 @@ export class SolarSystem
 
         // Create saturn ring
         this.saturnRing = new AsteroidBelt({
-            count: 6000,
-            size: saturnRingSize,
+            count: 4000,
+            size: this.saturnRingSize,
             orbitFarRadius: 65,
             orbitNearRadius: 40,
             axialRotationSpeed: 0.005,
@@ -186,7 +212,7 @@ export class SolarSystem
         // Create uranus
         this.uranus = new Planet({
             name: "uranus",
-            size: uranusSize,
+            size: this.uranusSize,
             posToParent: new THREE.Vector3(4600, 0, 0),
             axialTilt: 97.77,
             orbitalTilt: 0.77,
@@ -199,7 +225,7 @@ export class SolarSystem
         // Create uranus ring
         this.uranusRing = new AsteroidBelt({
             count: 1800,
-            size: uranusRingSize,
+            size: this.uranusRingSize,
             orbitFarRadius: 50,
             orbitNearRadius: 42,
             axialRotationSpeed: 0.003,
@@ -214,7 +240,7 @@ export class SolarSystem
         // Create neptune
         this.neptune = new Planet({
             name: "neptune",
-            size: neptuneSize,
+            size: this.neptuneSize,
             posToParent: new THREE.Vector3(5600, 0, 0),
             axialTilt: 28.32,
             orbitalTilt: 1.77,
@@ -227,7 +253,7 @@ export class SolarSystem
         // Create pluto
         this.pluto = new Planet({
             name: "pluto",
-            size: plutoSize,
+            size: this.plutoSize,
             posToParent: new THREE.Vector3(6500, 0, 0),
             axialTilt: 119.61,
             orbitalTilt: 17.16,
@@ -239,44 +265,51 @@ export class SolarSystem
 
         // Create kuiper belt
         this.kuiperBelt = new AsteroidBelt({
-            count: 6000,
-            size: asteroidBeltSize * 1.2,
+            count: 5000,
+            size: this.asteroidBeltSize,
             orbitFarRadius: 7000,
-            orbitNearRadius: 5500,
+            orbitNearRadius: 6000,
             axialRotationSpeed: 0.0003,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(100000),
             thickness: 250,
-            color: 0xdddddd,
+            color: 0xaaaaaa,
             parent: this.sun.objectRoot
         });
         this.objects.push(this.kuiperBelt);
+    }
 
-
+    Portals()
+    {
         this.sceneTriggers = [
-            { obj: this.wormhole, threshold: wormholeSize / 2, scene: "MilkyWay" },
-            { obj: this.mercury, threshold: mercurySize * 5, scene: "MercuryOrbit" },
-            { obj: this.earth, threshold: earthSize * 5, scene: "EarthOrbit" },
-            { obj: this.jupiter, threshold: jupiterSize * 5, scene: "JupiterOrbit" },
+            { obj: this.wormhole, threshold: this.wormholeSize / 2, scene: "MilkyWay" },
+            { obj: this.mercury, threshold: this.mercurySize * 5, scene: "MercuryOrbit" },
+            { obj: this.earth, threshold: this.earthSize * 5, scene: "EarthOrbit" },
+            { obj: this.jupiter, threshold: this.jupiterSize * 5, scene: "JupiterOrbit" },
         ];
     }
 
     Update(dt) 
     {
-        this.objects.forEach(obj => obj.Update(dt));
+        for (const obj of this.objects) {
+            obj.Update(dt);
+        }
+        if (!this.sceneTriggers) return;
 
+        this._tempVec ??= new THREE.Vector3();
+        const worldPos = this._tempVec;
         for (const trigger of this.sceneTriggers) {
-            const worldPos = new THREE.Vector3();
             trigger.obj.objectRoot.getWorldPosition(worldPos);
             const distance = this.camera.position.distanceTo(worldPos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
-                break; 
+                break;
             }
         }
     }
 
     Dispose() 
     {
+        this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
         this.sceneTriggers = [];
