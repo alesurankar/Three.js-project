@@ -2,7 +2,6 @@ import { Planet } from "../entities/planet.js";
 import { Star } from "../entities/star.js";
 import { BlackHole } from "../entities/blackHole.js";
 import { AsteroidBelt } from "../entities/asteroidBelt.js";
-import { TestObject } from "../entities/testObject.js";
 
 export function createEntity(entityData, extraOptions = {}) 
 {
@@ -14,6 +13,5 @@ export function createEntity(entityData, extraOptions = {})
         case "blackhole": return new BlackHole(options);
         case "belt": return new AsteroidBelt(options);
         case "ring": return new AsteroidBelt(options);
-        default: return new TestObject(options);
     }
 }

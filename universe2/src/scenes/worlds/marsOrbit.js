@@ -13,7 +13,7 @@ export class MarsOrbit
         StarSystem.timeFactor=1
         
         const sizeFactor = 1;
-        this.marsSize = 950 * sizeFactor;
+        this.marsSize = 530 * sizeFactor;
 
         this.cameraSettings = {
             pos: { x:-this.marsSize * 2, y:0, z:this.marsSize * 2 },

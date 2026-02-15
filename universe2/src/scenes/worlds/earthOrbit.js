@@ -71,7 +71,7 @@ export class EarthOrbit
 
         // Create SomeSpaceStation
         this.spaceStation = new SpaceStation({
-            name: "USSEnterprise",
+            name: "model",
             size: 5,
             posToParent: new THREE.Vector3(1100, 0, 0),
             pitch: 0,
@@ -86,7 +86,7 @@ export class EarthOrbit
 
         // Create ISS
         this.spaceStation = new SpaceStation({
-            name: "USSEnterprise",
+            name: "model",
             size: 5,
             posToParent: new THREE.Vector3(1200, 0, 0),
             pitch: 0,

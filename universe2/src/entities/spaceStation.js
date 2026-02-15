@@ -32,7 +32,7 @@ export class SpaceStation extends ArtificialObject {
 
         this.loader = new GLTFLoader();
         this.model = null;
-        const modelPath = `/models/SpaceShip/${name}.gltf`;  
+        const modelPath = `/models/SpaceShip/model.gltf`;  
         this.loader.load(modelPath, (gltf) => {
             this.model = gltf.scene;
             this.model.scale.setScalar(size);
