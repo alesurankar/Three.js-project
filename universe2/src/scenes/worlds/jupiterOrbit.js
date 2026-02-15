@@ -1,8 +1,7 @@
 import * as THREE from "three";
-import { Planet } from "../../entities/planet.js";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
-import { Star } from "../../entities/star.js";
+import { createEntity } from "../../factories/entityFactory.js";
 import api from "../../utils/api";
 
 
@@ -38,10 +37,13 @@ export class JupiterOrbit
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
+            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
             
             this.jupiterEntity = this.entities.find(e => e.key === "jupiter");
+            this.sunEntity = this.entities.find(e => e.key === "sun");
             
             if (!this.jupiterEntity) throw new Error("Jupiter entity missing");
+            if (!this.sunEntity) throw new Error("Sun entity missing");
 
             this.CreateObjects();
         }
@@ -53,8 +55,7 @@ export class JupiterOrbit
     CreateObjects()
     {
          // Create Jupiter
-        this.jupiter = new Planet({
-            name: "jupiter",
+        this.jupiter = createEntity(this.jupiterEntity, {
             size: this.jupiterSize,
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 3.13,
@@ -67,8 +68,7 @@ export class JupiterOrbit
         this.objects.push(this.jupiter);
 
         // Create Sun
-        this.sun = new Star({
-            name: "sun",
+        this.sun = createEntity(this.sunEntity, {
             size: 100,
             maxSizeOnScreen: 0.1018,
             renderMode: "points",

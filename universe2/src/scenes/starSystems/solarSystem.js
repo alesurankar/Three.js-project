@@ -50,6 +50,7 @@ export class SolarSystem
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
+            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
             
             this.entities = res.data.entities;
             this.sunEntity = this.entities.find(e => e.key === "sun");

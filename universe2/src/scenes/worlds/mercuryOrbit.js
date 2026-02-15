@@ -1,8 +1,7 @@
 import * as THREE from "three";
-import { Planet } from "../../entities/planet.js";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
-import { Star } from "../../entities/star.js";
+import { createEntity } from "../../factories/entityFactory.js";
 import api from "../../utils/api";
 
 
@@ -38,10 +37,13 @@ export class MercuryOrbit
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
+            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
             
             this.mercuryEntity = this.entities.find(e => e.key === "mercury");
+            this.sunEntity = this.entities.find(e => e.key === "sun");
             
             if (!this.mercuryEntity) throw new Error("Mercury entity missing");
+            if (!this.sunEntity) throw new Error("Sun entity missing");
 
             this.CreateObjects();
         }
@@ -53,8 +55,7 @@ export class MercuryOrbit
     CreateObjects()
     {
         // Create Mercury
-        this.mercury = new Planet({
-            name: "mercury",
+        this.mercury = createEntity(this.mercuryEntity, {
             size: this.mercurySize,
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 0.034,
@@ -66,8 +67,7 @@ export class MercuryOrbit
         this.objects.push(this.mercury);
 
         // Create Sun
-        this.sun = new Star({
-            name: "sun",
+        this.sun = createEntity(this.sunEntity, {
             size: 100,
             maxSizeOnScreen: 1.37,
             renderMode: "points",

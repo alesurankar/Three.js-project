@@ -1,9 +1,8 @@
 import * as THREE from "three";
-import { Planet } from "../../entities/planet.js";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
 import { SpaceStation } from "../../entities/spaceStation.js";
-import { Star } from "../../entities/star.js";
+import { createEntity } from "../../factories/entityFactory.js";
 import api from "../../utils/api";
 
 
@@ -39,10 +38,15 @@ export class EarthOrbit
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
+            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
             
             this.earthEntity = this.entities.find(e => e.key === "earth");
+            this.moonEntity = this.entities.find(e => e.key === "moon");
+            this.sunEntity = this.entities.find(e => e.key === "sun");
             
             if (!this.earthEntity) throw new Error("Earth entity missing");
+            if (!this.moonEntity) throw new Error("Moon entity missing");
+            if (!this.sunEntity) throw new Error("Sun entity missing");
 
             this.CreateObjects();
         }
@@ -54,8 +58,7 @@ export class EarthOrbit
     CreateObjects()
     {
         // Create Earth
-        this.earth = new Planet({
-            name: "earth",
+        this.earth = createEntity(this.earthEntity, {
             size: this.earthSize,
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 23.44,
@@ -98,8 +101,7 @@ export class EarthOrbit
         this.objects.push(this.spaceStation);
 
         // Create moon
-        this.moon = new Planet({
-            name: "moon",
+        this.moon = createEntity(this.moonEntity, {
             size: 270,
             posToParent: new THREE.Vector3(14000, 0, 0),
             axialTilt: 6.68,
@@ -112,8 +114,7 @@ export class EarthOrbit
         this.objects.push(this.moon);
 
         // Create Sun
-        this.sun = new Star({
-            name: "sun",
+        this.sun = createEntity(this.sunEntity, {
             size: 100,
             maxSizeOnScreen: 0.52,
             renderMode: "points",

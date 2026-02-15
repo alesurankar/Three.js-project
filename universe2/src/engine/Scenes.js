@@ -3,7 +3,7 @@ import { TestScene } from "../scenes/testScene.js";
 import { MilkyWay } from "../scenes/galaxies/milkyWay.js";
 //Systems
 import { SolarSystem } from "../scenes/starSystems/solarSystem.js";
-import { AlphaCenturySystem } from "../scenes/starSystems/alphaCentaurySystem.js";
+import { AlphaCenturiSystem } from "../scenes/starSystems/alphaCentauriSystem.js";
 //Worlds
 import { EarthOrbit } from "../scenes/worlds/earthOrbit.js";
 import { MercuryOrbit } from "../scenes/worlds/mercuryOrbit.js";
@@ -16,7 +16,7 @@ export const Scenes = {
     MilkyWay,
     //Systems
     SolarSystem,
-    AlphaCenturySystem,
+    AlphaCenturiSystem,
     //Worlds
     EarthOrbit,
     MercuryOrbit,
