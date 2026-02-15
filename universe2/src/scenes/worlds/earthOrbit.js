@@ -14,6 +14,9 @@ export class EarthOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
+        const sizeFactor = 1;
+        this.earthSize = 1000 * sizeFactor;
+        
         this.cameraSettings = {
             pos: { x:-this.earthSize * 2, y:0, z:this.earthSize * 2 },
             lookAt: { x:15000, y:0, z:10000 },
@@ -24,10 +27,9 @@ export class EarthOrbit
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
-
+        this._tempVec = new THREE.Vector3();
+        this.exitDistance = this.earthSize * 5;
         this.objects = [];
-        const sizeFactor = 1;
-        this.earthSize = 1000 * sizeFactor;
     }
 
     async init() 
@@ -38,9 +40,9 @@ export class EarthOrbit
             const res = await api.get("/entities");
             this.entities = res.data.entities;
             
-            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
-        
-            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
+            this.earthEntity = this.entities.find(e => e.key === "earth");
+            
+            if (!this.earthEntity) throw new Error("Earth entity missing");
 
             this.CreateObjects();
         }
@@ -128,14 +130,16 @@ export class EarthOrbit
 
     Update(dt) 
     {
+        if (!this.earth) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
 
-        const earthWorldPos = new THREE.Vector3();
-        this.earth.objectRoot.getWorldPosition(earthWorldPos);
-        const distanceToEarth = this.camera.position.distanceTo(earthWorldPos);
-        if (distanceToEarth > this.earthSize * 5) {
+        const pos = this._tempVec;
+        this.earth.objectRoot.getWorldPosition(pos);
+
+        const distanceToEarth = this.camera.position.distanceTo(pos);
+        if (distanceToEarth > this.exitDistance) {
             this.requestedScene = "SolarSystem";
         } 
     }

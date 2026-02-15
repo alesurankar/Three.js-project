@@ -12,6 +12,9 @@ export class AlphaCenturySystem
     {
         this.active = true;
         StarSystem.timeFactor=100
+        
+        const sizeFactor = 0.5
+        this.wormholeSize = 100 * sizeFactor;
        
         this.cameraSettings = {
             pos: { x:1500, y:1500, z:0 },
@@ -23,10 +26,8 @@ export class AlphaCenturySystem
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
-
+        this._tempVec = new THREE.Vector3();
         this.objects = [];
-        const sizeFactor = 0.5
-        this.wormholeSize = 100 * sizeFactor;
     }
 
     async init() 
@@ -37,9 +38,6 @@ export class AlphaCenturySystem
             const res = await api.get("/entities");
             this.entities = res.data.entities;
             
-            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
-        
-            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
 
             this.CreateObjects();
             this.Portals();
@@ -109,11 +107,11 @@ export class AlphaCenturySystem
         }
         if (!this.sceneTriggers) return;
         
-        this._tempVec ??= new THREE.Vector3();
-        const worldPos = this._tempVec;
+        const pos = this._tempVec;
+
         for (const trigger of this.sceneTriggers) {
-            trigger.obj.objectRoot.getWorldPosition(worldPos);
-            const distance = this.camera.position.distanceTo(worldPos);
+            trigger.obj.objectRoot.getWorldPosition(pos);
+            const distance = this.camera.position.distanceTo(pos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
                 break; 

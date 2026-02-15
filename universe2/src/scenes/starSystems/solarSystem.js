@@ -14,18 +14,6 @@ export class SolarSystem
     {
         this.active = true;
         StarSystem.timeFactor=100
-       
-        this.cameraSettings = {
-            pos: { x:1500, y:1500, z:0 },
-            lookAt: { x:0, y:0, z:0 },
-            fov: 40,
-            near: 20,
-            far: 20000
-        };
-        this.scene = scene;
-        this.scene.background = SkyBox.Load("StarBox");
-        this.camera = camera;
-        this.objects = [];
         
         const sizeFactor = 1
         this.sunSize = 110 * sizeFactor; 
@@ -43,6 +31,19 @@ export class SolarSystem
         this.uranusRingSize = 0.16 * sizeFactor;
         this.neptuneSize = 19 * sizeFactor;
         this.plutoSize = 1.8 * sizeFactor;
+       
+        this.cameraSettings = {
+            pos: { x:1500, y:1500, z:0 },
+            lookAt: { x:0, y:0, z:0 },
+            fov: 40,
+            near: 20,
+            far: 20000
+        };
+        this.scene = scene;
+        this.scene.background = SkyBox.Load("StarBox");
+        this.camera = camera;
+        this._tempVec = new THREE.Vector3();
+        this.objects = [];
     }
 
     async init() 
@@ -53,9 +54,22 @@ export class SolarSystem
             const res = await api.get("/entities");
             this.entities = res.data.entities;
             
-            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
-        
-            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
+            this.entities = res.data.entities;
+            this.sunEntity = this.entities.find(e => e.key === "sun");
+            this.mercuryEntity = this.entities.find(e => e.key === "mercury");
+            this.venusEntity = this.entities.find(e => e.key === "venus");
+            this.earthEntity = this.entities.find(e => e.key === "earth");
+            this.moonEntity = this.entities.find(e => e.key === "moon");
+            this.marsEntity = this.entities.find(e => e.key === "mars");
+            this.saturnEntity = this.entities.find(e => e.key === "saturn");
+            
+            if (!this.sunEntity) throw new Error("Sun entity missing");
+            if (!this.mercuryEntity) throw new Error("Mercury entity missing");
+            if (!this.venusEntity) throw new Error("Venus entity missing");
+            if (!this.earthEntity) throw new Error("Earth entity missing");
+            if (!this.moonEntity) throw new Error("Moon entity missing");
+            if (!this.marsEntity) throw new Error("Mars entity missing");
+            if (!this.saturnEntity) throw new Error("Saturn entity missing");
 
             this.CreateObjects();
             this.Portals();
@@ -295,11 +309,11 @@ export class SolarSystem
         }
         if (!this.sceneTriggers) return;
 
-        this._tempVec ??= new THREE.Vector3();
-        const worldPos = this._tempVec;
+        const pos = this._tempVec;
+
         for (const trigger of this.sceneTriggers) {
-            trigger.obj.objectRoot.getWorldPosition(worldPos);
-            const distance = this.camera.position.distanceTo(worldPos);
+            trigger.obj.objectRoot.getWorldPosition(pos);
+            const distance = this.camera.position.distanceTo(pos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
                 break;

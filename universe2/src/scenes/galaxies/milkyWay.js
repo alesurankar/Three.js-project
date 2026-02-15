@@ -12,6 +12,21 @@ export class MilkyWay
     {
         this.active = true;
         StarSystem.timeFactor=250
+        
+        const sizeFactor = 4;
+        this.SMBHSize = 100 * sizeFactor;
+        this.sunSize = 0.1 * sizeFactor;
+        this.alphaCentauriASize = 0.08 * sizeFactor;
+        this.alphaCentauriBSize = 0.08 * sizeFactor;
+        this.proximaCentauri = 0.07 * sizeFactor;
+        
+        const starNum = 2000;
+        this.redDwarfNum = starNum * 0.72;
+        this.K_typeNum = starNum * 0.14;
+        this.G_typeNum = starNum * 0.08;
+        this.F_typeNum = starNum * 0.03;
+        this.A_typeNum = starNum * 0.007;
+        this.redMasiveNum = starNum * 0.0006;
 
         this.cameraSettings = {
             pos: { x:-1000, y:1000, z:1000 },
@@ -25,15 +40,7 @@ export class MilkyWay
         this.camera = camera;
 
         this.galaxyRadius = 60000;
-
         this.baseSpeed = StarSystem.OrbitalRotationInDays(250);
-        this.starNum = 2000;
-        this.redDwarfNum = starNum * 0.72;
-        this.K_typeNum = starNum * 0.14;
-        this.G_typeNum = starNum * 0.08;
-        this.F_typeNum = starNum * 0.03;
-        this.A_typeNum = starNum * 0.007;
-        this.redMasiveNum = starNum * 0.0006;
 
         // Scale constants
         this.SIZE_SCALE = 4;
@@ -42,11 +49,6 @@ export class MilkyWay
         this.sunPos = new THREE.Vector3(26700 * this.DISTANCE_SCALE, 0, 0);
 
         this.objects = [];
-        this.SMBHSize = 100 * this.SIZE_SCALE;
-        this.sunSize = 0.1 * this.SIZE_SCALE;
-        this.alphaCentauriASize = 0.08 * this.SIZE_SCALE;
-        this.alphaCentauriBSize = 0.08 * this.SIZE_SCALE;
-        this.proximaCentauri = 0.07 * this.SIZE_SCALE;
     }
     
     randomBetween(min, max) {
@@ -61,9 +63,6 @@ export class MilkyWay
             const res = await api.get("/entities");
             this.entities = res.data.entities;
             
-            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
-        
-            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
 
             this.CreateObjects();
             this.Portals();

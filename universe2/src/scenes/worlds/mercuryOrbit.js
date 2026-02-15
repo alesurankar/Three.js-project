@@ -12,6 +12,9 @@ export class MercuryOrbit
     {
         this.active = true;
         StarSystem.timeFactor=1
+        
+        const sizeFactor = 1;
+        this.mercurySize = 400 * sizeFactor;
 
         this.cameraSettings = {
             pos: { x:-this.mercurySize * 2, y:0, z:this.mercurySize * 2 },
@@ -23,10 +26,9 @@ export class MercuryOrbit
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
-
+        this._tempVec = new THREE.Vector3();
+        this.exitDistance = this.mercurySize * 5;
         this.objects = [];
-        const sizeFactor = 1;
-        this.mercurySize = 400 * sizeFactor;
     }
 
     async init() 
@@ -37,9 +39,9 @@ export class MercuryOrbit
             const res = await api.get("/entities");
             this.entities = res.data.entities;
             
-            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
-        
-            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
+            this.mercuryEntity = this.entities.find(e => e.key === "mercury");
+            
+            if (!this.mercuryEntity) throw new Error("Mercury entity missing");
 
             this.CreateObjects();
         }
@@ -83,16 +85,18 @@ export class MercuryOrbit
 
     Update(dt) 
     {
+        if (!this.mercury) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
 
-        const mercuryWorldPos = new THREE.Vector3();
-        this.mercury.objectRoot.getWorldPosition(mercuryWorldPos);
-        const distanceToMercury = this.camera.position.distanceTo(mercuryWorldPos);
-        if (distanceToMercury > this.mercurySize * 5) {
+        const pos = this._tempVec;
+        this.mercury.objectRoot.getWorldPosition(pos);
+
+        const distanceToMercury = this.camera.position.distanceTo(pos);
+        if (distanceToMercury > this.exitDistance) {
             this.requestedScene = "SolarSystem";
-        } 
+        }
     }
 
     Dispose() 

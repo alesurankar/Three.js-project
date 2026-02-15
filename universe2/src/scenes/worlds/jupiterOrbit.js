@@ -12,6 +12,9 @@ export class JupiterOrbit
     {
         this.active = true;
         StarSystem.timeFactor=1
+        
+        const sizeFactor = 1;
+        this.jupiterSize = 3800 * sizeFactor;
 
         this.cameraSettings = {
             pos: { x:-this.jupiterSize * 2, y:0, z:this.jupiterSize * 2 },
@@ -23,10 +26,9 @@ export class JupiterOrbit
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
-
+        this._tempVec = new THREE.Vector3();
+        this.exitDistance = this.jupiterSize * 4;
         this.objects = [];
-        const sizeFactor = 1;
-        this.jupiterSize = 3800 * sizeFactor;
     }
 
     async init() 
@@ -37,9 +39,9 @@ export class JupiterOrbit
             const res = await api.get("/entities");
             this.entities = res.data.entities;
             
-            this.placeholderEntity = this.entities.find(e => e.key === "placeholder");
-        
-            if (!this.placeholderEntity) throw new Error("Placeholder entity missing");
+            this.jupiterEntity = this.entities.find(e => e.key === "jupiter");
+            
+            if (!this.jupiterEntity) throw new Error("Jupiter entity missing");
 
             this.CreateObjects();
         }
@@ -84,14 +86,16 @@ export class JupiterOrbit
 
     Update(dt) 
     {
-       for (const obj of this.objects) {
+        if (!this.jupiter) return;
+        for (const obj of this.objects) {
             obj.Update(dt);
         }
 
-        const jupiterWorldPos = new THREE.Vector3();
-        this.jupiter.objectRoot.getWorldPosition(jupiterWorldPos);
-        const distanceToJupiter = this.camera.position.distanceTo(jupiterWorldPos);
-        if (distanceToJupiter > this.jupiterSize * 5) {
+        const pos = this._tempVec;
+        this.jupiter.objectRoot.getWorldPosition(pos);
+
+        const distanceToJupiter = this.camera.position.distanceTo(pos);
+        if (distanceToJupiter > this.exitDistance) {
             this.requestedScene = "SolarSystem";
         } 
     }
