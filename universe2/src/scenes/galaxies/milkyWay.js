@@ -66,9 +66,9 @@ export class MilkyWay
             
             this.smbhEntity = this.entities.find(e => e.key === "sagittariusA");
             this.sunEntity = this.entities.find(e => e.key === "sun");
-            this.alphacentauriAEntity = this.entities.find(e => e.key === "alphacentauriA");
-            this.alphacentauriBEntity = this.entities.find(e => e.key === "alphacentauriB");
-            this.proximacenturiEntity = this.entities.find(e => e.key === "proximacentauri");
+            this.acAEntity = this.entities.find(e => e.key === "alphacentauriA");
+            this.acBEntity = this.entities.find(e => e.key === "alphacentauriB");
+            this.pcEntity = this.entities.find(e => e.key === "proximacentauri");
             
             if (!this.smbhEntity) throw new Error("Sagittarius A* entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
@@ -84,7 +84,7 @@ export class MilkyWay
         }
     }
     
-     CreateObjects()
+    CreateObjects()
     {
         // Create SMBH
         this.SMBH = createEntity(this.smbhEntity, {
@@ -214,7 +214,7 @@ export class MilkyWay
             const size = this.randomBetween(0.1 * this.SIZE_SCALE, 0.2 * this.SIZE_SCALE);
             const radius = this.randomBetween(this.DISTANCE_SCALE * 700, this.DISTANCE_SCALE * this.galaxyRadius);
             const falloff = 0.7;
-            const angularSpeed = this.baseSpeed * Math.sqrt((DISTANCE_SCALE * 10000) / radius, falloff);
+            const angularSpeed = this.baseSpeed * Math.sqrt((this.DISTANCE_SCALE * 10000) / radius, falloff);
             const star = new Star({
                 name: `F_type${i}`,
                 size: size,
@@ -283,7 +283,7 @@ export class MilkyWay
     {
         this.sceneTriggers = [
             { obj: this.sun, threshold: this.sunSize * 100, scene: "SolarSystem" },
-            { obj: this.alphaCentauriA, threshold: this.alphaCentauriASize * 100, scene: "AlphaCenturySystem" },
+            { obj: this.alphaCentauriA, threshold: this.alphaCentauriASize * 100, scene: "AlphaCentauriSystem" },
         ];
     }
 
@@ -292,6 +292,7 @@ export class MilkyWay
         for (const obj of this.objects) {
             obj.Update(dt);
         }
+        if (!this.sceneTriggers) return;
 
         for (const trigger of this.sceneTriggers) {
             const worldPos = new THREE.Vector3();
