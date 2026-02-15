@@ -1,10 +1,7 @@
 import * as THREE from "three";
-import { Planet } from "../../entities/planet.js";
-import { Star } from "../../entities/star.js";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
-import { AsteroidBelt } from "../../entities/asteroidBelt.js";
-import { BlackHole } from "../../entities/blackHole.js";
+import { createEntity } from "../../factories/entityFactory.js";
 import api from "../../utils/api";
 
 
@@ -56,6 +53,7 @@ export class SolarSystem
             
             this.entities = res.data.entities;
             this.sunEntity = this.entities.find(e => e.key === "sun");
+            this.wormholeEntity = this.entities.find(e => e.key === "wormhole");
             this.mercuryEntity = this.entities.find(e => e.key === "mercury");
             this.venusEntity = this.entities.find(e => e.key === "venus");
             this.earthEntity = this.entities.find(e => e.key === "earth");
@@ -72,6 +70,7 @@ export class SolarSystem
             this.kuiperbeltEntity = this.entities.find(e => e.key === "kuiperbelt");
             
             if (!this.sunEntity) throw new Error("Sun entity missing");
+            if (!this.wormholeEntity) throw new Error("Wormhole entity missing");
             if (!this.mercuryEntity) throw new Error("Mercury entity missing");
             if (!this.venusEntity) throw new Error("Venus entity missing");
             if (!this.earthEntity) throw new Error("Earth entity missing");
@@ -98,8 +97,7 @@ export class SolarSystem
     CreateObjects()
     {
         // Create Sun
-        this.sun = new Star({
-            name: "sun",
+        this.sun = createEntity(this.sunEntity, {
             size: this.sunSize,
             lightType: "pointLight",
             posToParent: new THREE.Vector3(0, 0, 0),
@@ -113,7 +111,7 @@ export class SolarSystem
         this.objects.push(this.sun);
 
         // Create Wormhole
-        this.wormhole = new BlackHole({
+        this.wormhole = createEntity(this.wormholeEntity, {
             size: this.wormholeSize,
             posToParent: new THREE.Vector3(2000, 2000, 0),
             facingTo: new THREE.Vector3(0, 0, 0),
@@ -122,8 +120,7 @@ export class SolarSystem
         this.objects.push(this.wormhole);
 
         // Create Mercury
-        this.mercury = new Planet({
-            name: "mercury",
+        this.mercury = createEntity(this.mercuryEntity, {
             size: this.mercurySize,
             posToParent: new THREE.Vector3(400, 0, 0),
             axialTilt: 0.034,
@@ -135,8 +132,7 @@ export class SolarSystem
         this.objects.push(this.mercury);
 
         // Create venus
-        this.venus = new Planet({
-            name: "venus",
+        this.venus = createEntity(this.venusEntity, {
             size: this.venusSize,
             posToParent: new THREE.Vector3(700, 0, 0),
             axialTilt: 177.36,
@@ -148,8 +144,7 @@ export class SolarSystem
         this.objects.push(this.venus);
 
         // Create Earth
-        this.earth = new Planet({
-            name: "earth",
+        this.earth = createEntity(this.earthEntity, {
             size: this.earthSize,
             posToParent: new THREE.Vector3(1000, 0, 0),
             axialTilt: 23.44,
@@ -161,8 +156,7 @@ export class SolarSystem
         this.objects.push(this.earth);
 
         // Create moon
-        this.moon = new Planet({
-            name: "moon",
+        this.moon = createEntity(this.moonEntity, {
             size: this.moonSize,
             posToParent: new THREE.Vector3(30, 0, 0),
             axialTilt: 6.68,
@@ -174,8 +168,7 @@ export class SolarSystem
         this.objects.push(this.moon);
 
         // Create mars
-        this.mars = new Planet({
-            name: "mars",
+        this.mars = createEntity(this.marsEntity, {
             size: this.marsSize,
             posToParent: new THREE.Vector3(1500, 0, 0),
             axialTilt: 25.19,
@@ -187,7 +180,7 @@ export class SolarSystem
         this.objects.push(this.mars);
 
         // Create asteroid belt
-        this.asteroidBelt = new AsteroidBelt({
+        this.asteroidBelt = createEntity(this.asteroidbeltEntity, {
             count: 6000,
             size: this.asteroidBeltSize,
             orbitFarRadius: 1900,
@@ -200,8 +193,7 @@ export class SolarSystem
         this.objects.push(this.asteroidBelt);
         
         // Create jupiter
-        this.jupiter = new Planet({
-            name: "jupiter",
+        this.jupiter = createEntity(this.jupiterEntity, {
             size: this.jupiterSize,
             posToParent: new THREE.Vector3(2600, 0, 0),
             axialTilt: 3.13,
@@ -213,8 +205,7 @@ export class SolarSystem
         this.objects.push(this.jupiter);
         
         // Create saturn
-        this.saturn = new Planet({
-            name: "saturn",
+        this.saturn = createEntity(this.saturnEntity, {
             size: this.saturnSize,
             posToParent: new THREE.Vector3(3600, 0, 0),
             axialTilt: 26.73,
@@ -226,7 +217,7 @@ export class SolarSystem
         this.objects.push(this.saturn);
 
         // Create saturn ring
-        this.saturnRing = new AsteroidBelt({
+        this.saturnRing = createEntity(this.saturnringEntity, {
             count: 4000,
             size: this.saturnRingSize,
             orbitFarRadius: 65,
@@ -240,8 +231,7 @@ export class SolarSystem
         this.objects.push(this.saturnRing);
         
         // Create uranus
-        this.uranus = new Planet({
-            name: "uranus",
+        this.uranus = createEntity(this.uranusEntity, {
             size: this.uranusSize,
             posToParent: new THREE.Vector3(4600, 0, 0),
             axialTilt: 97.77,
@@ -253,7 +243,7 @@ export class SolarSystem
         this.objects.push(this.uranus);
 
         // Create uranus ring
-        this.uranusRing = new AsteroidBelt({
+        this.uranusRing = createEntity(this.uranusringEntity, {
             count: 1800,
             size: this.uranusRingSize,
             orbitFarRadius: 50,
@@ -268,8 +258,7 @@ export class SolarSystem
         this.objects.push(this.uranusRing);
         
         // Create neptune
-        this.neptune = new Planet({
-            name: "neptune",
+        this.neptune = createEntity(this.neptuneEntity, {
             size: this.neptuneSize,
             posToParent: new THREE.Vector3(5600, 0, 0),
             axialTilt: 28.32,
@@ -281,8 +270,7 @@ export class SolarSystem
         this.objects.push(this.neptune);
         
         // Create pluto
-        this.pluto = new Planet({
-            name: "pluto",
+        this.pluto = createEntity(this.plutoEntity, {
             size: this.plutoSize,
             posToParent: new THREE.Vector3(6500, 0, 0),
             axialTilt: 119.61,
@@ -294,7 +282,7 @@ export class SolarSystem
         this.objects.push(this.pluto);
 
         // Create kuiper belt
-        this.kuiperBelt = new AsteroidBelt({
+        this.kuiperBelt = createEntity(this.kuiperbeltEntity, {
             count: 5000,
             size: this.asteroidBeltSize,
             orbitFarRadius: 7000,

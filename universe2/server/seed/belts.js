@@ -9,7 +9,7 @@ export const belts = [
         galaxyKey: "milkyway" 
     },
     { 
-        key: "kuipertbelt", 
+        key: "kuiperbelt", 
         name: "Kuiper Belt", 
         type: "belt", 
         parentKey: "sun", 
