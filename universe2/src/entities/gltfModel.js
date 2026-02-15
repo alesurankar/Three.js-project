@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { ArtificialObject } from "./artificialObject.js";
 
-export class SpaceStation extends ArtificialObject {
+export class GltfModel extends ArtificialObject {
     constructor({
         name = "station",
         size = 1,
@@ -32,7 +32,7 @@ export class SpaceStation extends ArtificialObject {
 
         this.loader = new GLTFLoader();
         this.model = null;
-        const modelPath = `/models/SpaceShip/model.gltf`;  
+        const modelPath = `/models/gltf/${name}/model.gltf`;  
         this.loader.load(modelPath, (gltf) => {
             this.model = gltf.scene;
             this.model.scale.setScalar(size);
