@@ -12,13 +12,17 @@ npm install
 cd ..
 ```
 
+---
 
-🌱 Database Setup
+🌱 Database Setup (Optional)
 
-This project uses MongoDB to store universe entities (stars, planets, etc.). 
-Before running the app for the first time you must: 
+This project uses MongoDB to store universe entities (stars, planets, etc.), 
+but you can also run it entirely with local seed data for development or sharing purposes.
 
-1. Create a free MongoDB Atlas account (or use a local MongoDB instance)
+
+Option 1: Use MongoDB
+
+1. Create a free MongoDB Atlas account
 
 - [MongoDB Atlas Signup](https://account.mongodb.com/account/login)
 Follow instructions to create a cluster.
@@ -34,6 +38,7 @@ mongodb+srv://<"username">:<"password">@cluster0.mongodb.net/myFirstDatabase?ret
 - open [/server/example.env](./server/example.env).
 - rename "example.env" to ".env"
 
+
 4. Run the seed script:
 ```bash
 npm run seed
@@ -44,6 +49,18 @@ This will:
 - create default entities
 - prepare the universe for rendering
 
+
+
+Option 2: Use Local Seed Data
+
+If you don’t have MongoDB, you can still run the app:
+
+1. configure your environment variables.
+- open [/server/example.env](./server/example.env).
+- rename "example.env" to ".env"
+
+
+---
 
 
 ⚠️ Requirements
@@ -57,6 +74,7 @@ Make sure your .env file contains: MONGO_URI=your_connection_string
 - Your .env file contains sensitive information (like MONGO_URI) and should not be committed to GitHub.
 - It is already included in .gitignore, so it will be ignored by Git.
 
+---
 
 🚀 Start Development
 
