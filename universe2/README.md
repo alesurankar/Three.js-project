@@ -20,7 +20,16 @@ This project uses MongoDB to store universe entities (stars, planets, etc.),
 but you can also run it entirely with local seed data for development or sharing purposes.
 
 
-Option 1: Use MongoDB
+Option 1: Use Local Seed Data
+
+If you don’t have MongoDB, you can still run the app:
+
+1. configure your environment variables.
+- open [/server/example.env](./server/example.env).
+- rename "example.env" to ".env"
+
+
+Option 2: Use MongoDB
 
 1. Create a free MongoDB Atlas account
 
@@ -51,21 +60,12 @@ This will:
 
 
 
-Option 2: Use Local Seed Data
-
-If you don’t have MongoDB, you can still run the app:
-
-1. configure your environment variables.
-- open [/server/example.env](./server/example.env).
-- rename "example.env" to ".env"
-
-
 ---
 
 
 ⚠️ Requirements
 
-Make sure your .env file contains: MONGO_URI=your_connection_string
+Make sure your .env file contains: MONGO_URI=your_connection_string. if in database mode
 
 
 
