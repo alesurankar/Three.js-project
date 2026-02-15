@@ -14,7 +14,7 @@ export class SolarSystem
     {
         this.active = true;
         StarSystem.timeFactor=100
-        
+
         const sizeFactor = 1
         this.sunSize = 110 * sizeFactor; 
         this.wormholeSize = 100 * sizeFactor;
@@ -61,7 +61,15 @@ export class SolarSystem
             this.earthEntity = this.entities.find(e => e.key === "earth");
             this.moonEntity = this.entities.find(e => e.key === "moon");
             this.marsEntity = this.entities.find(e => e.key === "mars");
+            this.asteroidbeltEntity = this.entities.find(e => e.key === "asteroidbelt");
+            this.jupiterEntity = this.entities.find(e => e.key === "jupiter");
             this.saturnEntity = this.entities.find(e => e.key === "saturn");
+            this.saturnringEntity = this.entities.find(e => e.key === "saturnring");
+            this.uranusEntity = this.entities.find(e => e.key === "uranus");
+            this.uranusringEntity = this.entities.find(e => e.key === "uranusring");
+            this.neptuneEntity = this.entities.find(e => e.key === "neptune");
+            this.plutoEntity = this.entities.find(e => e.key === "pluto");
+            this.kuiperbeltEntity = this.entities.find(e => e.key === "kuiperbelt");
             
             if (!this.sunEntity) throw new Error("Sun entity missing");
             if (!this.mercuryEntity) throw new Error("Mercury entity missing");
@@ -69,7 +77,15 @@ export class SolarSystem
             if (!this.earthEntity) throw new Error("Earth entity missing");
             if (!this.moonEntity) throw new Error("Moon entity missing");
             if (!this.marsEntity) throw new Error("Mars entity missing");
+            if (!this.asteroidbeltEntity) throw new Error("Asteroid Belt entity missing");
+            if (!this.jupiterEntity) throw new Error("Jupiter entity missing");
             if (!this.saturnEntity) throw new Error("Saturn entity missing");
+            if (!this.saturnringEntity) throw new Error("Saturn Ring entity missing");
+            if (!this.uranusEntity) throw new Error("Uranus entity missing");
+            if (!this.uranusringEntity) throw new Error("Uranus Ring entity missing");
+            if (!this.neptuneEntity) throw new Error("Neptune entity missing");
+            if (!this.plutoEntity) throw new Error("Pluto entity missing");
+            if (!this.kuiperbeltEntity) throw new Error("Kuiper Belt entity missing");
 
             this.CreateObjects();
             this.Portals();
