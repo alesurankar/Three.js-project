@@ -13,7 +13,6 @@ export class AlphaCentauriSystem
         StarSystem.timeFactor=100
         
         const sizeFactor = 0.5
-        this.wormholeSize = 100 * sizeFactor;
         this.acASize = 110 * sizeFactor;
         this.acBSize = 90 * sizeFactor;
         this.pcSize = 30 * sizeFactor;
@@ -29,6 +28,7 @@ export class AlphaCentauriSystem
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
+        this.exitDistance = this.acASize * 160;
         this.objects = [];
     }
 
@@ -44,12 +44,10 @@ export class AlphaCentauriSystem
             this.acAEntity = this.entities.find(e => e.key === "alphacentauriA");
             this.acBEntity = this.entities.find(e => e.key === "alphacentauriB");
             this.pcEntity = this.entities.find(e => e.key === "proximacentauri");
-            this.wormholeEntity = this.entities.find(e => e.key === "wormhole_alphacentauri");
             
             if (!this.acAEntity) throw new Error("Alpha Centauri A entity missing");
             if (!this.acBEntity) throw new Error("Alpha Centauri B entity missing");
             if (!this.pcEntity) throw new Error("Proxyma Centauri entity missing");
-            if (!this.wormholeEntity) throw new Error("Wormhole entity missing");
 
             this.CreateObjects();
             this.Portals();
@@ -94,21 +92,11 @@ export class AlphaCentauriSystem
             parent: this.barycenter,
         });
         this.objects.push(this.pc);
-
-        // Create Wormhole
-        this.wormhole = createEntity(this.wormholeEntity, {
-            size: this.wormholeSize,
-            posToParent: new THREE.Vector3(2000, 2000, 0),
-            facingTo: new THREE.Vector3(0, 0, 0),
-            parent: this.barycenter,
-        });
-        this.objects.push(this.wormhole);
     }
 
     Portals()
     {
         this.sceneTriggers = [
-            { obj: this.wormhole, threshold: this.wormholeSize / 2, scene: "MilkyWay" },
             { obj: this.pc, threshold: this.pcSize * 3, scene: "ProximaCentauri" },
         ];
     }
@@ -121,6 +109,12 @@ export class AlphaCentauriSystem
         if (!this.sceneTriggers) return;
         
         const pos = this._tempVec;
+        this.barycenter.getWorldPosition(pos);
+
+        const distanceToParent = this.camera.position.distanceTo(pos);
+        if (distanceToParent > this.exitDistance) {
+            this.requestedScene = "MilkyWay";
+        }
 
         for (const trigger of this.sceneTriggers) {
             trigger.obj.objectRoot.getWorldPosition(pos);

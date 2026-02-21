@@ -46,7 +46,7 @@ export class MilkyWay
         this.SIZE_SCALE = 4;
         this.DISTANCE_SCALE = 0.1; // 1 unit = 1 light-year
         this.LOCAL_SCALE = 200; // scale down small interstellar distances
-        this.sunPos = new THREE.Vector3(26700 * this.DISTANCE_SCALE, 0, 0);
+        this.sunPos = new THREE.Vector3(26700 * this.DISTANCE_SCALE, -200, -200);
 
         this.objects = [];
     }

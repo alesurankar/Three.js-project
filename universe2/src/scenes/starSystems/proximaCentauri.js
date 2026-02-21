@@ -87,10 +87,10 @@ export class ProximaCentauri
 
     Update(dt) 
     {
-        if (!this.pc) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
+        if (!this.sceneTriggers) return;
 
         const pos = this._tempVec;
         this.pc.objectRoot.getWorldPosition(pos);

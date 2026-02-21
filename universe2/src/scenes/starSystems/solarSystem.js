@@ -14,7 +14,6 @@ export class SolarSystem
 
         const sizeFactor = 1
         this.sunSize = 110 * sizeFactor; 
-        this.wormholeSize = 100 * sizeFactor;
         this.mercurySize = 4 * sizeFactor;
         this.venusSize = 9.5 * sizeFactor;
         this.earthSize = 10 * sizeFactor;
@@ -40,6 +39,7 @@ export class SolarSystem
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
+        this.exitDistance = this.sunSize * 100;
         this.objects = [];
     }
 
@@ -54,7 +54,6 @@ export class SolarSystem
             
             this.entities = res.data.entities;
             this.sunEntity = this.entities.find(e => e.key === "sun");
-            this.wormholeEntity = this.entities.find(e => e.key === "wormhole_sol");
             this.mercuryEntity = this.entities.find(e => e.key === "mercury");
             this.venusEntity = this.entities.find(e => e.key === "venus");
             this.earthEntity = this.entities.find(e => e.key === "earth");
@@ -71,7 +70,6 @@ export class SolarSystem
             this.kuiperbeltEntity = this.entities.find(e => e.key === "kuiperbelt");
             
             if (!this.sunEntity) throw new Error("Sun entity missing");
-            if (!this.wormholeEntity) throw new Error("Wormhole entity missing");
             if (!this.mercuryEntity) throw new Error("Mercury entity missing");
             if (!this.venusEntity) throw new Error("Venus entity missing");
             if (!this.earthEntity) throw new Error("Earth entity missing");
@@ -110,15 +108,6 @@ export class SolarSystem
         });
         this.scene.add(this.sun.orbitPivot);
         this.objects.push(this.sun);
-
-        // Create Wormhole
-        this.wormhole = createEntity(this.wormholeEntity, {
-            size: this.wormholeSize,
-            posToParent: new THREE.Vector3(2000, 2000, 0),
-            facingTo: new THREE.Vector3(0, 0, 0),
-            parent: this.sun.objectRoot,
-        });
-        this.objects.push(this.wormhole);
 
         // Create Mercury
         this.mercury = createEntity(this.mercuryEntity, {
@@ -300,7 +289,6 @@ export class SolarSystem
     Portals()
     {
         this.sceneTriggers = [
-            { obj: this.wormhole, threshold: this.wormholeSize / 2, scene: "MilkyWay" },
             { obj: this.mercury, threshold: this.mercurySize * 5, scene: "MercuryOrbit" },
             { obj: this.venus, threshold: this.venusSize * 4, scene: "VenusOrbit" },
             { obj: this.earth, threshold: this.earthSize * 4, scene: "EarthOrbit" },
@@ -319,6 +307,12 @@ export class SolarSystem
         if (!this.sceneTriggers) return;
 
         const pos = this._tempVec;
+        this.sun.objectRoot.getWorldPosition(pos);
+
+        const distanceToParent = this.camera.position.distanceTo(pos);
+        if (distanceToParent > this.exitDistance) {
+            this.requestedScene = "MilkyWay";
+        }
 
         for (const trigger of this.sceneTriggers) {
             trigger.obj.objectRoot.getWorldPosition(pos);

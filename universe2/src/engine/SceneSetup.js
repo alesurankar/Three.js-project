@@ -13,7 +13,7 @@ export function CreateSceneManager(scene)
   const manager = new SceneManager(scene, camera);
 
   //manager.LoadScene(TestScene);
-  manager.LoadScene(SaturnOrbit);
+  manager.LoadScene(ProximaBOrbit);
 
   return manager;
 }
