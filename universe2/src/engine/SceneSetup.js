@@ -7,13 +7,12 @@ import { ProximaBOrbit } from "../scenes/worlds/proximaBOrbit.js";
 import { SaturnOrbit } from "../scenes/worlds/saturnOrbit.js";
 
 
-export function CreateSceneManager(scene) 
+export function CreateSceneManager(scene, onSceneChange) 
 {
   const camera = CreateCamera();
-  const manager = new SceneManager(scene, camera);
+  const manager = new SceneManager(scene, camera, onSceneChange);
 
-  //manager.LoadScene(TestScene);
-  manager.LoadScene(ProximaBOrbit);
+  manager.SwitchScene("ProximaBOrbit");
 
   return manager;
 }

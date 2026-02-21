@@ -19,8 +19,10 @@ export class Engine
     this.accumulator = 0;
     this.timeScale = 1;
     this.rafId = null;
-
-    this.manager = CreateSceneManager(this.Scene);
+    
+    this.manager = CreateSceneManager(this.Scene, (sceneName) => {
+      console.log("Scene changed to:", sceneName);
+    });
     this.Camera = this.manager.camera;
     this.Renderer = CreateRenderer(container);
     this.gameControls = new GameControls(this.Camera, container);
@@ -58,6 +60,11 @@ export class Engine
   SetTimeScale(scale) 
   {
     this.timeScale = Math.max(0, scale);
+  }
+
+  GetCurrentSceneName() 
+  {
+    return this.manager?.GetCurrentSceneName() ?? "None";
   }
 
   Dispose() 

@@ -11,11 +11,17 @@ export default function Universe()
   const containerRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Engine | null>(null);
   const [timeScale, setTimeScale] = useState(1);
+  const [currentSceneName, setCurrentSceneName] = useState("None");
 
   useEffect(() => {
     if (!containerRef.current) return;
 
     const engine = new Engine(containerRef.current, { fps: 60 });
+    // Whenever the SceneManager notifies a scene change, update state
+    engine.manager.onSceneChange = (sceneName: string) => {
+      setCurrentSceneName(sceneName);
+    };
+    
     engineRef.current = engine;
     engine.Start();
 
@@ -71,6 +77,10 @@ export default function Universe()
             style={{ width: "240px", height: "16px" }}
           />
         </label>
+        {/* Display the current scene name */}
+        <div style={{ marginTop: "10px", fontWeight: "bold" }}>
+          Current Scene: {currentSceneName}
+        </div>
       </div>
     </div>
   );

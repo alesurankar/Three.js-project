@@ -2,11 +2,18 @@ import { Scenes } from "./Scenes.js";
 
 export class SceneManager 
 {
-    constructor(scene, camera) 
+    constructor(scene, camera, onSceneChange) 
     {
         this.scene = scene; 
         this.camera = camera;
         this.currentScene = null;
+        this.currentSceneName = null;
+        this.onSceneChange = onSceneChange;
+    }
+
+    GetCurrentSceneName() 
+    {
+        return this.currentSceneName ?? "None";
     }
     
     async SwitchScene(sceneName) 
@@ -17,6 +24,11 @@ export class SceneManager
             return;
         }
         await this.LoadScene(SceneClass);
+        this.currentSceneName = sceneName;
+        // notify Engine
+        if (this.onSceneChange) {
+            this.onSceneChange(sceneName);
+        }
     }
 
     async LoadScene(sceneClass) 
