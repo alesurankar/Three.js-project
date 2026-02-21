@@ -21,13 +21,13 @@ export class SaturnOrbit
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
             near: 30,
-            far: 22000
+            far: 34000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.saturnSize * 6;
+        this.exitDistance = this.saturnSize * 4;
         this.objects = [];
     }
 
@@ -89,7 +89,7 @@ export class SaturnOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.saturn.objectRoot,
-            posToParent: new THREE.Vector3(12000, 0, 10000),
+            posToParent: new THREE.Vector3(15000, 0, 10000),
             orbitalTilt: 2.49,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
             temperature: 5778,

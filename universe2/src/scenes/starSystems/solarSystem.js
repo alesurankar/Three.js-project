@@ -307,6 +307,7 @@ export class SolarSystem
             { obj: this.moon, threshold: this.moonSize * 4, scene: "MoonOrbit" },
             { obj: this.mars, threshold: this.moonSize * 4, scene: "MarsOrbit" },
             { obj: this.jupiter, threshold: this.jupiterSize * 3, scene: "JupiterOrbit" },
+            { obj: this.saturn, threshold: this.saturnSize * 3, scene: "SaturnOrbit" },
         ];
     }
 
