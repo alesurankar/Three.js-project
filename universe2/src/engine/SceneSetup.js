@@ -3,6 +3,7 @@ import { CreateCamera } from "./RendererSetup.js";
 import { TestScene } from "../scenes/testScene.js";
 import { SolarSystem } from "../scenes/starSystems/solarSystem.js"
 import { ProximaCentauri } from "../scenes/starSystems/proximaCentauri.js";
+import { ProximaBOrbit } from "../scenes/worlds/proximaBOrbit.js";
 
 
 export function CreateSceneManager(scene) 
@@ -11,7 +12,7 @@ export function CreateSceneManager(scene)
   const manager = new SceneManager(scene, camera);
 
   //manager.LoadScene(TestScene);
-  manager.LoadScene(ProximaCentauri);
+  manager.LoadScene(ProximaBOrbit);
 
   return manager;
 }
