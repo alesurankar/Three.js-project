@@ -3,15 +3,6 @@ import asyncErrorHandler from "../middlewares/helpers/asyncErrorHandler.js";
 import { getEntities } from "../data/entityProvider.js";
 
 
-// helper: convert text to safe slug
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
-
 /**
  * Create a new Entity
  * @route POST /api/entities
@@ -27,20 +18,14 @@ export const createEntity = asyncErrorHandler(async (req, res, next) => {
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    const safeKey = slugify(key);
-    const safeType = slugify(type);
-    const safeParentKey = slugify(parentKey);
-    const safeSystemKey = slugify(systemKey);
-    const safeGalaxyKey = slugify(galaxyKey);
-
     // Create new entity
     const entity = await EntityModel.create({ 
-        key: safeKey, 
+        key, 
         name,  
-        type: safeType,
-        parentKey: safeParentKey,
-        systemKey: safeSystemKey,
-        galaxyKey: safeGalaxyKey,
+        type,
+        parentKey,
+        systemKey,
+        galaxyKey,
     });
 
     res.status(201).json({

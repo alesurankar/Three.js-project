@@ -1,8 +1,6 @@
 import * as THREE from "three";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
-import { GltfModel } from "../../entities/gltfModel.js";
-import { GlbModel } from "../../entities/glbModel.js";
 import { createEntity } from "../../factories/entityFactory.js";
 import api from "../../utils/api";
 
@@ -44,10 +42,14 @@ export class EarthOrbit
             this.earthEntity = this.entities.find(e => e.key === "earth");
             this.moonEntity = this.entities.find(e => e.key === "moon");
             this.sunEntity = this.entities.find(e => e.key === "sun");
+            this.probe1Entity = this.entities.find(e => e.key === "probe1");
+            this.probe2Entity = this.entities.find(e => e.key === "probe2");
             
             if (!this.earthEntity) throw new Error("Earth entity missing");
             if (!this.moonEntity) throw new Error("Moon entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
+            if (!this.probe1Entity) throw new Error("Probe1 entity missing");
+            if (!this.probe2Entity) throw new Error("Probe2 entity missing");
 
             this.CreateObjects();
         }
@@ -70,40 +72,8 @@ export class EarthOrbit
         this.scene.add(this.earth.orbitPivot);
         this.objects.push(this.earth);
 
-        // Create SomeSpaceStation
-        this.spaceStation = new GltfModel({
-            name: "SpaceShip",
-            size: 5,
-            posToParent: new THREE.Vector3(1100, 0, 0),
-            pitch: 0,
-            yaw: Math.PI,
-            roll: Math.PI /2,
-            orbitRadius: 1100,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.1),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.1),
-            parent: this.earth.objectRoot
-        });
-        this.objects.push(this.spaceStation);
-
-        // Create ISS
-        this.spaceStation = new GltfModel({
-            name: "SpaceShip",
-            size: 5,
-            posToParent: new THREE.Vector3(1200, 0, 0),
-            pitch: 0,
-            yaw: Math.PI,
-            roll: Math.PI /2,
-            orbitRadius: 1100,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.06),
-            orbitalTilt: 51.64,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.06),
-            parent: this.earth.objectRoot
-        });
-        this.objects.push(this.spaceStation);
-
         // Create probe
-        this.probe = new GlbModel({
-            name: "probe",
+        this.probe = createEntity(this.probe1Entity, {
             size: 1,
             posToParent: new THREE.Vector3(1200, 200, 0),
             pitch: 0,
@@ -118,8 +88,7 @@ export class EarthOrbit
         this.objects.push(this.probe);
 
         // Create probe2
-        this.probe = new GlbModel({
-            name: "probe2",
+        this.probe = createEntity(this.probe2Entity, {
             size: 300,
             posToParent: new THREE.Vector3(1400, 300, 200),
             pitch: 0,
@@ -133,9 +102,8 @@ export class EarthOrbit
         });
         this.objects.push(this.probe);
 
-        // Create probe2
-        this.probe = new GlbModel({
-            name: "probe2",
+        // Create probe3
+        this.probe = createEntity(this.probe2Entity, {
             size: 300,
             posToParent: new THREE.Vector3(1400, 100, 200),
             pitch: 0,
@@ -149,9 +117,8 @@ export class EarthOrbit
         });
         this.objects.push(this.probe);
 
-        // Create probe2
-        this.probe = new GlbModel({
-            name: "probe2",
+        // Create probe4
+        this.probe = createEntity(this.probe2Entity, {
             size: 300,
             posToParent: new THREE.Vector3(1400, 0, 100),
             pitch: 0,

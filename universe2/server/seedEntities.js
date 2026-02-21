@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { belts } from "./seed/belts.js";
 import { blackholes } from "./seed/blackholes.js";
 import { planets } from "./seed/planets.js";
+import { probes } from "./seed/probes.js";
 import { moons } from "./seed/moons.js";
 import { rings } from "./seed/rings.js";
 import { stars } from "./seed/stars.js";
@@ -14,6 +15,7 @@ const entities = [
   ...belts,
   ...blackholes,
   ...planets,
+  ...probes,
   ...moons,
   ...rings,
   ...stars,
