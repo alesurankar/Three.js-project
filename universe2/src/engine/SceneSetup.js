@@ -12,7 +12,7 @@ export function CreateSceneManager(scene, onSceneChange)
   const camera = CreateCamera();
   const manager = new SceneManager(scene, camera, onSceneChange);
 
-  manager.SwitchScene("ProximaBOrbit");
+  manager.SwitchScene("SolarSystem");
 
   return manager;
 }

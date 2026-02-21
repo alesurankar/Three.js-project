@@ -14,6 +14,7 @@ export class EarthOrbit
         
         const sizeFactor = 1;
         this.earthSize = 1000 * sizeFactor;
+        this.moonSize = 270 * sizeFactor;
         
         this.cameraSettings = {
             pos: { x:-this.earthSize * 2, y:0, z:this.earthSize * 2 },
@@ -52,6 +53,7 @@ export class EarthOrbit
             if (!this.probe2Entity) throw new Error("Probe2 entity missing");
 
             this.CreateObjects();
+            this.Portals();
         }
         catch (err) {
             console.error("Failed to load entities", err);
@@ -134,7 +136,7 @@ export class EarthOrbit
 
         // Create moon
         this.moon = createEntity(this.moonEntity, {
-            size: 270,
+            size: this.moonSize,
             posToParent: new THREE.Vector3(14000, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
@@ -161,12 +163,19 @@ export class EarthOrbit
         this.objects.push(this.sun);
     }
 
+    Portals()
+    {
+        this.sceneTriggers = [
+            { obj: this.moon, threshold: this.moonSize * 14, scene: "MoonOrbit" },
+        ];
+    }
+
     Update(dt) 
     {
-        if (!this.earth) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
+        if (!this.sceneTriggers) return;
 
         const pos = this._tempVec;
         this.earth.objectRoot.getWorldPosition(pos);
@@ -175,6 +184,15 @@ export class EarthOrbit
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
         } 
+
+        for (const trigger of this.sceneTriggers) {
+            trigger.obj.objectRoot.getWorldPosition(pos);
+            const distance = this.camera.position.distanceTo(pos);
+            if (distance <= trigger.threshold) {
+                this.requestedScene = trigger.scene;
+                break;
+            }
+        }
     }
 
     Dispose() 
@@ -182,6 +200,7 @@ export class EarthOrbit
         this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
+        this.sceneTriggers = [];
         
         // Dispose skybox
         if (this.scene?.background) {

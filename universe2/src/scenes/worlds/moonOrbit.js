@@ -14,6 +14,7 @@ export class MoonOrbit
         
         const sizeFactor = 1;
         this.moonSize = 270 * sizeFactor;
+        this.earthSize = 1000 * sizeFactor;
 
         this.cameraSettings = {
             pos: { x:-this.moonSize * 2, y:0, z:this.moonSize * 2 },
@@ -26,7 +27,7 @@ export class MoonOrbit
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.moonSize * 16;
+        this.exitDistance = this.moonSize * 18;
         this.objects = [];
     }
 
@@ -47,6 +48,7 @@ export class MoonOrbit
             if (!this.sunEntity) throw new Error("Sun entity missing");
 
             this.CreateObjects();
+            this.Portals();
         }
         catch (err) {
             console.error("Failed to load entities", err);
@@ -69,7 +71,7 @@ export class MoonOrbit
 
         // Create Earth
         this.earth = createEntity(this.earthEntity, {
-            size: 1000,
+            size: this.earthSize,
             posToParent: new THREE.Vector3(14000, 0, 0),
             axialTilt: 23.44,
             orbitalTilt: 5.145,
@@ -98,12 +100,20 @@ export class MoonOrbit
         this.objects.push(this.sun);
     }
 
+    Portals()
+    {
+        this.sceneTriggers = [
+            { obj: this.earth, threshold: this.earthSize * 10, scene: "EarthOrbit" },
+        ];
+    }
+
     Update(dt) 
     {
         if (!this.moon) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
+        if (!this.sceneTriggers) return;
 
         const pos = this._tempVec;
         this.moon.objectRoot.getWorldPosition(pos);
@@ -112,6 +122,15 @@ export class MoonOrbit
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
         } 
+
+        for (const trigger of this.sceneTriggers) {
+            trigger.obj.objectRoot.getWorldPosition(pos);
+            const distance = this.camera.position.distanceTo(pos);
+            if (distance <= trigger.threshold) {
+                this.requestedScene = trigger.scene;
+                break;
+            }
+        }
     }
 
     Dispose() 
@@ -119,6 +138,7 @@ export class MoonOrbit
         this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
+        this.sceneTriggers = [];
         
         // Dispose skybox
         if (this.scene?.background) {
