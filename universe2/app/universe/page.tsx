@@ -79,7 +79,7 @@ export default function Universe()
         </label>
         {/* Display the current scene name */}
         <div style={{ marginTop: "10px", fontWeight: "bold" }}>
-          Current Scene: {currentSceneName}
+          Scene: {currentSceneName}
         </div>
       </div>
     </div>

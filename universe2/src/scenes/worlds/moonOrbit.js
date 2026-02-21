@@ -20,13 +20,13 @@ export class MoonOrbit
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
             near: 30,
-            far: 20000
+            far: 22000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.moonSize * 10;
+        this.exitDistance = this.moonSize * 16;
         this.objects = [];
     }
 
@@ -88,7 +88,7 @@ export class MoonOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.moon.objectRoot,
-            posToParent: new THREE.Vector3(15000, 0, 10000),
+            posToParent: new THREE.Vector3(16000, 0, 12000),
             orbitalTilt: 5.145,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365),
             temperature: 5778,

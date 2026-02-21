@@ -13,20 +13,20 @@ export class VenusOrbit
         StarSystem.timeFactor=1
         
         const sizeFactor = 1;
-        this.venusSize = 950 * sizeFactor;
+        this.venusSize = 1000 * sizeFactor;
 
         this.cameraSettings = {
             pos: { x:-this.venusSize * 2, y:0, z:this.venusSize * 2 },
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
-            near: 30,
-            far: 20000
+            near: 40,
+            far: 26000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.venusSize * 6;
+        this.exitDistance = this.venusSize * 12;
         this.objects = [];
     }
 
@@ -73,7 +73,7 @@ export class VenusOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.venus.objectRoot,
-            posToParent: new THREE.Vector3(15000, 0, 10000),
+            posToParent: new THREE.Vector3(10000, 0, 10000),
             orbitalTilt: 3.39,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(224.7),
             temperature: 5778,

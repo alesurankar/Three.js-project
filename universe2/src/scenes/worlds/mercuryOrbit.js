@@ -13,20 +13,20 @@ export class MercuryOrbit
         StarSystem.timeFactor=1
         
         const sizeFactor = 1;
-        this.mercurySize = 400 * sizeFactor;
+        this.mercurySize = 1000 * sizeFactor;
 
         this.cameraSettings = {
             pos: { x:-this.mercurySize * 2, y:0, z:this.mercurySize * 2 },
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
-            near: 30,
-            far: 20000
+            near: 40,
+            far: 26000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.mercurySize * 8;
+        this.exitDistance = this.mercurySize * 12;
         this.objects = [];
     }
 
@@ -73,7 +73,7 @@ export class MercuryOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.mercury.objectRoot,
-            posToParent: new THREE.Vector3(15000, 0, 10000),
+            posToParent: new THREE.Vector3(10000, 0, 10000),
             orbitalTilt: 7.00,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
             temperature: 5778,

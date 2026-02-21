@@ -19,14 +19,14 @@ export class ProximaBOrbit
             pos: { x:-this.proximaBSize * 2, y:0, z:this.proximaBSize * 2 },
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
-            near: 30,
-            far: 20000
+            near: 40,
+            far: 26000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.proximaBSize * 8;
+        this.exitDistance = this.proximaBSize * 12;
         this.objects = [];
     }
 

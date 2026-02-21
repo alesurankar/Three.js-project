@@ -20,13 +20,13 @@ export class EarthOrbit
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
             near: 40,
-            far: 25000
+            far: 26000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.earthSize * 6;
+        this.exitDistance = this.earthSize * 12;
         this.objects = [];
     }
 
@@ -152,7 +152,7 @@ export class EarthOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.earth.objectRoot,
-            posToParent: new THREE.Vector3(15000, 0, 10000),
+            posToParent: new THREE.Vector3(10000, 0, 10000),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365),
             temperature: 5778,
             sizeAtenuation: false,

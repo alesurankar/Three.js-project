@@ -27,7 +27,7 @@ export class ProximaCentauri
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.proximaCentauriSize * 40;
+        this.exitDistance = this.proximaCentauriSize * 50;
         this.objects = [];
     }
 

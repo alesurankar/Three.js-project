@@ -13,20 +13,20 @@ export class JupiterOrbit
         StarSystem.timeFactor=1
         
         const sizeFactor = 1;
-        this.jupiterSize = 3800 * sizeFactor;
+        this.jupiterSize = 1000 * sizeFactor;
 
         this.cameraSettings = {
             pos: { x:-this.jupiterSize * 2, y:0, z:this.jupiterSize * 2 },
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
-            near: 100,
-            far: 34000
+            near: 40,
+            far: 26000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.jupiterSize * 4;
+        this.exitDistance = this.jupiterSize * 12;
         this.objects = [];
     }
 
@@ -74,7 +74,7 @@ export class JupiterOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.jupiter.objectRoot,
-            posToParent: new THREE.Vector3(15000, 0, 10000),
+            posToParent: new THREE.Vector3(10000, 0, 10000),
             orbitalTilt: 1.31,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(4333),
             temperature: 5778,

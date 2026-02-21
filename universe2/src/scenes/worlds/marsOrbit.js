@@ -13,20 +13,20 @@ export class MarsOrbit
         StarSystem.timeFactor=1
         
         const sizeFactor = 1;
-        this.marsSize = 530 * sizeFactor;
+        this.marsSize = 1000 * sizeFactor;
 
         this.cameraSettings = {
             pos: { x:-this.marsSize * 2, y:0, z:this.marsSize * 2 },
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
-            near: 30,
-            far: 20000
+            near: 40,
+            far: 26000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.marsSize * 6;
+        this.exitDistance = this.marsSize * 12;
         this.objects = [];
     }
 
@@ -73,7 +73,7 @@ export class MarsOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.mars.objectRoot,
-            posToParent: new THREE.Vector3(15000, 0, 10000),
+            posToParent: new THREE.Vector3(10000, 0, 10000),
             orbitalTilt: 1.85,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(687),
             temperature: 5778,
