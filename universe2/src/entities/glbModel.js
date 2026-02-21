@@ -5,7 +5,7 @@ import { ArtificialObject } from "./artificialObject.js";
 
 export class GlbModel extends ArtificialObject {
     constructor({
-        name = "station",
+        key = "station",
         size = 1,
         posToParent = new THREE.Vector3(700, 0, 0),
         pitch = 0,  // rotation around X
@@ -39,7 +39,7 @@ export class GlbModel extends ArtificialObject {
         this.loader.setDRACOLoader(dracoLoader);
 
         this.model = null;
-        const modelPath = `/models/glb/${name}/model.glb`;
+        const modelPath = `/models/glb/${key}/model.glb`;
         this.loader.load(
             modelPath,
             (gltf) => {

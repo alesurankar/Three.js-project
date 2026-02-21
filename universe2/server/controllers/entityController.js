@@ -35,6 +35,7 @@ export const createEntity = asyncErrorHandler(async (req, res, next) => {
     });
 });
 
+
 /**
  * Get all entities
  * @route GET /api/entities

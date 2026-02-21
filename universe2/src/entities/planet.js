@@ -5,7 +5,7 @@ import { CelestialBody } from "./celestialBody.js";
 export class Planet extends CelestialBody 
 {
     constructor({
-        name = "planet",
+        key = "planet",
         size = 4,
         renderMode = "mesh",
         posToParent = new THREE.Vector3(700, 0, 0),
@@ -24,7 +24,7 @@ export class Planet extends CelestialBody
         let cloudMat = null;
         const loader = new THREE.TextureLoader();
     
-        const surfTexture = `/textures/${name}/day.jpg`;   
+        const surfTexture = `/textures/${key}/day.jpg`;   
         const surfTex = loader.load(surfTexture);
         surfMat = new THREE.MeshStandardMaterial({
             map: surfTex,
@@ -35,7 +35,7 @@ export class Planet extends CelestialBody
 
         // Cloud material
         if (hasClouds) {
-            const cloudTexture = `/textures/${name}/clouds.jpg`;
+            const cloudTexture = `/textures/${key}/clouds.jpg`;
             const cloudTex = loader.load(cloudTexture);
             cloudMat = new THREE.MeshStandardMaterial({
                 map: cloudTex,

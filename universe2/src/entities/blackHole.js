@@ -5,7 +5,6 @@ import { CelestialBody } from "./celestialBody.js";
 export class BlackHole extends CelestialBody 
 {
     constructor({
-        name = "blackHole",
         size = 10,
         posToParent = new THREE.Vector3(0, 0, 0),
         facingTo = new THREE.Vector3(0, -1, 0),

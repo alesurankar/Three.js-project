@@ -5,7 +5,7 @@ import { CelestialBody } from "./celestialBody.js";
 export class Star extends CelestialBody 
 {
     constructor({
-        name = "star",
+        key ="star",
         size = 20,
         maxSizeOnScreen = 1,
         renderMode = "mesh",
@@ -48,7 +48,7 @@ export class Star extends CelestialBody
         }
         else {
             if (hasTexture) {
-                const surfTexture = `/textures/${name}/${name}.jpg`;
+                const surfTexture = `/textures/${key}/${key}.jpg`;
                 const surfTex = loader.load(surfTexture);
                 surfMat = new THREE.MeshBasicMaterial({ map: surfTex, color: starColor });
             }
