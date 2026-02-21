@@ -77,7 +77,6 @@ export class ProximaBOrbit
             parent: this.pb.objectRoot,
         });
         this.objects.push(this.pc);
-
     }
 
     Update(dt) 

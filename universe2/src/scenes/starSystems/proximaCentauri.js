@@ -47,6 +47,7 @@ export class ProximaCentauri
             if (!this.proximaBEntity) throw new Error("Proxima B entity missing");
 
             this.CreateObjects();
+            this.Portals();
         }
         catch (err) {
             console.error("Failed to load entities", err);
@@ -77,6 +78,13 @@ export class ProximaCentauri
         this.objects.push(this.pb);
     }
 
+    Portals()
+    {
+        this.sceneTriggers = [
+            { obj: this.pb, threshold: this.proximaBSize * 4, scene: "ProximaBOrbit" },
+        ];
+    }
+
     Update(dt) 
     {
         if (!this.pc) return;
@@ -91,6 +99,15 @@ export class ProximaCentauri
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "AlphaCentauriSystem";
         }
+        
+        for (const trigger of this.sceneTriggers) {
+            trigger.obj.objectRoot.getWorldPosition(pos);
+            const distance = this.camera.position.distanceTo(pos);
+            if (distance <= trigger.threshold) {
+                this.requestedScene = trigger.scene;
+                break;
+            }
+        }
     }
 
     Dispose() 
@@ -98,6 +115,7 @@ export class ProximaCentauri
         this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
+        this.sceneTriggers = [];
         
         // Dispose skybox
         if (this.scene?.background) {
