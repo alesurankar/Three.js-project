@@ -22,7 +22,7 @@ export class AlphaCentauriSystem
             lookAt: { x:0, y:0, z:0 },
             fov: 40,
             near: 20,
-            far: 20000
+            far: 12000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");

@@ -21,7 +21,7 @@ export class ProximaCentauri
             lookAt: { x:15000, y:0, z:10000 },
             fov: 40,
             near: 30,
-            far: 20000
+            far: 12000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");

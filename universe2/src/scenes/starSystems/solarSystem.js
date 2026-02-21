@@ -32,8 +32,8 @@ export class SolarSystem
             pos: { x:1500, y:1500, z:0 },
             lookAt: { x:0, y:0, z:0 },
             fov: 40,
-            near: 16,
-            far: 18000
+            near: 14,
+            far: 12000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
