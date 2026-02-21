@@ -6,7 +6,7 @@ export class CelestialBody
     constructor(
     {
         renderMode = "mesh",
-        posToParent = new THREE.Vector3(100, 0, 0),
+        posToParent = new THREE.Vector3(0, 0, 0),
         axialTilt = 0,
         orbitalTilt = 0,
         axialRotationSpeed = 0,

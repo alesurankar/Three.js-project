@@ -18,7 +18,7 @@ export class MilkyWay
         this.sunSize = 0.1 * sizeFactor;
         this.alphaCentauriASize = 0.08 * sizeFactor;
         this.alphaCentauriBSize = 0.08 * sizeFactor;
-        this.proximaCentauri = 0.07 * sizeFactor;
+        this.proximaCentauriSize = 0.07 * sizeFactor;
         
         const starNum = 2000;
         this.redDwarfNum = starNum * 0.72;
@@ -130,7 +130,7 @@ export class MilkyWay
         this.objects.push(this.alphaCentauriB);
 
         this.proximaCentauri = createEntity(this.pcEntity, {
-            size: this.proximaCentauri,
+            size: this.proximaCentauriSize,
             renderMode: "points",
             posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE, this.sunPos.z - 1.05*this.LOCAL_SCALE - 0.02*this.LOCAL_SCALE),
             orbitalSpeed: this.baseSpeed,

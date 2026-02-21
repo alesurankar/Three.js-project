@@ -72,4 +72,12 @@ export const planets = [
         systemKey: "solarsystem", 
         galaxyKey: "milkyway" 
     },
+    { 
+        key: "proxima_b", 
+        name: "Proxima B", 
+        type: "planet", 
+        parentKey: "proximacentauri", 
+        systemKey: "alphacentauri", 
+        galaxyKey: "milkyway" 
+    },
 ]

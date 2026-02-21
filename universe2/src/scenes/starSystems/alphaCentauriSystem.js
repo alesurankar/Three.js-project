@@ -14,6 +14,9 @@ export class AlphaCentauriSystem
         
         const sizeFactor = 0.5
         this.wormholeSize = 100 * sizeFactor;
+        this.acASize = 110 * sizeFactor;
+        this.acBSize = 90 * sizeFactor;
+        this.pcSize = 30 * sizeFactor;
        
         this.cameraSettings = {
             pos: { x:1500, y:1500, z:0 },
@@ -64,7 +67,7 @@ export class AlphaCentauriSystem
 
         // Create Alpha Centuri A
         this.acA = createEntity(this.acAEntity, {
-            size: 110,
+            size: this.acASize,
             posToParent: new THREE.Vector3(900, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
             temperature: 5790,
@@ -74,7 +77,7 @@ export class AlphaCentauriSystem
 
         // Create Alpha Centuri B
         this.acB = createEntity(this.acBEntity, {
-            size: 90,
+            size: this.acBSize,
             posToParent: new THREE.Vector3(-720, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
             temperature: 5200,
@@ -84,7 +87,7 @@ export class AlphaCentauriSystem
 
         // Create Proxima Centauri
         this.pc = createEntity(this.pcEntity, {
-            size: 30,
+            size: this.pcSize,
             posToParent: new THREE.Vector3(8000, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365000),
             temperature: 3000,
@@ -106,6 +109,7 @@ export class AlphaCentauriSystem
     {
         this.sceneTriggers = [
             { obj: this.wormhole, threshold: this.wormholeSize / 2, scene: "MilkyWay" },
+            { obj: this.pc, threshold: this.pcSize * 3, scene: "ProximaCentauri" },
         ];
     }
 

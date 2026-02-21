@@ -1,0 +1,108 @@
+import * as THREE from "three";
+import { StarSystem } from "../../utils/starSystemHelper.js"
+import { SkyBox } from "../../visuals/skyBox.js";
+import { createEntity } from "../../factories/entityFactory.js";
+import api from "../../utils/api";
+
+
+export class ProximaCentauri
+{
+    constructor(scene, camera) 
+    {
+        this.active = true;
+        StarSystem.timeFactor=1
+        
+        const sizeFactor = 1;
+        this.proximaCentauriSize = 160 * sizeFactor;
+        this.proximaBSize = 10 * sizeFactor;
+
+        this.cameraSettings = {
+            pos: { x:-this.proximaCentauriSize * 2, y:0, z:this.proximaCentauriSize * 2 },
+            lookAt: { x:15000, y:0, z:10000 },
+            fov: 40,
+            near: 30,
+            far: 20000
+        };
+        this.scene = scene;
+        this.scene.background = SkyBox.Load("StarBox");
+        this.camera = camera;
+        this._tempVec = new THREE.Vector3();
+        this.exitDistance = this.proximaCentauriSize * 40;
+        this.objects = [];
+    }
+
+    async init() 
+    {
+        try {
+            if (!this.active) return;
+
+            const res = await api.get("/entities");
+            this.entities = res.data.entities;
+            this.entities = this.entities.filter(e => e.systemKey === "alphacentauri" && e.galaxyKey === "milkyway");
+            
+            this.proximaCentauriEntity = this.entities.find(e => e.key === "proximacentauri");
+            this.proximaBEntity = this.entities.find(e => e.key === "proxima_b");
+            
+            if (!this.proximaCentauriEntity) throw new Error("Proxima Centauri entity missing");
+            if (!this.proximaBEntity) throw new Error("Proxima B entity missing");
+
+            this.CreateObjects();
+        }
+        catch (err) {
+            console.error("Failed to load entities", err);
+        }
+    }
+    
+    CreateObjects()
+    {
+        // Create Proxima Centauri
+        this.pc = createEntity(this.proximaCentauriEntity, {
+            size: this.proximaCentauriSize,
+            lightType: "pointLight",
+            detail: 5,
+            temperature: 3000,
+        });
+        this.scene.add(this.pc.orbitPivot);
+        this.objects.push(this.pc);
+
+        // Create Proxima B
+        this.pb = createEntity(this.proximaBEntity, {
+            size: this.proximaBSize,
+            posToParent: new THREE.Vector3(581, 0, 0),
+            axialRotationSpeed: StarSystem.AxialRotationInDays(11.2),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(11.2),
+            detail: 3,
+            parent: this.pc.objectRoot,
+        });
+        this.objects.push(this.pb);
+    }
+
+    Update(dt) 
+    {
+        if (!this.pc) return;
+        for (const obj of this.objects) {
+            obj.Update(dt);
+        }
+
+        const pos = this._tempVec;
+        this.pc.objectRoot.getWorldPosition(pos);
+
+        const distanceToParent = this.camera.position.distanceTo(pos);
+        if (distanceToParent > this.exitDistance) {
+            this.requestedScene = "AlphaCentauriSystem";
+        }
+    }
+
+    Dispose() 
+    {
+        this.active = false;
+        this.objects.forEach(obj => obj?.Dispose());
+        this.objects = [];
+        
+        // Dispose skybox
+        if (this.scene?.background) {
+            SkyBox.Dispose(this.scene.background);
+            this.scene.background = null;
+        }
+    }
+}
