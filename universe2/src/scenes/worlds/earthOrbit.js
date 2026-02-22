@@ -17,10 +17,10 @@ export class EarthOrbit
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
-        this.near = 20;
-        this.far = 20000;
+        this.near = 30;
+        this.far = 30000;
         this.cameraSettings = {
-            pos: { x:-80, y:0, z:80 },
+            pos: { x:-500, y:400, z:-2100 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
             near: this.near,
@@ -86,7 +86,7 @@ export class EarthOrbit
 
         // --- Create 100 probe1 (prograde, slightly tilted) ---
         for (let i = 0; i < 100; i++) {
-            const radius = 1200 + Math.random() * 400;
+            const radius = this.earthSize * 1.3 + Math.random() *  this.earthSize * 0.3;
             const longitude = Math.random() * Math.PI * 2;
             const latitude = (Math.random() - 0.5) * 0.6;
 
@@ -95,7 +95,7 @@ export class EarthOrbit
             const z = radius * Math.sin(longitude) * Math.cos(latitude)
 
             const probe = createEntity(this.probe1Entity, {
-                size: 0.6,
+                size: 0.3,
                 posToParent: new THREE.Vector3(x, y, z),
                 pitch: 0,
                 yaw: longitude + Math.PI / 2,
@@ -111,7 +111,7 @@ export class EarthOrbit
 
         // --- Create 100 probe2 (higher orbit, prograde) ---
         for (let i = 0; i < 100; i++) {
-            const radius = 1400 + Math.random() * 400;
+            const radius = this.earthSize * 1.2 + Math.random() *  this.earthSize * 0.2;
             const longitude = Math.random() * Math.PI * 2;
             const latitude = (Math.random() - 0.5) * 0.6;
 
@@ -120,7 +120,7 @@ export class EarthOrbit
             const z = radius * Math.sin(longitude) * Math.cos(latitude)
 
             const probe = createEntity(this.probe2Entity, {
-                size: 200,
+                size: 80,
                 posToParent: new THREE.Vector3(-x, -y, -z),
                 pitch: 0,
                 yaw: longitude + Math.PI / 2,
@@ -137,7 +137,7 @@ export class EarthOrbit
         // Create moon
         this.moon = createEntity(this.moonEntity, {
             size: this.moonSize,
-            posToParent: new THREE.Vector3(this.exitDistance/2, 0, 0),
+            posToParent: new THREE.Vector3(this.earthSize * 20, 0, this.earthSize * 20),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
@@ -166,12 +166,13 @@ export class EarthOrbit
     Portals()
     {
         this.sceneTriggers = [
-            { obj: this.moon, threshold: this.moonSize * 14, scene: "MoonOrbit" },
+            { obj: this.moon, threshold: this.moonSize * 24, scene: "MoonOrbit" },
         ];
     }
 
     Update(dt) 
     {
+        console.log("Camera position:", this.camera.position);
         for (const obj of this.objects) {
             obj.Update(dt);
         }

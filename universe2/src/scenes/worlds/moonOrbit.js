@@ -12,15 +12,15 @@ export class MoonOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        this.SIZE_SCALE = 16;
+        this.SIZE_SCALE = 14;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
-        this.near = 20;
-        this.far = 20000;
+        this.near = 30;
+        this.far = 30000;
         this.cameraSettings = {
-            pos: { x:-40, y:0, z:40 },
+            pos: { x:-1900, y:500, z:-1900 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
             near: this.near,
@@ -52,7 +52,7 @@ export class MoonOrbit
             this.moonSize = this.moonEntity.size * this.LOCAL_SIZE_SCALE;
             this.earthSize = this.earthEntity.size * this.LOCAL_SIZE_SCALE;
 
-            this.exitDistance = this.moonSize * 35;
+            this.exitDistance = this.moonSize * 60;
 
             this.CreateObjects();
             this.Portals();
@@ -78,7 +78,7 @@ export class MoonOrbit
         // Create Earth
         this.earth = createEntity(this.earthEntity, {
             size: this.earthSize,
-            posToParent: new THREE.Vector3(this.exitDistance/2, 0, 0),
+            posToParent: new THREE.Vector3(this.earthSize * 20, 0, this.earthSize * 20),
             axialTilt: 23.44,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
@@ -109,12 +109,13 @@ export class MoonOrbit
     Portals()
     {
         this.sceneTriggers = [
-            { obj: this.earth, threshold: this.earthSize * 10, scene: "EarthOrbit" },
+            { obj: this.earth, threshold: this.earthSize * 18, scene: "EarthOrbit" },
         ];
     }
 
     Update(dt) 
     {
+        console.log("Camera position:", this.camera.position);
         if (!this.moon) return;
         for (const obj of this.objects) {
             obj.Update(dt);

@@ -12,17 +12,19 @@ export class VenusOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        this.SIZE_SCALE = 1;
+        this.SIZE_SCALE = 12;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
-        this.LOCAL_SIZE_SCALE = 40 * this.REGION_SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
+        this.near = 30;
+        this.far = 30000;
         this.cameraSettings = {
-            pos: { x:-80, y:0, z:80 },
+            pos: { x:-2000, y:400, z:-1500 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
-            near: 20,
-            far: 10000
+            near: this.near,
+            far: this.far
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
@@ -46,7 +48,6 @@ export class VenusOrbit
             if (!this.venusEntity) throw new Error("Venus entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
             
-            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE;
             this.venusSize = this.venusEntity.size * this.LOCAL_SIZE_SCALE;
 
             this.exitDistance = this.venusSize * 25;
@@ -73,12 +74,12 @@ export class VenusOrbit
 
         // Create Sun
         this.sun = createEntity(this.sunEntity, {
-            size: this.sunSize,
+            size: 100,
             maxSizeOnScreen: 0.72,
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.venus.objectRoot,
-            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0),
+            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
             orbitalTilt: 3.39,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(224.7),
             temperature: 5778,
@@ -90,6 +91,7 @@ export class VenusOrbit
 
     Update(dt) 
     {
+        console.log("Camera position:", this.camera.position);
         if (!this.venus) return;
         for (const obj of this.objects) {
             obj.Update(dt);

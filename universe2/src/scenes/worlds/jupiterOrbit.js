@@ -12,15 +12,15 @@ export class JupiterOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        this.SIZE_SCALE = 2;
+        this.SIZE_SCALE = 3;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
-        this.near = 20;
-        this.far = 20000;
+        this.near = 30;
+        this.far = 30000;
         this.cameraSettings = {
-            pos: { x:-200, y:0, z:200 },
+            pos: { x:-4000, y:400, z:-4500 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
             near: this.near,
@@ -92,6 +92,7 @@ export class JupiterOrbit
 
     Update(dt) 
     {
+        console.log("Camera position:", this.camera.position);
         if (!this.jupiter) return;
         for (const obj of this.objects) {
             obj.Update(dt);

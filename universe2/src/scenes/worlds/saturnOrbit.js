@@ -17,10 +17,10 @@ export class SaturnOrbit
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
-        this.near = 20;
-        this.far = 20000;
+        this.near = 30;
+        this.far = 30000;
         this.cameraSettings = {
-            pos: { x:-200, y:0, z:200 },
+            pos: { x:-4000, y:400, z:-4500 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
             near: this.near,

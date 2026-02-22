@@ -12,15 +12,15 @@ export class MercuryOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        this.SIZE_SCALE = 13;
+        this.SIZE_SCALE = 14;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
-        this.near = 20;
-        this.far = 20000;
+        this.near = 30;
+        this.far = 30000;
         this.cameraSettings = {
-            pos: { x:-60, y:0, z:60 },
+            pos: { x:-2000, y:400, z:-1500 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
             near: this.near,
@@ -91,6 +91,7 @@ export class MercuryOrbit
 
     Update(dt) 
     {
+        console.log("Camera position:", this.camera.position);
         if (!this.mercury) return;
         for (const obj of this.objects) {
             obj.Update(dt);
