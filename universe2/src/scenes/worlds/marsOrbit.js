@@ -73,7 +73,7 @@ export class MarsOrbit
 
         // Create Sun
         this.sun = createEntity(this.sunEntity, {
-            size: 100,
+            size: this.sunSize,
             maxSizeOnScreen: 0.34,
             renderMode: "points",
             lightType: "directionalLight",

@@ -12,21 +12,22 @@ export class JupiterOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        const sizeFactor = 1;
-        this.jupiterSize = 1000 * sizeFactor;
+        this.SIZE_SCALE = 1;
+        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 10 * this.REGION_SIZE_SCALE;
+        this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
         this.cameraSettings = {
-            pos: { x:-this.jupiterSize * 2, y:0, z:this.jupiterSize * 2 },
-            lookAt: { x:15000, y:0, z:10000 },
+            pos: { x:-200, y:0, z:200 },
+            lookAt: { x:1000, y:0, z:0 },
             fov: 40,
-            near: 40,
-            far: 26000
+            near: 20,
+            far: 10000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.jupiterSize * 12;
         this.objects = [];
     }
 
@@ -45,6 +46,11 @@ export class JupiterOrbit
             if (!this.jupiterEntity) throw new Error("Jupiter entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
 
+            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE;
+            this.jupiterSize = this.jupiterEntity.size * this.LOCAL_SIZE_SCALE;
+            
+            this.exitDistance = this.jupiterSize * 15;
+
             this.CreateObjects();
         }
         catch (err) {
@@ -57,11 +63,10 @@ export class JupiterOrbit
          // Create Jupiter
         this.jupiter = createEntity(this.jupiterEntity, {
             size: this.jupiterSize,
-            posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 3.13,
             orbitalTilt: 1.31,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.41),
-            detail: 8,
+            detail: 6,
             hasClouds: false,
         });
         this.scene.add(this.jupiter.orbitPivot);
@@ -69,12 +74,12 @@ export class JupiterOrbit
 
         // Create Sun
         this.sun = createEntity(this.sunEntity, {
-            size: 100,
+            size: this.sunSize,
             maxSizeOnScreen: 0.1018,
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.jupiter.objectRoot,
-            posToParent: new THREE.Vector3(10000, 0, 10000),
+            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0),
             orbitalTilt: 1.31,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(4333),
             temperature: 5778,
@@ -97,6 +102,7 @@ export class JupiterOrbit
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
+            this.transitionFrom = this.jupiterEntity.key;
         } 
     }
 
