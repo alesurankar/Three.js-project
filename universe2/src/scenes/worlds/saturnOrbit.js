@@ -12,13 +12,14 @@ export class SaturnOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        const sizeFactor = 1;
-        this.saturnSize = 1000 * sizeFactor;
-        this.saturnRingSize = 8 * sizeFactor;
+        this.SIZE_SCALE = 1;
+        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
+        this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
         this.cameraSettings = {
-            pos: { x:-this.saturnSize * 2, y:0, z:this.saturnSize * 2 },
-            lookAt: { x:15000, y:0, z:10000 },
+            pos: { x:-200, y:0, z:200 },
+            lookAt: { x:1000, y:0, z:0 },
             fov: 40,
             near: 40,
             far: 26000
@@ -27,7 +28,6 @@ export class SaturnOrbit
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.saturnSize * 12;
         this.objects = [];
     }
 
@@ -47,6 +47,12 @@ export class SaturnOrbit
             if (!this.saturnEntity) throw new Error("Saturn entity missing");
             if (!this.saturnringEntity) throw new Error("Saturn Ring entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
+            
+            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE;
+            this.saturnSize = this.saturnEntity.size * this.LOCAL_SIZE_SCALE;
+            this.saturnRingSize = this.saturnringEntity.size * this.INNER_SIZE_SCALE;
+
+            this.exitDistance = this.saturnSize * 14;
 
             this.CreateObjects();
         }
@@ -72,8 +78,8 @@ export class SaturnOrbit
         this.saturnRing = createEntity(this.saturnringEntity, {
             count: 6000,
             size: this.saturnRingSize,
-            orbitFarRadius: 6500,
-            orbitNearRadius: 4000,
+            orbitFarRadius: this.saturnSize * 1.8,
+            orbitNearRadius: this.saturnSize + this.saturnSize/6,
             axialRotationSpeed: 0.005,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
             thickness: 0.6,   
@@ -84,12 +90,12 @@ export class SaturnOrbit
 
         // Create Sun
         this.sun = createEntity(this.sunEntity, {
-            size: 100,
+            size: this.sunSize,
             maxSizeOnScreen: 0.0557,
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.saturn.objectRoot,
-            posToParent: new THREE.Vector3(10000, 0, 10000),
+            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0), // TO CORRECT
             orbitalTilt: 2.49,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
             temperature: 5778,
