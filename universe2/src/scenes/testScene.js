@@ -10,7 +10,7 @@ export class TestScene
     constructor(scene, camera) 
     {   
         this.SIZE_SCALE = 1;
-        this.REGION_SIZE_SCALE = 0.0001 * this.SIZE_SCALE;
+        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
         this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
