@@ -11,10 +11,10 @@ import { getEntities } from "../data/entityProvider.js";
 export const createEntity = asyncErrorHandler(async (req, res, next) => {
     console.log("🔥 createEntity triggered");
 
-    const { key, name, type, parentKey, systemKey, galaxyKey } = req.body;
+    const { key, name, type, parentKey, systemKey, galaxyKey, size } = req.body;
 
     // Basic validation
-    if ( !key || !name || !type || !parentKey || !systemKey || !galaxyKey) {
+    if ( !key || !name || !type || !parentKey || !systemKey || !galaxyKey || !size) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -26,6 +26,7 @@ export const createEntity = asyncErrorHandler(async (req, res, next) => {
         parentKey,
         systemKey,
         galaxyKey,
+        size,
     });
 
     res.status(201).json({

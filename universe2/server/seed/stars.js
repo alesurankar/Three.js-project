@@ -6,7 +6,8 @@ export const stars = [
         type: "star", 
         parentKey: "sagittariusA", 
         systemKey: "solarsystem", 
-        galaxyKey: "milkyway" 
+        galaxyKey: "milkyway",
+        size: 696340,
     },
     { 
         key: "alphacentauriA", 
@@ -14,7 +15,8 @@ export const stars = [
         type: "star", 
         parentKey: "sagittariusA", 
         systemKey: "alphacentauri", 
-        galaxyKey: "milkyway" 
+        galaxyKey: "milkyway",
+        size: 834840,
     },
     { 
         key: "alphacentauriB", 
@@ -22,7 +24,8 @@ export const stars = [
         type: "star", 
         parentKey: "sagittariusA", 
         systemKey: "alphacentauri", 
-        galaxyKey: "milkyway" 
+        galaxyKey: "milkyway",
+        size: 602000,
     },
     { 
         key: "proximacentauri", 
@@ -30,6 +33,7 @@ export const stars = [
         type: "star", 
         parentKey: "sagittariusA", 
         systemKey: "alphacentauri", 
-        galaxyKey: "milkyway" 
+        galaxyKey: "milkyway",
+        size: 97000,
     },
 ]

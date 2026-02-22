@@ -32,6 +32,10 @@ const entitySchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    size: {
+      type: Number,
+      required: true,
+    },
   },
   //{
   //  timestamps: true,

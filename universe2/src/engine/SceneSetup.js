@@ -12,7 +12,7 @@ export function CreateSceneManager(scene, onSceneChange)
   const camera = CreateCamera();
   const manager = new SceneManager(scene, camera, onSceneChange);
 
-  manager.SwitchScene("SolarSystem");
+  manager.SwitchScene("TestScene");
 
   return manager;
 }

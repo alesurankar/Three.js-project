@@ -6,6 +6,7 @@ export const blackholes = [
         type: "blackhole",
         parentKey: null,
         systemKey: null,
-        galaxyKey: "milkyway"
+        galaxyKey: "milkyway",
+        size: 12000000,
     },
 ]
