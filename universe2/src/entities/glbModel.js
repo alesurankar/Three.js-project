@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { ModelStore } from "../factories/modelStore.js";
 import { ArtificialObject } from "./artificialObject.js";
 
-export class GlbModel extends ArtificialObject {
+export class GlbModel extends ArtificialObject 
+{
     constructor({
         key = "station",
         size = 1,
@@ -15,7 +15,8 @@ export class GlbModel extends ArtificialObject {
         axialRotationSpeed = 0,
         orbitalSpeed = 0,
         parent = null
-    }) {
+    }= {}) 
+    {
         super({
             size,
             renderMode: "model",
@@ -31,51 +32,20 @@ export class GlbModel extends ArtificialObject {
         // Apply full 3D orientation
         this.body.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, roll, "YXZ"));
 
-        this.loader = new GLTFLoader();
-
-        const dracoLoader = new DRACOLoader();
-        dracoLoader.setDecoderPath("/draco/");
-
-        this.loader.setDRACOLoader(dracoLoader);
-
-        this.model = null;
-        const modelPath = `/models/glb/${key}/model.glb`;
-        this.loader.load(
-            modelPath,
-            (gltf) => {
-                this.model = gltf.scene;
-                this.model.scale.setScalar(size);
-
-                // Fix normals & double side
-                this.model.traverse((child) => {
-                    if (child.isMesh) {
-                        child.material.side = THREE.DoubleSide;
-                        child.geometry.computeVertexNormals();
-                    }
-                });
-
-                // Add to the scene/body
-                this.body.add(this.model);
-            },
-            undefined,
-            (error) => {
-                console.error(`Failed to load model: ${modelPath}`, error);
-            }
-        );
+        this.loader = null;
+        
+        ModelStore.GetClone(key).then((clone) => {
+            clone.scale.setScalar(size);
+            this.body.add(clone);
+            this.model = clone;
+        });
     }
 
-    Dispose() {
+    Dispose() 
+    {
         if (this.model) {
-            this.model.traverse(obj => {
-                if (obj.geometry) obj.geometry.dispose();
-                if (obj.material) {
-                    if (Array.isArray(obj.material)) {
-                        obj.material.forEach(m => m.dispose());
-                    } else {
-                        obj.material.dispose();
-                    }
-                }
-            });
+            this.body.remove(this.model);
+            this.model = null;
         }
         super.Dispose();
     }

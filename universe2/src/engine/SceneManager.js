@@ -1,4 +1,5 @@
 import { Scenes } from "./Scenes.js";
+import { ModelStore } from "../factories/modelStore.js";
 
 export class SceneManager 
 {
@@ -9,6 +10,16 @@ export class SceneManager
         this.currentScene = null;
         this.currentSceneName = null;
         this.onSceneChange = onSceneChange;
+        this._disposed = false;
+    }
+
+    async Init() 
+    {
+        if (this._disposed) return;
+        await Promise.all([
+            ModelStore.Load("probe1"), 
+            ModelStore.Load("probe2")
+        ]);
     }
 
     GetCurrentSceneName() 
@@ -72,8 +83,9 @@ export class SceneManager
 
     Dispose()   
     {
+        this._disposed = true;
         this.currentScene?.Dispose();
         this.currentScene = null;
+        ModelStore.Dispose()
     }
-
 }

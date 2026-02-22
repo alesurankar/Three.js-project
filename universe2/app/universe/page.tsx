@@ -16,17 +16,23 @@ export default function Universe()
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const engine = new Engine(containerRef.current, { fps: 60 });
-    // Whenever the SceneManager notifies a scene change, update state
-    engine.manager.onSceneChange = (sceneName: string) => {
-      setCurrentSceneName(sceneName);
+    const initEngine = async () => {
+      const engine = new Engine(containerRef.current, { fps: 60 });
+
+      // Whenever the SceneManager notifies a scene change, update state
+      engine.manager.onSceneChange = (sceneName: string) => {
+        setCurrentSceneName(sceneName);
+      };
+
+      engineRef.current = engine;
+
+      // Start engine asynchronously (preloads models first)
+      await engine.Start();
     };
-    
-    engineRef.current = engine;
-    engine.Start();
+    initEngine();
 
     return () => {
-      engine?.Dispose();
+      engineRef.current?.Dispose();
       engineRef.current = null;
     };
   }, []);

@@ -19,6 +19,7 @@ export class Engine
     this.accumulator = 0;
     this.timeScale = 1;
     this.rafId = null;
+    this._disposed = false;
     
     this.manager = CreateSceneManager(this.Scene, (sceneName) => {
       console.log("Scene changed to:", sceneName);
@@ -47,8 +48,10 @@ export class Engine
     this.rafId = requestAnimationFrame(this.MainLoop);
   }
 
-  Start() 
+  async Start() 
   {
+    await this.manager.Init();
+    if (this._disposed) return;
     this.rafId = requestAnimationFrame(this.MainLoop);
   }
 
@@ -69,6 +72,8 @@ export class Engine
 
   Dispose() 
   {
+    this._disposed = true;
+
     // Stop the animation loop
     if (this.rafId !== null) {
       cancelAnimationFrame(this.rafId);

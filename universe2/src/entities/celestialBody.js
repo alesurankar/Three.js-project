@@ -3,8 +3,7 @@ import * as THREE from "three";
 
 export class CelestialBody 
 {
-    constructor(
-    {
+    constructor({
         renderMode = "mesh",
         posToParent = new THREE.Vector3(0, 0, 0),
         axialTilt = 0,
