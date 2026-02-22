@@ -12,21 +12,22 @@ export class VenusOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        const sizeFactor = 1;
-        this.venusSize = 1000 * sizeFactor;
+        this.SIZE_SCALE = 1;
+        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 40 * this.REGION_SIZE_SCALE;
+        this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
         this.cameraSettings = {
-            pos: { x:-this.venusSize * 2, y:0, z:this.venusSize * 2 },
-            lookAt: { x:15000, y:0, z:10000 },
+            pos: { x:-80, y:0, z:80 },
+            lookAt: { x:1000, y:0, z:0 },
             fov: 40,
-            near: 40,
-            far: 26000
+            near: 20,
+            far: 10000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.venusSize * 12;
         this.objects = [];
     }
 
@@ -44,6 +45,11 @@ export class VenusOrbit
             
             if (!this.venusEntity) throw new Error("Venus entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
+            
+            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE;
+            this.venusSize = this.venusEntity.size * this.LOCAL_SIZE_SCALE;
+
+            this.exitDistance = this.venusSize * 25;
 
             this.CreateObjects();
         }
@@ -57,10 +63,9 @@ export class VenusOrbit
         // Create Venus
         this.venus = createEntity(this.venusEntity, {
             size: this.venusSize,
-            posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 177.36,
             axialRotationSpeed: StarSystem.AxialRotationInDays(243),
-            detail: 8,
+            detail: 6,
             hasClouds: false,
         });
         this.scene.add(this.venus.orbitPivot);
@@ -68,12 +73,12 @@ export class VenusOrbit
 
         // Create Sun
         this.sun = createEntity(this.sunEntity, {
-            size: 100,
+            size: this.sunSize,
             maxSizeOnScreen: 0.72,
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.venus.objectRoot,
-            posToParent: new THREE.Vector3(10000, 0, 10000),
+            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0),
             orbitalTilt: 3.39,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(224.7),
             temperature: 5778,
@@ -96,6 +101,7 @@ export class VenusOrbit
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
+            this.transitionFrom = this.venusEntity.key;
         }
     }
 

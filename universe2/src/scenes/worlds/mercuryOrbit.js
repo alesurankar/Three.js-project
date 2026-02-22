@@ -18,7 +18,7 @@ export class MercuryOrbit
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
         this.cameraSettings = {
-            pos: { x:-40, y:0, z:40 },
+            pos: { x:-60, y:0, z:60 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
             near: 20,
@@ -63,7 +63,6 @@ export class MercuryOrbit
         // Create Mercury
         this.mercury = createEntity(this.mercuryEntity, {
             size: this.mercurySize,
-            posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 0.034,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
             detail: 6,

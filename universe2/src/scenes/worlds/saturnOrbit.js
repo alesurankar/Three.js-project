@@ -95,7 +95,7 @@ export class SaturnOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.saturn.objectRoot,
-            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0), // TO CORRECT
+            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0),
             orbitalTilt: 2.49,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
             temperature: 5778,

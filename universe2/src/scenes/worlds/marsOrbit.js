@@ -11,22 +11,23 @@ export class MarsOrbit
     {
         this.active = true;
         StarSystem.timeFactor=1
-        
-        const sizeFactor = 1;
-        this.marsSize = 1000 * sizeFactor;
+
+        this.SIZE_SCALE = 1;
+        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
+        this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
         this.cameraSettings = {
-            pos: { x:-this.marsSize * 2, y:0, z:this.marsSize * 2 },
-            lookAt: { x:15000, y:0, z:10000 },
+            pos: { x:-40, y:0, z:40 },
+            lookAt: { x:1000, y:0, z:0 },
             fov: 40,
-            near: 40,
-            far: 26000
+            near: 20,
+            far: 10000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.marsSize * 12;
         this.objects = [];
     }
 
@@ -44,6 +45,11 @@ export class MarsOrbit
             
             if (!this.marsEntity) throw new Error("Mars entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
+            
+            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE;
+            this.marsSize = this.marsEntity.size * this.LOCAL_SIZE_SCALE;
+            
+            this.exitDistance = this.marsSize * 30;
 
             this.CreateObjects();
         }
@@ -57,10 +63,9 @@ export class MarsOrbit
         // Create Mars
         this.mars = createEntity(this.marsEntity, {
             size: this.marsSize,
-            posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 25.19,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1.03),
-            detail: 8,
+            detail: 6,
             hasClouds: false,
         });
         this.scene.add(this.mars.orbitPivot);
@@ -73,7 +78,7 @@ export class MarsOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.mars.objectRoot,
-            posToParent: new THREE.Vector3(10000, 0, 10000),
+            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0),
             orbitalTilt: 1.85,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(687),
             temperature: 5778,
@@ -96,6 +101,7 @@ export class MarsOrbit
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
+            this.transitionFrom = this.marsEntity.key;
         }
     }
 
