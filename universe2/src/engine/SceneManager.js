@@ -11,15 +11,18 @@ export class SceneManager
         this.currentSceneName = null;
         this.onSceneChange = onSceneChange;
         this._disposed = false;
+        console.log("SceneManager.constructor", { scene, camera, onSceneChange });
     }
 
     async Init() 
     {
         if (this._disposed) return;
+        console.log("SceneManager.Init: loading models...");
         await Promise.all([
             ModelStore.Load("probe1"), 
             ModelStore.Load("probe2")
         ]);
+        console.log("SceneManager.Init: models loaded");
     }
 
     GetCurrentSceneName() 
@@ -27,65 +30,108 @@ export class SceneManager
         return this.currentSceneName ?? "None";
     }
     
-    async SwitchScene(sceneName) 
+    async SwitchScene(sceneName, params = {}) 
     {
+        console.log("SceneManager.SwitchScene called", { sceneName, params });
+
         const SceneClass = Scenes[sceneName];
         if (!SceneClass) {
             console.warn(`Scene "${sceneName}" not found in Scenes.js`);
             return;
         }
-        await this.LoadScene(SceneClass);
+
+        await this.LoadScene(SceneClass, params);
+
         this.currentSceneName = sceneName;
-        // notify Engine
+        console.log("SceneManager.SwitchScene: currentSceneName updated", this.currentSceneName);
+
         if (this.onSceneChange) {
+            console.log("SceneManager.SwitchScene: notifying engine");
             this.onSceneChange(sceneName);
         }
     }
 
-    async LoadScene(sceneClass) 
+    async LoadScene(sceneClass, params = {}) 
     {
-        if (this.currentScene) this.currentScene.Dispose();
+        console.log("SceneManager.LoadScene called", { sceneClass, params });
 
-        const sceneInstance = new sceneClass(this.scene, this.camera);
+        if (this.currentScene) {
+            console.log("SceneManager.LoadScene: disposing previous scene", this.currentSceneName);
+            this.currentScene.Dispose();
+        }
+
+        const sceneInstance = new sceneClass(this.scene, this.camera, params);
+        console.log("SceneManager.LoadScene: new scene instance created", sceneInstance);
+
         this.currentScene = sceneInstance;
+
         if (sceneInstance.init) {
+            console.log("SceneManager.LoadScene: calling scene.init()");
             await sceneInstance.init();
         }
+
         if (this.currentScene !== sceneInstance || !this.currentScene) {
+            console.warn("SceneManager.LoadScene: scene instance changed or disposed during init, aborting further setup");
             return;
         }
-        this.UpdateCamera();
+
+        if (!sceneInstance.overrideCamera) {
+            console.log("SceneManager.LoadScene: updating camera from scene settings");
+            this.UpdateCamera();
+        } else {
+            console.log("SceneManager.LoadScene: scene overrides camera, skipping UpdateCamera");
+        }
     }
 
     UpdateCamera()
     {
         if (!this.currentScene) return;
+        if (this.currentScene.overrideCamera) {
+            console.log("UpdateCamera skipped: currentScene.overrideCamera is true");
+            return;
+        }
 
         const settings = this.currentScene.cameraSettings || {};
-        this.camera.position.set(settings.pos.x, settings.pos.y, settings.pos.z);
-        this.camera.lookAt(settings.lookAt.x, settings.lookAt.y, settings.lookAt.z);
-        this.camera.fov = settings.fov ?? this.camera.fov;
-        this.camera.near = settings.near ?? this.camera.near;
-        this.camera.far = settings.far ?? this.camera.far;
-        this.camera.updateProjectionMatrix();
+        console.log("UpdateCamera applying settings", settings);
+
+        try {
+            this.camera.position.set(settings.pos.x, settings.pos.y, settings.pos.z);
+            this.camera.lookAt(settings.lookAt.x, settings.lookAt.y, settings.lookAt.z);
+            this.camera.fov = settings.fov ?? this.camera.fov;
+            this.camera.near = settings.near ?? this.camera.near;
+            this.camera.far = settings.far ?? this.camera.far;
+            this.camera.updateProjectionMatrix();
+            console.log("Camera updated:", this.camera.position);
+        } catch (err) {
+            console.error("UpdateCamera error: invalid camera settings?", err, settings);
+        }
     }
 
     async Update(timeScale) 
     {
-        if (this.currentScene) this.currentScene.Update(timeScale);
+        if (this.currentScene) {
+            console.log("SceneManager.Update: updating current scene", this.currentSceneName);
+            this.currentScene.Update(timeScale);
+        }
 
         const requested = this.currentScene?.requestedScene;
         if (!requested) return;
 
-        await this.SwitchScene(requested);
+        const focus = this.currentScene?.transitionFrom ?? null;
+        console.log("SceneManager.Update: scene transition requested", { requested, focus });
+
+        await this.SwitchScene(requested, { focus });
+
         this.currentScene.requestedScene = null;
+        this.currentScene.transitionFrom = null;
     }
 
     Dispose()   
     {
         this._disposed = true;
+        console.log("SceneManager.Dispose: disposing current scene and models");
         this.currentScene?.Dispose();
         this.currentScene = null;
-        ModelStore.Dispose()
+        ModelStore.Dispose();
     }
 }

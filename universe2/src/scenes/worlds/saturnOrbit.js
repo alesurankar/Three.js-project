@@ -118,6 +118,8 @@ export class SaturnOrbit
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
+            this.transitionFrom = this.saturnEntity.key;
+            console.log("from SaturnOrbit.Update()", this.saturnEntity.key)
         }
     }
 

@@ -7,8 +7,11 @@ import api from "../../utils/api";
 
 export class SolarSystem 
 {
-    constructor(scene, camera) 
+    constructor(scene, camera, params = {}) 
     {
+        console.log("SolarSystem.constructor", { params });
+        this.params = params;
+        this.overrideCamera = false;
         this.active = true;
         StarSystem.timeFactor=100
 
@@ -35,10 +38,12 @@ export class SolarSystem
     {
         try {
             if (!this.active) return;
+            console.log("SolarSystem.init(): fetching entities...");
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
             this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
+            console.log("Entities loaded:", this.entities.map(e => e.key));
             
             this.sunEntity = this.entities.find(e => e.key === "sun");
             this.mercuryEntity = this.entities.find(e => e.key === "mercury");
@@ -90,8 +95,19 @@ export class SolarSystem
 
             this.exitDistance = this.sunSize * 100;
 
+            if (this.params?.focus) {
+                console.log("Init focus param:", this.params.focus);
+            }
+
             this.CreateObjects();
+            console.log("Objects created:", this.objects.map(o => o?.entity?.key || o));
+
             this.Portals();
+
+            if (this.params?.focus) {
+                console.log("Calling PositionEntryCamera via requestAnimationFrame...");
+                requestAnimationFrame(() => this.PositionEntryCamera());
+            }
         }
         catch (err) {
             console.error("Failed to load entities", err);
@@ -289,6 +305,21 @@ export class SolarSystem
             parent: this.sun.objectRoot
         });
         this.objects.push(this.kuiperBelt);
+
+        this.sun.size = this.sunSize;
+        this.mercury.size = this.mercurySize;
+        this.venus.size = this.venusSize;
+        this.earth.size = this.earthSize;
+        this.moon.size = this.moonSize;
+        this.mars.size = this.marsSize;
+        this.jupiter.size = this.jupiterSize;
+        this.saturn.size = this.saturnSize;
+        this.saturnRing.size = this.saturnRingSize;
+        this.uranus.size = this.uranusSize;
+        this.uranusRing.size = this.uranusRingSize;
+        this.neptune.size = this.neptuneSize;
+        this.pluto.size = this.plutoSize;
+        this.kuiperBelt.size = this.kuiperBeltSize;
     }
 
     Portals()
@@ -304,6 +335,42 @@ export class SolarSystem
         ];
     }
 
+    PositionEntryCamera()
+    {
+        if (!this.params?.focus) {
+            console.log("PositionEntryCamera skipped: no focus param");
+            return;
+        }
+
+        const target = this[this.params.focus];
+        if (!target || !target.objectRoot) {
+            console.warn(`PositionEntryCamera: target for focus "${this.params.focus}" not found`);
+            return;
+        }
+
+        console.log(`PositionEntryCamera: focusing on "${this.params.focus}"`, target);
+
+        // Force update on all matrices before computing world position
+        this.scene.updateMatrixWorld(true);
+
+        const pos = new THREE.Vector3();
+        target.objectRoot.getWorldPosition(pos);
+        console.log("Target world position:", pos);
+
+        const offset = target.size * 8;
+        console.log("Offset applied:", offset);
+
+        this.camera.position.set(
+            pos.x + offset,
+            pos.y + offset * 0.4,
+            pos.z + offset
+        );
+        this.camera.lookAt(pos);
+        this.overrideCamera = true;
+
+        console.log("Camera positioned at:", this.camera.position);
+    }
+    
     Update(dt) 
     {
         for (const obj of this.objects) {
@@ -313,10 +380,10 @@ export class SolarSystem
 
         const pos = this._tempVec;
         this.sun.objectRoot.getWorldPosition(pos);
-
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "MilkyWay";
+            console.log("Exiting SolarSystem: distanceToParent exceeded exitDistance", distanceToParent);
         }
 
         for (const trigger of this.sceneTriggers) {
@@ -324,6 +391,7 @@ export class SolarSystem
             const distance = this.camera.position.distanceTo(pos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
+                console.log(`Scene trigger hit: entering "${trigger.scene}" at distance`, distance);
                 break;
             }
         }
