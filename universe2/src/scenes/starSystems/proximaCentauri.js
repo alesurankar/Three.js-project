@@ -11,23 +11,23 @@ export class ProximaCentauri
     {
         this.active = true;
         StarSystem.timeFactor=1
-        
-        const sizeFactor = 1;
-        this.proximaCentauriSize = 160 * sizeFactor;
-        this.proximaBSize = 10 * sizeFactor;
 
+        this.SIZE_SCALE = 1;
+        this.REGION_SIZE_SCALE = 0.0004 * this.SIZE_SCALE;
+
+        this.near = 12;
+        this.far = 16000;
         this.cameraSettings = {
-            pos: { x:-this.proximaCentauriSize * 2, y:0, z:this.proximaCentauriSize * 2 },
-            lookAt: { x:15000, y:0, z:10000 },
+            pos: { x:220, y:20, z:100 },
+            lookAt: { x:100, y:0, z:0 },
             fov: 40,
-            near: 30,
-            far: 12000
+            near: this.near,
+            far: this.far
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.proximaCentauriSize * 50;
         this.objects = [];
     }
 
@@ -45,6 +45,11 @@ export class ProximaCentauri
             
             if (!this.proximaCentauriEntity) throw new Error("Proxima Centauri entity missing");
             if (!this.proximaBEntity) throw new Error("Proxima B entity missing");
+            
+            this.proximaCentauriSize = this.proximaCentauriEntity.size * this.REGION_SIZE_SCALE;
+            this.proximaBSize = this.proximaBEntity.size * this.REGION_SIZE_SCALE;
+            
+            this.exitDistance = this.proximaCentauriSize * 40;
 
             this.CreateObjects();
             this.Portals();
@@ -69,7 +74,7 @@ export class ProximaCentauri
         // Create Proxima B
         this.pb = createEntity(this.proximaBEntity, {
             size: this.proximaBSize,
-            posToParent: new THREE.Vector3(581, 0, 0),
+            posToParent: new THREE.Vector3(this.proximaBSize * 68, 0, 0),
             axialRotationSpeed: StarSystem.AxialRotationInDays(11.2),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(11.2),
             detail: 3,
@@ -87,6 +92,7 @@ export class ProximaCentauri
 
     Update(dt) 
     {
+        console.log("Camera position:", this.camera.position);
         for (const obj of this.objects) {
             obj.Update(dt);
         }
@@ -94,10 +100,10 @@ export class ProximaCentauri
 
         const pos = this._tempVec;
         this.pc.objectRoot.getWorldPosition(pos);
-
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "AlphaCentauriSystem";
+            this.transitionFrom = this.proximaCentauriEntity.key;
         }
         
         for (const trigger of this.sceneTriggers) {

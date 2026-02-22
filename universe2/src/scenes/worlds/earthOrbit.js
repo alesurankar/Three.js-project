@@ -172,7 +172,6 @@ export class EarthOrbit
 
     Update(dt) 
     {
-        console.log("Camera position:", this.camera.position);
         for (const obj of this.objects) {
             obj.Update(dt);
         }

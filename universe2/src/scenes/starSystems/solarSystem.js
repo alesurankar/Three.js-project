@@ -9,7 +9,6 @@ export class SolarSystem
 {
     constructor(scene, camera, params = {}) 
     {
-        console.log("SolarSystem.constructor", { params });
         this.params = params;
         this.overrideCamera = false;
         this.active = true;
@@ -38,12 +37,10 @@ export class SolarSystem
     {
         try {
             if (!this.active) return;
-            console.log("SolarSystem.init(): fetching entities...");
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
             this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
-            console.log("Entities loaded:", this.entities.map(e => e.key));
             
             this.sunEntity = this.entities.find(e => e.key === "sun");
             this.mercuryEntity = this.entities.find(e => e.key === "mercury");
@@ -100,8 +97,6 @@ export class SolarSystem
             }
 
             this.CreateObjects();
-            console.log("Objects created:", this.objects.map(o => o?.entity?.key || o));
-
             this.Portals();
 
             if (this.params?.focus) {
@@ -348,17 +343,13 @@ export class SolarSystem
             return;
         }
 
-        console.log(`PositionEntryCamera: focusing on "${this.params.focus}"`, target);
-
         // Force update on all matrices before computing world position
         this.scene.updateMatrixWorld(true);
 
         const pos = new THREE.Vector3();
         target.objectRoot.getWorldPosition(pos);
-        console.log("Target world position:", pos);
 
         const offset = target.size * 8;
-        console.log("Offset applied:", offset);
 
         this.camera.position.set(
             pos.x + offset,
@@ -367,8 +358,6 @@ export class SolarSystem
         );
         this.camera.lookAt(pos);
         this.overrideCamera = true;
-
-        console.log("Camera positioned at:", this.camera.position);
     }
     
     Update(dt) 
@@ -383,7 +372,6 @@ export class SolarSystem
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "MilkyWay";
-            console.log("Exiting SolarSystem: distanceToParent exceeded exitDistance", distanceToParent);
         }
 
         for (const trigger of this.sceneTriggers) {
@@ -391,7 +379,6 @@ export class SolarSystem
             const distance = this.camera.position.distanceTo(pos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
-                console.log(`Scene trigger hit: entering "${trigger.scene}" at distance`, distance);
                 break;
             }
         }
