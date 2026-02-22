@@ -74,65 +74,59 @@ export class EarthOrbit
         this.scene.add(this.earth.orbitPivot);
         this.objects.push(this.earth);
 
-        // Create probe
-        this.probe = createEntity(this.probe1Entity, {
-            size: 1,
-            posToParent: new THREE.Vector3(1200, 200, 0),
-            pitch: 0,
-            yaw: Math.PI,
-            roll: Math.PI /2,
-            orbitRadius: 1200,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.03),
-            orbitalTilt: 21.64,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.03),
-            parent: this.earth.objectRoot
-        });
-        this.objects.push(this.probe);
+        // Constants for simple orbital speed scaling (not physically perfect)
+        const baseSpeed1 = 0.03; // base orbital period for probe1
+        const baseSpeed2 = 0.025; // base orbital period for probe2
 
-        // Create probe2
-        this.probe = createEntity(this.probe2Entity, {
-            size: 300,
-            posToParent: new THREE.Vector3(1400, 300, 200),
-            pitch: 0,
-            yaw: Math.PI,
-            roll: Math.PI /2,
-            orbitRadius: 1400,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.04),
-            orbitalTilt: -30.64,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.04),
-            parent: this.earth.objectRoot
-        });
-        this.objects.push(this.probe);
+        // --- Create 100 probe1 (prograde, slightly tilted) ---
+        for (let i = 0; i < 100; i++) {
+            const radius = 1200 + Math.random() * 400;
+            const longitude = Math.random() * Math.PI * 2;
+            const latitude = (Math.random() - 0.5) * 0.6;
 
-        // Create probe3
-        this.probe = createEntity(this.probe2Entity, {
-            size: 300,
-            posToParent: new THREE.Vector3(1400, 100, 200),
-            pitch: 0,
-            yaw: Math.PI,
-            roll: Math.PI /2,
-            orbitRadius: 1400,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.033),
-            orbitalTilt: -20.64,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.033),
-            parent: this.earth.objectRoot
-        });
-        this.objects.push(this.probe);
+            const x = radius * Math.cos(longitude) * Math.cos(latitude)
+            const y = radius * Math.sin(latitude)
+            const z = radius * Math.sin(longitude) * Math.cos(latitude)
 
-        // Create probe4
-        this.probe = createEntity(this.probe2Entity, {
-            size: 300,
-            posToParent: new THREE.Vector3(1400, 0, 100),
-            pitch: 0,
-            yaw: Math.PI,
-            roll: Math.PI /2,
-            orbitRadius: 1400,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.044),
-            orbitalTilt: -40.64,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.044),
-            parent: this.earth.objectRoot
-        });
-        this.objects.push(this.probe);
+            const probe = createEntity(this.probe1Entity, {
+                size: 0.6,
+                posToParent: new THREE.Vector3(x, y, z),
+                pitch: 0,
+                yaw: longitude + Math.PI / 2,
+                roll: 0,
+                orbitRadius: radius,
+                axialRotationSpeed: StarSystem.AxialRotationInDays(0.01 + Math.random() * 0.01),
+                orbitalTilt: latitude * (180 / Math.PI),
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(baseSpeed1 + Math.random() * 0.01),
+                parent: this.earth.objectRoot
+            });
+            this.objects.push(probe);
+        }
+
+        // --- Create 100 probe2 (higher orbit, prograde) ---
+        for (let i = 0; i < 100; i++) {
+            const radius = 1400 + Math.random() * 400;
+            const longitude = Math.random() * Math.PI * 2;
+            const latitude = (Math.random() - 0.5) * 0.6;
+
+            const x = radius * Math.cos(longitude) * Math.cos(latitude)
+            const y = radius * Math.sin(latitude)
+            const z = radius * Math.sin(longitude) * Math.cos(latitude)
+
+            const probe = createEntity(this.probe2Entity, {
+                size: 200,
+                posToParent: new THREE.Vector3(-x, -y, -z),
+                pitch: 0,
+                yaw: longitude + Math.PI / 2,
+                roll: 0,
+                orbitRadius: radius,
+                axialRotationSpeed: StarSystem.AxialRotationInDays(0.02 + Math.random() * 0.02),
+                orbitalTilt: latitude * (180 / Math.PI),
+                orbitalSpeed: StarSystem.OrbitalRotationInDays(baseSpeed2 + Math.random() * 0.02),
+                parent: this.earth.objectRoot
+            });
+            this.objects.push(probe);
+        }
 
         // Create moon
         this.moon = createEntity(this.moonEntity, {
