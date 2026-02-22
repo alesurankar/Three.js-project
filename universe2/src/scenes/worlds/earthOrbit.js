@@ -12,22 +12,24 @@ export class EarthOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        const sizeFactor = 1;
-        this.earthSize = 1000 * sizeFactor;
-        this.moonSize = 270 * sizeFactor;
-        
+        this.SIZE_SCALE = 10;
+        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
+        this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
+
+        this.near = 20;
+        this.far = 20000;
         this.cameraSettings = {
-            pos: { x:-this.earthSize * 2, y:0, z:this.earthSize * 2 },
-            lookAt: { x:15000, y:0, z:10000 },
+            pos: { x:-80, y:0, z:80 },
+            lookAt: { x:1000, y:0, z:0 },
             fov: 40,
-            near: 40,
-            far: 26000
+            near: this.near,
+            far: this.far
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.earthSize * 12;
         this.objects = [];
     }
 
@@ -52,6 +54,11 @@ export class EarthOrbit
             if (!this.probe1Entity) throw new Error("Probe1 entity missing");
             if (!this.probe2Entity) throw new Error("Probe2 entity missing");
 
+            this.moonSize = this.moonEntity.size * this.LOCAL_SIZE_SCALE;
+            this.earthSize = this.earthEntity.size * this.LOCAL_SIZE_SCALE;
+
+            this.exitDistance = this.earthSize * 28;
+
             this.CreateObjects();
             this.Portals();
         }
@@ -65,10 +72,9 @@ export class EarthOrbit
         // Create Earth
         this.earth = createEntity(this.earthEntity, {
             size: this.earthSize,
-            posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 23.44,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
-            detail: 8,
+            detail: 6,
             hasClouds: true,
         });
         this.scene.add(this.earth.orbitPivot);
@@ -131,7 +137,7 @@ export class EarthOrbit
         // Create moon
         this.moon = createEntity(this.moonEntity, {
             size: this.moonSize,
-            posToParent: new THREE.Vector3(14000, 0, 0),
+            posToParent: new THREE.Vector3(this.exitDistance/2, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
@@ -148,7 +154,7 @@ export class EarthOrbit
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.earth.objectRoot,
-            posToParent: new THREE.Vector3(10000, 0, 10000),
+            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365),
             temperature: 5778,
             sizeAtenuation: false,
@@ -177,6 +183,7 @@ export class EarthOrbit
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
+            this.transitionFrom = this.earthEntity.key;
         } 
 
         for (const trigger of this.sceneTriggers) {

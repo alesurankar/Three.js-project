@@ -12,17 +12,19 @@ export class MarsOrbit
         this.active = true;
         StarSystem.timeFactor=1
 
-        this.SIZE_SCALE = 1;
+        this.SIZE_SCALE = 12;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
+        this.near = 20;
+        this.far = 20000;
         this.cameraSettings = {
             pos: { x:-40, y:0, z:40 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
-            near: 20,
-            far: 10000
+            near: this.near,
+            far: this.far
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
@@ -46,7 +48,6 @@ export class MarsOrbit
             if (!this.marsEntity) throw new Error("Mars entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
             
-            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE;
             this.marsSize = this.marsEntity.size * this.LOCAL_SIZE_SCALE;
             
             this.exitDistance = this.marsSize * 30;
@@ -73,12 +74,12 @@ export class MarsOrbit
 
         // Create Sun
         this.sun = createEntity(this.sunEntity, {
-            size: this.sunSize,
+            size: 100,
             maxSizeOnScreen: 0.34,
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.mars.objectRoot,
-            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0),
+            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
             orbitalTilt: 1.85,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(687),
             temperature: 5778,
