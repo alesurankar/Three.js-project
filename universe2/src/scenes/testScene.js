@@ -11,8 +11,9 @@ export class TestScene
     {   
         this.SIZE_SCALE = 1;
         this.REGION_SIZE_SCALE = 0.0001 * this.SIZE_SCALE;
-        this.LOCAL_SIZE_SCALE = 0.001 * this.SIZE_SCALE;
-        this.INNER_SIZE_SCALE = 100 * this.SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
+        this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
+
         this.active = true;
         StarSystem.timeFactor=100
        
@@ -50,6 +51,13 @@ export class TestScene
             if (!this.saturnringEntity) throw new Error("Saturn Ring entity missing");
             if (!this.asteroidbeltEntity) throw new Error("Asteroid Belt entity missing");
             
+            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE; 
+            this.earthSize = this.earthEntity.size * this.LOCAL_SIZE_SCALE;
+            this.moonSize = this.moonEntity.size * this.LOCAL_SIZE_SCALE;
+            this.saturnSize = this.saturnEntity.size * this.LOCAL_SIZE_SCALE;
+            this.saturnRingSize = this.saturnringEntity.size * this.INNER_SIZE_SCALE;
+            this.asteroidBeltSize = this.asteroidbeltEntity.size * this.INNER_SIZE_SCALE;
+            
             this.CreateObjects();
         }
         catch (err) {
@@ -61,7 +69,7 @@ export class TestScene
     {
         // Create Sun
         this.sun = createEntity(this.sunEntity, {
-            size: this.sunEntity.size * this.REGION_SIZE_SCALE,
+            size: this.sunSize,
             lightType: "pointLight",
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
@@ -75,8 +83,8 @@ export class TestScene
         
         // Create Earth
         this.earth = createEntity(this.earthEntity, {
-            size: this.earthEntity.size * this.LOCAL_SIZE_SCALE,
-            posToParent: new THREE.Vector3(500, 0, 0),
+            size: this.earthSize,
+            posToParent: new THREE.Vector3(this.sunSize * 5, 0, 0),
             axialTilt: 23.44,
             orbitalTilt: 0,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
@@ -87,8 +95,8 @@ export class TestScene
 
         // Create moon
         this.moon = createEntity(this.moonEntity, {
-            size: this.moonEntity.size * this.LOCAL_SIZE_SCALE,
-            posToParent: new THREE.Vector3(30, 0, 0),
+            size: this.moonSize,
+            posToParent: new THREE.Vector3(this.earthSize * 3, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
@@ -100,9 +108,9 @@ export class TestScene
         // Create asteroid belt
         this.asteroidBelt = createEntity(this.asteroidbeltEntity, {
             count: 6000,
-            size: this.asteroidbeltEntity.size * this.LOCAL_SIZE_SCALE,
-            orbitFarRadius: 1900,
-            orbitNearRadius: 1700,
+            size: this.asteroidBeltSize,
+            orbitFarRadius: this.sunSize * 16,
+            orbitNearRadius: this.sunSize * 14,
             axialRotationSpeed: 0.0004,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
             thickness: 50,
@@ -112,8 +120,8 @@ export class TestScene
         
         // Create saturn
         this.saturn = createEntity(this.saturnEntity, {
-            size: this.saturnEntity.size * this.LOCAL_SIZE_SCALE,
-            posToParent: new THREE.Vector3(800, 0, 0),
+            size: this.saturnSize,
+            posToParent: new THREE.Vector3(this.sunSize  * 8, 0, 0),
             axialTilt: 26.73,
             orbitalTilt: 2.49,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
@@ -125,9 +133,9 @@ export class TestScene
         // Create saturn ring
         this.saturnRing = createEntity(this.saturnringEntity, {
             count: 4000,
-            size: this.saturnringEntity.size * this.INNER_SIZE_SCALE,
-            orbitFarRadius: 65,
-            orbitNearRadius: 40,
+            size: this.saturnRingSize,
+            orbitFarRadius: this.saturnSize * 2,
+            orbitNearRadius: this.saturnSize + this.saturnSize/5,
             axialRotationSpeed: 0.005,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
             thickness: 0.6,   

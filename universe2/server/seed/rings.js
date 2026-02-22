@@ -7,7 +7,7 @@ export const rings = [
         parentKey: "saturn", 
         systemKey: "solarsystem", 
         galaxyKey: "milkyway",
-        size: 0.005,
+        size: 0.2,
     },
     { 
         key: "uranusring", 
@@ -16,6 +16,6 @@ export const rings = [
         parentKey: "uranus", 
         systemKey: "solarsystem", 
         galaxyKey: "milkyway",
-        size: 0.003,
+        size: 0.16,
     },
 ]
