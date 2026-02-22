@@ -14,15 +14,15 @@ export class SaturnOrbit
         
         this.SIZE_SCALE = 1;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
-        this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 10 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
         this.cameraSettings = {
             pos: { x:-200, y:0, z:200 },
             lookAt: { x:1000, y:0, z:0 },
             fov: 40,
-            near: 40,
-            far: 26000
+            near: 20,
+            far: 10000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
@@ -52,7 +52,7 @@ export class SaturnOrbit
             this.saturnSize = this.saturnEntity.size * this.LOCAL_SIZE_SCALE;
             this.saturnRingSize = this.saturnringEntity.size * this.INNER_SIZE_SCALE;
 
-            this.exitDistance = this.saturnSize * 14;
+            this.exitDistance = this.saturnSize * 15;
 
             this.CreateObjects();
         }
@@ -68,7 +68,7 @@ export class SaturnOrbit
             size: this.saturnSize,
             axialTilt: 26.73,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
-            detail: 8,
+            detail: 6,
             hasClouds: false,
         });
         this.scene.add(this.saturn.orbitPivot);

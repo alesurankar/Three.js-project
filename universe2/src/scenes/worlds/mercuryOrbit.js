@@ -12,21 +12,22 @@ export class MercuryOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        const sizeFactor = 1;
-        this.mercurySize = 1000 * sizeFactor;
+        this.SIZE_SCALE = 1;
+        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
+        this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
         this.cameraSettings = {
-            pos: { x:-this.mercurySize * 2, y:0, z:this.mercurySize * 2 },
-            lookAt: { x:15000, y:0, z:10000 },
+            pos: { x:-40, y:0, z:40 },
+            lookAt: { x:1000, y:0, z:0 },
             fov: 40,
-            near: 40,
-            far: 26000
+            near: 20,
+            far: 10000
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.mercurySize * 12;
         this.objects = [];
     }
 
@@ -44,6 +45,11 @@ export class MercuryOrbit
             
             if (!this.mercuryEntity) throw new Error("Mercury entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");
+            
+            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE;
+            this.mercurySize = this.mercuryEntity.size * this.LOCAL_SIZE_SCALE;
+            
+            this.exitDistance = this.mercurySize * 30;
 
             this.CreateObjects();
         }
@@ -60,7 +66,7 @@ export class MercuryOrbit
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 0.034,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
-            detail: 8,
+            detail: 6,
             hasClouds: false,
         });
         this.scene.add(this.mercury.orbitPivot);
@@ -68,12 +74,12 @@ export class MercuryOrbit
 
         // Create Sun
         this.sun = createEntity(this.sunEntity, {
-            size: 100,
+            size: this.sunSize,
             maxSizeOnScreen: 1.37,
             renderMode: "points",
             lightType: "directionalLight",
             targetObject: this.mercury.objectRoot,
-            posToParent: new THREE.Vector3(10000, 0, 10000),
+            posToParent: new THREE.Vector3(this.exitDistance * 3, 0, 0),
             orbitalTilt: 7.00,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
             temperature: 5778,
@@ -96,6 +102,7 @@ export class MercuryOrbit
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
+            this.transitionFrom = this.mercuryEntity.key;
         }
     }
 
