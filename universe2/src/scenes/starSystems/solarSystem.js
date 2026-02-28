@@ -18,13 +18,15 @@ export class SolarSystem
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
         this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
-       
+        
+        this.near = 12;
+        this.far = 16000;
         this.cameraSettings = {
             pos: { x:1500, y:1500, z:0 },
             lookAt: { x:0, y:0, z:0 },
             fov: 40,
-            near: 12,
-            far: 16000
+            near: this.near,
+            far: this.far
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
@@ -81,8 +83,8 @@ export class SolarSystem
             this.Portals();
 
             if (this.params?.focus) {
-                console.log("Init focus param:", this.params.focus);
-                console.log("Calling PositionEntryCamera via requestAnimationFrame...");
+                // console.log("Init focus param:", this.params.focus);
+                // console.log("Calling PositionEntryCamera via requestAnimationFrame...");
                 requestAnimationFrame(() => this.PositionEntryCamera());
             }
         }
@@ -316,7 +318,7 @@ export class SolarSystem
         const pos = new THREE.Vector3();
         target.objectRoot.getWorldPosition(pos);
 
-        const offset = target.size * 8;
+        const offset =this.sizeMap[this.params.focus] * 8;
 
         this.camera.position.set(
             pos.x + offset,
