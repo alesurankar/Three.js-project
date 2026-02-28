@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
 import { createEntity } from "../../factories/entityFactory.js";
-import api from "../../utils/api";
+import { loadEntities } from "../../utils/loadEntities.js"
 
 
 export class SolarSystem 
@@ -35,71 +35,53 @@ export class SolarSystem
 
     async init() 
     {
+        if (!this.active) return;
+        const requiredKeys = [
+            "sun",
+            "mercury",
+            "venus",
+            "earth",
+            "moon",
+            "mars",
+            "asteroidbelt",
+            "jupiter",
+            "saturn",
+            "saturnring",
+            "uranus",
+            "uranusring",
+            "neptune",
+            "pluto",
+            "kuiperbelt"
+        ];
+
+        const scaleMap = {
+            sun: this.REGION_SIZE_SCALE,
+            mercury: this.LOCAL_SIZE_SCALE,
+            venus: this.LOCAL_SIZE_SCALE,
+            earth: this.LOCAL_SIZE_SCALE,
+            moon: this.LOCAL_SIZE_SCALE,
+            mars: this.LOCAL_SIZE_SCALE,
+            asteroidbelt: this.INNER_SIZE_SCALE,
+            jupiter: this.LOCAL_SIZE_SCALE,
+            saturn: this.LOCAL_SIZE_SCALE,
+            saturnring: this.INNER_SIZE_SCALE,
+            uranus: this.LOCAL_SIZE_SCALE,
+            uranusring: this.INNER_SIZE_SCALE,
+            neptune: this.LOCAL_SIZE_SCALE,
+            pluto: this.LOCAL_SIZE_SCALE,
+            kuiperbelt: this.INNER_SIZE_SCALE
+        };
+
         try {
-            if (!this.active) return;
-
-            const res = await api.get("/entities");
-            this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
-            
-            this.sunEntity = this.entities.find(e => e.key === "sun");
-            this.mercuryEntity = this.entities.find(e => e.key === "mercury");
-            this.venusEntity = this.entities.find(e => e.key === "venus");
-            this.earthEntity = this.entities.find(e => e.key === "earth");
-            this.moonEntity = this.entities.find(e => e.key === "moon");
-            this.marsEntity = this.entities.find(e => e.key === "mars");
-            this.asteroidbeltEntity = this.entities.find(e => e.key === "asteroidbelt");
-            this.jupiterEntity = this.entities.find(e => e.key === "jupiter");
-            this.saturnEntity = this.entities.find(e => e.key === "saturn");
-            this.saturnringEntity = this.entities.find(e => e.key === "saturnring");
-            this.uranusEntity = this.entities.find(e => e.key === "uranus");
-            this.uranusringEntity = this.entities.find(e => e.key === "uranusring");
-            this.neptuneEntity = this.entities.find(e => e.key === "neptune");
-            this.plutoEntity = this.entities.find(e => e.key === "pluto");
-            this.kuiperbeltEntity = this.entities.find(e => e.key === "kuiperbelt");
-            
-            if (!this.sunEntity) throw new Error("Sun entity missing");
-            if (!this.mercuryEntity) throw new Error("Mercury entity missing");
-            if (!this.venusEntity) throw new Error("Venus entity missing");
-            if (!this.earthEntity) throw new Error("Earth entity missing");
-            if (!this.moonEntity) throw new Error("Moon entity missing");
-            if (!this.marsEntity) throw new Error("Mars entity missing");
-            if (!this.asteroidbeltEntity) throw new Error("Asteroid Belt entity missing");
-            if (!this.jupiterEntity) throw new Error("Jupiter entity missing");
-            if (!this.saturnEntity) throw new Error("Saturn entity missing");
-            if (!this.saturnringEntity) throw new Error("Saturn Ring entity missing");
-            if (!this.uranusEntity) throw new Error("Uranus entity missing");
-            if (!this.uranusringEntity) throw new Error("Uranus Ring entity missing");
-            if (!this.neptuneEntity) throw new Error("Neptune entity missing");
-            if (!this.plutoEntity) throw new Error("Pluto entity missing");
-            if (!this.kuiperbeltEntity) throw new Error("Kuiper Belt entity missing");
-
-            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE; 
-            this.mercurySize = this.mercuryEntity.size * this.LOCAL_SIZE_SCALE;
-            this.venusSize = this.venusEntity.size * this.LOCAL_SIZE_SCALE;
-            this.earthSize = this.earthEntity.size * this.LOCAL_SIZE_SCALE;
-            this.moonSize = this.moonEntity.size * this.LOCAL_SIZE_SCALE;
-            this.marsSize = this.marsEntity.size * this.LOCAL_SIZE_SCALE;
-            this.asteroidBeltSize = this.asteroidbeltEntity.size * this.INNER_SIZE_SCALE;
-            this.jupiterSize = this.jupiterEntity.size * this.LOCAL_SIZE_SCALE;
-            this.saturnSize = this.saturnEntity.size * this.LOCAL_SIZE_SCALE;
-            this.saturnRingSize = this.saturnringEntity.size * this.INNER_SIZE_SCALE;
-            this.uranusSize = this.uranusEntity.size * this.LOCAL_SIZE_SCALE;
-            this.uranusRingSize = this.uranusringEntity.size * this.INNER_SIZE_SCALE;
-            this.neptuneSize = this.neptuneEntity.size * this.LOCAL_SIZE_SCALE;
-            this.plutoSize = this.plutoEntity.size * this.LOCAL_SIZE_SCALE;
-            this.kuiperBeltSize = this.kuiperbeltEntity.size * this.INNER_SIZE_SCALE;
-
-            this.exitDistance = this.sunSize * 100;
-
-            if (this.params?.focus) {
-                console.log("Init focus param:", this.params.focus);
-            }
-
+            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
+            this.entityMap = entityMap;
+            this.sizeMap = sizeMap;
+            this.exitDistance = this.sizeMap.sun * 100;
             this.CreateObjects();
             this.Portals();
 
             if (this.params?.focus) {
+                console.log("Init focus param:", this.params.focus);
                 console.log("Calling PositionEntryCamera via requestAnimationFrame...");
                 requestAnimationFrame(() => this.PositionEntryCamera());
             }
@@ -112,8 +94,8 @@ export class SolarSystem
     CreateObjects()
     {
         // Create Sun
-        this.sun = createEntity(this.sunEntity, {
-            size: this.sunSize,
+        this.sun = createEntity(this.entityMap.sun, {
+            size: this.sizeMap.sun,
             lightType: "pointLight",
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
@@ -126,9 +108,9 @@ export class SolarSystem
         this.objects.push(this.sun);
 
         // Create Mercury
-        this.mercury = createEntity(this.mercuryEntity, {
-            size: this.mercurySize,
-            posToParent: new THREE.Vector3(this.sunSize * 4, 0, 0),
+        this.mercury = createEntity(this.entityMap.mercury, {
+            size: this.sizeMap.mercury,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 4, 0, 0),
             axialTilt: 0.034,
             orbitalTilt: 7.00,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
@@ -138,9 +120,9 @@ export class SolarSystem
         this.objects.push(this.mercury);
 
         // Create venus
-        this.venus = createEntity(this.venusEntity, {
-            size: this.venusSize,
-            posToParent: new THREE.Vector3(this.sunSize * 7, 0, 0),
+        this.venus = createEntity(this.entityMap.venus, {
+            size: this.sizeMap.venus,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 7, 0, 0),
             axialTilt: 177.36,
             orbitalTilt: 3.39,
             axialRotationSpeed: StarSystem.AxialRotationInDays(243),
@@ -150,9 +132,9 @@ export class SolarSystem
         this.objects.push(this.venus);
 
         // Create Earth
-        this.earth = createEntity(this.earthEntity, {
-            size: this.earthSize,
-            posToParent: new THREE.Vector3(this.sunSize * 10, 0, 0),
+        this.earth = createEntity(this.entityMap.earth, {
+            size: this.sizeMap.earth,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 10, 0, 0),
             axialTilt: 23.44,
             orbitalTilt: 0,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
@@ -162,9 +144,9 @@ export class SolarSystem
         this.objects.push(this.earth);
 
         // Create moon
-        this.moon = createEntity(this.moonEntity, {
-            size: this.moonSize,
-            posToParent: new THREE.Vector3(this.earthSize * 10, 0, 0),
+        this.moon = createEntity(this.entityMap.moon, {
+            size: this.sizeMap.moon,
+            posToParent: new THREE.Vector3(this.sizeMap.earth * 10, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
@@ -174,9 +156,9 @@ export class SolarSystem
         this.objects.push(this.moon);
 
         // Create mars
-        this.mars = createEntity(this.marsEntity, {
-            size: this.marsSize,
-            posToParent: new THREE.Vector3(this.sunSize * 15, 0, 0),
+        this.mars = createEntity(this.entityMap.mars, {
+            size: this.sizeMap.mars,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 15, 0, 0),
             axialTilt: 25.19,
             orbitalTilt: 1.85,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1.03),
@@ -186,22 +168,22 @@ export class SolarSystem
         this.objects.push(this.mars);
 
         // Create asteroid belt
-        this.asteroidBelt = createEntity(this.asteroidbeltEntity, {
-            count: 6000,
-            size: this.asteroidBeltSize,
-            orbitFarRadius: this.sunSize * 19,
-            orbitNearRadius: this.sunSize * 17,
+        this.asteroidbelt = createEntity(this.entityMap.asteroidbelt, {
+            count: 5000,
+            size: this.sizeMap.asteroidbelt,
+            orbitFarRadius: this.sizeMap.sun * 19,
+            orbitNearRadius: this.sizeMap.sun * 17,
             axialRotationSpeed: 0.0004,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
             thickness: 50,
             parent: this.sun.objectRoot
         });
-        this.objects.push(this.asteroidBelt);
+        this.objects.push(this.asteroidbelt);
         
         // Create jupiter
-        this.jupiter = createEntity(this.jupiterEntity, {
-            size: this.jupiterSize,
-            posToParent: new THREE.Vector3(this.sunSize * 26, 0, 0),
+        this.jupiter = createEntity(this.entityMap.jupiter, {
+            size: this.sizeMap.jupiter,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 26, 0, 0),
             axialTilt: 3.13,
             orbitalTilt: 1.31,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.41),
@@ -211,9 +193,9 @@ export class SolarSystem
         this.objects.push(this.jupiter);
         
         // Create saturn
-        this.saturn = createEntity(this.saturnEntity, {
-            size: this.saturnSize,
-            posToParent: new THREE.Vector3(this.sunSize * 36, 0, 0),
+        this.saturn = createEntity(this.entityMap.saturn, {
+            size: this.sizeMap.saturn,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 36, 0, 0),
             axialTilt: 26.73,
             orbitalTilt: 2.49,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
@@ -223,23 +205,23 @@ export class SolarSystem
         this.objects.push(this.saturn);
 
         // Create saturn ring
-        this.saturnRing = createEntity(this.saturnringEntity, {
+        this.saturnring = createEntity(this.entityMap.saturnring, {
             count: 4000,
-            size: this.saturnRingSize,
-            orbitFarRadius: this.saturnSize * 1.8,
-            orbitNearRadius: this.saturnSize + this.saturnSize/6,
+            size: this.sizeMap.saturnring,
+            orbitFarRadius: this.sizeMap.saturn * 1.8,
+            orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 6,
             axialRotationSpeed: 0.005,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
             thickness: 0.6,   
             color: 0xdfe6f0,
             parent: this.saturn.axialFrame
         });
-        this.objects.push(this.saturnRing);
+        this.objects.push(this.saturnring);
         
         // Create uranus
-        this.uranus = createEntity(this.uranusEntity, {
-            size: this.uranusSize,
-            posToParent: new THREE.Vector3(this.sunSize * 46, 0, 0),
+        this.uranus = createEntity(this.entityMap.uranus, {
+            size: this.sizeMap.uranus,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 46, 0, 0),
             axialTilt: 97.77,
             orbitalTilt: 0.77,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.72),
@@ -249,11 +231,11 @@ export class SolarSystem
         this.objects.push(this.uranus);
 
         // Create uranus ring
-        this.uranusRing = createEntity(this.uranusringEntity, {
+        this.uranusring = createEntity(this.entityMap.uranusring, {
             count: 1800,
-            size: this.uranusRingSize,
-            orbitFarRadius: this.uranusSize * 2.3,
-            orbitNearRadius: this.uranusSize * 2,
+            size: this.sizeMap.uranusring,
+            orbitFarRadius: this.sizeMap.uranus * 2.3,
+            orbitNearRadius: this.sizeMap.uranus * 2,
             axialRotationSpeed: 0.003,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.26),
             thickness: 0.3,   
@@ -261,12 +243,12 @@ export class SolarSystem
             color: 0xffffff, // not real
             parent: this.uranus.axialFrame
         });
-        this.objects.push(this.uranusRing);
+        this.objects.push(this.uranusring);
         
         // Create neptune
-        this.neptune = createEntity(this.neptuneEntity, {
-            size: this.neptuneSize,
-            posToParent: new THREE.Vector3(this.sunSize * 56, 0, 0),
+        this.neptune = createEntity(this.entityMap.neptune, {
+            size: this.sizeMap.neptune,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 56, 0, 0),
             axialTilt: 28.32,
             orbitalTilt: 1.77,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.67),
@@ -276,9 +258,9 @@ export class SolarSystem
         this.objects.push(this.neptune);
         
         // Create pluto
-        this.pluto = createEntity(this.plutoEntity, {
-            size: this.plutoSize,
-            posToParent: new THREE.Vector3(this.sunSize * 65, 0, 0),
+        this.pluto = createEntity(this.entityMap.pluto, {
+            size: this.sizeMap.pluto,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 65, 0, 0),
             axialTilt: 119.61,
             orbitalTilt: 17.16,
             axialRotationSpeed: StarSystem.AxialRotationInDays(6.39),
@@ -288,45 +270,30 @@ export class SolarSystem
         this.objects.push(this.pluto);
 
         // Create kuiper belt
-        this.kuiperBelt = createEntity(this.kuiperbeltEntity, {
+        this.kuiperbelt = createEntity(this.entityMap.kuiperbelt, {
             count: 5000,
-            size: this.kuiperBeltSize,
-            orbitFarRadius: this.sunSize * 70,
-            orbitNearRadius: this.sunSize * 60,
+            size: this.sizeMap.kuiperbelt,
+            orbitFarRadius: this.sizeMap.sun * 70,
+            orbitNearRadius: this.sizeMap.sun * 60,
             axialRotationSpeed: 0.0003,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(100000),
             thickness: 250,
             color: 0xaaaaaa,
             parent: this.sun.objectRoot
         });
-        this.objects.push(this.kuiperBelt);
-
-        this.sun.size = this.sunSize;
-        this.mercury.size = this.mercurySize;
-        this.venus.size = this.venusSize;
-        this.earth.size = this.earthSize;
-        this.moon.size = this.moonSize;
-        this.mars.size = this.marsSize;
-        this.jupiter.size = this.jupiterSize;
-        this.saturn.size = this.saturnSize;
-        this.saturnRing.size = this.saturnRingSize;
-        this.uranus.size = this.uranusSize;
-        this.uranusRing.size = this.uranusRingSize;
-        this.neptune.size = this.neptuneSize;
-        this.pluto.size = this.plutoSize;
-        this.kuiperBelt.size = this.kuiperBeltSize;
+        this.objects.push(this.kuiperbelt);
     }
 
     Portals()
     {
         this.sceneTriggers = [
-            { obj: this.mercury, threshold: this.mercurySize * 5, scene: "MercuryOrbit" },
-            { obj: this.venus, threshold: this.venusSize * 4, scene: "VenusOrbit" },
-            { obj: this.earth, threshold: this.earthSize * 4, scene: "EarthOrbit" },
-            { obj: this.moon, threshold: this.moonSize * 4, scene: "MoonOrbit" },
-            { obj: this.mars, threshold: this.marsSize * 4, scene: "MarsOrbit" },
-            { obj: this.jupiter, threshold: this.jupiterSize * 3, scene: "JupiterOrbit" },
-            { obj: this.saturn, threshold: this.saturnSize * 3, scene: "SaturnOrbit" },
+            { obj: this.mercury, threshold: this.sizeMap.mercury * 5, scene: "MercuryOrbit" },
+            { obj: this.venus, threshold: this.sizeMap.venus * 4, scene: "VenusOrbit" },
+            { obj: this.earth, threshold: this.sizeMap.earth * 4, scene: "EarthOrbit" },
+            { obj: this.moon, threshold: this.sizeMap.moon * 4, scene: "MoonOrbit" },
+            { obj: this.mars, threshold: this.sizeMap.mars * 4, scene: "MarsOrbit" },
+            { obj: this.jupiter, threshold: this.sizeMap.jupiter * 3, scene: "JupiterOrbit" },
+            { obj: this.saturn, threshold: this.sizeMap.saturn * 3, scene: "SaturnOrbit" },
         ];
     }
 
