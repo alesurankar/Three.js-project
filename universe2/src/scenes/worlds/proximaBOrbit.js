@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
 import { createEntity } from "../../factories/entityFactory.js";
-import api from "../../utils/api";
+import { loadEntities } from "../../utils/loadEntities.js"
 
 
 export class ProximaBOrbit
@@ -12,39 +12,44 @@ export class ProximaBOrbit
         this.active = true;
         StarSystem.timeFactor=1
         
-        const sizeFactor = 1;
-        this.proximaBSize = 1000 * sizeFactor;
+        this.SIZE_SCALE = 14;
+        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
+        this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
 
+        this.near = 40;
+        this.far = 30000;
         this.cameraSettings = {
-            pos: { x:-this.proximaBSize * 2, y:0, z:this.proximaBSize * 2 },
-            lookAt: { x:15000, y:0, z:10000 },
+            pos: { x:-4000, y:0, z:1000 },
+            lookAt: { x:1000, y:0, z:2000 },
             fov: 40,
-            near: 40,
-            far: 26000
+            near: this.near,
+            far: this.far
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
-        this.exitDistance = this.proximaBSize * 12;
         this.objects = [];
     }
 
     async init() 
     {
+        if (!this.active) return;
+            const requiredKeys = [
+            "proximacentauri",
+            "proxima_b",
+        ];
+
+        const scaleMap = {
+            proximacentauri: this.LOCAL_SIZE_SCALE,
+            proxima_b: this.LOCAL_SIZE_SCALE,
+        };
+
         try {
-            if (!this.active) return;
-
-            const res = await api.get("/entities");
-            this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "alphacentauri" && e.galaxyKey === "milkyway");
-            
-            this.proximaCentauriEntity = this.entities.find(e => e.key === "proximacentauri");
-            this.proximaBEntity = this.entities.find(e => e.key === "proxima_b");
-            
-            if (!this.proximaCentauriEntity) throw new Error("Proxima Centauri entity missing");
-            if (!this.proximaBEntity) throw new Error("Proxima B entity missing");
-
+            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
+            this.entityMap = entityMap;
+            this.sizeMap = sizeMap;
+            this.exitDistance = this.sizeMap.proxima_b * 20;
             this.CreateObjects();
         }
         catch (err) {
@@ -55,39 +60,39 @@ export class ProximaBOrbit
     CreateObjects()
     {
         // Create Proxima B
-        this.pb = createEntity(this.proximaBEntity, {
-            size: this.proximaBSize,
+        this.proxima_b = createEntity(this.entityMap.proxima_b, {
+            size: this.sizeMap.proxima_b,
             axialRotationSpeed: StarSystem.AxialRotationInDays(11.2),
             detail: 8,
         });
-        this.scene.add(this.pb.orbitPivot);
-        this.objects.push(this.pb);
+        this.scene.add(this.proxima_b.orbitPivot);
+        this.objects.push(this.proxima_b);
 
         // Create Proxima Centauri
-        this.pc = createEntity(this.proximaCentauriEntity, {
+        this.proximacentauri = createEntity(this.entityMap.proximacentauri, {
             size: 100,
             maxSizeOnScreen: 1.58,
             renderMode: "points",
             lightType: "directionalLight",
-            targetObject: this.pb.objectRoot,
+            targetObject: this.proxima_b.objectRoot,
             posToParent: new THREE.Vector3(10000, 0, 10000),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(11.2),
             temperature: 3000,
             sizeAtenuation: false,
-            parent: this.pb.objectRoot,
+            parent: this.proxima_b.objectRoot,
         });
-        this.objects.push(this.pc);
+        this.objects.push(this.proximacentauri);
     }
 
     Update(dt) 
     {
-        if (!this.pb) return;
+        if (!this.proxima_b) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
 
         const pos = this._tempVec;
-        this.pb.objectRoot.getWorldPosition(pos);
+        this.proxima_b.objectRoot.getWorldPosition(pos);
 
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {

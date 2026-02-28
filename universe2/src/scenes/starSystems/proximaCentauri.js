@@ -12,14 +12,14 @@ export class ProximaCentauri
         this.active = true;
         StarSystem.timeFactor=1
 
-        this.SIZE_SCALE = 1;
+        this.SIZE_SCALE = 2;
         this.REGION_SIZE_SCALE = 0.0004 * this.SIZE_SCALE;
 
         this.near = 10;
         this.far = 10000;
         this.cameraSettings = {
-            pos: { x:220, y:20, z:100 },
-            lookAt: { x:100, y:0, z:0 },
+            pos: { x:440, y:40, z:200 },
+            lookAt: { x:200, y:0, z:10 },
             fov: 40,
             near: this.near,
             far: this.far
@@ -51,12 +51,6 @@ export class ProximaCentauri
             this.exitDistance = this.sizeMap.proximacentauri * 40;
             this.CreateObjects();
             this.Portals();
-
-            if (this.params?.focus) {
-                // console.log("Init focus param:", this.params.focus);
-                // console.log("Calling PositionEntryCamera via requestAnimationFrame...");
-                requestAnimationFrame(() => this.PositionEntryCamera());
-            }
         }
         catch (err) {
             console.error("Failed to load entities", err);
