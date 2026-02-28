@@ -40,7 +40,7 @@ export class EarthOrbit
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
+            this.entities = this.entities.filter(e => e.systemKey === "solar_system" && e.galaxyKey === "milky_way");
             
             this.earthEntity = this.entities.find(e => e.key === "earth");
             this.moonEntity = this.entities.find(e => e.key === "moon");

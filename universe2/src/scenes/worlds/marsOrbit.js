@@ -40,7 +40,7 @@ export class MarsOrbit
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
+            this.entities = this.entities.filter(e => e.systemKey === "solar_system" && e.galaxyKey === "milky_way");
             
             this.marsEntity = this.entities.find(e => e.key === "mars");
             this.sunEntity = this.entities.find(e => e.key === "sun");

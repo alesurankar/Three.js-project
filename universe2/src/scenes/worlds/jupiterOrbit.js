@@ -40,7 +40,7 @@ export class JupiterOrbit
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
+            this.entities = this.entities.filter(e => e.systemKey === "solar_system" && e.galaxyKey === "milky_way");
             
             this.jupiterEntity = this.entities.find(e => e.key === "jupiter");
             this.sunEntity = this.entities.find(e => e.key === "sun");
@@ -92,7 +92,7 @@ export class JupiterOrbit
 
     Update(dt) 
     {
-        console.log("Camera position:", this.camera.position);
+        // console.log("Camera position:", this.camera.position);
         if (!this.jupiter) return;
         for (const obj of this.objects) {
             obj.Update(dt);

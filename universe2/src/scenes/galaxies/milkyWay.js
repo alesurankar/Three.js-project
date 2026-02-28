@@ -62,13 +62,13 @@ export class MilkyWay
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.galaxyKey === "milkyway");
+            this.entities = this.entities.filter(e => e.galaxyKey === "milky_way");
             
-            this.smbhEntity = this.entities.find(e => e.key === "sagittariusA");
+            this.smbhEntity = this.entities.find(e => e.key === "sagittarius_a");
             this.sunEntity = this.entities.find(e => e.key === "sun");
-            this.acAEntity = this.entities.find(e => e.key === "alphacentauriA");
-            this.acBEntity = this.entities.find(e => e.key === "alphacentauriB");
-            this.pcEntity = this.entities.find(e => e.key === "proximacentauri");
+            this.acAEntity = this.entities.find(e => e.key === "alpha_centauri_a");
+            this.acBEntity = this.entities.find(e => e.key === "alpha_centauri_b");
+            this.pcEntity = this.entities.find(e => e.key === "proxima_centauri");
             
             if (!this.smbhEntity) throw new Error("Sagittarius A* entity missing");
             if (!this.sunEntity) throw new Error("Sun entity missing");

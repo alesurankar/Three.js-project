@@ -5,8 +5,8 @@ export const probes = [
         name: "probe1", 
         type: "probe", 
         parentKey: "earth", 
-        systemKey: "solarsystem", 
-        galaxyKey: "milkyway",
+        systemKey: "solar_system", 
+        galaxyKey: "milky_way",
         size: 1,
     },
     { 
@@ -14,8 +14,8 @@ export const probes = [
         name: "probe2", 
         type: "probe", 
         parentKey: "earth", 
-        systemKey: "solarsystem", 
-        galaxyKey: "milkyway",
+        systemKey: "solar_system", 
+        galaxyKey: "milky_way",
         size: 1,
     },
 ]

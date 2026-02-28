@@ -5,8 +5,8 @@ export const moons = [
         name: "Moon", 
         type: "planet", 
         parentKey: "earth", 
-        systemKey: "solarsystem", 
-        galaxyKey: "milkyway",
+        systemKey: "solar_system", 
+        galaxyKey: "milky_way",
         size: 1737,
     },
 ]

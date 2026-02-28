@@ -36,12 +36,12 @@ export class ProximaBOrbit
     {
         if (!this.active) return;
             const requiredKeys = [
-            "proximacentauri",
+            "proxima_centauri",
             "proxima_b",
         ];
 
         const scaleMap = {
-            proximacentauri: this.LOCAL_SIZE_SCALE,
+            proxima_centauri: this.LOCAL_SIZE_SCALE,
             proxima_b: this.LOCAL_SIZE_SCALE,
         };
 
@@ -69,7 +69,7 @@ export class ProximaBOrbit
         this.objects.push(this.proxima_b);
 
         // Create Proxima Centauri
-        this.proximacentauri = createEntity(this.entityMap.proximacentauri, {
+        this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
             size: 100,
             maxSizeOnScreen: 1.58,
             renderMode: "points",
@@ -81,7 +81,7 @@ export class ProximaBOrbit
             sizeAtenuation: false,
             parent: this.proxima_b.objectRoot,
         });
-        this.objects.push(this.proximacentauri);
+        this.objects.push(this.proxima_centauri);
     }
 
     Update(dt) 

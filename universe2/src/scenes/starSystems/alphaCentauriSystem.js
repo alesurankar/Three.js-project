@@ -37,21 +37,21 @@ export class AlphaCentauriSystem
     {
         if (!this.active) return;
         const requiredKeys = [
-            "alphacentauriA",
-            "alphacentauriB",
-            "proximacentauri",
+            "alpha_centauri_a",
+            "alpha_centauri_b",
+            "proxima_centauri",
         ];
 
         const scaleMap = {
-            alphacentauriA: this.REGION_SIZE_SCALE,
-            alphacentauriB: this.REGION_SIZE_SCALE,
-            proximacentauri: this.REGION_SIZE_SCALE,
+            alpha_centauri_a: this.REGION_SIZE_SCALE,
+            alpha_centauri_b: this.REGION_SIZE_SCALE,
+            proxima_centauri: this.REGION_SIZE_SCALE,
         }
         try {
             const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
             this.entityMap = entityMap;
             this.sizeMap = sizeMap;
-            this.exitDistance = this.sizeMap.alphacentauriA * 160;
+            this.exitDistance = this.sizeMap.alpha_centauri_a * 160;
             this.CreateObjects();
             this.Portals();
 
@@ -73,40 +73,40 @@ export class AlphaCentauriSystem
         this.scene.add(this.barycenter);
 
         // Create Alpha Centuri A
-        this.alphacentauriA = createEntity(this.entityMap.alphacentauriA, {
-            size: this.sizeMap.alphacentauriA,
-            posToParent: new THREE.Vector3(this.sizeMap.alphacentauriA * 9, 0, 0),
+        this.alpha_centauri_a = createEntity(this.entityMap.alpha_centauri_a, {
+            size: this.sizeMap.alpha_centauri_a,
+            posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * 9, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
             temperature: 5790,
             parent: this.barycenter,
         });
-        this.objects.push(this.alphacentauriA);
+        this.objects.push(this.alpha_centauri_a);
 
         // Create Alpha Centuri B
-        this.alphacentauriB = createEntity(this.entityMap.alphacentauriB, {
-            size: this.sizeMap.alphacentauriB,
-            posToParent: new THREE.Vector3(this.sizeMap.alphacentauriA * (-7.2), 0, 0),
+        this.alpha_centauri_b = createEntity(this.entityMap.alpha_centauri_b, {
+            size: this.sizeMap.alpha_centauri_b,
+            posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * (-7.2), 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
             temperature: 5200,
             parent: this.barycenter,
         });
-        this.objects.push(this.alphacentauriB);
+        this.objects.push(this.alpha_centauri_b);
 
         // Create Proxima Centauri
-        this.proximacentauri = createEntity(this.entityMap.proximacentauri, {
-            size: this.sizeMap.proximacentauri,
-            posToParent: new THREE.Vector3(this.sizeMap.alphacentauriA * 70, 0, 0),
+        this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
+            size: this.sizeMap.proxima_centauri,
+            posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * 70, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365000),
             temperature: 3000,
             parent: this.barycenter,
         });
-        this.objects.push(this.proximacentauri);
+        this.objects.push(this.proxima_centauri);
     }
 
     Portals()
     {
         this.sceneTriggers = [
-            { obj: this.proximacentauri, threshold: this.sizeMap.proximacentauri * 4, scene: "ProximaCentauri" },
+            { obj: this.proxima_centauri, threshold: this.sizeMap.proxima_centauri * 4, scene: "ProximaCentauri" },
         ];
     }
 
@@ -152,7 +152,7 @@ export class AlphaCentauriSystem
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "MilkyWay";
-            this.transitionFrom = "alphacentauri";
+            this.transitionFrom = "alpha_centauri";
         }
 
         for (const trigger of this.sceneTriggers) {

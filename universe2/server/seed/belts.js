@@ -1,21 +1,21 @@
 
 export const belts = [
     { 
-        key: "asteroidbelt", 
+        key: "asteroid_belt", 
         name: "Asteroid Belt", 
         type: "belt", 
         parentKey: "sun", 
-        systemKey: "solarsystem", 
-        galaxyKey: "milkyway",
+        systemKey: "solar_system", 
+        galaxyKey: "milky_way",
         size: 1.2,
     },
     { 
-        key: "kuiperbelt", 
+        key: "kuiper_belt", 
         name: "Kuiper Belt", 
         type: "belt", 
         parentKey: "sun", 
-        systemKey: "solarsystem", 
-        galaxyKey: "milkyway",
+        systemKey: "solar_system", 
+        galaxyKey: "milky_way",
         size: 1,
     },
 ]

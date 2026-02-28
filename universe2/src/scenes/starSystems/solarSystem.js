@@ -45,15 +45,15 @@ export class SolarSystem
             "earth",
             "moon",
             "mars",
-            "asteroidbelt",
+            "asteroid_belt",
             "jupiter",
             "saturn",
-            "saturnring",
+            "saturn_ring",
             "uranus",
-            "uranusring",
+            "uranus_ring",
             "neptune",
             "pluto",
-            "kuiperbelt"
+            "kuiper_belt"
         ];
 
         const scaleMap = {
@@ -63,15 +63,15 @@ export class SolarSystem
             earth: this.LOCAL_SIZE_SCALE,
             moon: this.LOCAL_SIZE_SCALE,
             mars: this.LOCAL_SIZE_SCALE,
-            asteroidbelt: this.INNER_SIZE_SCALE,
+            asteroid_belt: this.INNER_SIZE_SCALE,
             jupiter: this.LOCAL_SIZE_SCALE,
             saturn: this.LOCAL_SIZE_SCALE,
-            saturnring: this.INNER_SIZE_SCALE,
+            saturn_ring: this.INNER_SIZE_SCALE,
             uranus: this.LOCAL_SIZE_SCALE,
-            uranusring: this.INNER_SIZE_SCALE,
+            uranus_ring: this.INNER_SIZE_SCALE,
             neptune: this.LOCAL_SIZE_SCALE,
             pluto: this.LOCAL_SIZE_SCALE,
-            kuiperbelt: this.INNER_SIZE_SCALE
+            kuiper_belt: this.INNER_SIZE_SCALE
         };
 
         try {
@@ -170,9 +170,9 @@ export class SolarSystem
         this.objects.push(this.mars);
 
         // Create asteroid belt
-        this.asteroidbelt = createEntity(this.entityMap.asteroidbelt, {
+        this.asteroid_belt = createEntity(this.entityMap.asteroid_belt, {
             count: 5000,
-            size: this.sizeMap.asteroidbelt,
+            size: this.sizeMap.asteroid_belt,
             orbitFarRadius: this.sizeMap.sun * 19,
             orbitNearRadius: this.sizeMap.sun * 17,
             axialRotationSpeed: 0.0004,
@@ -180,7 +180,7 @@ export class SolarSystem
             thickness: 50,
             parent: this.sun.objectRoot
         });
-        this.objects.push(this.asteroidbelt);
+        this.objects.push(this.asteroid_belt);
         
         // Create jupiter
         this.jupiter = createEntity(this.entityMap.jupiter, {
@@ -207,9 +207,9 @@ export class SolarSystem
         this.objects.push(this.saturn);
 
         // Create saturn ring
-        this.saturnring = createEntity(this.entityMap.saturnring, {
+        this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
             count: 4000,
-            size: this.sizeMap.saturnring,
+            size: this.sizeMap.saturn_ring,
             orbitFarRadius: this.sizeMap.saturn * 1.8,
             orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 6,
             axialRotationSpeed: 0.005,
@@ -218,7 +218,7 @@ export class SolarSystem
             color: 0xdfe6f0,
             parent: this.saturn.axialFrame
         });
-        this.objects.push(this.saturnring);
+        this.objects.push(this.saturn_ring);
         
         // Create uranus
         this.uranus = createEntity(this.entityMap.uranus, {
@@ -233,9 +233,9 @@ export class SolarSystem
         this.objects.push(this.uranus);
 
         // Create uranus ring
-        this.uranusring = createEntity(this.entityMap.uranusring, {
+        this.uranus_ring = createEntity(this.entityMap.uranus_ring, {
             count: 1800,
-            size: this.sizeMap.uranusring,
+            size: this.sizeMap.uranus_ring,
             orbitFarRadius: this.sizeMap.uranus * 2.3,
             orbitNearRadius: this.sizeMap.uranus * 2,
             axialRotationSpeed: 0.003,
@@ -245,7 +245,7 @@ export class SolarSystem
             color: 0xffffff, // not real
             parent: this.uranus.axialFrame
         });
-        this.objects.push(this.uranusring);
+        this.objects.push(this.uranus_ring);
         
         // Create neptune
         this.neptune = createEntity(this.entityMap.neptune, {
@@ -272,9 +272,9 @@ export class SolarSystem
         this.objects.push(this.pluto);
 
         // Create kuiper belt
-        this.kuiperbelt = createEntity(this.entityMap.kuiperbelt, {
+        this.kuiper_belt = createEntity(this.entityMap.kuiper_belt, {
             count: 5000,
-            size: this.sizeMap.kuiperbelt,
+            size: this.sizeMap.kuiper_belt,
             orbitFarRadius: this.sizeMap.sun * 70,
             orbitNearRadius: this.sizeMap.sun * 60,
             axialRotationSpeed: 0.0003,
@@ -283,7 +283,7 @@ export class SolarSystem
             color: 0xaaaaaa,
             parent: this.sun.objectRoot
         });
-        this.objects.push(this.kuiperbelt);
+        this.objects.push(this.kuiper_belt);
     }
 
     Portals()

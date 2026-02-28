@@ -1,12 +1,12 @@
 
 export const blackholes = [
     {
-        key: "sagittariusA",
+        key: "sagittarius_a",
         name: "Sagittarius A*",
         type: "blackhole",
         parentKey: null,
         systemKey: null,
-        galaxyKey: "milkyway",
+        galaxyKey: "milky_way",
         size: 12000000,
     },
 ]

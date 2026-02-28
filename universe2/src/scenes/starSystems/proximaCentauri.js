@@ -35,12 +35,12 @@ export class ProximaCentauri
     {
         if (!this.active) return;
         const requiredKeys = [
-            "proximacentauri",
+            "proxima_centauri",
             "proxima_b",
         ];
 
         const scaleMap = {
-            proximacentauri: this.REGION_SIZE_SCALE,
+            proxima_centauri: this.REGION_SIZE_SCALE,
             proxima_b: this.REGION_SIZE_SCALE,
         };
 
@@ -48,7 +48,7 @@ export class ProximaCentauri
             const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
             this.entityMap = entityMap;
             this.sizeMap = sizeMap;
-            this.exitDistance = this.sizeMap.proximacentauri * 40;
+            this.exitDistance = this.sizeMap.proxima_centauri * 40;
             this.CreateObjects();
             this.Portals();
         }
@@ -60,14 +60,14 @@ export class ProximaCentauri
     CreateObjects()
     {
         // Create Proxima Centauri
-        this.proximacentauri = createEntity(this.entityMap.proximacentauri, {
-            size: this.sizeMap.proximacentauri,
+        this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
+            size: this.sizeMap.proxima_centauri,
             lightType: "pointLight",
             detail: 5,
             temperature: 3000,
         });
-        this.scene.add(this.proximacentauri.orbitPivot);
-        this.objects.push(this.proximacentauri);
+        this.scene.add(this.proxima_centauri.orbitPivot);
+        this.objects.push(this.proxima_centauri);
 
         // Create Proxima B
         this.proxima_b = createEntity(this.entityMap.proxima_b, {
@@ -76,7 +76,7 @@ export class ProximaCentauri
             axialRotationSpeed: StarSystem.AxialRotationInDays(11.2),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(11.2),
             detail: 3,
-            parent: this.proximacentauri.objectRoot,
+            parent: this.proxima_centauri.objectRoot,
         });
         this.objects.push(this.proxima_b);
     }
@@ -97,11 +97,11 @@ export class ProximaCentauri
         if (!this.sceneTriggers) return;
 
         const pos = this._tempVec;
-        this.proximacentauri.objectRoot.getWorldPosition(pos);
+        this.proxima_centauri.objectRoot.getWorldPosition(pos);
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "AlphaCentauriSystem";
-            this.transitionFrom = this.entityMap.proximacentauri.key;
+            this.transitionFrom = this.entityMap.proxima_centauri.key;
         }
         
         for (const trigger of this.sceneTriggers) {

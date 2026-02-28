@@ -40,7 +40,7 @@ export class VenusOrbit
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
+            this.entities = this.entities.filter(e => e.systemKey === "solar_system" && e.galaxyKey === "milky_way");
             
             this.venusEntity = this.entities.find(e => e.key === "venus");
             this.sunEntity = this.entities.find(e => e.key === "sun");
@@ -91,7 +91,7 @@ export class VenusOrbit
 
     Update(dt) 
     {
-        console.log("Camera position:", this.camera.position);
+        // console.log("Camera position:", this.camera.position);
         if (!this.venus) return;
         for (const obj of this.objects) {
             obj.Update(dt);

@@ -40,10 +40,10 @@ export class SaturnOrbit
 
             const res = await api.get("/entities");
             this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solarsystem" && e.galaxyKey === "milkyway");
+            this.entities = this.entities.filter(e => e.systemKey === "solar_system" && e.galaxyKey === "milky_way");
             
             this.saturnEntity = this.entities.find(e => e.key === "saturn");
-            this.saturnringEntity = this.entities.find(e => e.key === "saturnring");
+            this.saturnringEntity = this.entities.find(e => e.key === "saturn_ring");
             this.sunEntity = this.entities.find(e => e.key === "sun");
             
             if (!this.saturnEntity) throw new Error("Saturn entity missing");
@@ -120,7 +120,6 @@ export class SaturnOrbit
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
             this.transitionFrom = this.saturnEntity.key;
-            console.log("from SaturnOrbit.Update()", this.saturnEntity.key)
         }
     }
 
