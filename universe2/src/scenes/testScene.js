@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { createEntity } from "../factories/entityFactory.js";
-import api from "../utils/api";
+import { loadEntities } from "../utils/loadEntities.js"
 
 
 export class TestScene
@@ -32,34 +32,31 @@ export class TestScene
 
     async init() 
     {
-        try {
-            const res = await api.get("/entities");
-            if (!this.active) return;
+        if (!this.active) return;
+        const requiredKeys = [
+            "sun",
+            "earth",
+            "moon",
+            "saturn",
+            "saturnring",
+            "asteroidbelt"
+        ];
 
-            this.entities = res.data.entities;
-            this.sunEntity = this.entities.find(e => e.key === "sun");
-            this.earthEntity = this.entities.find(e => e.key === "earth");
-            this.moonEntity = this.entities.find(e => e.key === "moon");
-            this.saturnEntity = this.entities.find(e => e.key === "saturn");
-            this.saturnringEntity = this.entities.find(e => e.key === "saturnring");
-            this.asteroidbeltEntity = this.entities.find(e => e.key === "asteroidbelt");
-            
-            if (!this.sunEntity) throw new Error("Sun entity missing");
-            if (!this.earthEntity) throw new Error("Earth entity missing");
-            if (!this.moonEntity) throw new Error("Moon entity missing");
-            if (!this.saturnEntity) throw new Error("Saturn entity missing");
-            if (!this.saturnringEntity) throw new Error("Saturn Ring entity missing");
-            if (!this.asteroidbeltEntity) throw new Error("Asteroid Belt entity missing");
-            
-            this.sunSize = this.sunEntity.size * this.REGION_SIZE_SCALE; 
-            this.earthSize = this.earthEntity.size * this.LOCAL_SIZE_SCALE;
-            this.moonSize = this.moonEntity.size * this.LOCAL_SIZE_SCALE;
-            this.saturnSize = this.saturnEntity.size * this.LOCAL_SIZE_SCALE;
-            this.saturnRingSize = this.saturnringEntity.size * this.INNER_SIZE_SCALE;
-            this.asteroidBeltSize = this.asteroidbeltEntity.size * this.INNER_SIZE_SCALE;
-            
+        const scaleMap = {
+            sun: this.REGION_SIZE_SCALE,
+            earth: this.LOCAL_SIZE_SCALE,
+            moon: this.LOCAL_SIZE_SCALE,
+            saturn: this.LOCAL_SIZE_SCALE,
+            saturnring: this.INNER_SIZE_SCALE,
+            asteroidbelt: this.INNER_SIZE_SCALE
+        };
+
+        try {
+            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
+            this.entityMap = entityMap;
+            this.sizeMap = sizeMap;
             this.CreateObjects();
-        }
+        } 
         catch (err) {
             console.error("Failed to load entities", err);
         }
@@ -68,8 +65,8 @@ export class TestScene
     CreateObjects()
     {
         // Create Sun
-        this.sun = createEntity(this.sunEntity, {
-            size: this.sunSize,
+        this.sun = createEntity(this.entityMap.sun, {
+            size: this.sizeMap.sun,
             lightType: "pointLight",
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
@@ -82,9 +79,9 @@ export class TestScene
         this.objects.push(this.sun);
         
         // Create Earth
-        this.earth = createEntity(this.earthEntity, {
-            size: this.earthSize,
-            posToParent: new THREE.Vector3(this.sunSize * 5, 0, 0),
+        this.earth = createEntity(this.entityMap.earth, {
+            size: this.sizeMap.earth,
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
             axialTilt: 23.44,
             orbitalTilt: 0,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
@@ -94,9 +91,9 @@ export class TestScene
         this.objects.push(this.earth);
 
         // Create moon
-        this.moon = createEntity(this.moonEntity, {
-            size: this.moonSize,
-            posToParent: new THREE.Vector3(this.earthSize * 3, 0, 0),
+        this.moon = createEntity(this.entityMap.moon, {
+            size: this.sizeMap.moon,
+            posToParent: new THREE.Vector3(this.sizeMap.earth * 3, 0, 0),
             axialTilt: 6.68,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
@@ -106,11 +103,11 @@ export class TestScene
         this.objects.push(this.moon);
 
         // Create asteroid belt
-        this.asteroidBelt = createEntity(this.asteroidbeltEntity, {
+        this.asteroidBelt = createEntity(this.entityMap.asteroidbelt, {
             count: 6000,
-            size: this.asteroidBeltSize,
-            orbitFarRadius: this.sunSize * 16,
-            orbitNearRadius: this.sunSize * 14,
+            size: this.sizeMap.asteroidBelt,
+            orbitFarRadius: this.sizeMap.sun * 16,
+            orbitNearRadius: this.sizeMap.sun * 14,
             axialRotationSpeed: 0.0004,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
             thickness: 50,
@@ -119,9 +116,9 @@ export class TestScene
         this.objects.push(this.asteroidBelt);
         
         // Create saturn
-        this.saturn = createEntity(this.saturnEntity, {
-            size: this.saturnSize,
-            posToParent: new THREE.Vector3(this.sunSize  * 8, 0, 0),
+        this.saturn = createEntity(this.entityMap.saturn, {
+            size: this.sizeMap.saturn,
+            posToParent: new THREE.Vector3(this.sizeMap.sun  * 8, 0, 0),
             axialTilt: 26.73,
             orbitalTilt: 2.49,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
@@ -131,11 +128,11 @@ export class TestScene
         this.objects.push(this.saturn);
 
         // Create saturn ring
-        this.saturnRing = createEntity(this.saturnringEntity, {
+        this.saturnRing = createEntity(this.entityMap.saturnring, {
             count: 4000,
-            size: this.saturnRingSize,
-            orbitFarRadius: this.saturnSize * 2,
-            orbitNearRadius: this.saturnSize + this.saturnSize/5,
+            size: this.sizeMap.saturnRing,
+            orbitFarRadius: this.sizeMap.saturn * 2,
+            orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn/5,
             axialRotationSpeed: 0.005,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
             thickness: 0.6,   

@@ -22,7 +22,7 @@ export class Engine
     this._disposed = false;
     
     this.manager = CreateSceneManager(this.Scene, (sceneName) => {
-      console.log("Scene changed to:", sceneName);
+      //console.log("Scene changed to:", sceneName);
     });
     this.Camera = this.manager.camera;
     this.Renderer = CreateRenderer(container);
