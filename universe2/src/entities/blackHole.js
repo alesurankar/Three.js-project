@@ -23,11 +23,11 @@ export class BlackHole extends CelestialBody
             map: texture,
             transparent: true,
             side: THREE.DoubleSide,
+            depthWrite: false,
         });
 
         // Call base constructor
         super({
-            size,
             renderMode: "mesh",
             posToParent,
             axialRotationSpeed,

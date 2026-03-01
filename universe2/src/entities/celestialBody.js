@@ -27,7 +27,10 @@ export class CelestialBody
             }
         }
         else if (renderMode === "model") {
-            this.body = new THREE.Group(); // placeholder
+            this.body = new THREE.Group();
+        }
+        else if (renderMode === "none") {
+            this.body = new THREE.Object3D();
         }
 
         // Create the groups
@@ -58,12 +61,15 @@ export class CelestialBody
 
     Update(dt) 
     {
-        // Orbit parent
-        this.orbitPivot.rotation.y += this.orbitalSpeed * dt;
-
+        // Orbit parent 
+        if (this.orbitalSpeed !== 0) {
+            this.orbitPivot.rotation.y += this.orbitalSpeed * dt;
+        }
         // Spin around own axis
-        this.body.rotation.y += this.axialRotationSpeed * dt;
-        if (this.clouds) {
+        if (this.axialRotationSpeed !== 0) {
+            this.body.rotation.y += this.axialRotationSpeed * dt;
+        }
+        if (this.clouds && this.axialRotationSpeed !== 0) {
             this.clouds.rotation.y += this.axialRotationSpeed * 1.1 * dt;
         }
     }

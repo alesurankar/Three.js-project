@@ -74,8 +74,8 @@ export class MilkyWay
             const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
             this.entityMap = entityMap;
             this.sizeMap = sizeMap;
-            this.galaxyNear = this.sizeMap.sagittarius_a;
-            this.galaxyFar = this.sizeMap.sagittarius_a * 90;
+            this.galaxyNear = this.sizeMap.sagittarius_a * 3;
+            this.galaxyFar = this.sizeMap.sagittarius_a * 120;
             this.CreateObjects();
             this.Portals();
         }
