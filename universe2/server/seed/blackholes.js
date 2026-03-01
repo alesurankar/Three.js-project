@@ -1,9 +1,9 @@
 
-export const blackholes = [
+export const blackHoles = [
     {
         key: "sagittarius_a",
         name: "Sagittarius A*",
-        type: "blackhole",
+        type: "black_hole",
         parentKey: null,
         systemKey: null,
         galaxyKey: "milky_way",

@@ -101,7 +101,7 @@ export class ProximaCentauri
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "AlphaCentauriSystem";
-            this.transitionFrom = this.entityMap.proxima_centauri.key;
+            this.transitionFrom = "proxima_centauri";
         }
         
         for (const trigger of this.sceneTriggers) {

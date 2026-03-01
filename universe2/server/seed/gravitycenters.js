@@ -1,5 +1,5 @@
 
-export const blackholes = [
+export const gravityCenters = [
     {
         key: "alpha_centauri_center",
         name: "Alpha Centauri Barry Center*",
@@ -7,6 +7,6 @@ export const blackholes = [
         parentKey: "sagittarius_a",
         systemKey: "alpha_centauri_system",
         galaxyKey: "milky_way",
-        size: 600000,
+        size: 0,
     },
 ]

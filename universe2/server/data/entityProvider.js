@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import EntityModel from "../models/entityModel.js";
 
 import { belts } from "../seed/belts.js";
-import { blackholes } from "../seed/blackholes.js";
+import { blackHoles } from "../seed/blackHoles.js";
+import { gravityCenters } from "../seed/gravityCenters.js";
 import { planets } from "../seed/planets.js";
 import { probes } from "../seed/probes.js";
 import { moons } from "../seed/moons.js";
@@ -15,7 +16,8 @@ const USE_LOCAL_DATA = process.env.USE_LOCAL_DATA === "true";
 
 const localEntities = [
   ...belts,
-  ...blackholes,
+  ...blackHoles,
+  ...gravityCenters,
   ...planets,
   ...probes,
   ...moons,

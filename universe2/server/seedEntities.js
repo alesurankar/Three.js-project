@@ -1,7 +1,8 @@
 import "dotenv/config";
 import mongoose from "mongoose";
 import { belts } from "./seed/belts.js";
-import { blackholes } from "./seed/blackholes.js";
+import { blackHoles } from "./seed/blackHoles.js";
+import { gravityCenters } from "./seed/gravityCenters.js";
 import { planets } from "./seed/planets.js";
 import { probes } from "./seed/probes.js";
 import { moons } from "./seed/moons.js";
@@ -13,7 +14,8 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const entities = [
   ...belts,
-  ...blackholes,
+  ...blackHoles,
+  ...gravityCenters,
   ...planets,
   ...probes,
   ...moons,

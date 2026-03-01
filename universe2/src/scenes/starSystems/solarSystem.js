@@ -341,6 +341,7 @@ export class SolarSystem
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "MilkyWay";
+            this.transitionFrom = "solar_system";
         }
 
         for (const trigger of this.sceneTriggers) {
