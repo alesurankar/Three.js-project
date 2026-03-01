@@ -78,7 +78,8 @@ export class SceneManager
         if (!sceneInstance.overrideCamera) {
             //console.log("SceneManager.LoadScene: updating camera from scene settings");
             this.UpdateCamera();
-        } else {
+        } 
+        else {
             //console.log("SceneManager.LoadScene: scene overrides camera, skipping UpdateCamera");
         }
     }
@@ -102,7 +103,8 @@ export class SceneManager
             this.camera.far = settings.far ?? this.camera.far;
             this.camera.updateProjectionMatrix();
             //console.log("Camera updated:", this.camera.position);
-        } catch (err) {
+        } 
+        catch (err) {
             console.error("UpdateCamera error: invalid camera settings?", err, settings);
         }
     }

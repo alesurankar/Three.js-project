@@ -57,8 +57,8 @@ export class AlphaCentauriSystem
             this.Portals();
 
             if (this.params?.focus) {
-                console.log("Init focus param:", this.params.focus);
-                console.log("Calling PositionEntryCamera via requestAnimationFrame...");
+                // console.log("Init focus param:", this.params.focus);
+                // console.log("Calling PositionEntryCamera via requestAnimationFrame...");
                 requestAnimationFrame(() => this.PositionEntryCamera());
             }
         }
@@ -70,17 +70,18 @@ export class AlphaCentauriSystem
     CreateObjects()
     {
         // Create Bary Center
-        this.barycenter = createEntity(this.entityMap.alpha_centauri_center);
-        this.scene.add(this.barycenter.orbitPivot);
-        this.objects.push(this.barycenter);
+        this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center);
+        this.scene.add(this.alpha_centauri_center.orbitPivot);
+        this.objects.push(this.alpha_centauri_center);
 
         // Create Alpha Centuri A
         this.alpha_centauri_a = createEntity(this.entityMap.alpha_centauri_a, {
             size: this.sizeMap.alpha_centauri_a,
             posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * 9, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
+            detail: 3,
             temperature: 5790,
-            parent: this.barycenter.objectRoot,
+            parent: this.alpha_centauri_center.objectRoot,
         });
         this.objects.push(this.alpha_centauri_a);
 
@@ -89,8 +90,9 @@ export class AlphaCentauriSystem
             size: this.sizeMap.alpha_centauri_b,
             posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * (-7.2), 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
+            detail: 3,
             temperature: 5200,
-            parent: this.barycenter.objectRoot,
+            parent: this.alpha_centauri_center.objectRoot,
         });
         this.objects.push(this.alpha_centauri_b);
 
@@ -99,8 +101,9 @@ export class AlphaCentauriSystem
             size: this.sizeMap.proxima_centauri,
             posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * 70, 0, 0),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365000),
+            detail: 3,
             temperature: 3000,
-            parent: this.barycenter.objectRoot,
+            parent: this.alpha_centauri_center.objectRoot,
         });
         this.objects.push(this.proxima_centauri);
     }
@@ -150,7 +153,7 @@ export class AlphaCentauriSystem
         if (!this.sceneTriggers) return;
         
         const pos = this._tempVec;
-        this.barycenter.objectRoot.getWorldPosition(pos);
+        this.alpha_centauri_center.objectRoot.getWorldPosition(pos);
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "MilkyWay";

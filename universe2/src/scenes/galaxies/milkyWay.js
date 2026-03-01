@@ -57,6 +57,7 @@ export class MilkyWay
         const requiredKeys = [
             "sagittarius_a",
             "sun",
+            "alpha_centauri_center",
             "alpha_centauri_a",
             "alpha_centauri_b",
             "proxima_centauri",
@@ -101,42 +102,46 @@ export class MilkyWay
             renderMode: "points",
             posToParent: this.sunPos,
             orbitalSpeed: this.baseSpeed,
-            detail: 0,
             temperature: 5778,
             parent: this.SMBH.objectRoot,
         });
         this.objects.push(this.sun);
 
+        // Create Alpha Centauri
+        this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center, {
+            posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE, this.sunPos.z-1.0*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE),
+            orbitalSpeed: this.baseSpeed /1000,
+            parent: this.SMBH.objectRoot,
+        });
+        this.objects.push(this.alpha_centauri_center);
+
         this.alpha_centauri_a = createEntity(this.entityMap.alpha_centauri_a, {
             size: this.sizeMap.alpha_centauri_a,
             renderMode: "points",
-            posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE, this.sunPos.z-1.0*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE),
-            orbitalSpeed: this.baseSpeed,
-            detail: 0,
+            posToParent: new THREE.Vector3(-this.sizeMap.alpha_centauri_a * 18, 0, 0),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
             temperature: 5790,
-            parent: this.SMBH.objectRoot,
+            parent: this.alpha_centauri_center.objectRoot,
         });
         this.objects.push(this.alpha_centauri_a);
 
         this.alpha_centauri_b = createEntity(this.entityMap.alpha_centauri_b, {
             size: this.sizeMap.alpha_centauri_b,
             renderMode: "points",
-            posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE - 0.02*this.LOCAL_SCALE, this.sunPos.z - 1.0*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE),
-            orbitalSpeed: this.baseSpeed,
-            detail: 0,
+            posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_b * 14, 0, 0),   
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
             temperature: 5200,
-            parent: this.SMBH.objectRoot,
+            parent: this.alpha_centauri_center.objectRoot,
         });
         this.objects.push(this.alpha_centauri_b);
 
         this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
             size: this.sizeMap.proxima_centauri,
             renderMode: "points",
-            posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE, this.sunPos.z - 1.05*this.LOCAL_SCALE - 0.02*this.LOCAL_SCALE),
-            orbitalSpeed: this.baseSpeed,
-            detail: 0,
+            posToParent: new THREE.Vector3(0, 0, this.sizeMap.alpha_centauri_a* 100),  
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(365000),
             temperature: 3000,
-            parent: this.SMBH.objectRoot,
+            parent: this.alpha_centauri_center.objectRoot,
         });
         this.objects.push(this.proxima_centauri);
 
@@ -156,7 +161,6 @@ export class MilkyWay
                     Math.sin(i) * radius
                 ),
                 orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-                detail: 0,
                 temperature: this.randomBetween(2500, 3300),
                 parent: this.SMBH.objectRoot,
             });
@@ -179,7 +183,6 @@ export class MilkyWay
                     Math.sin(i) * radius
                 ),
                 orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-                detail: 0,
                 temperature: this.randomBetween(3300, 4600),
                 parent: this.SMBH.objectRoot,
             });
@@ -202,7 +205,6 @@ export class MilkyWay
                     Math.sin(i) * radius
                 ),
                 orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-                detail: 0,
                 temperature: this.randomBetween(4600, 6200),
                 parent: this.SMBH.objectRoot,
             });
@@ -225,7 +227,6 @@ export class MilkyWay
                     Math.sin(i) * radius
                 ),
                 orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-                detail: 0,
                 temperature: this.randomBetween(6200, 7500),
                 parent: this.SMBH.objectRoot,
             });
@@ -248,7 +249,6 @@ export class MilkyWay
                     Math.sin(i) * radius
                 ),
                 orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-                detail: 0,
                 temperature: this.randomBetween(7500, 10000),
                 parent: this.SMBH.objectRoot,
             });
@@ -271,7 +271,6 @@ export class MilkyWay
                     Math.sin(i) * radius
                 ),
                 orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
-                detail: 0,
                 temperature: this.randomBetween(2000, 3000),
                 parent: this.SMBH.objectRoot,
             });

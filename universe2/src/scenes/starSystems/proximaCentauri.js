@@ -63,7 +63,7 @@ export class ProximaCentauri
         this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
             size: this.sizeMap.proxima_centauri,
             lightType: "pointLight",
-            detail: 5,
+            detail: 4,
             temperature: 3000,
         });
         this.scene.add(this.proxima_centauri.orbitPivot);

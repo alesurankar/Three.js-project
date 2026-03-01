@@ -103,6 +103,7 @@ export class SolarSystem
             axialTilt: 7.25,
             axialRotationSpeed: StarSystem.AxialRotationInDays(25),
             orbitalSpeed: 0,
+            detail: 4,
             temperature: 5778,
             hasTexture: true,
         });
