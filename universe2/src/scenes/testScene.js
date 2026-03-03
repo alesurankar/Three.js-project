@@ -38,8 +38,8 @@ export class TestScene
             "earth",
             "moon",
             "saturn",
-            "saturnring",
-            "asteroidbelt"
+            "saturn_ring",
+            "asteroid_belt"
         ];
 
         const scaleMap = {
@@ -47,8 +47,8 @@ export class TestScene
             earth: this.LOCAL_SIZE_SCALE,
             moon: this.LOCAL_SIZE_SCALE,
             saturn: this.LOCAL_SIZE_SCALE,
-            saturnring: this.INNER_SIZE_SCALE,
-            asteroidbelt: this.INNER_SIZE_SCALE
+            saturn_ring: this.INNER_SIZE_SCALE,
+            asteroid_belt: this.INNER_SIZE_SCALE
         };
 
         try {
@@ -71,7 +71,7 @@ export class TestScene
             posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: 7.25,
             axialRotationSpeed: StarSystem.AxialRotationInDays(25),
-            orbitalSpeed: 0,
+            detail: 4,
             temperature: 5778,
             hasTexture: true,
         });
@@ -83,7 +83,6 @@ export class TestScene
             size: this.sizeMap.earth,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
             axialTilt: 23.44,
-            orbitalTilt: 0,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
             parent: this.sun.objectRoot,
@@ -103,9 +102,9 @@ export class TestScene
         this.objects.push(this.moon);
 
         // Create asteroid belt
-        this.asteroidBelt = createEntity(this.entityMap.asteroidbelt, {
+        this.asteroid_belt = createEntity(this.entityMap.asteroid_belt, {
             count: 6000,
-            size: this.sizeMap.asteroidBelt,
+            size: this.sizeMap.asteroid_belt,
             orbitFarRadius: this.sizeMap.sun * 16,
             orbitNearRadius: this.sizeMap.sun * 14,
             axialRotationSpeed: 0.0004,
@@ -113,7 +112,7 @@ export class TestScene
             thickness: 50,
             parent: this.sun.objectRoot
         });
-        this.objects.push(this.asteroidBelt);
+        this.objects.push(this.asteroid_belt);
         
         // Create saturn
         this.saturn = createEntity(this.entityMap.saturn, {
@@ -128,9 +127,9 @@ export class TestScene
         this.objects.push(this.saturn);
 
         // Create saturn ring
-        this.saturnRing = createEntity(this.entityMap.saturnring, {
+        this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
             count: 4000,
-            size: this.sizeMap.saturnRing,
+            size: this.sizeMap.saturn_ring,
             orbitFarRadius: this.sizeMap.saturn * 2,
             orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn/5,
             axialRotationSpeed: 0.005,
@@ -139,7 +138,7 @@ export class TestScene
             color: 0xdfe6f0,
             parent: this.saturn.axialFrame
         });
-        this.objects.push(this.saturnRing);
+        this.objects.push(this.saturn_ring);
     }
 
     Update(dt) 

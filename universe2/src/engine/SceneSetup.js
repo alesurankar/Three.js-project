@@ -12,7 +12,7 @@ export function CreateSceneManager(scene, onSceneChange, initialParams = {})
   const camera = CreateCamera();
   const manager = new SceneManager(scene, camera, onSceneChange);
 
-  manager.SwitchScene("ProximaCentauri", initialParams);
+  manager.SwitchScene("TestScene", initialParams);
 
   return manager;
 }
