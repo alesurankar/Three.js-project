@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { StarSystem } from "../../utils/starSystemHelper.js"
 import { SkyBox } from "../../visuals/skyBox.js";
 import { createEntity } from "../../factories/entityFactory.js";
-import api from "../../utils/api";
+import { loadEntities } from "../../utils/loadEntities.js"
 
 
 export class MercuryOrbit
@@ -31,27 +31,27 @@ export class MercuryOrbit
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
         this.objects = [];
+        this.objectMap = {};
     }
 
     async init() 
     {
+        if (!this.active) return;
+        const requiredKeys = [
+            "sun",
+            "mercury",
+        ];
+
+        const scaleMap = {
+            sun: this.REGION_SIZE_SCALE,
+            mercury: this.LOCAL_SIZE_SCALE,
+        };
+        
         try {
-            if (!this.active) return;
-
-            const res = await api.get("/entities");
-            this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solar_system" && e.galaxyKey === "milky_way");
-            
-            this.mercuryEntity = this.entities.find(e => e.key === "mercury");
-            this.sunEntity = this.entities.find(e => e.key === "sun");
-            
-            if (!this.mercuryEntity) throw new Error("Mercury entity missing");
-            if (!this.sunEntity) throw new Error("Sun entity missing");
-            
-            this.mercurySize = this.mercuryEntity.size * this.LOCAL_SIZE_SCALE;
-            
-            this.exitDistance = this.mercurySize * 30;
-
+            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
+            this.entityMap = entityMap;
+            this.sizeMap = sizeMap;
+            this.exitDistance = this.sizeMap.mercury * 30;
             this.CreateObjects();
         }
         catch (err) {
@@ -61,38 +61,44 @@ export class MercuryOrbit
     
     CreateObjects()
     {
-        // Create Mercury
-        this.mercury = createEntity(this.mercuryEntity, {
-            size: this.mercurySize,
-            axialTilt: 0.034,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
-            detail: 6,
-            hasClouds: false,
-        });
-        this.scene.add(this.mercury.orbitPivot);
-        this.objects.push(this.mercury);
-
         // Create Sun
-        this.sun = createEntity(this.sunEntity, {
-            size: 100,
+        this.sun = createEntity(this.entityMap.sun, {
+            size: this.sizeMap.sun,
             maxSizeOnScreen: 1.37,
             renderMode: "points",
             lightType: "directionalLight",
-            targetObject: this.mercury.objectRoot,
-            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
             orbitalTilt: 7.00,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
             temperature: 5778,
             sizeAtenuation: false,
-            parent: this.mercury.objectRoot,
         });
+        this.scene.add(this.sun.orbitPivot);
         this.objects.push(this.sun);
+        this.objectMap[this.entityMap.sun.key] = this.sun;
+
+        // Create Mercury
+        this.mercury = createEntity(this.entityMap.mercury, {
+            size: this.sizeMap.mercury,
+            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
+            axialTilt: this.entityMap.mercury.axialTilt,
+            axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
+            parent: this.objectMap[this.entityMap.mercury.parentKey].objectRoot,
+        });
+        this.objects.push(this.mercury);
+        this.objectMap[this.entityMap.mercury.key] = this.mercury;
+
+        // Make camera look at Mercury initially
+        this.camera.lookAt(this.mercury.objectRoot.position);
+
+        // Assign target now that mercury exists
+        this.sun.targetObject = this.mercury.objectRoot;
+
     }
 
     Update(dt) 
     {
         // console.log("Camera position:", this.camera.position);
-        if (!this.mercury) return;
+        if (!this.sun) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
@@ -103,7 +109,7 @@ export class MercuryOrbit
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
-            this.transitionFrom = this.mercuryEntity.key;
+            this.transitionFrom = this.entityMap.mercury.key;
         }
     }
 
@@ -118,5 +124,7 @@ export class MercuryOrbit
             SkyBox.Dispose(this.scene.background);
             this.scene.background = null;
         }
+        // Clear objectMap to remove references
+        this.objectMap = {};
     }
 }

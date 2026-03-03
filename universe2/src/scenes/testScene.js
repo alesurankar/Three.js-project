@@ -71,7 +71,6 @@ export class TestScene
         this.sun = createEntity(this.entityMap.sun, {
             size: this.sizeMap.sun,
             lightType: "pointLight",
-            posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: this.entityMap.sun.axialTilt,
             axialRotationSpeed: StarSystem.AxialRotationInDays(25),
             detail: 4,
@@ -158,7 +157,6 @@ export class TestScene
     Dispose() 
     {
         this.active = false;
-
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
 
@@ -167,7 +165,6 @@ export class TestScene
             SkyBox.Dispose(this.scene.background);
             this.scene.background = null;
         }
-        
         // Clear objectMap to remove references
         this.objectMap = {};
     }

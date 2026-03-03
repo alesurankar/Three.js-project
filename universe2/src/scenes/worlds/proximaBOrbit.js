@@ -35,13 +35,13 @@ export class ProximaBOrbit
     async init() 
     {
         if (!this.active) return;
-            const requiredKeys = [
+        const requiredKeys = [
             "proxima_centauri",
             "proxima_b",
         ];
 
         const scaleMap = {
-            proxima_centauri: this.LOCAL_SIZE_SCALE,
+            proxima_centauri: this.REGION_SIZE_SCALE,
             proxima_b: this.LOCAL_SIZE_SCALE,
         };
 
@@ -63,7 +63,7 @@ export class ProximaBOrbit
         this.proxima_b = createEntity(this.entityMap.proxima_b, {
             size: this.sizeMap.proxima_b,
             axialRotationSpeed: StarSystem.AxialRotationInDays(11.2),
-            detail: 8,
+            detail: 6,
         });
         this.scene.add(this.proxima_b.orbitPivot);
         this.objects.push(this.proxima_b);
@@ -86,6 +86,7 @@ export class ProximaBOrbit
 
     Update(dt) 
     {
+        // console.log("Camera position:", this.camera.position);
         if (!this.proxima_b) return;
         for (const obj of this.objects) {
             obj.Update(dt);
@@ -97,6 +98,7 @@ export class ProximaBOrbit
         const distanceToParent = this.camera.position.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "ProximaCentauri";
+            this.transitionFrom = this.entityMap.proxima_b.key;
         }
     }
 
