@@ -75,12 +75,6 @@ export class SolarSystem
             this.exitDistance = this.sizeMap.sun * 100;
             this.CreateObjects();
             this.Portals();
-
-            if (this.params?.focus) {
-                // console.log("Init focus param:", this.params.focus);
-                // console.log("Calling PositionEntryCamera via requestAnimationFrame...");
-                requestAnimationFrame(() => this.PositionEntryCamera());
-            }
         }
         catch (err) {
             console.error("Failed to load entities", err);
@@ -93,10 +87,8 @@ export class SolarSystem
         this.sun = createEntity(this.entityMap.sun, {
             size: this.sizeMap.sun,
             lightType: "pointLight",
-            posToParent: new THREE.Vector3(0, 0, 0),
             axialTilt: this.entityMap.sun.axialTilt,
             axialRotationSpeed: StarSystem.AxialRotationInDays(25),
-            orbitalSpeed: 0,
             detail: 4,
             temperature: 5778,
             hasTexture: true,
@@ -311,35 +303,34 @@ export class SolarSystem
 
     PositionEntryCamera()
     {
-        if (!this.params?.focus) {
-            console.log("PositionEntryCamera skipped: no focus param");
-            return;
-        }
-
-        const target = this[this.params.focus];
-        if (!target || !target.objectRoot) {
-            console.warn(`PositionEntryCamera: target for focus "${this.params.focus}" not found`);
-            return;
-        }
-
         // Force update on all matrices before computing world position
         this.scene.updateMatrixWorld(true);
 
-        const pos = new THREE.Vector3();
-        target.objectRoot.getWorldPosition(pos);
+        const offset = this.sizeMap[this.params.focus] * 8;
 
-        const offset =this.sizeMap[this.params.focus] * 8;
-
-        this.camera.position.set(
-            pos.x + offset,
-            pos.y + offset * 0.4,
-            pos.z + offset
+        // Compute desired player position
+        const playerPos = new THREE.Vector3(
+            targetPos.x + offset,
+            targetPos.y + offset * 0.4,
+            targetPos.z + offset
         );
-        this.camera.lookAt(pos);
+
+        // Move the player
+        if (this.player) {
+            this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
+
+            // Make the player look at the target
+            this.player.objectRoot.lookAt(targetPos);
+        } 
+        else {
+            console.warn("PositionEntryCamera: player is not defined");
+        }
     }
     
     Update(dt) 
     {
+        // console.log("Camera position:", this.camera.position);
+        if (!this.sun) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
@@ -347,8 +338,8 @@ export class SolarSystem
 
         const pos = this._tempVec;
         const playerPos = this.player.objectRoot.position;
-
         this.sun.objectRoot.getWorldPosition(pos);
+
         const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "MilkyWay";
@@ -377,7 +368,6 @@ export class SolarSystem
             SkyBox.Dispose(this.scene.background);
             this.scene.background = null;
         }
-        
         // Clear objectMap to remove references
         this.objectMap = {};
     }

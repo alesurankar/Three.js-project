@@ -7,28 +7,23 @@ import { loadEntities } from "../../utils/loadEntities.js"
 
 export class MercuryOrbit
 {
-    constructor(scene, camera) 
+    constructor(scene, camera, player) 
     {
         this.active = true;
         StarSystem.timeFactor=1
         
-        this.SIZE_SCALE = 14;
+        this.SIZE_SCALE = 10;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
         this.near = 30;
         this.far = 30000;
-        this.cameraSettings = {
-            pos: { x:-2000, y:400, z:-1500 },
-            lookAt: { x:1000, y:0, z:0 },
-            fov: 40,
-            near: this.near,
-            far: this.far
-        };
+        this.cameraSettings = { near: this.near, far: this.far };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
+        this.player = player;
         this._tempVec = new THREE.Vector3();
         this.objects = [];
         this.objectMap = {};
@@ -67,7 +62,6 @@ export class MercuryOrbit
             maxSizeOnScreen: 1.37,
             renderMode: "points",
             lightType: "directionalLight",
-            orbitalTilt: 7.00,
             temperature: 5778,
             sizeAtenuation: false,
         });
@@ -78,8 +72,10 @@ export class MercuryOrbit
         // Create Mercury
         this.mercury = createEntity(this.entityMap.mercury, {
             size: this.sizeMap.mercury,
-            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
+            //posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
+            posToParent: new THREE.Vector3(4000, 0, 0),
             axialTilt: this.entityMap.mercury.axialTilt,
+            orbitalTilt: 7.00,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
             parent: this.objectMap[this.entityMap.mercury.parentKey].objectRoot,
@@ -87,26 +83,24 @@ export class MercuryOrbit
         this.objects.push(this.mercury);
         this.objectMap[this.entityMap.mercury.key] = this.mercury;
 
-        // Make camera look at Mercury initially
-        this.camera.lookAt(this.mercury.objectRoot.position);
-
         // Assign target now that mercury exists
-        this.sun.targetObject = this.mercury.objectRoot;
-
+        this.sun.light.target = this.mercury.objectRoot;
     }
 
     Update(dt) 
     {
-        // console.log("Camera position:", this.camera.position);
         if (!this.sun) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
 
         const pos = this._tempVec;
+        const playerPos = this.player.objectRoot.position;
         this.mercury.objectRoot.getWorldPosition(pos);
+        console.log("Player position:", playerPos);
+        console.log("Mercury position:", this.mercury.objectRoot.getWorldPosition(pos));
 
-        const distanceToParent = this.camera.position.distanceTo(pos);
+        const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
             this.transitionFrom = this.entityMap.mercury.key;

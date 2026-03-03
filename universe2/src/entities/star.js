@@ -112,10 +112,7 @@ export class Star extends CelestialBody
             const intensity = maxSizeOnScreen * 10; // scale with star size
             this.light = new THREE.DirectionalLight(starColor, intensity);
 
-            // Place the light at the star's position
             this.light.position.copy(posToParent);
-
-            // Set target: if none provided, default to origin
             const target = targetObject || new THREE.Object3D();
             if (!target.parent) this.objectRoot.add(target); // make sure it's in scene graph
             this.light.target = target;

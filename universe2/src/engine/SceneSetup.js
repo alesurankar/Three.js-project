@@ -16,7 +16,7 @@ export function CreateSceneManager(scene, onSceneChange)
 
 export function FirstScene(manager)
 {
-    manager?.SwitchScene("SolarSystem");
+    manager?.SwitchScene("MercuryOrbit");
 }
 
 export function Update(manager, timeScale = 1) 
