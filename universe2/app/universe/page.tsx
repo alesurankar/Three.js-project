@@ -59,7 +59,7 @@ export default function Universe()
           titleClassName="text-2xl font-bold uppercase"
           onClick={() => router.push('/')}
         />
-        <button onClick={() => engineRef.current?.gameControls.controls.lock()}
+        <button onClick={() => engineRef.current?.ToggleLock()}
           style={{
             padding: "10px 12px",
             fontSize: "1.2rem",

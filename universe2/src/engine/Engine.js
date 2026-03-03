@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { Update as SceneUpdate, CreateSceneManager } from "./SceneSetup.js";
-import { GameControls } from "../utils/gameControls.js";
 import { CreateRenderer } from "./RendererSetup.js";
+import { Player } from "./Player.js"
 
 export class Engine 
 {
@@ -26,7 +26,11 @@ export class Engine
     });
     this.Camera = this.manager.camera;
     this.Renderer = CreateRenderer(container);
-    this.gameControls = new GameControls(this.Camera, container);
+    this.player = new Player({
+        camera: this.Camera,
+        container: container
+    });
+    this.Scene.add(this.player.objectRoot);
 
     this.MainLoop = this.MainLoop.bind(this);
   }
@@ -39,7 +43,7 @@ export class Engine
     this.accumulator += frameTime;
 
     while (this.accumulator >= this.FIXED_DT) {
-      this.gameControls.Update();
+      this.player.Update(this.FIXED_DT)
       SceneUpdate(this.manager, this.timeScale);
       this.accumulator -= this.FIXED_DT;
     }
@@ -57,7 +61,7 @@ export class Engine
 
   ToggleLock() 
   {
-    this.gameControls.ToggleLock();
+    this.player.Lock();
   }
 
   SetTimeScale(scale) 
@@ -81,9 +85,9 @@ export class Engine
     }
 
     // Dispose controls first
-    if (this.gameControls) {
-      this.gameControls.Dispose();
-      this.gameControls = null;
+    if (this.player) {
+      this.player.Dispose();
+      this.player = null;
     }
 
     // Dispose renderer
