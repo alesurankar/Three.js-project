@@ -74,6 +74,9 @@ export class SolarSystem
             this.sizeMap = sizeMap;
             this.exitDistance = this.sizeMap.sun * 100;
             this.CreateObjects();
+            const sunPos = this.sun.GetPosition();
+            this.player.SetPosition(sunPos.x, sunPos.y, sunPos.z);
+            this.player.FaceTarget(this.mercury.GetPosition());
             this.Portals();
         }
         catch (err) {

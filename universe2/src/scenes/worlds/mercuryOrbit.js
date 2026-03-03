@@ -17,7 +17,7 @@ export class MercuryOrbit
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
 
-        this.near = 30;
+        this.near = 16;
         this.far = 30000;
         this.cameraSettings = { near: this.near, far: this.far };
         this.scene = scene;
@@ -46,8 +46,12 @@ export class MercuryOrbit
             const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
             this.entityMap = entityMap;
             this.sizeMap = sizeMap;
-            this.exitDistance = this.sizeMap.mercury * 30;
+            this.exitDistance = this.sizeMap.mercury * 20;
             this.CreateObjects();
+            
+            const mercuryPos = this.mercury.GetPosition();
+            this.player.SetPosition(mercuryPos.x, mercuryPos.y, mercuryPos.z);
+            this.player.FaceTarget(this.sun.GetPosition());
         }
         catch (err) {
             console.error("Failed to load entities", err);
@@ -72,8 +76,7 @@ export class MercuryOrbit
         // Create Mercury
         this.mercury = createEntity(this.entityMap.mercury, {
             size: this.sizeMap.mercury,
-            //posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
-            posToParent: new THREE.Vector3(4000, 0, 0),
+            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
             axialTilt: this.entityMap.mercury.axialTilt,
             orbitalTilt: 7.00,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
@@ -85,9 +88,6 @@ export class MercuryOrbit
 
         // Assign target now that mercury exists
         this.sun.light.target = this.mercury.objectRoot;
-        const mercuryPos = this.mercury.GetPosition();
-        this.player.SetPosition(mercuryPos.x, mercuryPos.y, mercuryPos.z);
-        this.player.FaceTarget(this.sun.GetPosition());
     }
 
     Update(dt) 
@@ -100,8 +100,8 @@ export class MercuryOrbit
         const pos = this._tempVec;
         const playerPos = this.player.objectRoot.position;
         this.mercury.objectRoot.getWorldPosition(pos);
-        console.log("Player position:", playerPos);
-        console.log("Mercury position:", this.mercury.objectRoot.getWorldPosition(pos));
+        // console.log("Player position:", playerPos);
+        // console.log("Mercury position:", this.mercury.objectRoot.getWorldPosition(pos));
 
         const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {

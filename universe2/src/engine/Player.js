@@ -46,7 +46,7 @@ export class Player
 
         // Optional: adjust camera offset if you want the camera behind the player
         if (this.camera) {
-            this.camera.position.set(0, 10, -20);
+            this.camera.position.set(0, 5, -20);
             this.camera.lookAt(this.objectRoot.position.clone().add(new THREE.Vector3(0, 1, 0)));
         }
     }
@@ -58,6 +58,10 @@ export class Player
 
     SetPosition(x, y, z) 
     {
+        if (!this.objectRoot) {
+            console.warn("Player objectRoot not ready yet");
+            return;
+        }
         this.objectRoot.position.set(x, y, z);
     }
 
