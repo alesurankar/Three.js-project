@@ -34,7 +34,7 @@ export class Player
 
     FaceTarget(targetPosition) 
     {
-        if (!targetPosition) return;
+        if (!this.objectRoot || !targetPosition) return;
         // Make a copy so we don’t accidentally modify the original
         const target = targetPosition.clone();
 

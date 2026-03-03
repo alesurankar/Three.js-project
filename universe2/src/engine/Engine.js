@@ -26,15 +26,26 @@ export class Engine
     });
     this.Camera = this.manager.camera;
     this.Renderer = CreateRenderer(container);
-    this.player = new Player({
-        camera: this.Camera,
-        container: container
-    });
-    this.Scene.add(this.player.objectRoot);
-    this.manager.SetPlayer(this.player);
+
+    if (!this.player) {
+      console.log("[Engine] Creating player...");
+      this.player = new Player({
+          camera: this.Camera,
+          container: container
+      });
+      console.log("[Engine] Player created", this.player);
+
+      this.Scene.add(this.player.objectRoot);
+      console.log("[Engine] Player objectRoot added to scene", this.player.objectRoot);
+
+      this.manager.SetPlayer(this.player);
+      console.log("[Engine] Player set in SceneManager");
+    }
+
     FirstScene(this.manager);
 
     this.MainLoop = this.MainLoop.bind(this);
+    console.log("ENGINE CREATED");
   }
 
   MainLoop(now) 

@@ -11,18 +11,16 @@ export class SceneManager
         this.currentSceneName = null;
         this.onSceneChange = onSceneChange;
         this._disposed = false;
-        //console.log("SceneManager.constructor", { scene, camera, onSceneChange });
+        this._currentLoadId = 0;
     }
 
     async Init() 
     {
         if (this._disposed) return;
-        //console.log("SceneManager.Init: loading models...");
         await Promise.all([
             ModelStore.Load("probe1"), 
             ModelStore.Load("probe2")
         ]);
-        //console.log("SceneManager.Init: models loaded");
     }
 
     SetPlayer(player) 
@@ -37,7 +35,8 @@ export class SceneManager
     
     async SwitchScene(sceneName, params = {}) 
     {
-        //console.log("SceneManager.SwitchScene called", { sceneName, params });
+        console.log(">>> SwitchScene CALLED:", sceneName);
+
         const SceneClass = Scenes[sceneName];
         if (!SceneClass) {
             console.warn(`Scene "${sceneName}" not found in Scenes.js`);
@@ -47,38 +46,49 @@ export class SceneManager
         await this.LoadScene(SceneClass, params);
 
         this.currentSceneName = sceneName;
-        //console.log("SceneManager.SwitchScene: currentSceneName updated", this.currentSceneName);
-
         if (this.onSceneChange) {
-            //console.log("SceneManager.SwitchScene: notifying engine");
             this.onSceneChange(sceneName);
         }
     }
 
     async LoadScene(sceneClass, params = {}) 
-    {
-        //console.log("SceneManager.LoadScene called", { sceneClass, params });
+    {   
+        this._currentLoadId++;
+        const loadId = this._currentLoadId;
+        console.log(`[LoadScene ${loadId}] START`, sceneClass.name);
 
         if (this.currentScene) {
-            //console.log("SceneManager.LoadScene: disposing previous scene", this.currentSceneName);
+            console.log(`[LoadScene ${loadId}] Disposing previous scene`, this.currentSceneName);
             this.currentScene.Dispose();
+            console.log(`[LoadScene ${loadId}] Previous scene disposed`);
         }
 
         const sceneInstance = new sceneClass(this.scene, this.camera, this.player, params);
-        //console.log("SceneManager.LoadScene: new scene instance created", sceneInstance);
+        console.log(`[LoadScene ${loadId}] Scene instance created`, sceneInstance);
 
         this.currentScene = sceneInstance;
 
         if (sceneInstance.init) {
-            //console.log("SceneManager.LoadScene: calling scene.init()");
+            console.log(`[LoadScene ${loadId}] Calling init()`);
             await sceneInstance.init();
+            console.log(`[LoadScene ${loadId}] Init finished`);
+        }
+        console.log(`[LoadScene ${loadId}] UpdateCamera() about to run`);
+        this.UpdateCamera();
+        
+        if (sceneInstance.OnEnter && this.player) {
+            console.log(`[LoadScene ${loadId}] Calling OnEnter with player`, this.player);
+            setTimeout(() => {
+                if (this._currentLoadId === loadId) {
+                    sceneInstance.OnEnter(this.player);
+                    console.log(`[LoadScene ${loadId}] OnEnter finished`);
+                } else {
+                    console.warn(`[LoadScene ${loadId}] OnEnter skipped — another scene load started`);
+                }
+            }, 0);
         }
 
-        if (this.currentScene !== sceneInstance || !this.currentScene) {
-            console.warn("SceneManager.LoadScene: scene instance changed or disposed during init, aborting further setup");
-            return;
-        }
-        this.UpdateCamera();
+        console.log(`[LoadScene ${loadId}] LoadScene complete`);
     }
 
     UpdateCamera()
@@ -86,7 +96,6 @@ export class SceneManager
         if (!this.currentScene) return;
 
         const settings = this.currentScene.cameraSettings || {};
-        //console.log("UpdateCamera applying settings", settings);
 
         try {
             this.camera.near = settings.near ?? this.camera.near;
@@ -101,26 +110,25 @@ export class SceneManager
     async Update(timeScale) 
     {
         if (this.currentScene) {
-            //console.log("SceneManager.Update: updating current scene", this.currentSceneName);
             this.currentScene.Update(timeScale);
         }
 
         const requested = this.currentScene?.requestedScene;
         if (!requested) return;
 
-        const focus = this.currentScene?.transitionFrom ?? null;
-        //console.log("SceneManager.Update: scene transition requested", { requested, focus });
+        console.log("### Scene requested transition to:", requested);
 
-        await this.SwitchScene(requested, { focus });
+        const focus = this.currentScene?.transitionFrom ?? null;
 
         this.currentScene.requestedScene = null;
         this.currentScene.transitionFrom = null;
+
+        await this.SwitchScene(requested, { focus });
     }
 
     Dispose()   
     {
         this._disposed = true;
-        //console.log("SceneManager.Dispose: disposing current scene and models");
         this.currentScene?.Dispose();
         this.currentScene = null;
         ModelStore.Dispose();

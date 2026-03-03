@@ -16,7 +16,7 @@ export function CreateSceneManager(scene, onSceneChange)
 
 export function FirstScene(manager)
 {
-    manager?.SwitchScene("MercuryOrbit");
+    manager?.SwitchScene("TestScene");
 }
 
 export function Update(manager, timeScale = 1) 

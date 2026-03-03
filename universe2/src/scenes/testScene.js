@@ -17,7 +17,7 @@ export class TestScene
         this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
        
-        this.near = 20;
+        this.near = 16;
         this.far = 16000;
         this.cameraSettings = { near: this.near, far: this.far };
         this.scene = scene;
@@ -59,6 +59,34 @@ export class TestScene
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+
+    OnEnter(player) 
+    {
+        console.log("[TestScene] OnEnter called", { player });
+    
+        if (!player) {
+            console.warn("[TestScene] No player passed to OnEnter");
+            return;
+        }
+
+        if (!player.objectRoot) {
+            console.warn("[TestScene] Player objectRoot not ready yet", player);
+            return;
+        }
+
+        const moonPos = this.moon?.GetPosition();
+        const offset = new THREE.Vector3(0, 5, 20);
+
+        console.log("[TestScene] Setting player position to moon + offset", { moonPos, offset });
+        player.SetPosition(
+            moonPos.x + offset.x,
+            moonPos.y + offset.y,
+            moonPos.z + offset.z
+        );
+
+        console.log("[TestScene] Player facing sun at", this.sun?.GetPosition());
+        player.FaceTarget(this.sun.GetPosition());
     }
 
     CreateObjects()
@@ -154,6 +182,7 @@ export class TestScene
 
     Update(dt) 
     {
+        if (!this.sun) return;
         for (const obj of this.objects) {
             obj.Update(dt);
         }
