@@ -28,6 +28,7 @@ export class TestScene
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this.objects = [];
+        this.objectMap = {};
     }
 
     async init() 
@@ -77,6 +78,7 @@ export class TestScene
         });
         this.scene.add(this.sun.orbitPivot);
         this.objects.push(this.sun);
+        this.objectMap[this.entityMap.sun.key] = this.sun;
         
         // Create Earth
         this.earth = createEntity(this.entityMap.earth, {
@@ -85,9 +87,10 @@ export class TestScene
             axialTilt: 23.44,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.earth.parentKey]?.objectRoot,
         });
         this.objects.push(this.earth);
+        this.objectMap[this.entityMap.earth.key] = this.earth;
 
         // Create moon
         this.moon = createEntity(this.entityMap.moon, {
@@ -97,9 +100,10 @@ export class TestScene
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
-            parent: this.earth.objectRoot,
+            parent: this.objectMap[this.entityMap.moon.parentKey]?.objectRoot,
         });
         this.objects.push(this.moon);
+        this.objectMap[this.entityMap.moon.key] = this.moon;
 
         // Create asteroid belt
         this.asteroid_belt = createEntity(this.entityMap.asteroid_belt, {
@@ -110,9 +114,10 @@ export class TestScene
             axialRotationSpeed: 0.0004,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
             thickness: 50,
-            parent: this.sun.objectRoot
+            parent: this.objectMap[this.entityMap.earth.parentKey]?.objectRoot,
         });
         this.objects.push(this.asteroid_belt);
+        this.objectMap[this.entityMap.asteroid_belt.key] = this.asteroid_belt;
         
         // Create saturn
         this.saturn = createEntity(this.entityMap.saturn, {
@@ -122,23 +127,25 @@ export class TestScene
             orbitalTilt: 2.49,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.saturn.parentKey]?.objectRoot,
         });
         this.objects.push(this.saturn);
+        this.objectMap[this.entityMap.saturn.key] = this.saturn;
 
         // Create saturn ring
         this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
             count: 4000,
             size: this.sizeMap.saturn_ring,
             orbitFarRadius: this.sizeMap.saturn * 2,
-            orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn/5,
+            orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
             axialRotationSpeed: 0.005,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
             thickness: 0.6,   
             color: 0xdfe6f0,
-            parent: this.saturn.axialFrame
+            parent: this.objectMap[this.entityMap.saturn_ring.parentKey]?.axialFrame,
         });
         this.objects.push(this.saturn_ring);
+        this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
     }
 
     Update(dt) 

@@ -211,8 +211,8 @@ export class SolarSystem
         this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
             count: 4000,
             size: this.sizeMap.saturn_ring,
-            orbitFarRadius: this.sizeMap.saturn * 1.8,
-            orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 6,
+            orbitFarRadius: this.sizeMap.saturn * 2,
+            orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
             axialRotationSpeed: 0.005,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
             thickness: 0.6,   
