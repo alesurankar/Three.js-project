@@ -3,6 +3,7 @@ import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { createEntity } from "../factories/entityFactory.js";
 import { loadEntities } from "../utils/loadEntities.js"
+import { Player } from "../entities/player.js"
 
 
 export class TestScene
@@ -17,6 +18,7 @@ export class TestScene
         this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
        
+        this.overrideCamera = true;
         this.near = 20;
         this.far = 16000;
         this.cameraSettings = {
@@ -147,6 +149,22 @@ export class TestScene
         });
         this.objects.push(this.saturn_ring);
         this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
+
+        // Create Player
+        this.player = new Player({
+            posToParent: new THREE.Vector3(this.sizeMap.sun * 6, 0, 0),
+            parent: this.sun.objectRoot, // optional, or null if free-floating
+        });
+        this.scene.add(this.player.objectRoot);
+
+        // Attach camera to player
+        this.player.objectRoot.add(this.camera);
+        this.camera.position.set(0, 2, -5); // behind player
+        this.camera.lookAt(this.sun.objectRoot.position);
+
+        // Add player to objects so it can update
+        this.objects.push(this.player);
+        this.objectMap["player"] = this.player;
     }
 
     Update(dt) 
