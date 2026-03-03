@@ -17,8 +17,8 @@ export class Player
 
         // Attach camera to player
         if (this.camera) {
-            this.objectRoot.add(this.camera);
-            this.camera.position.set(0, 2, -5);
+            this.orbitPivot.add(this.camera);
+            this.camera.position.set(0, 2, 0);
         }
     }
 
@@ -46,6 +46,29 @@ export class Player
     Update(dt) 
     {
         this.gameControls.Update();
+        if (!this.gameControls.controls.isLocked) return;
+
+        const move = this.gameControls.move;
+        const speed = move.fast ? 500 : 50;
+
+        const velocity = new THREE.Vector3();
+
+        const forward = new THREE.Vector3();
+        this.camera.getWorldDirection(forward);
+        forward.y = 0;
+        forward.normalize();
+
+        const up = new THREE.Vector3(0, 1, 0);
+        const right = new THREE.Vector3().crossVectors(forward, up).normalize();
+
+        if (move.forward) velocity.add(forward.multiplyScalar(speed));
+        if (move.backward) velocity.add(forward.multiplyScalar(-speed));
+        if (move.left) velocity.add(right.multiplyScalar(-speed));
+        if (move.right) velocity.add(right.multiplyScalar(speed));
+        if (move.up) velocity.y += speed;
+        if (move.down) velocity.y -= speed;
+
+        this.objectRoot.position.addScaledVector(velocity, dt);
     }
 
     Dispose()
@@ -57,7 +80,7 @@ export class Player
             this.gameControls.Dispose();
             this.gameControls = null;
         }
-        
+
         this.objectRoot = null;
         this.orbitPivot = null;
         this.camera = null;

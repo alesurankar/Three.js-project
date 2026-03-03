@@ -69,24 +69,6 @@ export class GameControls
   Update() 
   {
     if (!this.controls.isLocked) return;
-
-    const velocity = new THREE.Vector3();
-    const direction = new THREE.Vector3();
-    this.camera.getWorldDirection(direction);
-
-    const speed = this.move.fast ? 50 : 5;
-
-    if (this.move.forward) velocity.add(direction.clone().multiplyScalar(speed));
-    if (this.move.backward) velocity.add(direction.clone().multiplyScalar(-speed));
-
-    const left = new THREE.Vector3().crossVectors(this.camera.up, direction).normalize();
-    if (this.move.left) velocity.add(left.multiplyScalar(speed));
-    if (this.move.right) velocity.add(left.multiplyScalar(-speed));
-
-    if (this.move.up) velocity.y += speed;
-    if (this.move.down) velocity.y -= speed;
-
-    this.controls.object.position.add(velocity);
   }
 
   #OnKeyDown(event) 
