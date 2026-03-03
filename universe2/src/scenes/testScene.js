@@ -44,7 +44,8 @@ export class TestScene
             "moon",
             "saturn",
             "saturn_ring",
-            "asteroid_belt"
+            "asteroid_belt",
+            "probe1",
         ];
 
         const scaleMap = {
@@ -152,7 +153,9 @@ export class TestScene
 
         // Create Player
         this.player = new Player({
+            camera: this.camera,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 6, 0, 0),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(10),
             parent: this.sun.objectRoot, // optional, or null if free-floating
         });
         this.scene.add(this.player.objectRoot);
@@ -160,11 +163,18 @@ export class TestScene
         // Attach camera to player
         this.player.objectRoot.add(this.camera);
         this.camera.position.set(0, 2, -5); // behind player
-        this.camera.lookAt(this.sun.objectRoot.position);
+        this.camera.lookAt(this.player.objectRoot.position);
 
         // Add player to objects so it can update
         this.objects.push(this.player);
         this.objectMap["player"] = this.player;
+
+        this.probe1 = createEntity(this.entityMap.probe1, {
+            size: 0.3,
+            parent: this.player.objectRoot
+        });
+        this.objects.push(this.probe1);
+        this.objectMap[this.entityMap.probe1.key] = this.probe1;
     }
 
     Update(dt) 
