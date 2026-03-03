@@ -101,7 +101,7 @@ export class SolarSystem
             size: this.sizeMap.sun,
             lightType: "pointLight",
             posToParent: new THREE.Vector3(0, 0, 0),
-            axialTilt: 7.25,
+            axialTilt: this.entityMap.sun.axialTilt,
             axialRotationSpeed: StarSystem.AxialRotationInDays(25),
             orbitalSpeed: 0,
             detail: 4,
@@ -116,7 +116,7 @@ export class SolarSystem
         this.mercury = createEntity(this.entityMap.mercury, {
             size: this.sizeMap.mercury,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 4, 0, 0),
-            axialTilt: 0.034,
+            axialTilt: this.entityMap.mercury.axialTilt,
             orbitalTilt: 7.00,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
@@ -129,7 +129,7 @@ export class SolarSystem
         this.venus = createEntity(this.entityMap.venus, {
             size: this.sizeMap.venus,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 7, 0, 0),
-            axialTilt: 177.36,
+            axialTilt: this.entityMap.venus.axialTilt,
             orbitalTilt: 3.39,
             axialRotationSpeed: StarSystem.AxialRotationInDays(243),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(224.7),
@@ -142,7 +142,7 @@ export class SolarSystem
         this.earth = createEntity(this.entityMap.earth, {
             size: this.sizeMap.earth,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 10, 0, 0),
-            axialTilt: 23.44,
+            axialTilt: this.entityMap.earth.axialTilt,
             orbitalTilt: 0,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
@@ -155,7 +155,7 @@ export class SolarSystem
         this.moon = createEntity(this.entityMap.moon, {
             size: this.sizeMap.moon,
             posToParent: new THREE.Vector3(this.sizeMap.earth * 10, 0, 0),
-            axialTilt: 6.68,
+            axialTilt: this.entityMap.moon.axialTilt,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
@@ -168,7 +168,7 @@ export class SolarSystem
         this.mars = createEntity(this.entityMap.mars, {
             size: this.sizeMap.mars,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 15, 0, 0),
-            axialTilt: 25.19,
+            axialTilt: this.entityMap.mars.axialTilt,
             orbitalTilt: 1.85,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1.03),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(687),
@@ -195,7 +195,7 @@ export class SolarSystem
         this.jupiter = createEntity(this.entityMap.jupiter, {
             size: this.sizeMap.jupiter,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 26, 0, 0),
-            axialTilt: 3.13,
+            axialTilt: this.entityMap.jupiter.axialTilt,
             orbitalTilt: 1.31,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.41),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(4333),
@@ -208,7 +208,7 @@ export class SolarSystem
         this.saturn = createEntity(this.entityMap.saturn, {
             size: this.sizeMap.saturn,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 36, 0, 0),
-            axialTilt: 26.73,
+            axialTilt: this.entityMap.saturn.axialTilt,
             orbitalTilt: 2.49,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
@@ -236,7 +236,7 @@ export class SolarSystem
         this.uranus = createEntity(this.entityMap.uranus, {
             size: this.sizeMap.uranus,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 46, 0, 0),
-            axialTilt: 97.77,
+            axialTilt: this.entityMap.uranus.axialTilt,
             orbitalTilt: 0.77,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.72),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(30687),
@@ -265,7 +265,7 @@ export class SolarSystem
         this.neptune = createEntity(this.entityMap.neptune, {
             size: this.sizeMap.neptune,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 56, 0, 0),
-            axialTilt: 28.32,
+            axialTilt: this.entityMap.neptune.axialTilt,
             orbitalTilt: 1.77,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.67),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(60190),
@@ -278,7 +278,7 @@ export class SolarSystem
         this.pluto = createEntity(this.entityMap.pluto, {
             size: this.sizeMap.pluto,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 65, 0, 0),
-            axialTilt: 119.61,
+            axialTilt: this.entityMap.pluto.axialTilt,
             orbitalTilt: 17.16,
             axialRotationSpeed: StarSystem.AxialRotationInDays(6.39),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(90560),
