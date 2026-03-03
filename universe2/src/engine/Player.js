@@ -18,8 +18,18 @@ export class Player
         // Attach camera to player
         if (this.camera) {
             this.orbitPivot.add(this.camera);
-            this.camera.position.set(0, 2, 0);
+            this.camera.position.set(0, 10, -20);
+            this.camera.lookAt(new THREE.Vector3(0, 1, 0));
         }
+
+        // --- Add player model ---
+        const geometry = new THREE.CapsuleGeometry(1, 2, 4, 8);
+        const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+        this.model = new THREE.Mesh(geometry, material);
+
+        this.model.position.y = 1;
+        this.objectRoot.add(this.model);
+        // -------------------------
     }
 
     AttachTo(parent)
@@ -34,7 +44,6 @@ export class Player
 
     Move(delta) 
     {
-        // delta: THREE.Vector3
         this.objectRoot.position.add(delta);
     }
 
@@ -79,6 +88,14 @@ export class Player
         if (this.gameControls) {
             this.gameControls.Dispose();
             this.gameControls = null;
+        }
+
+        // Dispose model
+        if (this.model) {
+            this.model.geometry.dispose();
+            if (this.model.material.map) this.model.material.map.dispose();
+            this.model.material.dispose();
+            this.model = null;
         }
 
         this.objectRoot = null;
