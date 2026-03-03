@@ -165,5 +165,8 @@ export class TestScene
             SkyBox.Dispose(this.scene.background);
             this.scene.background = null;
         }
+        
+        // Clear objectMap to remove references
+        this.objectMap = {};
     }
 }

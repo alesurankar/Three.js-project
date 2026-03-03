@@ -33,6 +33,7 @@ export class SolarSystem
         this.camera = camera;
         this._tempVec = new THREE.Vector3();
         this.objects = [];
+        this.objectMap = {};
     }
 
     async init() 
@@ -109,6 +110,7 @@ export class SolarSystem
         });
         this.scene.add(this.sun.orbitPivot);
         this.objects.push(this.sun);
+        this.objectMap[this.entityMap.sun.key] = this.sun;
 
         // Create Mercury
         this.mercury = createEntity(this.entityMap.mercury, {
@@ -118,9 +120,10 @@ export class SolarSystem
             orbitalTilt: 7.00,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.mercury.parentKey]?.objectRoot,
         });
         this.objects.push(this.mercury);
+        this.objectMap[this.entityMap.mercury.key] = this.mercury;
 
         // Create venus
         this.venus = createEntity(this.entityMap.venus, {
@@ -130,9 +133,10 @@ export class SolarSystem
             orbitalTilt: 3.39,
             axialRotationSpeed: StarSystem.AxialRotationInDays(243),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(224.7),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.venus.parentKey]?.objectRoot,
         });
         this.objects.push(this.venus);
+        this.objectMap[this.entityMap.venus.key] = this.venus;
 
         // Create Earth
         this.earth = createEntity(this.entityMap.earth, {
@@ -142,9 +146,10 @@ export class SolarSystem
             orbitalTilt: 0,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.earth.parentKey]?.objectRoot,
         });
         this.objects.push(this.earth);
+        this.objectMap[this.entityMap.earth.key] = this.earth;
 
         // Create moon
         this.moon = createEntity(this.entityMap.moon, {
@@ -154,9 +159,10 @@ export class SolarSystem
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
-            parent: this.earth.objectRoot,
+            parent: this.objectMap[this.entityMap.moon.parentKey]?.objectRoot,
         });
         this.objects.push(this.moon);
+        this.objectMap[this.entityMap.moon.key] = this.moon;
 
         // Create mars
         this.mars = createEntity(this.entityMap.mars, {
@@ -166,9 +172,10 @@ export class SolarSystem
             orbitalTilt: 1.85,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1.03),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(687),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.mars.parentKey]?.objectRoot,
         });
         this.objects.push(this.mars);
+        this.objectMap[this.entityMap.mars.key] = this.mars;
 
         // Create asteroid belt
         this.asteroid_belt = createEntity(this.entityMap.asteroid_belt, {
@@ -179,9 +186,10 @@ export class SolarSystem
             axialRotationSpeed: 0.0004,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
             thickness: 50,
-            parent: this.sun.objectRoot
+            parent: this.objectMap[this.entityMap.asteroid_belt.parentKey]?.objectRoot,
         });
         this.objects.push(this.asteroid_belt);
+        this.objectMap[this.entityMap.asteroid_belt.key] = this.asteroid_belt;
         
         // Create jupiter
         this.jupiter = createEntity(this.entityMap.jupiter, {
@@ -191,9 +199,10 @@ export class SolarSystem
             orbitalTilt: 1.31,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.41),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(4333),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.jupiter.parentKey]?.objectRoot,
         });
         this.objects.push(this.jupiter);
+        this.objectMap[this.entityMap.jupiter.key] = this.jupiter;
         
         // Create saturn
         this.saturn = createEntity(this.entityMap.saturn, {
@@ -203,9 +212,10 @@ export class SolarSystem
             orbitalTilt: 2.49,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.saturn.parentKey]?.objectRoot,
         });
         this.objects.push(this.saturn);
+        this.objectMap[this.entityMap.saturn.key] = this.saturn;
 
         // Create saturn ring
         this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
@@ -217,9 +227,10 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
             thickness: 0.6,   
             color: 0xdfe6f0,
-            parent: this.saturn.axialFrame
+            parent: this.objectMap[this.entityMap.saturn_ring.parentKey]?.axialFrame,
         });
         this.objects.push(this.saturn_ring);
+        this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
         
         // Create uranus
         this.uranus = createEntity(this.entityMap.uranus, {
@@ -229,9 +240,10 @@ export class SolarSystem
             orbitalTilt: 0.77,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.72),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(30687),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.uranus.parentKey]?.objectRoot,
         });
         this.objects.push(this.uranus);
+        this.objectMap[this.entityMap.uranus.key] = this.uranus;
 
         // Create uranus ring
         this.uranus_ring = createEntity(this.entityMap.uranus_ring, {
@@ -244,9 +256,10 @@ export class SolarSystem
             thickness: 0.3,   
             //color: 0x444444, // real, to dark
             color: 0xffffff, // not real
-            parent: this.uranus.axialFrame
+            parent: this.objectMap[this.entityMap.uranus_ring.parentKey]?.axialFrame,
         });
         this.objects.push(this.uranus_ring);
+        this.objectMap[this.entityMap.uranus_ring.key] = this.uranus_ring;
         
         // Create neptune
         this.neptune = createEntity(this.entityMap.neptune, {
@@ -256,9 +269,10 @@ export class SolarSystem
             orbitalTilt: 1.77,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.67),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(60190),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.neptune.parentKey]?.objectRoot,
         });
         this.objects.push(this.neptune);
+        this.objectMap[this.entityMap.neptune.key] = this.neptune;
         
         // Create pluto
         this.pluto = createEntity(this.entityMap.pluto, {
@@ -268,9 +282,10 @@ export class SolarSystem
             orbitalTilt: 17.16,
             axialRotationSpeed: StarSystem.AxialRotationInDays(6.39),
             orbitalSpeed: StarSystem.OrbitalRotationInDays(90560),
-            parent: this.sun.objectRoot,
+            parent: this.objectMap[this.entityMap.pluto.parentKey]?.objectRoot,
         });
         this.objects.push(this.pluto);
+        this.objectMap[this.entityMap.pluto.key] = this.pluto;
 
         // Create kuiper belt
         this.kuiper_belt = createEntity(this.entityMap.kuiper_belt, {
@@ -282,9 +297,10 @@ export class SolarSystem
             orbitalSpeed: StarSystem.OrbitalRotationInDays(100000),
             thickness: 250,
             color: 0xaaaaaa,
-            parent: this.sun.objectRoot
+            parent: this.objectMap[this.entityMap.kuiper_belt.parentKey]?.objectRoot,
         });
         this.objects.push(this.kuiper_belt);
+        this.objectMap[this.entityMap.kuiper_belt.key] = this.kuiper_belt;
     }
 
     Portals()
@@ -367,5 +383,8 @@ export class SolarSystem
             SkyBox.Dispose(this.scene.background);
             this.scene.background = null;
         }
+        
+        // Clear objectMap to remove references
+        this.objectMap = {};
     }
 }
