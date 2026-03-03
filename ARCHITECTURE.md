@@ -5,7 +5,7 @@
 This document describes the architecture and design decisions behind a Three.js-based system for managing multiple independent 3D scenes.  
 The project currently supports 10+ scenes and is designed to scale further as complexity increases.
 
-The goal of the project is to explore how frontend architectures can remain performant and maintainable in complex WebGL applications.
+The goal of the project is to explore how frontend architectures can remain performant while complexity grows.
 
 ---
 
@@ -96,7 +96,7 @@ The goal of this transition is to improve:
 
 The system was designed with scalability in mind through:
 
-- lazy initialization of scenes
+- async initialization of scenes
 - conditional rendering based on activity and visibility
 - shared rendering utilities
 - explicit scene lifecycle management

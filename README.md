@@ -27,7 +27,7 @@ This project explores how to design frontend architectures that remain performan
 ## Key Ideas
 - Modular scene management instead of a single monolithic scene
 - Centralised rendering and lifecycle control
-- Performance-aware design for complex WebGL applications
+- Performance-aware design
 
 ## Features
 - Multi-scene architecture (10+ scenes, designed for scalability)
@@ -36,7 +36,9 @@ This project explores how to design frontend architectures that remain performan
 - Experimental engine-like structure
 
 ## Tech Stack
+- Next.js
 - Three.js
+- Express
 - JavaScript
 - WebGL
 
