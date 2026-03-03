@@ -25,6 +25,11 @@ export class SceneManager
         //console.log("SceneManager.Init: models loaded");
     }
 
+    SetPlayer(player) 
+    {
+        this.player = player;
+    }
+
     GetCurrentSceneName() 
     {
         return this.currentSceneName ?? "None";
@@ -60,7 +65,7 @@ export class SceneManager
             this.currentScene.Dispose();
         }
 
-        const sceneInstance = new sceneClass(this.scene, this.camera, params);
+        const sceneInstance = new sceneClass(this.scene, this.camera, this.player, params);
         //console.log("SceneManager.LoadScene: new scene instance created", sceneInstance);
 
         this.currentScene = sceneInstance;
@@ -96,12 +101,8 @@ export class SceneManager
         //console.log("UpdateCamera applying settings", settings);
 
         try {
-            this.camera.position.set(settings.pos.x, settings.pos.y, settings.pos.z);
-            this.camera.lookAt(settings.lookAt.x, settings.lookAt.y, settings.lookAt.z);
-            this.camera.fov = settings.fov ?? this.camera.fov;
             this.camera.near = settings.near ?? this.camera.near;
             this.camera.far = settings.far ?? this.camera.far;
-            this.camera.updateProjectionMatrix();
             //console.log("Camera updated:", this.camera.position);
         } 
         catch (err) {

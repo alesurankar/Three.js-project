@@ -7,9 +7,8 @@ import { loadEntities } from "../../utils/loadEntities.js"
 
 export class SolarSystem 
 {
-    constructor(scene, camera, params = {}) 
+    constructor(scene, camera, player, params = {}) 
     {
-        this.params = params;
         this.overrideCamera = false;
         this.active = true;
         StarSystem.timeFactor=100
@@ -22,15 +21,13 @@ export class SolarSystem
         this.near = 12;
         this.far = 16000;
         this.cameraSettings = {
-            pos: { x:1500, y:1500, z:0 },
-            lookAt: { x:0, y:0, z:0 },
-            fov: 40,
             near: this.near,
             far: this.far
         };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
+        this.player = player;
         this._tempVec = new THREE.Vector3();
         this.objects = [];
         this.objectMap = {};
@@ -354,8 +351,10 @@ export class SolarSystem
         if (!this.sceneTriggers) return;
 
         const pos = this._tempVec;
+        const playerPos = this.player.objectRoot.position;
+
         this.sun.objectRoot.getWorldPosition(pos);
-        const distanceToParent = this.camera.position.distanceTo(pos);
+        const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "MilkyWay";
             this.transitionFrom = "solar_system";
@@ -363,7 +362,7 @@ export class SolarSystem
 
         for (const trigger of this.sceneTriggers) {
             trigger.obj.objectRoot.getWorldPosition(pos);
-            const distance = this.camera.position.distanceTo(pos);
+            const distance = playerPos.distanceTo(pos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
                 break;

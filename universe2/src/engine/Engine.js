@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Update as SceneUpdate, CreateSceneManager } from "./SceneSetup.js";
+import { Update as SceneUpdate, CreateSceneManager, FirstScene } from "./SceneSetup.js";
 import { CreateRenderer } from "./RendererSetup.js";
 import { Player } from "./Player.js"
 
@@ -31,6 +31,8 @@ export class Engine
         container: container
     });
     this.Scene.add(this.player.objectRoot);
+    this.manager.SetPlayer(this.player);
+    FirstScene(this.manager);
 
     this.MainLoop = this.MainLoop.bind(this);
   }
