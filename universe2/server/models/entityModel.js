@@ -36,6 +36,11 @@ const entitySchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    
+    axialTilt: {
+      type: Number,
+      required: true,
+    }
   },
   //{
   //  timestamps: true,
