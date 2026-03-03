@@ -38,7 +38,6 @@ export class SceneManager
     async SwitchScene(sceneName, params = {}) 
     {
         //console.log("SceneManager.SwitchScene called", { sceneName, params });
-
         const SceneClass = Scenes[sceneName];
         if (!SceneClass) {
             console.warn(`Scene "${sceneName}" not found in Scenes.js`);
@@ -79,23 +78,12 @@ export class SceneManager
             console.warn("SceneManager.LoadScene: scene instance changed or disposed during init, aborting further setup");
             return;
         }
-
-        if (!sceneInstance.overrideCamera) {
-            //console.log("SceneManager.LoadScene: updating camera from scene settings");
-            this.UpdateCamera();
-        } 
-        else {
-            //console.log("SceneManager.LoadScene: scene overrides camera, skipping UpdateCamera");
-        }
+        this.UpdateCamera();
     }
 
     UpdateCamera()
     {
         if (!this.currentScene) return;
-        if (this.currentScene.overrideCamera) {
-            //console.log("UpdateCamera skipped: currentScene.overrideCamera is true");
-            return;
-        }
 
         const settings = this.currentScene.cameraSettings || {};
         //console.log("UpdateCamera applying settings", settings);
@@ -103,7 +91,7 @@ export class SceneManager
         try {
             this.camera.near = settings.near ?? this.camera.near;
             this.camera.far = settings.far ?? this.camera.far;
-            //console.log("Camera updated:", this.camera.position);
+            this.camera.updateProjectionMatrix();
         } 
         catch (err) {
             console.error("UpdateCamera error: invalid camera settings?", err, settings);

@@ -9,7 +9,6 @@ export class SolarSystem
 {
     constructor(scene, camera, player, params = {}) 
     {
-        this.overrideCamera = false;
         this.active = true;
         StarSystem.timeFactor=100
 
@@ -20,10 +19,7 @@ export class SolarSystem
         
         this.near = 12;
         this.far = 16000;
-        this.cameraSettings = {
-            near: this.near,
-            far: this.far
-        };
+        this.cameraSettings = { near: this.near,far: this.far };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
@@ -340,7 +336,6 @@ export class SolarSystem
             pos.z + offset
         );
         this.camera.lookAt(pos);
-        this.overrideCamera = true;
     }
     
     Update(dt) 

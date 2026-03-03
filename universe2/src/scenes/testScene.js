@@ -7,7 +7,7 @@ import { loadEntities } from "../utils/loadEntities.js"
 
 export class TestScene
 {
-    constructor(scene, camera) 
+    constructor(scene, camera, player) 
     {  
         this.active = true;
         StarSystem.timeFactor=100
@@ -17,19 +17,13 @@ export class TestScene
         this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
        
-        this.overrideCamera = true;
         this.near = 20;
         this.far = 16000;
-        this.cameraSettings = {
-            pos: { x:1000, y:100, z:-200 },
-            lookAt: { x:800, y:0, z:0 },
-            fov: 40,
-            near: this.near,
-            far: this.far
-        };
+        this.cameraSettings = { near: this.near, far: this.far };
         this.scene = scene;
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
+        this.player = player;
         this.objects = [];
         this.objectMap = {};
     }
@@ -160,7 +154,9 @@ export class TestScene
 
     Update(dt) 
     {
-        this.objects.forEach(obj => obj.Update(dt));
+        for (const obj of this.objects) {
+            obj.Update(dt);
+        }
     }
 
     Dispose() 
