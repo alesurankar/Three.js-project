@@ -32,6 +32,25 @@ export class Player
         // -------------------------
     }
 
+    FaceTarget(targetPosition) 
+    {
+        if (!targetPosition) return;
+        // Make a copy so we don’t accidentally modify the original
+        const target = targetPosition.clone();
+
+        // Keep player upright
+        target.y = this.objectRoot.position.y;
+
+        // Rotate player to look at the target
+        this.objectRoot.lookAt(target);
+
+        // Optional: adjust camera offset if you want the camera behind the player
+        if (this.camera) {
+            this.camera.position.set(0, 10, -20);
+            this.camera.lookAt(this.objectRoot.position.clone().add(new THREE.Vector3(0, 1, 0)));
+        }
+    }
+
     AttachTo(parent)
     {
         parent.add(this.objectRoot);

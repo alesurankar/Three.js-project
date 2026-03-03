@@ -85,6 +85,9 @@ export class MercuryOrbit
 
         // Assign target now that mercury exists
         this.sun.light.target = this.mercury.objectRoot;
+        const mercuryPos = this.mercury.GetPosition();
+        this.player.SetPosition(mercuryPos.x, mercuryPos.y, mercuryPos.z);
+        this.player.FaceTarget(this.sun.GetPosition());
     }
 
     Update(dt) 

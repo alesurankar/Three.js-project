@@ -59,6 +59,14 @@ export class CelestialBody
         if (parent) parent.add(this.orbitPivot);
     }
 
+    GetPosition() 
+    {
+        if (!this.objectRoot) return new THREE.Vector3();
+        const pos = new THREE.Vector3();
+        this.objectRoot.getWorldPosition(pos);
+        return pos;
+    }
+
     Update(dt) 
     {
         // Orbit parent 
