@@ -51,6 +51,11 @@ export class Player
         this.objectRoot.position.set(x, y, z);
     }
 
+    Lock()
+    {
+        this.gameControls.ToggleLock();
+    }
+
     Update(dt) 
     {
         this.gameControls.Update();

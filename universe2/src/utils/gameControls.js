@@ -35,11 +35,8 @@ export class GameControls
     this._onKeyDown = (e) => this.#OnKeyDown(e);
     this._onKeyUp = (e) => this.#OnKeyUp(e);
     this._onMouseDown = (event) => {
-      if (event.button === 0) {
-        if (!this.controls.isLocked) this.Lock(); 
-        console.log("Left mouse button pressed");
-      }
-        if (event.button === 2) console.log("Right mouse button pressed");
+      if (event.button === 0) console.log("Left mouse button pressed");
+      if (event.button === 2) console.log("Right mouse button pressed");
     };
     this._onMouseUp = (event) => {
       if (event.button === 0) console.log("Left mouse button released");
