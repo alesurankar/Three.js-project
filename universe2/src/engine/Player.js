@@ -6,20 +6,16 @@ export class Player
     constructor({ camera, container} = {}) 
     {
         this.camera = camera;
-        this.gameControls = new GameControls(camera, container);
 
         // Root object
         this.objectRoot = new THREE.Object3D();
-
-        // Optional pivot for future orbit logic
-        this.orbitPivot = new THREE.Object3D();
-        this.objectRoot.add(this.orbitPivot);
+        this.gameControls = new GameControls(this.objectRoot, container);
 
         // Attach camera to player
         if (this.camera) {
-            this.orbitPivot.add(this.camera);
-            this.camera.position.set(0, 10, -20);
-            this.camera.lookAt(new THREE.Vector3(0, 1, 0));
+            this.objectRoot.add(this.camera);
+            this.camera.position.set(0, 16, 16);
+            this.camera.lookAt(new THREE.Vector3(0, 4, 0));
         }
 
         // --- Add player model ---
@@ -27,9 +23,8 @@ export class Player
         const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
         this.model = new THREE.Mesh(geometry, material);
 
-        this.model.position.y = 1;
+        this.model.position.y = 1; // lift it above the ground
         this.objectRoot.add(this.model);
-        // -------------------------
     }
 
     FaceTarget(targetPosition) 
@@ -38,17 +33,8 @@ export class Player
         // Make a copy so we don’t accidentally modify the original
         const target = targetPosition.clone();
 
-        // Keep player upright
-        target.y = this.objectRoot.position.y;
-
         // Rotate player to look at the target
         this.objectRoot.lookAt(target);
-
-        // Optional: adjust camera offset if you want the camera behind the player
-        if (this.camera) {
-            this.camera.position.set(0, 5, -20);
-            this.camera.lookAt(this.objectRoot.position.clone().add(new THREE.Vector3(0, 1, 0)));
-        }
     }
 
     AttachTo(parent)
@@ -65,21 +51,10 @@ export class Player
         this.objectRoot.position.set(x, y, z);
     }
 
-    Move(delta) 
-    {
-        this.objectRoot.position.add(delta);
-    }
-
-    Lock()
-    {
-        this.gameControls.ToggleLock();
-    }
-
     Update(dt) 
     {
         this.gameControls.Update();
-        if (!this.gameControls.controls.isLocked) return;
-
+        
         const move = this.gameControls.move;
         const speed = move.fast ? 500 : 50;
 
@@ -87,7 +62,6 @@ export class Player
 
         const forward = new THREE.Vector3();
         this.camera.getWorldDirection(forward);
-        forward.y = 0;
         forward.normalize();
 
         const up = new THREE.Vector3(0, 1, 0);
@@ -122,7 +96,6 @@ export class Player
         }
 
         this.objectRoot = null;
-        this.orbitPivot = null;
         this.camera = null;
     }
 }

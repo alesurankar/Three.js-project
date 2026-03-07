@@ -8,9 +8,6 @@ export class GameControls
     if (!domElement) {
       throw new Error("GameControls requires a DOM element (container)");
     }
-
-    this.camera = camera;
-    this.domElement = domElement;
     this.controls = new PointerLockControls(camera, domElement);
     this.onLock = null;
     this.onUnlock = null;
@@ -37,23 +34,28 @@ export class GameControls
 
     this._onKeyDown = (e) => this.#OnKeyDown(e);
     this._onKeyUp = (e) => this.#OnKeyUp(e);
-    this._onEsc = (e) => {
-      if (e.code === "Escape") this.Unlock();
+    this._onMouseDown = (event) => {
+      if (event.button === 0) {
+        if (!this.controls.isLocked) this.Lock(); 
+        console.log("Left mouse button pressed");
+      }
+        if (event.button === 2) console.log("Right mouse button pressed");
     };
+    this._onMouseUp = (event) => {
+      if (event.button === 0) console.log("Left mouse button released");
+      if (event.button === 2) console.log("Right mouse button released");
+    };
+    this._onWheel = (event) => {
+      if (event.deltaY < 0) console.log("Scrolled UP");
+      if (event.deltaY > 0) console.log("Scrolled DOWN");
+      event.preventDefault();
+    }
 
     window.addEventListener("keydown", this._onKeyDown);
     window.addEventListener("keyup", this._onKeyUp);
-    window.addEventListener("keydown", this._onEsc);
-  }
-
-  ToggleLock() 
-  {
-    if (this.controls.isLocked) {
-      this.controls.unlock();
-    } 
-    else {
-      this.controls.lock();
-    }
+    window.addEventListener("mousedown", this._onMouseDown);
+    window.addEventListener("mouseup", this._onMouseUp);
+    window.addEventListener("wheel", this._onWheel, { passive: false });
   }
 
   Lock() 
@@ -64,6 +66,11 @@ export class GameControls
   Unlock() 
   {
     this.controls.unlock();
+  }
+
+  ToggleLock() 
+  {
+    this.controls.isLocked ? this.Unlock() : this.Lock();
   }
 
   Update() 
@@ -78,9 +85,9 @@ export class GameControls
       case "KeyS": this.move.backward = true; break;
       case "KeyA": this.move.left = true; break;
       case "KeyD": this.move.right = true; break;
+      case "Space": this.move.up = true; break;
       case "KeyV": this.move.down = true; break;
       case "ShiftLeft": this.move.fast = true; break;
-      case "Space": this.move.up = true; break;
     }
   }
 
@@ -91,9 +98,9 @@ export class GameControls
       case "KeyS": this.move.backward = false; break;
       case "KeyA": this.move.left = false; break;
       case "KeyD": this.move.right = false; break;
+      case "Space": this.move.up = false; break;
       case "KeyV": this.move.down = false; break;
       case "ShiftLeft": this.move.fast = false; break;
-      case "Space": this.move.up = false; break;
     }
   }
 
@@ -101,7 +108,9 @@ export class GameControls
   {
     window.removeEventListener("keydown", this._onKeyDown);
     window.removeEventListener("keyup", this._onKeyUp);
-    window.removeEventListener("keydown", this._onEsc);
+    window.removeEventListener("mousedown", this._onMouseDown);
+    window.removeEventListener("mouseup", this._onMouseUp);
+    window.removeEventListener("wheel", this._onWheel);
     
     this.controls.dispose?.();
   }
