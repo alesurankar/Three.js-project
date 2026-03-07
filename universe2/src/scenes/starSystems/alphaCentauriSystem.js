@@ -7,7 +7,7 @@ import { loadEntities } from "../../utils/loadEntities.js"
 
 export class AlphaCentauriSystem 
 {
-    constructor(scene, camera, params = {}) 
+    constructor(scene, camera, player, focus = {}) 
     {
         this.params = params;
         this.overrideCamera = false;

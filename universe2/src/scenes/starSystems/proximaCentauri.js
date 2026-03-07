@@ -7,7 +7,7 @@ import { loadEntities } from "../../utils/loadEntities.js"
 
 export class ProximaCentauri
 {
-    constructor(scene, camera) 
+    constructor(scene, camera, player, focus = {}) 
     {
         this.active = true;
         StarSystem.timeFactor=1

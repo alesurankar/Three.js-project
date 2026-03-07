@@ -49,10 +49,10 @@ export class Engine
     console.log("ENGINE CREATED");
   }
 
-  // Step 14 && Async Step 3 
+  // Async Step 3 
   MainLoop(now) 
   {
-    console.log("Step 14 && Async Step 3");
+    //console.log("Async Step 3: Engine.js: MainLoop()");
     now /= 1000;
     const frameTime = now - this.lastTime;
     this.lastTime = now;

@@ -7,7 +7,7 @@ import api from "../../utils/api";
 
 export class JupiterOrbit
 {
-    constructor(scene, camera) 
+    constructor(scene, camera, player, focus = {}) 
     {
         this.active = true;
         StarSystem.timeFactor=1

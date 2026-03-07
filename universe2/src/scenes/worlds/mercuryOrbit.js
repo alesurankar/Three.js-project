@@ -7,7 +7,7 @@ import { loadEntities } from "../../utils/loadEntities.js"
 
 export class MercuryOrbit
 {
-    constructor(scene, camera, player) 
+    constructor(scene, camera, player, focus = {}) 
     {
         this.active = true;
         StarSystem.timeFactor=1
@@ -24,6 +24,7 @@ export class MercuryOrbit
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this.player = player;
+        this.focus = focus;
         this._tempVec = new THREE.Vector3();
         this.objects = [];
         this.objectMap = {};
@@ -48,10 +49,6 @@ export class MercuryOrbit
             this.sizeMap = sizeMap;
             this.exitDistance = this.sizeMap.mercury * 20;
             this.CreateObjects();
-            
-            const mercuryPos = this.mercury.GetPosition();
-            this.player.SetPosition(mercuryPos.x, mercuryPos.y, mercuryPos.z);
-            this.player.FaceTarget(this.sun.GetPosition());
         }
         catch (err) {
             console.error("Failed to load entities", err);
@@ -60,6 +57,19 @@ export class MercuryOrbit
     
     OnEnter(player) 
     {
+        console.log("Step 13: mercuryOrbit.js: OnEnter()");
+        if (!player) {
+            console.warn("[MercuryOrbit] No player passed to OnEnter");
+            return;
+        }
+
+        if (!player.objectRoot) {
+            console.warn("[MercuryOrbit] Player objectRoot not ready yet", player);
+            return;
+        }
+        const mercuryPos = this.mercury.GetPosition();
+        this.player.SetPosition(mercuryPos.x, mercuryPos.y, mercuryPos.z);
+        this.player.FaceTarget(this.sun.GetPosition());
     }
     
     CreateObjects()
@@ -110,7 +120,7 @@ export class MercuryOrbit
         const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
-            this.transitionFrom = this.entityMap.mercury.key;
+            this.transitionFrom = "mercury";
         }
     }
 

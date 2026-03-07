@@ -7,7 +7,7 @@ import { loadEntities } from "../../utils/loadEntities.js"
 
 export class SolarSystem 
 {
-    constructor(scene, camera, player, params = {}) 
+    constructor(scene, camera, player, focus = {}) 
     {
         this.active = true;
         StarSystem.timeFactor=100
@@ -24,6 +24,7 @@ export class SolarSystem
         this.scene.background = SkyBox.Load("StarBox");
         this.camera = camera;
         this.player = player;
+        this.focus = focus;
         this._tempVec = new THREE.Vector3();
         this.objects = [];
         this.objectMap = {};
@@ -74,16 +75,7 @@ export class SolarSystem
             this.sizeMap = sizeMap;
             this.exitDistance = this.sizeMap.sun * 100;
             this.CreateObjects();
-            const sunPos = this.sun.GetPosition();
-            this.player.SetPosition(sunPos.x, sunPos.y, sunPos.z);
-            this.player.FaceTarget(this.mercury.GetPosition());
             this.Portals();
-
-            if (this.params?.focus) {
-                // console.log("Init focus param:", this.params.focus);
-                // console.log("Calling PositionEntryCamera via requestAnimationFrame...");
-                requestAnimationFrame(() => this.PlayerEntryPosition());
-            }
         }
         catch (err) {
             console.error("Failed to load entities", err);
@@ -92,6 +84,19 @@ export class SolarSystem
     
     OnEnter(player) 
     {
+        console.log("Step 13: solarSystem.js: OnEnter()");
+        if (!player) {
+            console.warn("[SolarSystem] No player passed to OnEnter");
+            return;
+        }
+
+        if (!player.objectRoot) {
+            console.warn("[SolarSystem] Player objectRoot not ready yet", player);
+            return;
+        }
+        const sunPos = this.sun.GetPosition();
+        this.player.SetPosition(sunPos.x, sunPos.y, sunPos.z);
+        this.player.FaceTarget(this.mercury.GetPosition());    // later focus instead of mercury
     }
 
     CreateObjects()
@@ -312,46 +317,6 @@ export class SolarSystem
             { obj: this.jupiter, threshold: this.sizeMap.jupiter * 3, scene: "JupiterOrbit" },
             { obj: this.saturn, threshold: this.sizeMap.saturn * 3, scene: "SaturnOrbit" },
         ];
-    }
-
-    PlayerEntryPosition()
-    {
-        if (!this.params?.focus) {
-            console.log("PlayerEntryPosition skipped: no focus param");
-            return;
-        }
-
-        const target = this[this.params.focus];
-        if (!target || !target.objectRoot) {
-            console.warn(`PlayerEntryPosition: target for focus "${this.params.focus}" not found`);
-            return;
-        }
-
-        // Force update on all matrices before computing world position
-        this.scene.updateMatrixWorld(true);
-
-        const targetPos = new THREE.Vector3();
-        target.objectRoot.getWorldPosition(targetPos);
-
-        const offset = this.sizeMap[this.params.focus] * 8;
-
-        // Compute desired player position
-        const playerPos = new THREE.Vector3(
-            targetPos.x + offset,
-            targetPos.y + offset * 0.4,
-            targetPos.z + offset
-        );
-
-        // Move the player
-        if (this.player) {
-            this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
-
-            // Make the player look at the target
-            this.player.objectRoot.lookAt(targetPos);
-        } 
-        else {
-            console.warn("PlayerEntryPosition: player is not defined");
-        }
     }
     
     Update(dt) 

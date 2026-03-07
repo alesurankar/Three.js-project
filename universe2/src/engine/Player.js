@@ -53,9 +53,10 @@ export class Player
         this.gameControls.ToggleLock();
     }
 
-    // Step ..
+    // Async Step 4
     Update(dt) 
     {
+        //console.log("Async Step 4: Player.js: Update()");
         this.gameControls.Update();
         
         const move = this.gameControls.move;

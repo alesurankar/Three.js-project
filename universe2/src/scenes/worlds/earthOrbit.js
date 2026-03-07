@@ -7,7 +7,7 @@ import api from "../../utils/api";
 
 export class EarthOrbit
 {
-    constructor(scene, camera) 
+    constructor(scene, camera, player, focus = {}) 
     {
         this.active = true;
         StarSystem.timeFactor=1

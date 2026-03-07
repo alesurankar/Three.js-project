@@ -40,7 +40,7 @@ export class SceneManager
     }
     
     // Step 8
-    async SwitchScene(sceneName, params = {})     // 1. apearance on params here
+    async SwitchScene(sceneName, focus = {})
     {
         console.log("Step 8: SceneManager.js: SwitchScene()");
 
@@ -50,7 +50,7 @@ export class SceneManager
             return;
         }
 
-        await this.LoadScene(SceneClass, params);
+        await this.LoadScene(SceneClass, focus);
 
         this.currentSceneName = sceneName;
         if (this.onSceneChange) {
@@ -59,7 +59,7 @@ export class SceneManager
     }
 
     // Step 9
-    async LoadScene(sceneClass, params = {})  // 2. apearance on params here
+    async LoadScene(sceneClass, focus = {})
     {   
         console.log("Step 9: SceneManager.js: LoadScene()");
         this._currentLoadId++;
@@ -69,7 +69,7 @@ export class SceneManager
             this.currentScene.Dispose();
         }
 
-        const sceneInstance = new sceneClass(this.scene, this.camera, this.player, params);  // 3. apearance on params here
+        const sceneInstance = new sceneClass(this.scene, this.camera, this.player, focus);
         this.currentScene = sceneInstance;
 
         if (sceneInstance.Init) {
@@ -106,19 +106,18 @@ export class SceneManager
         }
     }
 
-    // Step ..
+    // Async Step 5
     async Update(timeScale) 
     {
+        //console.log("Async Step 5: SceneManager.js: Update()");
         if (this.currentScene) {
             this.currentScene.Update(timeScale);
         }
 
-        const requested = this.currentScene?.requestedScene;
+        const requested = this.currentScene?.requestedScene; // Needs an Class Name
         if (!requested) return;
 
-        console.log("### Scene requested transition to:", requested);
-
-        const focus = this.currentScene?.transitionFrom ?? null;
+        const focus = this.currentScene?.transitionFrom;     // Needs an Object Key
 
         this.currentScene.requestedScene = null;
         this.currentScene.transitionFrom = null;
