@@ -59,7 +59,7 @@ export class VenusOrbit
         }
     }
     
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
     }
     

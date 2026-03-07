@@ -57,7 +57,7 @@ export class ProximaBOrbit
         }
     }
     
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
     }
     

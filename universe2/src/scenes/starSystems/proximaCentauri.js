@@ -57,7 +57,7 @@ export class ProximaCentauri
         }
     }
     
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
     }
     

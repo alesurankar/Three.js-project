@@ -62,7 +62,7 @@ export class SaturnOrbit
         }
     }
     
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
     }
     

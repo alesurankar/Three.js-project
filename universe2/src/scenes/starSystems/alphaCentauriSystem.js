@@ -67,7 +67,7 @@ export class AlphaCentauriSystem
         }
     }
     
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
     }
     

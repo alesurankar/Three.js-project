@@ -25,13 +25,16 @@ export class SolarSystem
         this.camera = camera;
         this.player = player;
         this.focus = focus;
+        console.log("SolarSystem Constructor: focus {}: ", this.focus);
         this._tempVec = new THREE.Vector3();
         this.objects = [];
         this.objectMap = {};
     }
 
+    // Step 11
     async Init() 
     {
+        console.log("Step 11: solarSystem.js: async Init() ");
         if (!this.active) return;
         const requiredKeys = [
             "sun",
@@ -75,28 +78,19 @@ export class SolarSystem
             this.sizeMap = sizeMap;
             this.exitDistance = this.sizeMap.sun * 100;
             this.CreateObjects();
+            this.PlayerEntryPosition();
             this.Portals();
         }
         catch (err) {
             console.error("Failed to load entities", err);
         }
     }
-    
-    OnEnter(player) 
-    {
-        console.log("Step 13: solarSystem.js: OnEnter()");
-        if (!player) {
-            console.warn("[SolarSystem] No player passed to OnEnter");
-            return;
-        }
 
-        if (!player.objectRoot) {
-            console.warn("[SolarSystem] Player objectRoot not ready yet", player);
-            return;
-        }
+    PlayerEntryPosition() 
+    {
         const sunPos = this.sun.GetPosition();
         this.player.SetPosition(sunPos.x, sunPos.y, sunPos.z);
-        this.player.FaceTarget(this.mercury.GetPosition());    // later focus instead of mercury
+        this.player.FaceTarget(this.mercury.GetPosition());
     }
 
     CreateObjects()
@@ -343,6 +337,7 @@ export class SolarSystem
             const distance = playerPos.distanceTo(pos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
+                console.log("Step 14: solarSystem.js: triggeredScene: ", this.requestedScene);
                 break;
             }
         }

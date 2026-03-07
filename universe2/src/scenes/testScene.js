@@ -67,31 +67,20 @@ export class TestScene
     }
 
     // Step 13
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
-        console.log("Step 13: testScene.js: OnEnter()");
-        if (!player) {
-            console.warn("[TestScene] No player passed to OnEnter");
-            return;
-        }
-
-        if (!player.objectRoot) {
-            console.warn("[TestScene] Player objectRoot not ready yet", player);
-            return;
-        }
-
         const moonPos = this.moon?.GetPosition();
         const offset = new THREE.Vector3(0, 5, 20);
 
         console.log("[TestScene] Setting player position to moon + offset", { moonPos, offset });
-        player.SetPosition(
+        this.player.SetPosition(
             moonPos.x + offset.x,
             moonPos.y + offset.y,
             moonPos.z + offset.z
         );
 
         console.log("[TestScene] Player facing sun at", this.sun?.GetPosition());
-        player.FaceTarget(this.sun.GetPosition());
+        this.player.FaceTarget(this.sun.GetPosition());
     }
 
     CreateObjects()

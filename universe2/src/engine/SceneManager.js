@@ -59,12 +59,9 @@ export class SceneManager
     }
 
     // Step 9
-    async LoadScene(sceneClass, focus = {})
+    async LoadScene(sceneClass, focus = {}) 
     {   
         console.log("Step 9: SceneManager.js: LoadScene()");
-        this._currentLoadId++;
-        const loadId = this._currentLoadId;
-
         if (this.currentScene) {
             this.currentScene.Dispose();
         }
@@ -74,17 +71,6 @@ export class SceneManager
 
         if (sceneInstance.Init) {
             await sceneInstance.Init();
-        }
-        this.UpdateCamera();
-        
-        if (sceneInstance.OnEnter && this.player) {
-            setTimeout(() => {
-                if (this._currentLoadId === loadId) {
-                    sceneInstance.OnEnter(this.player);
-                } else {
-                    console.warn(`[LoadScene ${loadId}] OnEnter skipped — another scene load started`);
-                }
-            }, 0);
         }
     }
 

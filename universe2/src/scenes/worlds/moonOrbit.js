@@ -62,7 +62,7 @@ export class MoonOrbit
         }
     }
     
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
     }
     

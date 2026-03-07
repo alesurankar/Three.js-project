@@ -49,24 +49,15 @@ export class MercuryOrbit
             this.sizeMap = sizeMap;
             this.exitDistance = this.sizeMap.mercury * 20;
             this.CreateObjects();
+            this.PlayerEntryPosition();
         }
         catch (err) {
             console.error("Failed to load entities", err);
         }
     }
-    
-    OnEnter(player) 
-    {
-        console.log("Step 13: mercuryOrbit.js: OnEnter()");
-        if (!player) {
-            console.warn("[MercuryOrbit] No player passed to OnEnter");
-            return;
-        }
 
-        if (!player.objectRoot) {
-            console.warn("[MercuryOrbit] Player objectRoot not ready yet", player);
-            return;
-        }
+    PlayerEntryPosition() 
+    {
         const mercuryPos = this.mercury.GetPosition();
         this.player.SetPosition(mercuryPos.x, mercuryPos.y, mercuryPos.z);
         this.player.FaceTarget(this.sun.GetPosition());
@@ -121,6 +112,8 @@ export class MercuryOrbit
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
             this.transitionFrom = "mercury";
+            console.log("Step 14: mercuryOrbit.js: requestedScene: ", this.requestedScene);
+            console.log("Step 14: mercuryOrbit.js: transitionFrom: ", this.transitionFrom);
         }
     }
 

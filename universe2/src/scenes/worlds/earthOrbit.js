@@ -67,7 +67,7 @@ export class EarthOrbit
         }
     }
     
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
     }
     

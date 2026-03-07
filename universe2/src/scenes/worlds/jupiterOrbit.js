@@ -59,7 +59,7 @@ export class JupiterOrbit
         }
     }
     
-    OnEnter(player) 
+    PlayerEntryPosition() 
     {
     }
     
