@@ -29,7 +29,7 @@ export class SolarSystem
         this.objectMap = {};
     }
 
-    async init() 
+    async Init() 
     {
         if (!this.active) return;
         const requiredKeys = [
@@ -78,10 +78,20 @@ export class SolarSystem
             this.player.SetPosition(sunPos.x, sunPos.y, sunPos.z);
             this.player.FaceTarget(this.mercury.GetPosition());
             this.Portals();
+
+            if (this.params?.focus) {
+                // console.log("Init focus param:", this.params.focus);
+                // console.log("Calling PositionEntryCamera via requestAnimationFrame...");
+                requestAnimationFrame(() => this.PlayerEntryPosition());
+            }
         }
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
 
     CreateObjects()
@@ -304,10 +314,24 @@ export class SolarSystem
         ];
     }
 
-    PositionEntryCamera()
+    PlayerEntryPosition()
     {
+        if (!this.params?.focus) {
+            console.log("PlayerEntryPosition skipped: no focus param");
+            return;
+        }
+
+        const target = this[this.params.focus];
+        if (!target || !target.objectRoot) {
+            console.warn(`PlayerEntryPosition: target for focus "${this.params.focus}" not found`);
+            return;
+        }
+
         // Force update on all matrices before computing world position
         this.scene.updateMatrixWorld(true);
+
+        const targetPos = new THREE.Vector3();
+        target.objectRoot.getWorldPosition(targetPos);
 
         const offset = this.sizeMap[this.params.focus] * 8;
 
@@ -326,7 +350,7 @@ export class SolarSystem
             this.player.objectRoot.lookAt(targetPos);
         } 
         else {
-            console.warn("PositionEntryCamera: player is not defined");
+            console.warn("PlayerEntryPosition: player is not defined");
         }
     }
     

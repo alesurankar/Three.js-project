@@ -51,7 +51,7 @@ export class MilkyWay
         return Math.random() * (max - min) + min;
     }
 
-    async init() 
+    async Init() 
     {
         if (!this.active) return;
         const requiredKeys = [
@@ -83,6 +83,10 @@ export class MilkyWay
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
     
     CreateObjects()

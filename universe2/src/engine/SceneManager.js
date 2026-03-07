@@ -1,10 +1,12 @@
 import { Scenes } from "./Scenes.js";
 import { ModelStore } from "../factories/modelStore.js";
 
+// Step 3
 export class SceneManager 
 {
     constructor(scene, camera, onSceneChange) 
     {
+        console.log("Step 3: SceneManager.js: constructor");
         this.scene = scene; 
         this.camera = camera;
         this.currentScene = null;
@@ -14,8 +16,10 @@ export class SceneManager
         this._currentLoadId = 0;
     }
 
+    // Async Step 2
     async Init() 
     {
+        console.log("Async Step 2: SceneManager.js: async Init()");
         if (this._disposed) return;
         await Promise.all([
             ModelStore.Load("probe1"), 
@@ -23,8 +27,10 @@ export class SceneManager
         ]);
     }
 
+    // Step 6
     SetPlayer(player) 
     {
+        console.log("Step 6: SceneManager.js: SetPlayer()");
         this.player = player;
     }
 
@@ -33,9 +39,10 @@ export class SceneManager
         return this.currentSceneName ?? "None";
     }
     
-    async SwitchScene(sceneName, params = {}) 
+    // Step 8
+    async SwitchScene(sceneName, params = {})     // 1. apearance on params here
     {
-        console.log(">>> SwitchScene CALLED:", sceneName);
+        console.log("Step 8: SceneManager.js: SwitchScene()");
 
         const SceneClass = Scenes[sceneName];
         if (!SceneClass) {
@@ -51,48 +58,40 @@ export class SceneManager
         }
     }
 
-    async LoadScene(sceneClass, params = {}) 
+    // Step 9
+    async LoadScene(sceneClass, params = {})  // 2. apearance on params here
     {   
+        console.log("Step 9: SceneManager.js: LoadScene()");
         this._currentLoadId++;
         const loadId = this._currentLoadId;
-        console.log(`[LoadScene ${loadId}] START`, sceneClass.name);
 
         if (this.currentScene) {
-            console.log(`[LoadScene ${loadId}] Disposing previous scene`, this.currentSceneName);
             this.currentScene.Dispose();
-            console.log(`[LoadScene ${loadId}] Previous scene disposed`);
         }
 
-        const sceneInstance = new sceneClass(this.scene, this.camera, this.player, params);
-        console.log(`[LoadScene ${loadId}] Scene instance created`, sceneInstance);
-
+        const sceneInstance = new sceneClass(this.scene, this.camera, this.player, params);  // 3. apearance on params here
         this.currentScene = sceneInstance;
 
-        if (sceneInstance.init) {
-            console.log(`[LoadScene ${loadId}] Calling init()`);
-            await sceneInstance.init();
-            console.log(`[LoadScene ${loadId}] Init finished`);
+        if (sceneInstance.Init) {
+            await sceneInstance.Init();
         }
-        console.log(`[LoadScene ${loadId}] UpdateCamera() about to run`);
         this.UpdateCamera();
         
         if (sceneInstance.OnEnter && this.player) {
-            console.log(`[LoadScene ${loadId}] Calling OnEnter with player`, this.player);
             setTimeout(() => {
                 if (this._currentLoadId === loadId) {
                     sceneInstance.OnEnter(this.player);
-                    console.log(`[LoadScene ${loadId}] OnEnter finished`);
                 } else {
                     console.warn(`[LoadScene ${loadId}] OnEnter skipped — another scene load started`);
                 }
             }, 0);
         }
-
-        console.log(`[LoadScene ${loadId}] LoadScene complete`);
     }
 
+    // Step 12
     UpdateCamera()
     {
+        console.log("Step 12: SceneManager.js: UpdateCamera()");
         if (!this.currentScene) return;
 
         const settings = this.currentScene.cameraSettings || {};
@@ -107,6 +106,7 @@ export class SceneManager
         }
     }
 
+    // Step ..
     async Update(timeScale) 
     {
         if (this.currentScene) {

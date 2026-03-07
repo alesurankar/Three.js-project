@@ -33,7 +33,7 @@ export class MarsOrbit
         this.objects = [];
     }
 
-    async init() 
+    async Init() 
     {
         try {
             if (!this.active) return;
@@ -57,6 +57,10 @@ export class MarsOrbit
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
     
     CreateObjects()

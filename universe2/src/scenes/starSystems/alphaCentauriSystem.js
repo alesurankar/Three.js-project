@@ -33,7 +33,7 @@ export class AlphaCentauriSystem
         this.objects = [];
     }
 
-    async init() 
+    async Init() 
     {
         if (!this.active) return;
         const requiredKeys = [
@@ -65,6 +65,10 @@ export class AlphaCentauriSystem
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
     
     CreateObjects()

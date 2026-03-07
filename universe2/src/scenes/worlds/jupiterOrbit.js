@@ -33,7 +33,7 @@ export class JupiterOrbit
         this.objects = [];
     }
 
-    async init() 
+    async Init() 
     {
         try {
             if (!this.active) return;
@@ -57,6 +57,10 @@ export class JupiterOrbit
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
     
     CreateObjects()

@@ -33,7 +33,7 @@ export class EarthOrbit
         this.objects = [];
     }
 
-    async init() 
+    async Init() 
     {
         try {
             if (!this.active) return;
@@ -65,6 +65,10 @@ export class EarthOrbit
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
     
     CreateObjects()

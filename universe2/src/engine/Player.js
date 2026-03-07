@@ -3,28 +3,25 @@ import { GameControls } from "../utils/gameControls.js";
 
 export class Player 
 {
+    // Step 5
     constructor({ camera, container} = {}) 
     {
-        this.camera = camera;
-
-        // Root object
+        console.log("Step 5: Player.js: constructor");
         this.objectRoot = new THREE.Object3D();
-        this.gameControls = new GameControls(this.objectRoot, container);
 
-        // Attach camera to player
-        if (this.camera) {
-            this.objectRoot.add(this.camera);
-            this.camera.position.set(0, 16, 16);
-            this.camera.lookAt(new THREE.Vector3(0, 4, 0));
-        }
+        this.camera = camera;
+        this.objectRoot.add(this.camera);
+        this.camera.position.set(0, 16, 16);
+        this.camera.lookAt(new THREE.Vector3(0, 4, 0));
 
-        // --- Add player model ---
-        const geometry = new THREE.CapsuleGeometry(1, 2, 4, 8);
+        //const geometry = new THREE.CapsuleGeometry(1, 2, 4, 8);
+        const geometry = new THREE.BoxGeometry(2, 2, 2);
         const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-        this.model = new THREE.Mesh(geometry, material);
 
-        this.model.position.y = 1; // lift it above the ground
+        this.model = new THREE.Mesh(geometry, material);
         this.objectRoot.add(this.model);
+
+        this.gameControls = new GameControls(this.objectRoot, container);
     }
 
     FaceTarget(targetPosition) 
@@ -56,6 +53,7 @@ export class Player
         this.gameControls.ToggleLock();
     }
 
+    // Step ..
     Update(dt) 
     {
         this.gameControls.Update();

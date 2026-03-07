@@ -33,7 +33,7 @@ export class SaturnOrbit
         this.objects = [];
     }
 
-    async init() 
+    async Init() 
     {
         try {
             if (!this.active) return;
@@ -60,6 +60,10 @@ export class SaturnOrbit
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
     
     CreateObjects()

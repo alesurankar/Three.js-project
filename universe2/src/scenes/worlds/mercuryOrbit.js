@@ -29,7 +29,7 @@ export class MercuryOrbit
         this.objectMap = {};
     }
 
-    async init() 
+    async Init() 
     {
         if (!this.active) return;
         const requiredKeys = [
@@ -56,6 +56,10 @@ export class MercuryOrbit
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
     
     CreateObjects()

@@ -33,7 +33,7 @@ export class MoonOrbit
         this.objects = [];
     }
 
-    async init() 
+    async Init() 
     {
         try {
             if (!this.active) return;
@@ -60,6 +60,10 @@ export class MoonOrbit
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+    
+    OnEnter(player) 
+    {
     }
     
     CreateObjects()

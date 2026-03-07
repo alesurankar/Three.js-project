@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Update as SceneUpdate, CreateSceneManager, FirstScene } from "./SceneSetup.js";
+import { SceneUpdate, CreateSceneManager, FirstScene } from "./SceneSetup.js";
 import { CreateRenderer } from "./RendererSetup.js";
 import { Player } from "./Player.js"
 
@@ -7,12 +7,13 @@ export class Engine
 {
   constructor(container, { fps = 60 } = {}) 
   {
-    this.Scene = new THREE.Scene();
+    if (!this.Scene) {
+      this.Scene = new THREE.Scene();
+    }
 
     const ambientLight = new THREE.AmbientLight(0x404040, 2);
     this.Scene.add(ambientLight);
 
-    this.container = container;
     this.FIXED_FPS = fps;
     this.FIXED_DT = 1 / this.FIXED_FPS;
     this.lastTime = performance.now() / 1000;
@@ -21,25 +22,25 @@ export class Engine
     this.rafId = null;
     this._disposed = false;
     
-    this.manager = CreateSceneManager(this.Scene, (sceneName) => {
-      //console.log("Scene changed to:", sceneName);
-    });
-    this.Camera = this.manager.camera;
-    this.Renderer = CreateRenderer(container);
-
+    if (!this.manager) {
+      this.manager = CreateSceneManager(this.Scene, (sceneName) => {
+        console.log("Scene changed to:", sceneName);
+      });
+    }
+    if (!this.Camera) {
+      this.Camera = this.manager.camera;
+    }
+    if (!this.Renderer) {
+      this.Renderer = CreateRenderer(container);
+    }
     if (!this.player) {
-      console.log("[Engine] Creating player...");
       this.player = new Player({
           camera: this.Camera,
           container: container
       });
-      console.log("[Engine] Player created", this.player);
 
       this.Scene.add(this.player.objectRoot);
-      console.log("[Engine] Player objectRoot added to scene", this.player.objectRoot);
-
       this.manager.SetPlayer(this.player);
-      console.log("[Engine] Player set in SceneManager");
     }
 
     FirstScene(this.manager);
@@ -48,8 +49,10 @@ export class Engine
     console.log("ENGINE CREATED");
   }
 
+  // Step 14 && Async Step 3 
   MainLoop(now) 
   {
+    console.log("Step 14 && Async Step 3");
     now /= 1000;
     const frameTime = now - this.lastTime;
     this.lastTime = now;
@@ -65,8 +68,10 @@ export class Engine
     this.rafId = requestAnimationFrame(this.MainLoop);
   }
 
+  // Async Step 1
   async Start() 
   {
+    console.log("Async Step 1: Engine.js: async Start()");
     await this.manager.Init();
     if (this._disposed) return;
     this.rafId = requestAnimationFrame(this.MainLoop);

@@ -7,8 +7,10 @@ import { loadEntities } from "../utils/loadEntities.js"
 
 export class TestScene
 {
+    // Step 10
     constructor(scene, camera, player) 
     {  
+        console.log("Step 10: testScene.js: constructor");
         this.active = true;
         StarSystem.timeFactor=100
 
@@ -28,8 +30,10 @@ export class TestScene
         this.objectMap = {};
     }
 
-    async init() 
+    // Step 11
+    async Init() 
     {
+        console.log("Step 11: testScene.js: async Init() ");
         if (!this.active) return;
         const requiredKeys = [
             "sun",
@@ -61,10 +65,10 @@ export class TestScene
         }
     }
 
+    // Step 13
     OnEnter(player) 
     {
-        console.log("[TestScene] OnEnter called", { player });
-    
+        console.log("Step 13: testScene.js: OnEnter()");
         if (!player) {
             console.warn("[TestScene] No player passed to OnEnter");
             return;
