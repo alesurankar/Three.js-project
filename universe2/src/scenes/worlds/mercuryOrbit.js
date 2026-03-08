@@ -58,9 +58,25 @@ export class MercuryOrbit
 
     PlayerEntryPosition() 
     {
-        const mercuryPos = this.mercury.GetPosition();
-        this.player.SetPosition(mercuryPos.x, mercuryPos.y, mercuryPos.z);
-        this.player.FaceTarget(this.sun.GetPosition());
+        const entryPos = this.mercury.GetPosition();
+        const targetPos = this.sun.GetPosition();
+
+        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+
+        const difference = new THREE.Vector3().subVectors(target, entry);
+        
+        const distance = new THREE.Vector3(
+            Math.abs(difference.x),
+            Math.abs(difference.y),
+            Math.abs(difference.z)
+        );
+
+        console.log("Setting player position to:", 2*entry.x, entry.y, entry.z);
+        this.player.SetPosition( this.sizeMap.mercury + entry.x, this.sizeMap.mercury + entry.y, this.sizeMap.mercury + entry.z);
+
+        console.log("Setting player facing direction:", 2*distance.x, 2*distance.y, 2*distance.z);
+        this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
     }
     
     CreateObjects()
@@ -105,8 +121,6 @@ export class MercuryOrbit
         const pos = this._tempVec;
         const playerPos = this.player.objectRoot.position;
         this.mercury.objectRoot.getWorldPosition(pos);
-        // console.log("Player position:", playerPos);
-        // console.log("Mercury position:", this.mercury.objectRoot.getWorldPosition(pos));
 
         const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {

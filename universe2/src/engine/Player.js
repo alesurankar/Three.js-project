@@ -11,27 +11,15 @@ export class Player
 
         this.camera = camera;
         this.objectRoot.add(this.camera);
-        this.camera.position.set(0, 16, 16);
-        this.camera.lookAt(new THREE.Vector3(0, 4, 0));
-
-        //const geometry = new THREE.CapsuleGeometry(1, 2, 4, 8);
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-
-        this.model = new THREE.Mesh(geometry, material);
-        this.objectRoot.add(this.model);
-
+        this.camera.position.set(0, 0, 0);
+        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.gameControls = new GameControls(this.objectRoot, container);
     }
 
-    FaceTarget(targetPosition) 
+    FaceTarget(x, y, z) 
     {
-        if (!this.objectRoot || !targetPosition) return;
-        // Make a copy so we don’t accidentally modify the original
-        const target = targetPosition.clone();
-
-        // Rotate player to look at the target
-        this.objectRoot.lookAt(target);
+        if (!this.objectRoot) return;
+        this.objectRoot.lookAt(x, y, z);
     }
 
     AttachTo(parent)

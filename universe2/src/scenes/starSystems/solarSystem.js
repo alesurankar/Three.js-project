@@ -88,9 +88,25 @@ export class SolarSystem
 
     PlayerEntryPosition() 
     {
-        const sunPos = this.sun.GetPosition();
-        this.player.SetPosition(sunPos.x, sunPos.y, sunPos.z);
-        this.player.FaceTarget(this.mercury.GetPosition());
+        const entryPos = this.sun.GetPosition();
+        const targetPos = this.mercury.GetPosition();
+
+        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+
+        const difference = new THREE.Vector3().subVectors(target, entry);
+        
+        const distance = new THREE.Vector3(
+            Math.abs(difference.x),
+            Math.abs(difference.y),
+            Math.abs(difference.z)
+        );
+
+        console.log("Setting player position to:", entry.x, entry.y, entry.z);
+        this.player.SetPosition( this.sizeMap.sun + entry.x, this.sizeMap.sun + entry.y, this.sizeMap.sun + entry.z);
+
+        console.log("Setting player facing direction:", -2*distance.x, 2*distance.y, 2*distance.z);
+        this.player.FaceTarget(-2*distance.x, 2*distance.y, 2*distance.z);
     }
 
     CreateObjects()
