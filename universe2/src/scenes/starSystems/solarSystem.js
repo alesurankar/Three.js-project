@@ -25,17 +25,36 @@ export class SolarSystem
         this.camera = camera;
         this.player = player;
         this.focus = focus;
-        console.log("SolarSystem Constructor: focus {}: ", this.focus);
         this._tempVec = new THREE.Vector3();
         this.objects = [];
         this.objectMap = {};
     }
 
-    // Step 11
     async Init() 
     {
-        console.log("Step 11: solarSystem.js: async Init() ");
         if (!this.active) return;
+        const { requiredKeys, scaleMap } = this.GetEntityConfig();
+
+        try {
+            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
+            this.entityMap = entityMap;
+            this.sizeMap = sizeMap;
+            this.CreateObjects();
+            this.PlayerEntryPosition();
+            if (this.SetExitCondition) {
+                this.SetExitCondition();
+            }
+            if (this.DefinePortals) {
+                this.DefinePortals();
+            }
+        }
+        catch (err) {
+            console.error("Failed to load entities", err);
+        }
+    }
+
+    GetEntityConfig() 
+    {
         const requiredKeys = [
             "sun",
             "mercury",
@@ -71,42 +90,7 @@ export class SolarSystem
             pluto: this.LOCAL_SIZE_SCALE,
             kuiper_belt: this.INNER_SIZE_SCALE
         };
-
-        try {
-            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
-            this.entityMap = entityMap;
-            this.sizeMap = sizeMap;
-            this.exitDistance = this.sizeMap.sun * 100;
-            this.CreateObjects();
-            this.PlayerEntryPosition();
-            this.Portals();
-        }
-        catch (err) {
-            console.error("Failed to load entities", err);
-        }
-    }
-
-    PlayerEntryPosition() 
-    {
-        const entryPos = this.sun.GetPosition();
-        const targetPos = this.mercury.GetPosition();
-
-        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
-        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
-
-        const difference = new THREE.Vector3().subVectors(target, entry);
-        
-        const distance = new THREE.Vector3(
-            Math.abs(difference.x),
-            Math.abs(difference.y),
-            Math.abs(difference.z)
-        );
-
-        console.log("Setting player position to:", entry.x, entry.y, entry.z);
-        this.player.SetPosition( this.sizeMap.sun + entry.x, this.sizeMap.sun + entry.y, this.sizeMap.sun + entry.z);
-
-        console.log("Setting player facing direction:", -2*distance.x, 2*distance.y, 2*distance.z);
-        this.player.FaceTarget(-2*distance.x, 2*distance.y, 2*distance.z);
+        return { requiredKeys, scaleMap };
     }
 
     CreateObjects()
@@ -316,7 +300,35 @@ export class SolarSystem
         this.objectMap[this.entityMap.kuiper_belt.key] = this.kuiper_belt;
     }
 
-    Portals()
+    PlayerEntryPosition() 
+    {
+        const entryPos = this.sun.GetPosition();
+        const targetPos = this.mercury.GetPosition();
+
+        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+
+        const difference = new THREE.Vector3().subVectors(target, entry);
+        
+        const distance = new THREE.Vector3(
+            Math.abs(difference.x),
+            Math.abs(difference.y),
+            Math.abs(difference.z)
+        );
+
+        console.log("Setting player position to:", entry.x, entry.y, entry.z);
+        this.player.SetPosition( 2* this.sizeMap.sun + entry.x, 2* this.sizeMap.sun + entry.y, 2* this.sizeMap.sun + entry.z);
+
+        console.log("Setting player facing direction:", -2*distance.x, 2*distance.y, 2*distance.z);
+        this.player.FaceTarget(-2*distance.x, 2*distance.y, 2*distance.z);
+    }
+
+    SetExitCondition() 
+    {
+        this.exitDistance = this.sizeMap.sun * 100;
+    }
+
+    DefinePortals()
     {
         this.sceneTriggers = [
             { obj: this.mercury, threshold: this.sizeMap.mercury * 5, scene: "MercuryOrbit" },
@@ -329,15 +341,8 @@ export class SolarSystem
         ];
     }
     
-    Update(dt) 
+    CheckSceneTransition() 
     {
-        // console.log("Camera position:", this.camera.position);
-        if (!this.sun) return;
-        for (const obj of this.objects) {
-            obj.Update(dt);
-        }
-        if (!this.sceneTriggers) return;
-
         const pos = this._tempVec;
         const playerPos = this.player.objectRoot.position;
         this.sun.objectRoot.getWorldPosition(pos);
@@ -356,6 +361,18 @@ export class SolarSystem
                 console.log("Step 14: solarSystem.js: triggeredScene: ", this.requestedScene);
                 break;
             }
+        } 
+    }
+
+    Update(dt) 
+    {
+        // console.log("Camera position:", this.camera.position);
+        if (!this.sun) return;
+        for (const obj of this.objects) {
+            obj.Update(dt);
+        }
+        if (this.CheckSceneTransition) {
+            this.CheckSceneTransition();
         }
     }
 
@@ -364,7 +381,9 @@ export class SolarSystem
         this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
-        this.sceneTriggers = [];
+        if (this.sceneTriggers) {
+            this.sceneTriggers = [];
+        }
 
         // Dispose skybox
         if (this.scene?.background) {

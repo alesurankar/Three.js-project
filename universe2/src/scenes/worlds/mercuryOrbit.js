@@ -33,6 +33,28 @@ export class MercuryOrbit
     async Init() 
     {
         if (!this.active) return;
+        const { requiredKeys, scaleMap } = this.GetEntityConfig();
+        
+        try {
+            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
+            this.entityMap = entityMap;
+            this.sizeMap = sizeMap;
+            this.CreateObjects();
+            this.PlayerEntryPosition();
+            if (this.SetExitCondition) {
+                this.SetExitCondition();
+            }
+            if (this.DefinePortals) {
+                this.DefinePortals();
+            }
+        }
+        catch (err) {
+            console.error("Failed to load entities", err);
+        }
+    }
+
+    GetEntityConfig() 
+    {
         const requiredKeys = [
             "sun",
             "mercury",
@@ -42,41 +64,7 @@ export class MercuryOrbit
             sun: this.REGION_SIZE_SCALE,
             mercury: this.LOCAL_SIZE_SCALE,
         };
-        
-        try {
-            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
-            this.entityMap = entityMap;
-            this.sizeMap = sizeMap;
-            this.exitDistance = this.sizeMap.mercury * 20;
-            this.CreateObjects();
-            this.PlayerEntryPosition();
-        }
-        catch (err) {
-            console.error("Failed to load entities", err);
-        }
-    }
-
-    PlayerEntryPosition() 
-    {
-        const entryPos = this.mercury.GetPosition();
-        const targetPos = this.sun.GetPosition();
-
-        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
-        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
-
-        const difference = new THREE.Vector3().subVectors(target, entry);
-        
-        const distance = new THREE.Vector3(
-            Math.abs(difference.x),
-            Math.abs(difference.y),
-            Math.abs(difference.z)
-        );
-
-        console.log("Setting player position to:", 2*entry.x, entry.y, entry.z);
-        this.player.SetPosition( this.sizeMap.mercury + entry.x, this.sizeMap.mercury + entry.y, this.sizeMap.mercury + entry.z);
-
-        console.log("Setting player facing direction:", 2*distance.x, 2*distance.y, 2*distance.z);
-        this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
+        return { requiredKeys, scaleMap };
     }
     
     CreateObjects()
@@ -97,7 +85,7 @@ export class MercuryOrbit
         // Create Mercury
         this.mercury = createEntity(this.entityMap.mercury, {
             size: this.sizeMap.mercury,
-            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
+            posToParent: new THREE.Vector3(this.far - this.sizeMap.mercury * 20, 0, 0),
             axialTilt: this.entityMap.mercury.axialTilt,
             orbitalTilt: 7.00,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
@@ -111,13 +99,36 @@ export class MercuryOrbit
         this.sun.light.target = this.mercury.objectRoot;
     }
 
-    Update(dt) 
+    PlayerEntryPosition() 
     {
-        if (!this.sun) return;
-        for (const obj of this.objects) {
-            obj.Update(dt);
-        }
+        const entryPos = this.mercury.GetPosition();
+        const targetPos = this.sun.GetPosition();
 
+        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+
+        const difference = new THREE.Vector3().subVectors(target, entry);
+        
+        const distance = new THREE.Vector3(
+            Math.abs(difference.x),
+            Math.abs(difference.y),
+            Math.abs(difference.z)
+        );
+
+        console.log("Setting player position to:", entry.x, entry.y, entry.z);
+        this.player.SetPosition( 2* this.sizeMap.mercury + entry.x, 2* this.sizeMap.mercury + entry.y, 2* this.sizeMap.mercury + entry.z);
+
+        console.log("Setting player facing direction:", 2*distance.x, 2*distance.y, 2*distance.z);
+        this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
+    }
+
+    SetExitCondition() 
+    {
+        this.exitDistance = this.sizeMap.mercury * 20;
+    }
+
+    CheckSceneTransition() 
+    {
         const pos = this._tempVec;
         const playerPos = this.player.objectRoot.position;
         this.mercury.objectRoot.getWorldPosition(pos);
@@ -131,12 +142,26 @@ export class MercuryOrbit
         }
     }
 
+    Update(dt) 
+    {
+        if (!this.sun) return;
+        for (const obj of this.objects) {
+            obj.Update(dt);
+        }
+        if (this.CheckSceneTransition) {
+            this.CheckSceneTransition();
+        }
+    }
+
     Dispose() 
     {
         this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
-        
+        if (this.sceneTriggers) {
+            this.sceneTriggers = [];
+        }
+
         // Dispose skybox
         if (this.scene?.background) {
             SkyBox.Dispose(this.scene.background);

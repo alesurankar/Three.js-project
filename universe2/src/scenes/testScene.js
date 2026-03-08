@@ -36,6 +36,28 @@ export class TestScene
     {
         console.log("Step 11: testScene.js: async Init() ");
         if (!this.active) return;
+        const { requiredKeys, scaleMap } = this.GetEntityConfig();
+
+        try {
+            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
+            this.entityMap = entityMap;
+            this.sizeMap = sizeMap;
+            this.CreateObjects();
+            this.PlayerEntryPosition();
+            if (this.SetExitCondition) {
+                this.SetExitCondition();
+            }
+            if (this.DefinePortals) {
+                this.DefinePortals();
+            }
+        } 
+        catch (err) {
+            console.error("Failed to load entities", err);
+        }
+    }
+
+    GetEntityConfig() 
+    {
         const requiredKeys = [
             "sun",
             "earth",
@@ -53,36 +75,10 @@ export class TestScene
             saturn: this.LOCAL_SIZE_SCALE,
             saturn_ring: this.INNER_SIZE_SCALE,
             asteroid_belt: this.INNER_SIZE_SCALE
-        };
-
-        try {
-            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
-            this.entityMap = entityMap;
-            this.sizeMap = sizeMap;
-            this.CreateObjects();
-        } 
-        catch (err) {
-            console.error("Failed to load entities", err);
-        }
+        };      
+        return { requiredKeys, scaleMap };
     }
-
-    // Step 13
-    PlayerEntryPosition() 
-    {
-        const moonPos = this.moon?.GetPosition();
-        const offset = new THREE.Vector3(0, 5, 20);
-
-        console.log("[TestScene] Setting player position to moon + offset", { moonPos, offset });
-        this.player.SetPosition(
-            moonPos.x + offset.x,
-            moonPos.y + offset.y,
-            moonPos.z + offset.z
-        );
-
-        console.log("[TestScene] Player facing sun at", this.sun?.GetPosition());
-        this.player.FaceTarget(this.sun.GetPosition());
-    }
-
+   
     CreateObjects()
     {
         // Create Sun
@@ -174,11 +170,38 @@ export class TestScene
         this.objectMap[this.entityMap.probe1.key] = this.probe1;
     }
 
+    // Step 13
+    PlayerEntryPosition() 
+    {
+        const entryPos = this.earth.GetPosition();
+        const targetPos = this.sun.GetPosition();
+
+        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+
+        const difference = new THREE.Vector3().subVectors(target, entry);
+        
+        const distance = new THREE.Vector3(
+            Math.abs(difference.x),
+            Math.abs(difference.y),
+            Math.abs(difference.z)
+        );
+
+        console.log("Setting player position to:", entry.x, entry.y, entry.z);
+        this.player.SetPosition( 2* this.sizeMap.earth + entry.x, 2* this.sizeMap.earth + entry.y, 2* this.sizeMap.earth + entry.z);
+
+        console.log("Setting player facing direction:", 2*distance.x, 2*distance.y, 2*distance.z);
+        this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
+    }
+
     Update(dt) 
     {
         if (!this.sun) return;
         for (const obj of this.objects) {
             obj.Update(dt);
+        }
+        if (this.CheckSceneTransition) {
+            this.CheckSceneTransition();
         }
     }
 
@@ -187,6 +210,9 @@ export class TestScene
         this.active = false;
         this.objects.forEach(obj => obj?.Dispose());
         this.objects = [];
+        if (this.sceneTriggers) {
+            this.sceneTriggers = [];
+        }
 
         // Dispose skybox
         if (this.scene?.background) {
