@@ -62,7 +62,7 @@ export class MercuryOrbit extends BaseScene
         this.objects.push(this.mercury);
         this.objectMap[this.entityMap.mercury.key] = this.mercury;
 
-        // Assign target now that mercury exists
+        // Assign light target
         this.sun.light.target = this.mercury.objectRoot;
     }
 
@@ -82,10 +82,10 @@ export class MercuryOrbit extends BaseScene
             Math.abs(difference.z)
         );
 
-        console.log("Setting player position to:", entry.x, entry.y, entry.z);
+        //console.log("Setting player position to:", entry.x, entry.y, entry.z);
         this.player.SetPosition( 2* this.sizeMap.mercury + entry.x, 2* this.sizeMap.mercury + entry.y, 2* this.sizeMap.mercury + entry.z);
 
-        console.log("Setting player facing direction:", 2*distance.x, 2*distance.y, 2*distance.z);
+        //console.log("Setting player facing direction:", 2*distance.x, 2*distance.y, 2*distance.z);
         this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
     }
 
@@ -104,8 +104,8 @@ export class MercuryOrbit extends BaseScene
         if (distanceToParent > this.exitDistance) {
             this.requestedScene = "SolarSystem";
             this.transitionFrom = "mercury";
-            console.log("Step 14: mercuryOrbit.js: requestedScene: ", this.requestedScene);
-            console.log("Step 14: mercuryOrbit.js: transitionFrom: ", this.transitionFrom);
+            //console.log("Step 14: mercuryOrbit.js: requestedScene: ", this.requestedScene);
+            //console.log("Step 14: mercuryOrbit.js: transitionFrom: ", this.transitionFrom);
         }
     }
 }
