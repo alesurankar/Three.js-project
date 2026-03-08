@@ -1,18 +1,14 @@
 import * as THREE from "three";
 import { StarSystem } from "../utils/starSystemHelper.js"
-import { SkyBox } from "../visuals/skyBox.js";
 import { createEntity } from "../factories/entityFactory.js";
 import { BaseScene } from "./baseScene.js"
 
 
 export class TestScene extends BaseScene
 {
-    // Step 10
     constructor(scene, camera, player, focus = {}) 
     {  
-        console.log("TestScene constructor");
         super(scene, camera, player, focus);
-
         StarSystem.timeFactor = 100;
         
         this.SIZE_SCALE = 1;

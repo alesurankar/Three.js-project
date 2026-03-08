@@ -6,8 +6,10 @@ import { loadEntities } from "../utils/loadEntities.js"
 
 export class BaseScene 
 {
+    // Step 10
     constructor(scene, camera, player, focus = {}) 
     {
+        console.log("Scene constructor");
         this.active = true;
         StarSystem.timeFactor=1
 
