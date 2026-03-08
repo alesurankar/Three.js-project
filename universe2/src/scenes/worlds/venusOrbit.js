@@ -52,7 +52,7 @@ export class VenusOrbit extends BaseScene
         // Create Venus
         this.venus = createEntity(this.entityMap.venus, {
             size: this.sizeMap.venus,
-            posToParent: new THREE.Vector3(this.far - this.sizeMap.venus * 20, 0, 0),
+            posToParent: new THREE.Vector3(this.far - this.sizeMap.venus * 20, 0, 0),  // TO CHANGE
             axialTilt: this.entityMap.venus.axialTilt,
             orbitalTilt: 3.39,
             axialRotationSpeed: StarSystem.AxialRotationInDays(243),

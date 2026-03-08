@@ -52,7 +52,7 @@ export class MercuryOrbit extends BaseScene
         // Create Mercury
         this.mercury = createEntity(this.entityMap.mercury, {
             size: this.sizeMap.mercury,
-            posToParent: new THREE.Vector3(this.far - this.sizeMap.mercury * 20, 0, 0),
+            posToParent: new THREE.Vector3(this.far - this.sizeMap.mercury * 20, 0, 0),  // TO CHANGE
             axialTilt: this.entityMap.mercury.axialTilt,
             orbitalTilt: 7.00,
             axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),

@@ -138,7 +138,6 @@ export class TestScene extends BaseScene
         this.primaryEntity = this.probe1;
     }
 
-    // Step 13
     PlayerEntryPosition() 
     {
         const entryPos = this.primaryEntity.GetPosition();

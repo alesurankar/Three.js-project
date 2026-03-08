@@ -1,142 +1,126 @@
 import * as THREE from "three";
 import { StarSystem } from "../../utils/starSystemHelper.js"
-import { SkyBox } from "../../visuals/skyBox.js";
 import { createEntity } from "../../factories/entityFactory.js";
-import api from "../../utils/api";
+import { BaseScene } from "../baseScene.js"
 
 
-export class SaturnOrbit
+export class SaturnOrbit extends BaseScene
 {
     constructor(scene, camera, player, focus = {}) 
     {
-        this.active = true;
+        super(scene, camera, player, focus);
         StarSystem.timeFactor=1
         
         this.SIZE_SCALE = 2;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
         this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
         this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
-
-        this.near = 30;
+        this.near = 16;
         this.far = 30000;
-        this.cameraSettings = {
-            pos: { x:-4000, y:400, z:-4500 },
-            lookAt: { x:1000, y:0, z:0 },
-            fov: 40,
-            near: this.near,
-            far: this.far
+        this.cameraSettings = { near: this.near, far: this.far };
+    }
+
+    GetEntityConfig() 
+    {
+        const requiredKeys = [
+            "sun",
+            "saturn",
+            "saturn_ring",
+        ];
+
+        const scaleMap = {
+            sun: this.REGION_SIZE_SCALE,
+            saturn: this.LOCAL_SIZE_SCALE,
+            saturn_ring: this.INNER_SIZE_SCALE,
         };
-        this.scene = scene;
-        this.scene.background = SkyBox.Load("StarBox");
-        this.camera = camera;
-        this._tempVec = new THREE.Vector3();
-        this.objects = [];
+        return { requiredKeys, scaleMap };
     }
 
-    async Init() 
-    {
-        try {
-            if (!this.active) return;
-
-            const res = await api.get("/entities");
-            this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solar_system" && e.galaxyKey === "milky_way");
-            
-            this.saturnEntity = this.entities.find(e => e.key === "saturn");
-            this.saturnringEntity = this.entities.find(e => e.key === "saturn_ring");
-            this.sunEntity = this.entities.find(e => e.key === "sun");
-            
-            if (!this.saturnEntity) throw new Error("Saturn entity missing");
-            if (!this.saturnringEntity) throw new Error("Saturn Ring entity missing");
-            if (!this.sunEntity) throw new Error("Sun entity missing");
-            
-            this.saturnSize = this.saturnEntity.size * this.LOCAL_SIZE_SCALE;
-            this.saturnRingSize = this.saturnringEntity.size * this.INNER_SIZE_SCALE;
-
-            this.exitDistance = this.saturnSize * 15;
-
-            this.CreateObjects();
-        }
-        catch (err) {
-            console.error("Failed to load entities", err);
-        }
-    }
-    
-    PlayerEntryPosition() 
-    {
-    }
-    
     CreateObjects()
     {
-        // Create Saturn
-        this.saturn = createEntity(this.saturnEntity, {
-            size: this.saturnSize,
-            axialTilt: 26.73,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
-            detail: 6,
-            hasClouds: false,
+        // Create Sun
+        this.sun = createEntity(this.entityMap.sun, {
+            size: this.sizeMap.sun,
+            maxSizeOnScreen: 0.0557,
+            renderMode: "points",
+            lightType: "directionalLight",
+            temperature: 5778,
+            sizeAtenuation: false,
         });
-        this.scene.add(this.saturn.orbitPivot);
+        this.scene.add(this.sun.orbitPivot);
+        this.objects.push(this.sun);
+        this.objectMap[this.entityMap.sun.key] = this.sun;
+
+        // Create Saturn
+        this.saturn = createEntity(this.entityMap.saturn, {
+            size: this.sizeMap.saturn,
+            posToParent: new THREE.Vector3(this.far - this.sizeMap.saturn * 20, 0, 0),  // TO CHANGE
+            axialTilt: this.entityMap.saturn.axialTilt,
+            orbitalTilt: 2.49,
+            axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
+            orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
+            parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
+        });
         this.objects.push(this.saturn);
+        this.objectMap[this.entityMap.saturn.key] = this.saturn;
+        this.primaryEntity = this.saturn;
 
         // Create saturn ring
-        this.saturnRing = createEntity(this.saturnringEntity, {
-            count: 6000,
-            size: this.saturnRingSize,
-            orbitFarRadius: this.saturnSize * 1.8,
-            orbitNearRadius: this.saturnSize + this.saturnSize/6,
+        this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
+            count: 4000,
+            size: this.sizeMap.saturn_ring,
+            orbitFarRadius: this.sizeMap.saturn * 2,
+            orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
             axialRotationSpeed: 0.005,
             orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
             thickness: 0.6,   
             color: 0xdfe6f0,
-            parent: this.saturn.axialFrame
+            parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,
         });
-        this.objects.push(this.saturnRing);
-
-        // Create Sun
-        this.sun = createEntity(this.sunEntity, {
-            size: 100,
-            maxSizeOnScreen: 0.0557,
-            renderMode: "points",
-            lightType: "directionalLight",
-            targetObject: this.saturn.objectRoot,
-            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
-            orbitalTilt: 2.49,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
-            temperature: 5778,
-            sizeAtenuation: false,
-            parent: this.saturn.objectRoot,
-        });
-        this.objects.push(this.sun);
+        this.objects.push(this.saturn_ring);
+        this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
+        
+        // Assign light target
+        this.sun.light.target = this.primaryEntity.objectRoot;
     }
 
-    Update(dt) 
+    PlayerEntryPosition() 
     {
-        if (!this.saturn) return;
-        for (const obj of this.objects) {
-            obj.Update(dt);
-        }
+        const entryPos = this.primaryEntity.GetPosition();
+        const targetPos = this.sun.GetPosition();
 
+        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+
+        const difference = new THREE.Vector3().subVectors(target, entry);
+        
+        const distance = new THREE.Vector3(
+            Math.abs(difference.x),
+            Math.abs(difference.y),
+            Math.abs(difference.z)
+        );
+
+        const scale = this.sizeMap.saturn;   // TO CHANGE
+
+        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
+        this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
+    }
+
+    SetExitCondition() 
+    {
+        this.exitDistance = this.sizeMap.saturn * 20;  // TO CHANGE
+    }
+
+    CheckSceneTransition() 
+    {
         const pos = this._tempVec;
+        const playerPos = this.player.objectRoot.position;
         this.saturn.objectRoot.getWorldPosition(pos);
 
-        const distanceToParent = this.camera.position.distanceTo(pos);
+        const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
-            this.requestedScene = "SolarSystem";
-            this.transitionFrom = this.saturnEntity.key;
-        }
-    }
-
-    Dispose() 
-    {
-        this.active = false;
-        this.objects.forEach(obj => obj?.Dispose());
-        this.objects = [];
-        
-        // Dispose skybox
-        if (this.scene?.background) {
-            SkyBox.Dispose(this.scene.background);
-            this.scene.background = null;
+            this.requestedScene = "SolarSystem"; // TO CHANGE
+            this.transitionFrom = "saturn";      // TO CHANGE
         }
     }
 }
