@@ -61,14 +61,15 @@ export class VenusOrbit extends BaseScene
         });
         this.objects.push(this.venus);
         this.objectMap[this.entityMap.venus.key] = this.venus;
+        this.primaryEntity = this.venus;
 
         // Assign light target
-        this.sun.light.target = this.venus.objectRoot;
+        this.sun.light.target = this.primaryEntity.objectRoot;
     }
 
     PlayerEntryPosition() 
     {
-        const entryPos = this.venus.GetPosition();
+        const entryPos = this.primaryEntity.GetPosition();
         const targetPos = this.sun.GetPosition();
 
         const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
@@ -82,13 +83,15 @@ export class VenusOrbit extends BaseScene
             Math.abs(difference.z)
         );
 
-        this.player.SetPosition( 2* this.sizeMap.venus + entry.x, 2* this.sizeMap.venus + entry.y, 2* this.sizeMap.venus + entry.z);
+        const scale = this.sizeMap.venus;   // TO CHANGE
+
+        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
         this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
     }
 
     SetExitCondition() 
     {
-        this.exitDistance = this.sizeMap.venus * 20;
+        this.exitDistance = this.sizeMap.venus * 20;  // TO CHANGE
     }
 
     CheckSceneTransition() 
@@ -99,8 +102,8 @@ export class VenusOrbit extends BaseScene
 
         const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
-            this.requestedScene = "SolarSystem";
-            this.transitionFrom = this.entityMap.venus.key;
+            this.requestedScene = "SolarSystem"; // TO CHANGE
+            this.transitionFrom = "venus";       // TO CHANGE
         }
     }
 }

@@ -38,7 +38,8 @@ export class TestScene extends BaseScene
             moon: this.LOCAL_SIZE_SCALE,
             saturn: this.LOCAL_SIZE_SCALE,
             saturn_ring: this.INNER_SIZE_SCALE,
-            asteroid_belt: this.INNER_SIZE_SCALE
+            asteroid_belt: this.INNER_SIZE_SCALE,
+            probe1: this.INNER_SIZE_SCALE
         };      
         return { requiredKeys, scaleMap };
     }
@@ -126,18 +127,21 @@ export class TestScene extends BaseScene
         this.objects.push(this.saturn_ring);
         this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
 
+        // Creating Probe1
         this.probe1 = createEntity(this.entityMap.probe1, {
-            size: 0.3,
+            size: this.sizeMap.probe1,
+            posToParent: new THREE.Vector3(this.sizeMap.sun  * 2, 0, this.sizeMap.sun  * 2),
             parent: this.sun.objectRoot
         });
         this.objects.push(this.probe1);
         this.objectMap[this.entityMap.probe1.key] = this.probe1;
+        this.primaryEntity = this.probe1;
     }
 
     // Step 13
     PlayerEntryPosition() 
     {
-        const entryPos = this.earth.GetPosition();
+        const entryPos = this.primaryEntity.GetPosition();
         const targetPos = this.sun.GetPosition();
 
         const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
@@ -151,10 +155,9 @@ export class TestScene extends BaseScene
             Math.abs(difference.z)
         );
 
-        console.log("Setting player position to:", entry.x, entry.y, entry.z);
-        this.player.SetPosition( 2* this.sizeMap.earth + entry.x, 2* this.sizeMap.earth + entry.y, 2* this.sizeMap.earth + entry.z);
+        const scale = this.sizeMap.probe1;   // TO CHANGE
 
-        console.log("Setting player facing direction:", 2*distance.x, 2*distance.y, 2*distance.z);
+        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
         this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
     }
 }

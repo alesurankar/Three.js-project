@@ -61,14 +61,15 @@ export class MercuryOrbit extends BaseScene
         });
         this.objects.push(this.mercury);
         this.objectMap[this.entityMap.mercury.key] = this.mercury;
+        this.primaryEntity = this.mercury;
 
         // Assign light target
-        this.sun.light.target = this.mercury.objectRoot;
+        this.sun.light.target = this.primaryEntity.objectRoot;
     }
 
     PlayerEntryPosition() 
     {
-        const entryPos = this.mercury.GetPosition();
+        const entryPos = this.primaryEntity.GetPosition();
         const targetPos = this.sun.GetPosition();
 
         const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
@@ -81,29 +82,27 @@ export class MercuryOrbit extends BaseScene
             Math.abs(difference.y),
             Math.abs(difference.z)
         );
+        const scale = this.sizeMap.mercury;   // TO CHANGE
 
-        //console.log("Setting player position to:", entry.x, entry.y, entry.z);
-        this.player.SetPosition( 2* this.sizeMap.mercury + entry.x, 2* this.sizeMap.mercury + entry.y, 2* this.sizeMap.mercury + entry.z);
-
-        //console.log("Setting player facing direction:", 2*distance.x, 2*distance.y, 2*distance.z);
+        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
         this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
     }
 
     SetExitCondition() 
     {
-        this.exitDistance = this.sizeMap.mercury * 20;
+        this.exitDistance = this.sizeMap.mercury * 20;  // TO CHANGE
     }
 
     CheckSceneTransition() 
     {
         const pos = this._tempVec;
         const playerPos = this.player.objectRoot.position;
-        this.mercury.objectRoot.getWorldPosition(pos);
+        this.primaryEntity.objectRoot.getWorldPosition(pos);
 
         const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
-            this.requestedScene = "SolarSystem";
-            this.transitionFrom = "mercury";
+            this.requestedScene = "SolarSystem"; // TO CHANGE
+            this.transitionFrom = "mercury";     // TO CHANGE
             //console.log("Step 14: mercuryOrbit.js: requestedScene: ", this.requestedScene);
             //console.log("Step 14: mercuryOrbit.js: transitionFrom: ", this.transitionFrom);
         }

@@ -23,7 +23,10 @@ export class ArtificialObject
             this.body = new THREE.Mesh(geometry, surfMat);
         }
         else if (renderMode === "model") {
-            this.body = new THREE.Group(); // placeholder
+            this.body = new THREE.Group();
+        }
+        else if (renderMode === "none") {
+            this.body = new THREE.Object3D();
         }
         
         // Create the groups
@@ -49,13 +52,24 @@ export class ArtificialObject
         if (parent) parent.add(this.orbitPivot);
     }
 
+    GetPosition() 
+    {
+        if (!this.objectRoot) return new THREE.Vector3();
+        const pos = new THREE.Vector3();
+        this.objectRoot.getWorldPosition(pos);
+        return pos;
+    }
+
     Update(dt) 
     {
-        // Orbit parent
-        this.orbitPivot.rotation.y += this.orbitalSpeed * dt;
-
+        // Orbit parent 
+        if (this.orbitalSpeed !== 0) {
+            this.orbitPivot.rotation.y += this.orbitalSpeed * dt;
+        }
         // Spin around own axis
-        this.body.rotation.y += this.axialRotationSpeed * dt;
+        if (this.axialRotationSpeed !== 0) {
+            this.body.rotation.y += this.axialRotationSpeed * dt;
+        }
     }
 
     Dispose() 
