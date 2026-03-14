@@ -4,13 +4,13 @@ This repository contains **two versions** of a 3D Universe project:
 
 ---
 
-## Universe (vanilla JS)
+## Universe (vanilla JS) ![status](https://img.shields.io/badge/status-deprecated-red)
 
 - Location: `universe/`
 - Simple 3D universe using plain JavaScript and Three.js.
 - For detailed setup instructions, see [universe/README.md](./universe/README.md).
 
-## Universe2 (Next.js)
+## Universe2 (Next.js) ![status](https://img.shields.io/badge/status-active-brightgreen)
 
 - Location: `universe2/`
 - React + Next.js version with modular scene management.
