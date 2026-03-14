@@ -1,3 +1,7 @@
+![status](https://img.shields.io/badge/status-active-brightgreen)
+
+## Universe2 (Next.js) — Active Project
+
 ## Prerequisites
 
 Before running the project, make sure you have the Node.js (with npm) installed:
