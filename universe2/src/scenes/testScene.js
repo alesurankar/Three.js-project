@@ -49,8 +49,6 @@ export class TestScene extends BaseScene
         this.sun = createEntity(this.entityMap.sun, {
             size: this.sizeMap.sun,
             lightType: "pointLight",
-            axialTilt: this.entityMap.sun.axialTilt,
-            axialPeriod: 25,
             detail: 4,
             temperature: 5778,
             hasTexture: true,
@@ -63,8 +61,6 @@ export class TestScene extends BaseScene
         this.earth = createEntity(this.entityMap.earth, {
             size: this.sizeMap.earth,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
-            axialTilt: this.entityMap.earth.axialTilt,
-            axialPeriod: 1,
             orbitalPeriod: 365.25,
             parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
         });
@@ -75,9 +71,7 @@ export class TestScene extends BaseScene
         this.moon = createEntity(this.entityMap.moon, {
             size: this.sizeMap.moon,
             posToParent: new THREE.Vector3(this.sizeMap.earth * 3, 0, 0),
-            axialTilt: this.entityMap.moon.axialTilt,
             orbitalTilt: 5.145,
-            axialPeriod: 27.3,
             orbitalPeriod: 27.3,
             parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
         });
@@ -90,7 +84,6 @@ export class TestScene extends BaseScene
             size: this.sizeMap.asteroid_belt,
             orbitFarRadius: this.sizeMap.sun * 16,
             orbitNearRadius: this.sizeMap.sun * 14,
-            axialPeriod: 40,
             orbitalPeriod: 1570,
             thickness: 50,
             parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
@@ -102,9 +95,7 @@ export class TestScene extends BaseScene
         this.saturn = createEntity(this.entityMap.saturn, {
             size: this.sizeMap.saturn,
             posToParent: new THREE.Vector3(this.sizeMap.sun  * 8, 0, 0),
-            axialTilt: this.entityMap.saturn.axialTilt,
             orbitalTilt: 2.49,
-            axialPeriod: 0.45,
             orbitalPeriod: 10759,
             parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
         });
@@ -117,7 +108,6 @@ export class TestScene extends BaseScene
             size: this.sizeMap.saturn_ring,
             orbitFarRadius: this.sizeMap.saturn * 2,
             orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
-            axialPeriod: 1,
             orbitalPeriod: 0.6,
             thickness: 0.6,   
             color: 0xdfe6f0,

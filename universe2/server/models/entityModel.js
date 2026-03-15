@@ -7,27 +7,22 @@ const entitySchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-
     name: {
       type: String,
       required: true,
     },
-
     type: {
       type: String,
       required: true,
     },
-
     parentKey: {
       type: String,
       default: null,
     },
-
     systemKey: {
       type: String,
       default: null,
     },
-
     galaxyKey: {
       type: String,
       default: null,
@@ -36,15 +31,14 @@ const entitySchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    
     axialTilt: {
       type: Number,
       required: true,
+    },
+    axialPeriod: {
+      type: Number,
     }
   },
-  //{
-  //  timestamps: true,
-  //}
 );
 
 export default mongoose.model("Entity", entitySchema);
