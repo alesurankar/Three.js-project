@@ -17,15 +17,12 @@ const entitySchema = new mongoose.Schema(
     },
     parentKey: {
       type: String,
-      default: null,
     },
     systemKey: {
       type: String,
-      default: null,
     },
     galaxyKey: {
       type: String,
-      default: null,
     },
     size: {
       type: Number,
@@ -33,7 +30,6 @@ const entitySchema = new mongoose.Schema(
     },
     axialTilt: {
       type: Number,
-      required: true,
     },
     axialPeriod: {
       type: Number,

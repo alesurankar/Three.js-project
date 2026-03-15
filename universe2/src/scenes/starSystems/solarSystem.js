@@ -275,7 +275,7 @@ export class SolarSystem extends BaseScene
             const distance = playerPos.distanceTo(pos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
-                console.log("Step 14: solarSystem.js: triggeredScene: ", this.requestedScene);
+                //console.log("Step 14: solarSystem.js: triggeredScene: ", this.requestedScene);
                 break;
             }
         } 

@@ -53,6 +53,7 @@ export class VenusOrbit extends BaseScene
         // Create Venus
         this.venus = createEntity(this.entityMap.venus, {
             size: this.sizeMap.venus,
+            detail: 6,
             posToParent: new THREE.Vector3(this.far - this.sizeMap.venus * 20, 0, 0),  // TO CHANGE
             parent: this.objectMap[this.entityMap.venus.parentKey].objectRoot,
         });
