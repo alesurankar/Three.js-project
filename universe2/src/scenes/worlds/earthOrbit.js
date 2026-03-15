@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { createEntity } from "../../factories/entityFactory.js";
-import { BaseScene } from "../baseScene.js"
+import { BaseScene } from "../baseScene.js";
 
 
 export class EarthOrbit extends BaseScene

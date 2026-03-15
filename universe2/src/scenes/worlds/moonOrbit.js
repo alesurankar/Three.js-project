@@ -1,16 +1,14 @@
 import * as THREE from "three";
-import { StarSystem } from "../../utils/starSystemHelper.js"
-import { SkyBox } from "../../visuals/skyBox.js";
 import { createEntity } from "../../factories/entityFactory.js";
-import api from "../../utils/api";
+import { BaseScene } from "../baseScene.js";
 
 
-export class MoonOrbit
+export class MoonOrbit extends BaseScene
 {
     constructor(scene, camera, player, focus = {}) 
     {
-        this.active = true;
-        StarSystem.timeFactor=1
+        super(scene, camera, player, focus);
+        this.timeFactor=1
         
         this.SIZE_SCALE = 14;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
@@ -19,143 +17,120 @@ export class MoonOrbit
 
         this.near = 30;
         this.far = 30000;
-        this.cameraSettings = {
-            pos: { x:-1900, y:500, z:-1900 },
-            lookAt: { x:1000, y:0, z:0 },
-            fov: 40,
-            near: this.near,
-            far: this.far
-        };
-        this.scene = scene;
-        this.scene.background = SkyBox.Load("StarBox");
-        this.camera = camera;
-        this._tempVec = new THREE.Vector3();
-        this.objects = [];
-    }
-
-    async Init() 
-    {
-        try {
-            if (!this.active) return;
-
-            const res = await api.get("/entities");
-            this.entities = res.data.entities;
-            this.entities = this.entities.filter(e => e.systemKey === "solar_system" && e.galaxyKey === "milky_way");
-            
-            this.moonEntity = this.entities.find(e => e.key === "moon");
-            this.earthEntity = this.entities.find(e => e.key === "earth");
-            this.sunEntity = this.entities.find(e => e.key === "sun");
-            
-            if (!this.earthEntity) throw new Error("Earth entity missing");
-            if (!this.sunEntity) throw new Error("Sun entity missing");
-
-            this.moonSize = this.moonEntity.size * this.LOCAL_SIZE_SCALE;
-            this.earthSize = this.earthEntity.size * this.LOCAL_SIZE_SCALE;
-
-            this.exitDistance = this.moonSize * 60;
-
-            this.CreateObjects();
-            this.Portals();
-        }
-        catch (err) {
-            console.error("Failed to load entities", err);
-        }
+        this.cameraSettings = { near: this.near, far: this.far };
     }
     
-    PlayerEntryPosition() 
+    GetEntityConfig() 
     {
+        const requiredKeys = [
+            "sun",
+            "earth",
+            "moon",
+        ];
+
+        const scaleMap = {
+            sun: this.REGION_SIZE_SCALE,
+            earth: this.LOCAL_SIZE_SCALE,
+            moon: this.LOCAL_SIZE_SCALE,
+        };
+        return { requiredKeys, scaleMap };
     }
     
     CreateObjects()
     {
-        // Create Moon
-        this.moon = createEntity(this.moonEntity, {
-            size: this.moonSize,
-            axialTilt: 6.68,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
-            detail: 6,
-            hasClouds: false,
-        });
-        this.scene.add(this.moon.orbitPivot);
-        this.objects.push(this.moon);
-
-        // Create Earth
-        this.earth = createEntity(this.earthEntity, {
-            size: this.earthSize,
-            posToParent: new THREE.Vector3(this.earthSize * 20, 0, this.earthSize * 20),
-            axialTilt: 23.44,
-            orbitalTilt: 5.145,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(1),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
-            detail: 3,
-            hasClouds: true,
-            parent: this.moon.objectRoot,
-        });
-        this.objects.push(this.earth);
-
         // Create Sun
-        this.sun = createEntity(this.sunEntity, {
-            size: 100,
+        this.sun = createEntity(this.entityMap.sun, {
+            size: this.sizeMap.sun,
             maxSizeOnScreen: 0.52,
             renderMode: "points",
             lightType: "directionalLight",
-            targetObject: this.moon.objectRoot,
-            posToParent: new THREE.Vector3(this.far - this.exitDistance, 0, 0),
-            orbitalTilt: 5.145,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(365),
             temperature: 5778,
+            orbitalTilt: 0,
+            orbitalPeriod: 0,
             sizeAtenuation: false,
-            parent: this.moon.objectRoot,
         });
+        this.scene.add(this.sun.orbitPivot);
         this.objects.push(this.sun);
+        this.objectMap[this.entityMap.sun.key] = this.sun;
+        
+        // Create Earth
+        this.earth = createEntity(this.entityMap.earth, {
+            size: this.sizeMap.earth,
+            posToParent: new THREE.Vector3(this.far - this.sizeMap.earth * 20, 0, 0),  // TO CHANGE
+            detail: 3,
+            hasClouds: true,
+            parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
+        });
+        this.objects.push(this.earth);
+        this.objectMap[this.entityMap.earth.key] = this.earth;
+
+        // Create Moon
+        this.moon = createEntity(this.entityMap.moon, {
+            size: this.sizeMap.moon,
+            posToParent: new THREE.Vector3(this.sizeMap.earth * 20, 0, this.sizeMap.earth * 20),
+            detail: 6,
+            parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
+        });
+        this.objects.push(this.moon);
+        this.objectMap[this.entityMap.moon.key] = this.moon;
+        this.primaryEntity = this.moon;
+
+        // Assign light target
+        this.sun.light.target = this.primaryEntity.objectRoot;
     }
 
-    Portals()
+    PlayerEntryPosition() 
+    {
+        const entryPos = this.primaryEntity.GetPosition();
+        const targetPos = this.sun.GetPosition();
+
+        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+
+        const difference = new THREE.Vector3().subVectors(target, entry);
+        
+        const distance = new THREE.Vector3(
+            Math.abs(difference.x),
+            Math.abs(difference.y),
+            Math.abs(difference.z)
+        );
+        const scale = this.sizeMap.moon;   // TO CHANGE
+
+        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
+        this.player.FaceTarget(-2*distance.x, 2*distance.y, 2*distance.z);
+    }
+    
+    SetExitCondition() 
+    {
+        this.exitDistance = this.sizeMap.moon * 60;  // TO CHANGE
+    }
+
+    DefinePortals()
     {
         this.sceneTriggers = [
-            { obj: this.earth, threshold: this.earthSize * 18, scene: "EarthOrbit" },
+            { obj: this.earth, threshold: this.sizeMap.earth * 18, scene: "EarthOrbit" },
         ];
     }
 
-    Update(dt) 
+    CheckSceneTransition() 
     {
-        // console.log("Camera position:", this.camera.position);
-        if (!this.moon) return;
-        for (const obj of this.objects) {
-            obj.Update(dt);
-        }
-        if (!this.sceneTriggers) return;
-
         const pos = this._tempVec;
-        this.moon.objectRoot.getWorldPosition(pos);
+        const playerPos = this.player.objectRoot.position;
+        this.primaryEntity.objectRoot.getWorldPosition(pos);
 
-        const distanceToParent = this.camera.position.distanceTo(pos);
+        const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
-            this.requestedScene = "SolarSystem";
-            this.transitionFrom = this.moonEntity.key;
+            this.requestedScene = "SolarSystem";  // TO CHANGE
+            this.transitionFrom = "moon";         // TO CHANGE
         } 
 
         for (const trigger of this.sceneTriggers) {
             trigger.obj.objectRoot.getWorldPosition(pos);
-            const distance = this.camera.position.distanceTo(pos);
+            const distance = playerPos.distanceTo(pos);
             if (distance <= trigger.threshold) {
                 this.requestedScene = trigger.scene;
                 break;
             }
-        }
-    }
-
-    Dispose() 
-    {
-        this.active = false;
-        this.objects.forEach(obj => obj?.Dispose());
-        this.objects = [];
-        this.sceneTriggers = [];
-        
-        // Dispose skybox
-        if (this.scene?.background) {
-            SkyBox.Dispose(this.scene.background);
-            this.scene.background = null;
         }
     }
 }
