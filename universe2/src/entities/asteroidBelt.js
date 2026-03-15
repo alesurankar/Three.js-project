@@ -8,8 +8,8 @@ export class AsteroidBelt
     orbitNearRadius = 1000,
     orbitFarRadius = 1300,
     thickness = 50,
+    axialPeriod = 0.001,
     orbitalPeriod = 0.001,
-    axialRotationSpeed = 0.001,
     detail = 0,
     parent = null,
     color = 0x888888
@@ -17,7 +17,7 @@ export class AsteroidBelt
   {
     this.count = count;
     this.orbitalSpeed = AsteroidBelt.OrbitalRotationInDays(orbitalPeriod);
-    this.axialRotationSpeed = axialRotationSpeed;
+    this.axialRotationSpeed = AsteroidBelt.AxialRotationInDays(axialPeriod);
 
     // Base geometry and material shared by all asteroids
     const geometry = new THREE.IcosahedronGeometry(size, detail);
@@ -70,7 +70,13 @@ export class AsteroidBelt
   static OrbitalRotationInDays(days) 
   {
     if (!days) return 0;
-    
+    const seconds = days * 24 * 60 * 60;
+    return (2 * Math.PI / seconds);
+  }
+
+  static AxialRotationInDays(days) 
+  {
+    if (!days) return 0;
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds);
   }

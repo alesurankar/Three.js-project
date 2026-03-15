@@ -6,7 +6,7 @@ export class GravityCenter extends CelestialBody
 {
   constructor({
     posToParent = new THREE.Vector3(0, 0, 0),
-    axialRotationSpeed = 0,
+    axialPeriod = 0,
     orbitalPeriod = 0,
     parent = null,
   } = {}) 
@@ -15,7 +15,7 @@ export class GravityCenter extends CelestialBody
     super({
       renderMode: "none",
       posToParent,
-      axialRotationSpeed,
+      axialPeriod,
       orbitalPeriod,
       parent,
     });

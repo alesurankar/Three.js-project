@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { StarSystem } from "../utils/starSystemHelper.js"
 import { SkyBox } from "../visuals/skyBox.js";
 import { loadEntities } from "../utils/loadEntities.js"
 
@@ -11,7 +10,7 @@ export class BaseScene
     {
         console.log("Scene constructor");
         this.active = true;
-        StarSystem.timeFactor=1
+        this.timeFactor=1
 
         this.SIZE_SCALE = 1;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
@@ -59,7 +58,7 @@ export class BaseScene
         // console.log("Camera position:", this.camera.position);
         if (!this.sun) return;
         for (const obj of this.objects) {
-            obj.Update(dt);
+            obj.Update(dt * this.timeFactor);
         }
         if (this.CheckSceneTransition) {
             this.CheckSceneTransition();

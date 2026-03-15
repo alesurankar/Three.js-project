@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { StarSystem } from "../utils/starSystemHelper.js"
 import { createEntity } from "../factories/entityFactory.js";
 import { BaseScene } from "./baseScene.js"
 
@@ -9,7 +8,7 @@ export class TestScene extends BaseScene
     constructor(scene, camera, player, focus = {}) 
     {  
         super(scene, camera, player, focus);
-        StarSystem.timeFactor = 100;
+        this.timeFactor = 100;
         
         this.SIZE_SCALE = 1;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
@@ -51,7 +50,7 @@ export class TestScene extends BaseScene
             size: this.sizeMap.sun,
             lightType: "pointLight",
             axialTilt: this.entityMap.sun.axialTilt,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(25),
+            axialPeriod: 25,
             detail: 4,
             temperature: 5778,
             hasTexture: true,
@@ -65,7 +64,7 @@ export class TestScene extends BaseScene
             size: this.sizeMap.earth,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
             axialTilt: this.entityMap.earth.axialTilt,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(1),
+            axialPeriod: 1,
             orbitalPeriod: 365.25,
             parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
         });
@@ -78,7 +77,7 @@ export class TestScene extends BaseScene
             posToParent: new THREE.Vector3(this.sizeMap.earth * 3, 0, 0),
             axialTilt: this.entityMap.moon.axialTilt,
             orbitalTilt: 5.145,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
+            axialPeriod: 27.3,
             orbitalPeriod: 27.3,
             parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
         });
@@ -91,7 +90,7 @@ export class TestScene extends BaseScene
             size: this.sizeMap.asteroid_belt,
             orbitFarRadius: this.sizeMap.sun * 16,
             orbitNearRadius: this.sizeMap.sun * 14,
-            axialRotationSpeed: 0.0004,
+            axialPeriod: 40,
             orbitalPeriod: 1570,
             thickness: 50,
             parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
@@ -105,7 +104,7 @@ export class TestScene extends BaseScene
             posToParent: new THREE.Vector3(this.sizeMap.sun  * 8, 0, 0),
             axialTilt: this.entityMap.saturn.axialTilt,
             orbitalTilt: 2.49,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
+            axialPeriod: 0.45,
             orbitalPeriod: 10759,
             parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
         });
@@ -118,7 +117,7 @@ export class TestScene extends BaseScene
             size: this.sizeMap.saturn_ring,
             orbitFarRadius: this.sizeMap.saturn * 2,
             orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
-            axialRotationSpeed: 0.005,
+            axialPeriod: 1,
             orbitalPeriod: 0.6,
             thickness: 0.6,   
             color: 0xdfe6f0,

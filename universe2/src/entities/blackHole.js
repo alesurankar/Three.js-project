@@ -8,7 +8,7 @@ export class BlackHole extends CelestialBody
     size = 10,
     posToParent = new THREE.Vector3(0, 0, 0),
     facingTo = new THREE.Vector3(0, -1, 0),
-    axialRotationSpeed = 0.01,
+    axialPeriod = 0.01,
     orbitalPeriod = 0,
     parent = null,
   } = {}) 
@@ -30,7 +30,7 @@ export class BlackHole extends CelestialBody
     super({
       renderMode: "mesh",
       posToParent,
-      axialRotationSpeed,
+      axialPeriod,
       orbitalPeriod,
       surfMat,
       geometry,

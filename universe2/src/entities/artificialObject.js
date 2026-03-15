@@ -9,7 +9,7 @@ export class ArtificialObject
     posToParent = new THREE.Vector3(0, 0, 0),
     axialTilt = 0,
     orbitalTilt = 0,
-    axialRotationSpeed = 0,
+    axialPeriod = 0,
     orbitalPeriod = 0,
     surfMat = null,
     geometry = null,
@@ -40,7 +40,8 @@ export class ArtificialObject
     this.orbitPivot.add(this.objectRoot);
 
     // Set rotation and position
-    this.orbitalSpeed = ArtificialObject.OrbitalRotationInDays(orbitalPeriod);;
+    this.orbitalSpeed = ArtificialObject.OrbitalRotationInDays(orbitalPeriod);
+    const axialRotationSpeed = ArtificialObject.AxialRotationInDays(axialPeriod);
     this.axialTilt = axialTilt * Math.PI / 180;
     this.orbitalTilt = orbitalTilt * Math.PI / 180;
     this.axialRotationSpeed = axialRotationSpeed - this.orbitalSpeed;
@@ -55,7 +56,13 @@ export class ArtificialObject
   static OrbitalRotationInDays(days) 
   {
     if (!days) return 0;
-    
+    const seconds = days * 24 * 60 * 60;
+    return (2 * Math.PI / seconds);
+  }
+
+  static AxialRotationInDays(days) 
+  {
+    if (!days) return 0;
     const seconds = days * 24 * 60 * 60;
     return (2 * Math.PI / seconds);
   }

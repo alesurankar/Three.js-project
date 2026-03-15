@@ -12,7 +12,7 @@ export class GlbModel extends ArtificialObject
     yaw = 0,    // rotation around Y
     roll = 0,   // rotation around Z
     orbitalTilt = 0,
-    axialRotationSpeed = 0,
+    axialPeriod = 0,
     orbitalPeriod = 0,
     parent = null
   }= {}) 
@@ -22,7 +22,7 @@ export class GlbModel extends ArtificialObject
       renderMode: "model",
       posToParent,
       orbitalTilt,
-      axialRotationSpeed,
+      axialPeriod,
       orbitalPeriod,
       geometry: null,
       surfMat: null,
