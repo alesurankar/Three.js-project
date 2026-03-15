@@ -13,7 +13,7 @@ export const planets = [
     { 
         key: "earth", name: "Earth", type: "planet", 
         parentKey: "sun", systemKey: "solar_system", galaxyKey: "milky_way", 
-        size: 6371, axialTilt: 23.44, axialPeriod: 1,
+        size: 6371, axialTilt: 23.44, axialPeriod: 1, orbitalTilt: 0, orbitalPeriod: 365.25, 
     },
     { 
         key: "mars", name: "Mars", type: "planet", 
@@ -28,7 +28,7 @@ export const planets = [
     { 
         key: "saturn", name: "Saturn", type: "planet", 
         parentKey: "sun", systemKey: "solar_system", galaxyKey: "milky_way", 
-        size: 58232, axialTilt: 26.73, axialPeriod: 0.45,
+        size: 58232, axialTilt: 26.73, axialPeriod: 0.45, orbitalTilt: 2.49, orbitalPeriod: 10759, 
     },
     { 
         key: "uranus", name: "Uranus", type: "planet", 

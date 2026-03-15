@@ -37,7 +37,13 @@ const entitySchema = new mongoose.Schema(
     },
     axialPeriod: {
       type: Number,
-    }
+    },
+    orbitalTilt: {
+      type: Number,
+    },
+    orbitalPeriod: {
+      type: Number,
+    },
   },
 );
 

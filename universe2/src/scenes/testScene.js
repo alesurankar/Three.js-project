@@ -51,6 +51,8 @@ export class TestScene extends BaseScene
             lightType: "pointLight",
             detail: 4,
             temperature: 5778,
+            orbitalTilt: 0,
+            orbitalPeriod: 0,
             hasTexture: true,
         });
         this.scene.add(this.sun.orbitPivot);
@@ -61,7 +63,6 @@ export class TestScene extends BaseScene
         this.earth = createEntity(this.entityMap.earth, {
             size: this.sizeMap.earth,
             posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
-            orbitalPeriod: 365.25,
             parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
         });
         this.objects.push(this.earth);
@@ -71,8 +72,6 @@ export class TestScene extends BaseScene
         this.moon = createEntity(this.entityMap.moon, {
             size: this.sizeMap.moon,
             posToParent: new THREE.Vector3(this.sizeMap.earth * 3, 0, 0),
-            orbitalTilt: 5.145,
-            orbitalPeriod: 27.3,
             parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
         });
         this.objects.push(this.moon);
@@ -84,7 +83,6 @@ export class TestScene extends BaseScene
             size: this.sizeMap.asteroid_belt,
             orbitFarRadius: this.sizeMap.sun * 16,
             orbitNearRadius: this.sizeMap.sun * 14,
-            orbitalPeriod: 1570,
             thickness: 50,
             parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
         });
@@ -95,8 +93,6 @@ export class TestScene extends BaseScene
         this.saturn = createEntity(this.entityMap.saturn, {
             size: this.sizeMap.saturn,
             posToParent: new THREE.Vector3(this.sizeMap.sun  * 8, 0, 0),
-            orbitalTilt: 2.49,
-            orbitalPeriod: 10759,
             parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
         });
         this.objects.push(this.saturn);
@@ -108,7 +104,6 @@ export class TestScene extends BaseScene
             size: this.sizeMap.saturn_ring,
             orbitFarRadius: this.sizeMap.saturn * 2,
             orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
-            orbitalPeriod: 0.6,
             thickness: 0.6,   
             color: 0xdfe6f0,
             parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,
