@@ -66,7 +66,7 @@ export class TestScene extends BaseScene
             posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
             axialTilt: this.entityMap.earth.axialTilt,
             axialRotationSpeed: StarSystem.AxialRotationInDays(1),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(365.25),
+            orbitalPeriod: 365.25,
             parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
         });
         this.objects.push(this.earth);
@@ -79,7 +79,7 @@ export class TestScene extends BaseScene
             axialTilt: this.entityMap.moon.axialTilt,
             orbitalTilt: 5.145,
             axialRotationSpeed: StarSystem.AxialRotationInDays(27.3),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(27.3),
+            orbitalPeriod: 27.3,
             parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
         });
         this.objects.push(this.moon);
@@ -92,7 +92,7 @@ export class TestScene extends BaseScene
             orbitFarRadius: this.sizeMap.sun * 16,
             orbitNearRadius: this.sizeMap.sun * 14,
             axialRotationSpeed: 0.0004,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(1570),
+            orbitalPeriod: 1570,
             thickness: 50,
             parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
         });
@@ -106,7 +106,7 @@ export class TestScene extends BaseScene
             axialTilt: this.entityMap.saturn.axialTilt,
             orbitalTilt: 2.49,
             axialRotationSpeed: StarSystem.AxialRotationInDays(0.45),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(10759),
+            orbitalPeriod: 10759,
             parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
         });
         this.objects.push(this.saturn);
@@ -119,7 +119,7 @@ export class TestScene extends BaseScene
             orbitFarRadius: this.sizeMap.saturn * 2,
             orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
             axialRotationSpeed: 0.005,
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(0.6),
+            orbitalPeriod: 0.6,
             thickness: 0.6,   
             color: 0xdfe6f0,
             parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,

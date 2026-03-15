@@ -8,7 +8,7 @@ export class AsteroidBelt
     orbitNearRadius = 1000,
     orbitFarRadius = 1300,
     thickness = 50,
-    orbitalSpeed = 0.001,
+    orbitalPeriod = 0.001,
     axialRotationSpeed = 0.001,
     detail = 0,
     parent = null,
@@ -16,7 +16,7 @@ export class AsteroidBelt
   } = {}) 
   {
     this.count = count;
-    this.orbitalSpeed = orbitalSpeed;
+    this.orbitalSpeed = AsteroidBelt.OrbitalRotationInDays(orbitalPeriod);
     this.axialRotationSpeed = axialRotationSpeed;
 
     // Base geometry and material shared by all asteroids
@@ -65,6 +65,14 @@ export class AsteroidBelt
     }
 
     if (parent) parent.add(this.body);
+  }
+  
+  static OrbitalRotationInDays(days) 
+  {
+    if (!days) return 0;
+    
+    const seconds = days * 24 * 60 * 60;
+    return (2 * Math.PI / seconds);
   }
 
   Update(dt) 
