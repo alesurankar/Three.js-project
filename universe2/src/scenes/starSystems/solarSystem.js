@@ -221,23 +221,28 @@ export class SolarSystem extends BaseScene
 
     PlayerEntryPosition() 
     {
-        const entryPos = this.primaryEntity.GetPosition();
-        const targetPos = this.mercury.GetPosition();
+      const entryPos = this.primaryEntity.GetPosition();
+      const targetPos = this.earth.GetPosition();
 
-        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
-        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+      const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+      const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
 
-        const difference = new THREE.Vector3().subVectors(target, entry);
-        
-        const distance = new THREE.Vector3(
-            Math.abs(difference.x),
-            Math.abs(difference.y),
-            Math.abs(difference.z)
-        );
-        const scale = this.sizeMap.sun;   // TO CHANGE
+      const scale = this.sizeMap.sun;
+      const playerPos = new THREE.Vector3(entry.x + 2*scale, entry.y + 2*scale, entry.z + 2*scale);
+      this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
+      
+      // Debug logs
+      console.log("Sun position:", entry);
+      console.log("Earth position:", target);
+      console.log("Player set to:", playerPos);
 
-        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
-        this.player.FaceTarget(-2*distance.x, 2*distance.y, 2*distance.z);
+      // Face the Sun
+      this.player.FaceTarget(-10000, 0, 0);
+      
+      // Log the resulting forward vector
+      const forward = new THREE.Vector3();
+      this.player.camera.getWorldDirection(forward);
+      console.log("Player forward vector after lookAt:", forward);
     }
 
     SetExitCondition() 

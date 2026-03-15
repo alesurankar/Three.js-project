@@ -40,6 +40,9 @@ export class BaseScene
             this.entityMap = entityMap;
             this.sizeMap = sizeMap;
             this.CreateObjects();
+            if (this.primaryEntity) {
+              this.AttachPlayerTo(this.primaryEntity);
+            }
             this.PlayerEntryPosition();
             if (this.SetExitCondition) {
                 this.SetExitCondition();
@@ -51,6 +54,15 @@ export class BaseScene
         catch (err) {
             console.error("Failed to load entities", err);
         }
+    }
+
+    AttachPlayerTo(entity)
+    {
+      if (!entity?.orbitPivot) return;
+      if (this.player.objectRoot.parent)
+        this.player.objectRoot.parent.remove(this.player.objectRoot);
+
+      entity.orbitPivot.add(this.player.objectRoot);
     }
 
     Update(dt) 

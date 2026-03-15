@@ -67,23 +67,28 @@ export class MercuryOrbit extends BaseScene
 
     PlayerEntryPosition() 
     {
-        const entryPos = this.primaryEntity.GetPosition();
-        const targetPos = this.sun.GetPosition();
+      const entryPos = this.primaryEntity.GetPosition();
+      const targetPos = this.sun.GetPosition();
 
-        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
-        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+      const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+      const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
 
-        const difference = new THREE.Vector3().subVectors(target, entry);
-        
-        const distance = new THREE.Vector3(
-            Math.abs(difference.x),
-            Math.abs(difference.y),
-            Math.abs(difference.z)
-        );
-        const scale = this.sizeMap.mercury;   // TO CHANGE
+      const scale = this.sizeMap.mercury;
+      const playerPos = new THREE.Vector3(entry.x + 2*scale, entry.y + 2*scale, entry.z + 2*scale);
+      this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
 
-        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
-        this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
+      // Debug logs
+      console.log("Mercury position:", entry);
+      console.log("Sun position:", target);
+      console.log("Player set to:", playerPos);
+
+      // Face the Sun
+      this.player.FaceTarget(1000000, 0, 0);
+
+      // Log the resulting forward vector
+      const forward = new THREE.Vector3();
+      this.player.camera.getWorldDirection(forward);
+      console.log("Player forward vector after lookAt:", forward);
     }
 
     SetExitCondition() 
@@ -93,16 +98,18 @@ export class MercuryOrbit extends BaseScene
 
     CheckSceneTransition() 
     {
-        const pos = this._tempVec;
-        const playerPos = this.player.objectRoot.position;
-        this.primaryEntity.objectRoot.getWorldPosition(pos);
+      const entityPos = new THREE.Vector3();
+      const playerPos = new THREE.Vector3();
 
-        const distanceToParent = playerPos.distanceTo(pos);
-        if (distanceToParent > this.exitDistance) {
-            this.requestedScene = "SolarSystem"; // TO CHANGE
-            this.transitionFrom = "mercury";     // TO CHANGE
-            //console.log("Step 14: mercuryOrbit.js: requestedScene: ", this.requestedScene);
-            //console.log("Step 14: mercuryOrbit.js: transitionFrom: ", this.transitionFrom);
-        }
+      this.primaryEntity.objectRoot.getWorldPosition(entityPos);
+      this.player.objectRoot.getWorldPosition(playerPos);
+
+      const distanceToParent = playerPos.distanceTo(entityPos);
+      if (distanceToParent > this.exitDistance) {
+        this.requestedScene = "SolarSystem"; // TO CHANGE
+        this.transitionFrom = "mercury";     // TO CHANGE
+        //console.log("Step 14: mercuryOrbit.js: requestedScene: ", this.requestedScene);
+        //console.log("Step 14: mercuryOrbit.js: transitionFrom: ", this.transitionFrom);
+      }
     }
 }

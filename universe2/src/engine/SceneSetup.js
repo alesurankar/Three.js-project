@@ -20,7 +20,7 @@ export function CreateSceneManager(scene, onSceneChange)
 export function FirstScene(manager)
 {
     console.log("Step 7: SceneSetup.js: FirstScene()");
-    manager?.SwitchScene("SolarSystem");
+    manager?.SwitchScene("MercuryOrbit");
 }
 
 // Step ..

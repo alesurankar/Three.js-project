@@ -50,23 +50,12 @@ export class Player
         const move = this.gameControls.move;
         const speed = move.fast ? 500 : 50;
 
-        const velocity = new THREE.Vector3();
-
-        const forward = new THREE.Vector3();
-        this.camera.getWorldDirection(forward);
-        forward.normalize();
-
-        const up = new THREE.Vector3(0, 1, 0);
-        const right = new THREE.Vector3().crossVectors(forward, up).normalize();
-
-        if (move.forward) velocity.add(forward.multiplyScalar(speed));
-        if (move.backward) velocity.add(forward.multiplyScalar(-speed));
-        if (move.left) velocity.add(right.multiplyScalar(-speed));
-        if (move.right) velocity.add(right.multiplyScalar(speed));
-        if (move.up) velocity.y += speed;
-        if (move.down) velocity.y -= speed;
-
-        this.objectRoot.position.addScaledVector(velocity, dt);
+        if (move.forward)  this.objectRoot.translateZ(-speed * dt);
+        if (move.backward) this.objectRoot.translateZ(speed * dt);
+        if (move.left)     this.objectRoot.translateX(-speed * dt);
+        if (move.right)    this.objectRoot.translateX(speed * dt);
+        if (move.up)       this.objectRoot.translateY(speed * dt);
+        if (move.down)     this.objectRoot.translateY(-speed * dt);
     }
 
     Dispose()
