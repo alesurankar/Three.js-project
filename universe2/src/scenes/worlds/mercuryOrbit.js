@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { StarSystem } from "../../utils/starSystemHelper.js"
 import { createEntity } from "../../factories/entityFactory.js";
 import { BaseScene } from "../baseScene.js"
 
@@ -9,7 +8,7 @@ export class MercuryOrbit extends BaseScene
     constructor(scene, camera, player, focus = {}) 
     {
         super(scene, camera, player, focus);
-        StarSystem.timeFactor=1
+        this.timeFactor=1
         
         this.SIZE_SCALE = 10;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
@@ -43,6 +42,8 @@ export class MercuryOrbit extends BaseScene
             renderMode: "points",
             lightType: "directionalLight",
             temperature: 5778,
+            orbitalTilt: 0,
+            orbitalPeriod: 0,
             sizeAtenuation: false,
         });
         this.scene.add(this.sun.orbitPivot);
@@ -53,10 +54,6 @@ export class MercuryOrbit extends BaseScene
         this.mercury = createEntity(this.entityMap.mercury, {
             size: this.sizeMap.mercury,
             posToParent: new THREE.Vector3(this.far - this.sizeMap.mercury * 20, 0, 0),  // TO CHANGE
-            axialTilt: this.entityMap.mercury.axialTilt,
-            orbitalTilt: 7.00,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(58.6),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(88),
             parent: this.objectMap[this.entityMap.mercury.parentKey].objectRoot,
         });
         this.objects.push(this.mercury);

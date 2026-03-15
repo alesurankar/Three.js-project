@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { StarSystem } from "../../utils/starSystemHelper.js"
 import { createEntity } from "../../factories/entityFactory.js";
 import { BaseScene } from "../baseScene.js"
 
@@ -9,7 +8,7 @@ export class VenusOrbit extends BaseScene
     constructor(scene, camera, player, focus = {}) 
     {
         super(scene, camera, player, focus);
-        StarSystem.timeFactor=1
+        this.timeFactor=1
         
         this.SIZE_SCALE = 7;
         this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
@@ -43,6 +42,8 @@ export class VenusOrbit extends BaseScene
             renderMode: "points",
             lightType: "directionalLight",
             temperature: 5778,
+            orbitalTilt: 0,
+            orbitalPeriod: 0,
             sizeAtenuation: false,
         });
         this.scene.add(this.sun.orbitPivot);
@@ -53,10 +54,6 @@ export class VenusOrbit extends BaseScene
         this.venus = createEntity(this.entityMap.venus, {
             size: this.sizeMap.venus,
             posToParent: new THREE.Vector3(this.far - this.sizeMap.venus * 20, 0, 0),  // TO CHANGE
-            axialTilt: this.entityMap.venus.axialTilt,
-            orbitalTilt: 3.39,
-            axialRotationSpeed: StarSystem.AxialRotationInDays(243),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(224.7),
             parent: this.objectMap[this.entityMap.venus.parentKey].objectRoot,
         });
         this.objects.push(this.venus);

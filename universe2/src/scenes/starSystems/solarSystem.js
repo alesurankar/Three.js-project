@@ -74,6 +74,7 @@ export class SolarSystem extends BaseScene
         this.scene.add(this.sun.orbitPivot);
         this.objects.push(this.sun);
         this.objectMap[this.entityMap.sun.key] = this.sun;
+        this.primaryEntity = this.sun;
 
         // Create Mercury
         this.mercury = createEntity(this.entityMap.mercury, {
@@ -220,7 +221,7 @@ export class SolarSystem extends BaseScene
 
     PlayerEntryPosition() 
     {
-        const entryPos = this.sun.GetPosition();
+        const entryPos = this.primaryEntity.GetPosition();
         const targetPos = this.mercury.GetPosition();
 
         const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
@@ -233,17 +234,15 @@ export class SolarSystem extends BaseScene
             Math.abs(difference.y),
             Math.abs(difference.z)
         );
+        const scale = this.sizeMap.sun;   // TO CHANGE
 
-        console.log("Setting player position to:", entry.x, entry.y, entry.z);
-        this.player.SetPosition( 2* this.sizeMap.sun + entry.x, 2* this.sizeMap.sun + entry.y, 2* this.sizeMap.sun + entry.z);
-
-        console.log("Setting player facing direction:", -2*distance.x, 2*distance.y, 2*distance.z);
+        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
         this.player.FaceTarget(-2*distance.x, 2*distance.y, 2*distance.z);
     }
 
     SetExitCondition() 
     {
-        this.exitDistance = this.sizeMap.sun * 100;
+        this.exitDistance = this.sizeMap.sun * 100;   // TO CHANGE
     }
 
     DefinePortals()
@@ -267,8 +266,8 @@ export class SolarSystem extends BaseScene
 
         const distanceToParent = playerPos.distanceTo(pos);
         if (distanceToParent > this.exitDistance) {
-            this.requestedScene = "MilkyWay";
-            this.transitionFrom = "solar_system";
+            this.requestedScene = "MilkyWay";      // TO CHANGE
+            this.transitionFrom = "solar_system";  // TO CHANGE
         }
 
         for (const trigger of this.sceneTriggers) {
