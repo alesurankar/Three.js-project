@@ -55,12 +55,12 @@ export default function Universe() {
 
       {/* Control Panel at Top Left */}
       <div className="absolute top-6 left-4 flex flex-col gap-3 text-white z-20 w-64 h-56">
-        <button className="cursor-pointer bg-blue-900 hover:bg-blue-700 transition text-lg text-white px-4 py-2 rounded-xl"
+        <button className="cursor-pointer active:bg-blue-900 bg-blue-800 hover:bg-blue-700 transition text-lg text-white px-4 py-2 rounded-xl"
           onClick={() => router.push('/')}
           >Back to Landing Page
         </button>
 
-        <button className="cursor-pointer bg-blue-900 hover:bg-blue-700 transition text-lg text-white px-4 py-2 rounded-xl"
+        <button className="cursor-pointer active:bg-blue-900 bg-blue-800 hover:bg-blue-700 transition text-lg text-white px-4 py-2 rounded-xl"
           onClick={() => engineRef.current?.ToggleLock()}
           >🔒 Lock In
         </button>
