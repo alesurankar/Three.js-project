@@ -3,8 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Button from '../utils/Button';
 
-export default function LandingPage() 
-{
+export default function LandingPage() {
   const router = useRouter();
 
   return (

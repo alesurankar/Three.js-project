@@ -25,11 +25,11 @@ The main challenge was to design a system that allows multiple scenes to coexist
 
 ## Architectural Approach
 
-To address these challenges, I implemented a modular scene management architecture consisting of three core layers:
+To address these challenges, I implemented a modular scene management architecture consisting of two core layers:
 
-### 1. Scene Registry
+### 1. Scene Manager
 
-A central registry responsible for creating, storing, and disposing of scenes.
+A central manager responsible for creating, counting, and disposing of scenes.
 
 Each scene is treated as an independent module with its own lifecycle:
 - initialization
@@ -41,21 +41,7 @@ This approach allows scenes to be added or removed without affecting the core en
 
 ---
 
-### 2. Render Control Layer
-
-Instead of coupling rendering logic directly to each scene, rendering is handled by a central controller.
-
-Key responsibilities:
-- coordinating scene updates
-- controlling render frequency
-- prioritising active scenes
-- reducing unnecessary rendering work
-
-This design improves performance and keeps rendering logic separate from scene-specific behaviour.
-
----
-
-### 3. Decoupled Engine Core
+### 2. Decoupled Engine
 
 The system separates three main concerns:
 
@@ -98,7 +84,7 @@ The system was designed with scalability in mind through:
 
 - async initialization of scenes
 - conditional rendering based on activity and visibility
-- shared rendering utilities
+- shared utilities
 - explicit scene lifecycle management
 
 These strategies allow the project to grow in complexity without linear performance degradation.
