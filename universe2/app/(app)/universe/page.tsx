@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from "react";
-import { Engine } from "../../engine/Engine.js";
-import Button from '../utils/Button';
+import { Engine } from "@/engine/Engine.js";
+import Button from '@/app/utils/Button';
 
 export default function Universe() 
 {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Button from '../utils/Button';
+import Button from '@/app/utils/Button';
 
 export default function LandingPage() {
   const router = useRouter();

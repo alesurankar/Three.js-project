@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from "react";
-import Button from "../utils/Button";
-import api from "../../engine/utils/api";
+import Button from "@/app//utils/Button";
+import api from "@/engine/utils/api";
 
 interface CreateEntityResponse {
   success: boolean;

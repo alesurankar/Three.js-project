@@ -2,9 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
-import Button from "../utils/Button";
-import Modal from '../utils/Modal';
-import EntityForm from "../components/EntityForm";
+import Button from "@/app/utils/Button";
+import Modal from '@/app/utils/Modal';
+import EntityForm from "@/app/components/EntityForm";
 
 export default function Helper() 
 {
