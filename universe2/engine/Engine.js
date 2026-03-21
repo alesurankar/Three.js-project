@@ -13,7 +13,8 @@ export class Engine
 
     const ambientLight = new THREE.AmbientLight(0x404040, 2);
     this.Scene.add(ambientLight);
-
+    
+    this.container = container;
     this.FIXED_FPS = fps;
     this.FIXED_DT = 1 / this.FIXED_FPS;
     this.lastTime = performance.now() / 1000;
