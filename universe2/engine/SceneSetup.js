@@ -1,10 +1,5 @@
 import { SceneManager } from "./SceneManager.js";
 import { CreateCamera } from "./RendererSetup.js";
-import { TestScene } from "../scenes/testScene.js";
-import { SolarSystem } from "../scenes/starSystems/solarSystem.js"
-import { ProximaCentauri } from "../scenes/starSystems/proximaCentauri.js";
-import { ProximaBOrbit } from "../scenes/worlds/proximaBOrbit.js";
-import { SaturnOrbit } from "../scenes/worlds/saturnOrbit.js";
 
 
 // Step 1

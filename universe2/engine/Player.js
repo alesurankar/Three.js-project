@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { GameControls } from "../utils/gameControls.js";
+import { GameControls } from "./utils/gameControls.js";
 
 export class Player 
 {

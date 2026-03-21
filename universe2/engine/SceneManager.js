@@ -1,5 +1,5 @@
 import { Scenes } from "./Scenes.js";
-import { ModelStore } from "../factories/modelStore.js";
+import { ModelStore } from "./factories/modelStore.js";
 
 // Step 3
 export class SceneManager 

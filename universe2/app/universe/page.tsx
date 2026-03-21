@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from "react";
-import { Engine } from "../../src/engine/Engine.js";
+import { Engine } from "../../engine/Engine.js";
 import Button from '../utils/Button';
 
 export default function Universe() 
