@@ -32,8 +32,12 @@ export default function Universe() {
     };
     initEngine();
 
+    const handleResize = () => engineRef.current?.Resize();
+    window.addEventListener("resize", handleResize);
+
     return () => {
       disposed = true;
+      window.removeEventListener("resize", handleResize);
       engineRef.current?.Dispose();
       engineRef.current = null;
     };

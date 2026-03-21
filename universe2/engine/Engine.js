@@ -93,6 +93,20 @@ export class Engine
     return this.manager?.GetCurrentSceneName() ?? "None";
   }
 
+  Resize()
+  {
+    if (!this.Renderer || !this.Camera || !this.container) return;
+
+    const width = this.container.clientWidth;
+    const height = this.container.clientHeight;
+
+    this.Renderer.setSize(width, height);
+    if (this.Camera.isPerspectiveCamera) {
+      this.Camera.aspect = width / height;
+      this.Camera.updateProjectionMatrix();
+    }
+  }
+
   Dispose() 
   {
     this._disposed = true;
