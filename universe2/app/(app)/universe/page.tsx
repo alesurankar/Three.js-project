@@ -49,7 +49,7 @@ export default function Universe() {
       <div ref={containerRef} className="w-full h-full" />
       
       {/* Scene Name at Top Center */}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 text-white text-2xl font-bold z-20">
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 text-white text-3xl font-bold z-20">
         {currentSceneName}
       </div>
 
