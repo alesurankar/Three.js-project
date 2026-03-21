@@ -44,4 +44,4 @@ This project explores how to design frontend architectures that remain performan
 
 ## Documentation
 For a detailed explanation of the system design and architectural decisions, see: [ARCHITECTURE.md](./ARCHITECTURE.md).
-Planned improvements and current work items can be found in: [TODO.md](./universe2/TODO.md).
+Planned improvements and current work items can be found in: [TODO.md](./TODO.md).

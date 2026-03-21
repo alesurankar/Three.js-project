@@ -1,4 +1,4 @@
-# TODO
+# TODO list for Universe2 project
 
 last updated: 21.3.2026
 
