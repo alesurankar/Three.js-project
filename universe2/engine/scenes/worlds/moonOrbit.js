@@ -55,7 +55,7 @@ export class MoonOrbit extends BaseScene
     // Create Earth
     this.earth = createEntity(this.entityMap.earth, {
       size: this.sizeMap.earth,
-      posToParent: new THREE.Vector3(this.sizeMap.moon * 20, 0, this.sizeMap.moon * 20),  // TO CHANGE
+      posToParent: new THREE.Vector3(this.far - this.sizeMap.earth * 20, 0, 0),  // TO CHANGE
       detail: 3,
       hasClouds: true,
       parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
@@ -66,7 +66,7 @@ export class MoonOrbit extends BaseScene
     // Create Moon
     this.moon = createEntity(this.entityMap.moon, {
       size: this.sizeMap.moon,
-      posToParent: new THREE.Vector3(this.far - this.sizeMap.moon * 20, 0, 0),  // TO CHANGE
+      posToParent: new THREE.Vector3(this.sizeMap.earth * 20, 0, this.sizeMap.earth * 20),  // TO CHANGE
       detail: 6,
       parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });
@@ -80,18 +80,14 @@ export class MoonOrbit extends BaseScene
 
   PlayerEntryPosition() 
   {
-    const entryPos = this.primaryEntity.GetPosition();
     const targetPos = this.sun.GetPosition();
-
-    const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
     const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
 
     const scale = this.sizeMap.moon;     // TO CHANGE
-    const playerPos = new THREE.Vector3(entry.x + 2*scale, entry.y + 2*scale, entry.z + 2*scale);
+    const playerPos = new THREE.Vector3(2*scale, 2*scale, 2*scale);
     this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
 
     // Debug logs
-    console.log("Moon position:", entry);
     console.log("Sun position:", target);
     console.log("Player set to:", playerPos);
 
@@ -106,7 +102,7 @@ export class MoonOrbit extends BaseScene
   
   SetExitCondition() 
   {
-    this.exitDistance = this.sizeMap.moon * 600;  // TO CHANGE
+    this.exitDistance = this.sizeMap.moon * 60;  // TO CHANGE
   }
 
   DefinePortals()

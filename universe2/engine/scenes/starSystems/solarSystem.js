@@ -221,18 +221,14 @@ export class SolarSystem extends BaseScene
 
   PlayerEntryPosition() 
   {
-    const entryPos = this.primaryEntity.GetPosition();
     const targetPos = this.earth.GetPosition();
-
-    const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
     const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
 
     const scale = this.sizeMap.sun;    // TO CHANGE
-    const playerPos = new THREE.Vector3(entry.x + 2*scale, entry.y + 2*scale, entry.z + 2*scale);
+    const playerPos = new THREE.Vector3(2*scale, 2*scale, 2*scale);
     this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
     
     // Debug logs
-    console.log("Sun position:", entry);
     console.log("Earth position:", target);
     console.log("Player set to:", playerPos);
 

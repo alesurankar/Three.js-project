@@ -61,7 +61,7 @@ export class BaseScene
   if (this.player.objectRoot.parent)
     this.player.objectRoot.parent.remove(this.player.objectRoot);
 
-  entity.orbitPivot.add(this.player.objectRoot);
+    entity.objectRoot.add(this.player.objectRoot);
   }
 
   Update(dt) 

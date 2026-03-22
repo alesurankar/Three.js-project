@@ -124,23 +124,23 @@ export class TestScene extends BaseScene
 
   PlayerEntryPosition() 
   {
-    const entryPos = this.primaryEntity.GetPosition();
     const targetPos = this.sun.GetPosition();
-
-    const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
     const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
 
-    const difference = new THREE.Vector3().subVectors(target, entry);
-    
-    const distance = new THREE.Vector3(
-      Math.abs(difference.x),
-      Math.abs(difference.y),
-      Math.abs(difference.z)
-    );
+    const scale = this.sizeMap.earth;     // TO CHANGE
+    const playerPos = new THREE.Vector3(2*scale, 2*scale, 2*scale);
+    this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
 
-    const scale = this.sizeMap.probe1;   // TO CHANGE
+    // Debug logs
+    console.log("Sun position:", target);
+    console.log("Player set to:", playerPos);
 
-    this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
-    this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
+    // Face the Sun
+    this.player.FaceTarget(1000000, 0, 0);   // TO CHANGE
+
+    // Log the resulting forward vector
+    const forward = new THREE.Vector3();
+    this.player.camera.getWorldDirection(forward);
+    console.log("Player forward vector after lookAt:", forward);
   }
 }
