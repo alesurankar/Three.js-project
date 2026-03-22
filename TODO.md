@@ -9,9 +9,9 @@ last updated: 22.3.2026
 - [x] Add orbitalTilt, axialRotationSpeed, orbitalSpeed to database and use them in CreateObject
 - [x] Refactor AxialRotationSpeed and OrbitalSpeed to take parameters instead of a function
 - [x] Make all scenes inherit from BaseScene
+- [x] Implement scene choice functionality on the landing page
 
 ## Next Tasks
 
 - [ ] Simplify CreateObject functions
 - [ ] display PlayerPosition chordinates and lookAt chordinates
-- [ ] Implement scene choice functionality on the landing page

@@ -1,12 +1,14 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from "react";
 import { Engine } from "@/engine/Engine.js";
 
 
 export default function Universe() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sceneParam = searchParams.get("scene") ?? undefined;
   const containerRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Engine | null>(null);
   const [timeScale, setTimeScale] = useState(1);
@@ -19,7 +21,7 @@ export default function Universe() {
     let disposed = false;
 
     const initEngine = async () => {
-      const engine = new Engine(containerRef.current!, { fps: 60 });
+      const engine = new Engine(containerRef.current!, { fps: 60, firstScene: sceneParam });
 
       engine.manager.onSceneChange = (sceneName: string) => {
         if (!disposed) {

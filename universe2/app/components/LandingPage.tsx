@@ -6,6 +6,10 @@ import { useRouter } from 'next/navigation';
 export default function LandingPage() {
   const router = useRouter();
 
+  const enterUniverse = (scene: string) => {
+    router.push(`/universe?scene=${scene}`);
+  };
+
   return (
     <div className="p-4 2xl:mx-13 xl:mx-8 lg:mx-5 sm:mx-2 md:mx-3 my-6 border border-gray-600
         rounded-xl bg-gray-900 text-white text-center">
@@ -21,8 +25,13 @@ export default function LandingPage() {
       {/* Bottom: Button */}
       <div className="flex justify-center">
         <button className="w-full max-w-[800px] active:bg-blue-900 bg-blue-800 hover:bg-blue-700 py-4 rounded-lg text-2xl font-bold"
-          onClick={() => router.push('/universe')}
-        >Enter the Universe
+          onClick={() => enterUniverse('MoonOrbit')}
+        >Enter Moon Orbit
+        </button>
+
+        <button className="w-full max-w-[800px] active:bg-blue-900 bg-blue-800 hover:bg-blue-700 py-4 rounded-lg text-2xl font-bold"
+          onClick={() => enterUniverse('SolarSystem')}
+        >Enter Solar System
         </button>
       </div>
     </div>
