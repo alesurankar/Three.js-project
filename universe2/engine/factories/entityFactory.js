@@ -7,15 +7,15 @@ import { GlbModel } from "../entities/glbModel.js";
 
 export function createEntity(entityData, extraOptions = {}) 
 {
-    const options = { ...entityData, ...extraOptions };
+  const options = { ...entityData, ...extraOptions };
 
-    switch(entityData.type) {
-        case "planet": return new Planet(options);
-        case "star": return new Star(options);
-        case "black_hole": return new BlackHole(options);
-        case "gravity_center": return new GravityCenter(options);
-        case "belt": return new AsteroidBelt(options);
-        case "ring": return new AsteroidBelt(options);
-        case "probe": return new GlbModel(options);
-    }
+  switch(entityData.type) {
+    case "planet": return new Planet(options);
+    case "star": return new Star(options);
+    case "black_hole": return new BlackHole(options);
+    case "gravity_center": return new GravityCenter(options);
+    case "belt": return new AsteroidBelt(options);
+    case "ring": return new AsteroidBelt(options);
+    case "probe": return new GlbModel(options);
+  }
 }

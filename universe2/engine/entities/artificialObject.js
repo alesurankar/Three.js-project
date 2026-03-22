@@ -97,7 +97,8 @@ export class ArtificialObject
             if (m.map) m.map.dispose();
             m.dispose();
           });
-        } else {
+        } 
+        else {
           if (this.body.material.map) this.body.material.map.dispose();
           this.body.material.dispose();
         }

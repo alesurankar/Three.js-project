@@ -17,20 +17,20 @@ import { ProximaBOrbit } from "./scenes/worlds/proximaBOrbit.js";
 
 
 export const Scenes = {
-    TestScene,
-    //Galaxies
-    MilkyWay,
-    //Systems
-    SolarSystem,
-    AlphaCentauriSystem,
-    ProximaCentauri,
-    //Worlds
-    MercuryOrbit,
-    VenusOrbit,
-    EarthOrbit,
-    MoonOrbit,
-    MarsOrbit,
-    JupiterOrbit,
-    SaturnOrbit,
-    ProximaBOrbit,
+  TestScene,
+  //Galaxies
+  MilkyWay,
+  //Systems
+  SolarSystem,
+  AlphaCentauriSystem,
+  ProximaCentauri,
+  //Worlds
+  MercuryOrbit,
+  VenusOrbit,
+  EarthOrbit,
+  MoonOrbit,
+  MarsOrbit,
+  JupiterOrbit,
+  SaturnOrbit,
+  ProximaBOrbit,
 };

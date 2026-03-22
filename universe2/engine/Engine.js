@@ -36,8 +36,8 @@ export class Engine
     }
     if (!this.player) {
       this.player = new Player({
-          camera: this.Camera,
-          container: container
+        camera: this.Camera,
+        container: container
       });
 
       this.Scene.add(this.player.objectRoot);

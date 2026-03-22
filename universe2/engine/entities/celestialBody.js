@@ -107,7 +107,8 @@ export class CelestialBody
             if (m.map) m.map.dispose();
             m.dispose();
           });
-        } else {
+        } 
+        else {
           if (this.body.material.map) this.body.material.map.dispose();
           this.body.material.dispose();
         }
@@ -122,7 +123,8 @@ export class CelestialBody
             if (m.map) m.map.dispose();
             m.dispose();
           });
-        } else {
+        } 
+        else {
           if (this.clouds.material.map) this.clouds.material.map.dispose();
           this.clouds.material.dispose();
         }
