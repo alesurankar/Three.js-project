@@ -12,8 +12,8 @@ const app = express();
 
 // CORS setup
 app.use(cors({
-    origin: "http://localhost:3000", // your frontend URL
-    credentials: true,               // allow cookies to be sent
+  origin: "http://localhost:3000", // your frontend URL
+  credentials: true,               // allow cookies to be sent
 }));
 
 // JSON middleware
