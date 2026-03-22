@@ -25,6 +25,11 @@ export default function LandingPage() {
       {/* Bottom: Button */}
       <div className="flex justify-center">
         <button className="w-full max-w-[800px] active:bg-blue-900 bg-blue-800 hover:bg-blue-700 py-4 rounded-lg text-2xl font-bold"
+          onClick={() => enterUniverse('TestScene')}
+        >TestScene
+        </button>
+
+        <button className="w-full max-w-[800px] active:bg-blue-900 bg-blue-800 hover:bg-blue-700 py-4 rounded-lg text-2xl font-bold"
           onClick={() => enterUniverse('MoonOrbit')}
         >Enter Moon Orbit
         </button>

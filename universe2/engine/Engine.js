@@ -5,7 +5,7 @@ import { Player } from "./Player.js"
 
 export class Engine 
 {
-  constructor(container, { fps = 60, firstScene = "MercuryOrbit"  } = {}) 
+  constructor(container, { fps = 60, firstScene = '' } = {}) 
   {
     if (!this.Scene) {
       this.Scene = new THREE.Scene();
