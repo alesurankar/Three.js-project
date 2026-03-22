@@ -46,7 +46,7 @@ export default function LandingPage() {
         
         {/* Middle: Description */}
         <p className="text-4xl mb-8 text-yellow-100">
-          This universe simulator uses real-world data to generate objects and allows you to explore and adjust various scales dynamically.
+          This universe simulator uses real-world data to generate objects and allows you to adjust time scales.
         </p>
         
       </div>
