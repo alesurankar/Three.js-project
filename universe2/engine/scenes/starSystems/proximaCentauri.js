@@ -1,134 +1,117 @@
 import * as THREE from "three";
-import { StarSystem } from "../../utils/starSystemHelper.js"
-import { SkyBox } from "../../visuals/skyBox.js";
 import { createEntity } from "../../factories/entityFactory.js";
-import { loadEntities } from "../../utils/loadEntities.js"
+import { BaseScene } from "../baseScene.js"
 
 
-export class ProximaCentauri
+export class ProximaCentauri extends BaseScene
 {
-    constructor(scene, camera, player, focus = {}) 
-    {
-        this.active = true;
-        StarSystem.timeFactor=1
+  constructor(scene, camera, player, focus = {}) 
+  {
+    super(scene, camera, player, focus);
+    this.timeFactor=1
 
-        this.SIZE_SCALE = 2;
-        this.REGION_SIZE_SCALE = 0.0004 * this.SIZE_SCALE;
+    this.SIZE_SCALE = 2;
+    this.REGION_SIZE_SCALE = 0.0004 * this.SIZE_SCALE;
+    this.near = 10;
+    this.far = 10000;
+    this.cameraSettings = { near: this.near,far: this.far };
+  }
 
-        this.near = 10;
-        this.far = 10000;
-        this.cameraSettings = {
-            pos: { x:440, y:40, z:200 },
-            lookAt: { x:200, y:0, z:10 },
-            fov: 40,
-            near: this.near,
-            far: this.far
-        };
-        this.scene = scene;
-        this.scene.background = SkyBox.Load("StarBox");
-        this.camera = camera;
-        this._tempVec = new THREE.Vector3();
-        this.objects = [];
-    }
+  GetEntityConfig() 
+  {
+    const requiredKeys = [
+      "proxima_centauri",
+      "proxima_b",
+    ];
 
-    async Init() 
-    {
-        if (!this.active) return;
-        const requiredKeys = [
-            "proxima_centauri",
-            "proxima_b",
-        ];
+    const scaleMap = {
+      proxima_centauri: this.REGION_SIZE_SCALE,
+      proxima_b: this.LOCAL_SIZE_SCALE,
+    };
+    return { requiredKeys, scaleMap };
+  }
+  
+  CreateObjects()
+  {
+    // Create Proxima Centauri
+    this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
+      size: this.sizeMap.proxima_centauri,
+      lightType: "pointLight",
+      detail: 4,
+      temperature: 3000,
+      orbitalTilt: 0,
+      orbitalPeriod: 0,
+    });
+    this.scene.add(this.proxima_centauri.orbitPivot);
+    this.objects.push(this.proxima_centauri);
+    this.objectMap[this.entityMap.proxima_centauri.key] = this.proxima_centauri;
+    this.primaryEntity = this.proxima_centauri;
 
-        const scaleMap = {
-            proxima_centauri: this.REGION_SIZE_SCALE,
-            proxima_b: this.REGION_SIZE_SCALE,
-        };
+    // Create Proxima B
+    this.proxima_b = createEntity(this.entityMap.proxima_b, {
+      size: this.sizeMap.proxima_b,
+      posToParent: new THREE.Vector3(this.sizeMap.proxima_b * 68, 0, 0),
+      parent: this.objectMap[this.entityMap.proxima_b.parentKey].objectRoot,
+    });
+    this.objects.push(this.proxima_b);
+    this.objectMap[this.entityMap.proxima_b.key] = this.proxima_b;
+  }
 
-        try {
-            const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
-            this.entityMap = entityMap;
-            this.sizeMap = sizeMap;
-            this.exitDistance = this.sizeMap.proxima_centauri * 40;
-            this.CreateObjects();
-            this.Portals();
-        }
-        catch (err) {
-            console.error("Failed to load entities", err);
-        }
-    }
+  PlayerEntryPosition() 
+  {
+    const targetPos = this.proxima_b.GetPosition();
+    const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+
+    const scale = this.sizeMap.proxima_centauri;    // TO CHANGE
+    const playerPos = new THREE.Vector3(2*scale, 2*scale, 2*scale);
+    this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
     
-    PlayerEntryPosition() 
-    {
-    }
+    // Debug logs
+    console.log("Proxima B position:", target);
+    console.log("Player set to:", playerPos);
+
+    // Face the Sun
+    this.player.FaceTarget(-10000, 0, 0);   // TO CHANGE
     
-    CreateObjects()
-    {
-        // Create Proxima Centauri
-        this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
-            size: this.sizeMap.proxima_centauri,
-            lightType: "pointLight",
-            detail: 4,
-            temperature: 3000,
-        });
-        this.scene.add(this.proxima_centauri.orbitPivot);
-        this.objects.push(this.proxima_centauri);
+    // Log the resulting forward vector
+    const forward = new THREE.Vector3();
+    this.player.camera.getWorldDirection(forward);
+    console.log("Player forward vector after lookAt:", forward);
+  }
 
-        // Create Proxima B
-        this.proxima_b = createEntity(this.entityMap.proxima_b, {
-            size: this.sizeMap.proxima_b,
-            posToParent: new THREE.Vector3(this.sizeMap.proxima_b * 68, 0, 0),
-            axialRotationSpeed: StarSystem.AxialRotationInDays(11.2),
-            orbitalSpeed: StarSystem.OrbitalRotationInDays(11.2),
-            detail: 3,
-            parent: this.proxima_centauri.objectRoot,
-        });
-        this.objects.push(this.proxima_b);
+  SetExitCondition() 
+  {
+    this.exitDistance = this.sizeMap.proxima_centauri * 40;   // TO CHANGE
+  }
+
+  Portals()
+  {
+    this.sceneTriggers = [
+      { obj: this.proxima_b, threshold: this.sizeMap.proxima_b * 4, scene: "ProximaBOrbit" },
+    ];
+  }
+
+  CheckSceneTransition() 
+  {
+    const entityPos = new THREE.Vector3();
+    const playerPos = new THREE.Vector3();
+
+    this.primaryEntity.objectRoot.getWorldPosition(entityPos);
+    this.player.objectRoot.getWorldPosition(playerPos);
+
+    const distanceToParent = playerPos.distanceTo(entityPos);
+    if (distanceToParent > this.exitDistance) {
+      this.requestedScene = "AlphaCentauriSystem";  // TO CHANGE
+      this.transitionFrom = "proxima_centauri";     // TO CHANGE
     }
 
-    Portals()
-    {
-        this.sceneTriggers = [
-            { obj: this.proxima_b, threshold: this.sizeMap.proxima_b * 4, scene: "ProximaBOrbit" },
-        ];
-    }
-
-    Update(dt) 
-    {
-        // console.log("Camera position:", this.camera.position);
-        for (const obj of this.objects) {
-            obj.Update(dt);
-        }
-        if (!this.sceneTriggers) return;
-
-        const pos = this._tempVec;
-        this.proxima_centauri.objectRoot.getWorldPosition(pos);
-        const distanceToParent = this.camera.position.distanceTo(pos);
-        if (distanceToParent > this.exitDistance) {
-            this.requestedScene = "AlphaCentauriSystem";
-            this.transitionFrom = "proxima_centauri";
-        }
-        
-        for (const trigger of this.sceneTriggers) {
-            trigger.obj.objectRoot.getWorldPosition(pos);
-            const distance = this.camera.position.distanceTo(pos);
-            if (distance <= trigger.threshold) {
-                this.requestedScene = trigger.scene;
-                break;
-            }
-        }
-    }
-
-    Dispose() 
-    {
-        this.active = false;
-        this.objects.forEach(obj => obj?.Dispose());
-        this.objects = [];
-        this.sceneTriggers = [];
-        
-        // Dispose skybox
-        if (this.scene?.background) {
-            SkyBox.Dispose(this.scene.background);
-            this.scene.background = null;
-        }
-    }
+    for (const trigger of this.sceneTriggers) {
+      trigger.obj.objectRoot.getWorldPosition(entityPos);
+      const distance = playerPos.distanceTo(entityPos);
+      if (distance <= trigger.threshold) {
+        this.requestedScene = trigger.scene;
+        break;
+      }
+    } 
+  }
 }
