@@ -71,7 +71,7 @@ export class EarthOrbit extends BaseScene
     // Create moon
     this.moon = createEntity(this.entityMap.moon, {
       size: this.sizeMap.moon,
-      posToParent: new THREE.Vector3(this.sizeMap.earth * 20, 0, this.sizeMap.earth * 20),
+      posToParent: new THREE.Vector3(this.sizeMap.earth * 20, 0, -this.sizeMap.earth * 10),
       detail: 3,
       parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });
