@@ -1,6 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { Russo_One } from 'next/font/google';
+
+const russoOne = Russo_One({ subsets: ['latin'], weight: '400' });
 
 
 export default function LandingPage() {
@@ -11,7 +14,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="mt-12 text-center">
+    <div className={`${russoOne.className} mt-12 text-center`}>
       <div className="flex justify-center gap-6 mb-12">
         <button 
           className="bg-blue-800 text-white py-4 px-8 rounded-xl text-2xl
