@@ -11,34 +11,43 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="p-4 2xl:mx-13 xl:mx-8 lg:mx-5 sm:mx-2 md:mx-3 my-6 border border-gray-600
-        rounded-xl bg-gray-900 text-white text-center">
-
-      {/* Top: Title */}
-      <h1 className="text-4xl font-bold mt-4 mb-12">This is an Universe Simulation</h1>
-      
-      {/* Middle: Description */}
-      <p className="text-2xl mb-8">
-        This universe simulator uses real-world data to generate objects and allows you to explore and adjust various scales dynamically.
-      </p>
-      
-      {/* Bottom: Button */}
-      <div className="flex justify-center">
-        <button className="w-full max-w-[800px] active:bg-blue-900 bg-blue-800 hover:bg-blue-700 py-4 rounded-lg text-2xl font-bold"
-          onClick={() => enterUniverse('TestScene')}
-        >TestScene
+    <div className="mt-12 text-center">
+      <div className="flex justify-center gap-6 mb-12">
+        <button 
+          className="bg-blue-800 text-white py-4 px-8 rounded-xl text-2xl
+            hover:bg-blue-700 hover:scale-105 transition-all duration-300
+            shadow-[0_0_20px_rgba(0,191,255,0.7)] hover:shadow-[0_0_30px_rgba(0,255,255,0.9)]"
+            onClick={() => enterUniverse('TestScene')}
+          >Test Scene
         </button>
-
-        <button className="w-full max-w-[800px] active:bg-blue-900 bg-blue-800 hover:bg-blue-700 py-4 rounded-lg text-2xl font-bold"
-          onClick={() => enterUniverse('MoonOrbit')}
-        >Enter Moon Orbit
+        <button 
+          className="bg-blue-800 text-white py-4 px-8 rounded-xl text-2xl
+            hover:bg-blue-700 hover:scale-105 transition-all duration-300
+            shadow-[0_0_20px_rgba(0,191,255,0.7)] hover:shadow-[0_0_30px_rgba(0,255,255,0.9)]"
+            onClick={() => enterUniverse('MoonOrbit')}
+          >Enter Moon Orbit
         </button>
-
-        <button className="w-full max-w-[800px] active:bg-blue-900 bg-blue-800 hover:bg-blue-700 py-4 rounded-lg text-2xl font-bold"
-          onClick={() => enterUniverse('SolarSystem')}
-        >Enter Solar System
+        <button 
+          className="bg-blue-800 text-white py-4 px-8 rounded-xl text-2xl
+            hover:bg-blue-700 hover:scale-105 transition-all duration-300
+            shadow-[0_0_20px_rgba(0,191,255,0.7)] hover:shadow-[0_0_30px_rgba(0,255,255,0.9)]"
+            onClick={() => enterUniverse('SolarSystem')}
+          >Enter Solar System
         </button>
       </div>
+
+      <div className="mt-12 text-white text-center">
+
+        {/* Top: Title */}
+        <h1 className="text-8xl font-bold mt-4 mb-12 text-yellow-200">This is an Universe Simulation</h1>
+        
+        {/* Middle: Description */}
+        <p className="text-4xl mb-8 text-yellow-100">
+          This universe simulator uses real-world data to generate objects and allows you to explore and adjust various scales dynamically.
+        </p>
+        
+      </div>
+    
     </div>
   );
-}
+};
