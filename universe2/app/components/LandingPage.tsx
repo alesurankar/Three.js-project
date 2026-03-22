@@ -2,6 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { Russo_One } from 'next/font/google';
+import BaseSideWindow from './sideWindow/BaseSideWindow';
+import BaseDropdown from './dropdown/BaseDropdown';
+
 
 const russoOne = Russo_One({ subsets: ['latin'], weight: '400' });
 
@@ -39,6 +42,9 @@ export default function LandingPage() {
         </button>
       </div>
 
+      <BaseDropdown open={true} x={30} y={30}>
+      </BaseDropdown>
+
       <div className="mt-12 text-white text-center">
 
         {/* Top: Title */}
@@ -48,6 +54,9 @@ export default function LandingPage() {
         <p className="text-4xl mb-8 text-yellow-100">
           This universe simulator uses real-world data to generate objects and allows you to adjust time scales.
         </p>
+
+        <BaseSideWindow open={true}>
+        </BaseSideWindow>
         
       </div>
     
