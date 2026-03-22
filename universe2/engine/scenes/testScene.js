@@ -5,142 +5,142 @@ import { BaseScene } from "./baseScene.js"
 
 export class TestScene extends BaseScene
 {
-    constructor(scene, camera, player, focus = {}) 
-    {  
-        super(scene, camera, player, focus);
-        this.timeFactor = 100;
-        
-        this.SIZE_SCALE = 1;
-        this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
-        this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
-        this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
-        this.near = 16;
-        this.far = 16000;
-        this.cameraSettings = { near: this.near, far: this.far };
-    }
+  constructor(scene, camera, player, focus = {}) 
+  {  
+    super(scene, camera, player, focus);
+    this.timeFactor = 100;
+    
+    this.SIZE_SCALE = 1;
+    this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
+    this.LOCAL_SIZE_SCALE = 5 * this.REGION_SIZE_SCALE;
+    this.INNER_SIZE_SCALE = 1800 * this.LOCAL_SIZE_SCALE;
+    this.near = 16;
+    this.far = 16000;
+    this.cameraSettings = { near: this.near, far: this.far };
+  }
 
-    GetEntityConfig() 
-    {
-        const requiredKeys = [
-            "sun",
-            "earth",
-            "moon",
-            "saturn",
-            "saturn_ring",
-            "asteroid_belt",
-            "probe1",
-        ];
+  GetEntityConfig() 
+  {
+    const requiredKeys = [
+      "sun",
+      "earth",
+      "moon",
+      "saturn",
+      "saturn_ring",
+      "asteroid_belt",
+      "probe1",
+    ];
 
-        const scaleMap = {
-            sun: this.REGION_SIZE_SCALE,
-            earth: this.LOCAL_SIZE_SCALE,
-            moon: this.LOCAL_SIZE_SCALE,
-            saturn: this.LOCAL_SIZE_SCALE,
-            saturn_ring: this.INNER_SIZE_SCALE,
-            asteroid_belt: this.INNER_SIZE_SCALE,
-            probe1: this.INNER_SIZE_SCALE
-        };      
-        return { requiredKeys, scaleMap };
-    }
-   
-    CreateObjects()
-    {
-        // Create Sun
-        this.sun = createEntity(this.entityMap.sun, {
-            size: this.sizeMap.sun,
-            lightType: "pointLight",
-            detail: 4,
-            temperature: 5778,
-            orbitalTilt: 0,
-            orbitalPeriod: 0,
-            hasTexture: true,
-        });
-        this.scene.add(this.sun.orbitPivot);
-        this.objects.push(this.sun);
-        this.objectMap[this.entityMap.sun.key] = this.sun;
-        
-        // Create Earth
-        this.earth = createEntity(this.entityMap.earth, {
-            size: this.sizeMap.earth,
-            posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
-            parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
-        });
-        this.objects.push(this.earth);
-        this.objectMap[this.entityMap.earth.key] = this.earth;
+    const scaleMap = {
+      sun: this.REGION_SIZE_SCALE,
+      earth: this.LOCAL_SIZE_SCALE,
+      moon: this.LOCAL_SIZE_SCALE,
+      saturn: this.LOCAL_SIZE_SCALE,
+      saturn_ring: this.INNER_SIZE_SCALE,
+      asteroid_belt: this.INNER_SIZE_SCALE,
+      probe1: this.INNER_SIZE_SCALE
+    };      
+    return { requiredKeys, scaleMap };
+  }
+  
+  CreateObjects()
+  {
+    // Create Sun
+    this.sun = createEntity(this.entityMap.sun, {
+      size: this.sizeMap.sun,
+      lightType: "pointLight",
+      detail: 4,
+      temperature: 5778,
+      orbitalTilt: 0,
+      orbitalPeriod: 0,
+      hasTexture: true,
+    });
+    this.scene.add(this.sun.orbitPivot);
+    this.objects.push(this.sun);
+    this.objectMap[this.entityMap.sun.key] = this.sun;
+    
+    // Create Earth
+    this.earth = createEntity(this.entityMap.earth, {
+      size: this.sizeMap.earth,
+      posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
+      parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
+    });
+    this.objects.push(this.earth);
+    this.objectMap[this.entityMap.earth.key] = this.earth;
 
-        // Create moon
-        this.moon = createEntity(this.entityMap.moon, {
-            size: this.sizeMap.moon,
-            posToParent: new THREE.Vector3(this.sizeMap.earth * 3, 0, 0),
-            parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
-        });
-        this.objects.push(this.moon);
-        this.objectMap[this.entityMap.moon.key] = this.moon;
+    // Create moon
+    this.moon = createEntity(this.entityMap.moon, {
+      size: this.sizeMap.moon,
+      posToParent: new THREE.Vector3(this.sizeMap.earth * 3, 0, 0),
+      parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
+    });
+    this.objects.push(this.moon);
+    this.objectMap[this.entityMap.moon.key] = this.moon;
 
-        // Create asteroid belt
-        this.asteroid_belt = createEntity(this.entityMap.asteroid_belt, {
-            count: 6000,
-            size: this.sizeMap.asteroid_belt,
-            orbitFarRadius: this.sizeMap.sun * 16,
-            orbitNearRadius: this.sizeMap.sun * 14,
-            thickness: 50,
-            parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
-        });
-        this.objects.push(this.asteroid_belt);
-        this.objectMap[this.entityMap.asteroid_belt.key] = this.asteroid_belt;
-        
-        // Create saturn
-        this.saturn = createEntity(this.entityMap.saturn, {
-            size: this.sizeMap.saturn,
-            posToParent: new THREE.Vector3(this.sizeMap.sun  * 8, 0, 0),
-            parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
-        });
-        this.objects.push(this.saturn);
-        this.objectMap[this.entityMap.saturn.key] = this.saturn;
+    // Create asteroid belt
+    this.asteroid_belt = createEntity(this.entityMap.asteroid_belt, {
+      count: 6000,
+      size: this.sizeMap.asteroid_belt,
+      orbitFarRadius: this.sizeMap.sun * 16,
+      orbitNearRadius: this.sizeMap.sun * 14,
+      thickness: 50,
+      parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
+    });
+    this.objects.push(this.asteroid_belt);
+    this.objectMap[this.entityMap.asteroid_belt.key] = this.asteroid_belt;
+    
+    // Create saturn
+    this.saturn = createEntity(this.entityMap.saturn, {
+      size: this.sizeMap.saturn,
+      posToParent: new THREE.Vector3(this.sizeMap.sun  * 8, 0, 0),
+      parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
+    });
+    this.objects.push(this.saturn);
+    this.objectMap[this.entityMap.saturn.key] = this.saturn;
 
-        // Create saturn ring
-        this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
-            count: 4000,
-            size: this.sizeMap.saturn_ring,
-            orbitFarRadius: this.sizeMap.saturn * 2,
-            orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
-            thickness: 0.6,   
-            color: 0xdfe6f0,
-            parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,
-        });
-        this.objects.push(this.saturn_ring);
-        this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
+    // Create saturn ring
+    this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
+      count: 4000,
+      size: this.sizeMap.saturn_ring,
+      orbitFarRadius: this.sizeMap.saturn * 2,
+      orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
+      thickness: 0.6,   
+      color: 0xdfe6f0,
+      parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,
+    });
+    this.objects.push(this.saturn_ring);
+    this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
 
-        // Creating Probe1
-        this.probe1 = createEntity(this.entityMap.probe1, {
-            size: this.sizeMap.probe1,
-            posToParent: new THREE.Vector3(this.sizeMap.sun  * 2, 0, this.sizeMap.sun  * 2),
-            parent: this.sun.objectRoot
-        });
-        this.objects.push(this.probe1);
-        this.objectMap[this.entityMap.probe1.key] = this.probe1;
-        this.primaryEntity = this.probe1;
-    }
+    // Creating Probe1
+    this.probe1 = createEntity(this.entityMap.probe1, {
+      size: this.sizeMap.probe1,
+      posToParent: new THREE.Vector3(this.sizeMap.sun  * 2, 0, this.sizeMap.sun  * 2),
+      parent: this.sun.objectRoot
+    });
+    this.objects.push(this.probe1);
+    this.objectMap[this.entityMap.probe1.key] = this.probe1;
+    this.primaryEntity = this.probe1;
+  }
 
-    PlayerEntryPosition() 
-    {
-        const entryPos = this.primaryEntity.GetPosition();
-        const targetPos = this.sun.GetPosition();
+  PlayerEntryPosition() 
+  {
+    const entryPos = this.primaryEntity.GetPosition();
+    const targetPos = this.sun.GetPosition();
 
-        const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
-        const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+    const entry = new THREE.Vector3(entryPos.x, entryPos.y, entryPos.z);
+    const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
 
-        const difference = new THREE.Vector3().subVectors(target, entry);
-        
-        const distance = new THREE.Vector3(
-            Math.abs(difference.x),
-            Math.abs(difference.y),
-            Math.abs(difference.z)
-        );
+    const difference = new THREE.Vector3().subVectors(target, entry);
+    
+    const distance = new THREE.Vector3(
+      Math.abs(difference.x),
+      Math.abs(difference.y),
+      Math.abs(difference.z)
+    );
 
-        const scale = this.sizeMap.probe1;   // TO CHANGE
+    const scale = this.sizeMap.probe1;   // TO CHANGE
 
-        this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
-        this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
-    }
+    this.player.SetPosition(2*scale + entry.x, 2*scale + entry.y, 2*scale + entry.z);
+    this.player.FaceTarget(2*distance.x, 2*distance.y, 2*distance.z);
+  }
 }
