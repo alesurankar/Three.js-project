@@ -12,9 +12,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body
-        className="bg-black bg-[url('/bg.jpg')] bg-cover bg-center bg-no-repeat min-h-screen overflow-hidden"
-      >
-        {children}
+        className="flex bg-[url('/bg.jpg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen overflow-auto"
+      >{children}
       </body>
     </html>
   );
