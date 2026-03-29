@@ -22,18 +22,19 @@ const SideWindow = ({ open, onClose, children }: SideWindowProps) => {
   };
 
   return (
-    <div className="relative flex flex-col bg-white/10 flex-1 text-white p-3 rounded">
+    <div className="relative flex flex-col items-center bg-blue-900/10 flex-1 text-white p-3 rounded">
       <button 
         className="absolute top-6 right-8 text-4xl text-red-800" 
         onClick={onClose}
         >X
       </button>
-      {children}
+      <div className="text-2xl mt-6">
+        {children}
+      </div>
       <button
-        className="cursor-pointer border-2 px-3 py-1 rounded hover:bg-white/20"
+        className="absolute bottom-50 cursor-pointer border-2 px-3 py-1 rounded hover:bg-white/20 text-2xl"
         onClick={() => enterUniverse(scene)}
-      >
-        Enter {scene}
+      >Enter {scene} Scene
       </button>
     </div>
   );
