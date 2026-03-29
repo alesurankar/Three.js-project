@@ -1,51 +1,64 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Russo_One } from 'next/font/google';
 import BaseSideWindow from './sideWindow/BaseSideWindow';
-import BaseDropdown from './dropdown/BaseDropdown';
+import GalaxiesDropdown from './dropdown/GalaxiesDropdown';
+import PlanetsDropdown from './dropdown/PlanetsDropdown';
+import StarsDropdown from './dropdown/StarsDropdown';
 
 
 const russoOne = Russo_One({ subsets: ['latin'], weight: '400' });
 
 
 export default function LandingPage() {
-  const router = useRouter();
+  const [planetsDropdown, setPlanetsDropdown] = useState(false);
+  const [starsDropdown, setStarsDropdown] = useState(false);
+  const [galaxyesDropdown, setGalaxiesDropdown] = useState(false);
 
-  const enterUniverse = (scene: string) => {
-    router.push(`/universe?scene=${scene}`);
-  };
+
 
   return (
     <div className={`flex flex-col ${russoOne.className} mt-10 text-center text-white w-full h-screen`}>
 
       {/* Top: Navigation Buttons */}
-      <div className="flex justify-center gap-6 text-white p-1 m-1">
+      <div className="flex justify-center bg-blue-800/30 gap-6 text-white py-2 mx-12 
+        rounded-xl text-2xl shadow-[0_0_20px_rgba(0,191,255,0.7)]">
         <button 
-          className="bg-blue-800 text-white py-4 px-6 rounded-xl text-2xl
-            hover:bg-blue-700 hover:scale-105 transition-all duration-300
-            shadow-[0_0_20px_rgba(0,191,255,0.7)] hover:shadow-[0_0_30px_rgba(0,255,255,0.9)]"
-            onClick={() => enterUniverse('TestScene')}
-          >Test Scene
+          className="rounded-xl hover:text-yellow-200 hover:scale-105 
+            transition-all duration-300 px-2"
+            onClick={() => {
+              setPlanetsDropdown(!planetsDropdown)
+              setStarsDropdown(false)
+              setGalaxiesDropdown(false)
+            }}
+          >Planets
         </button>
         <button 
-          className="bg-blue-800 text-white py-4 px-6 rounded-xl text-2xl
-            hover:bg-blue-700 hover:scale-105 transition-all duration-300
-            shadow-[0_0_20px_rgba(0,191,255,0.7)] hover:shadow-[0_0_30px_rgba(0,255,255,0.9)]"
-            onClick={() => enterUniverse('MoonOrbit')}
-          >Enter Moon Orbit
+          className="rounded-xl hover:text-yellow-200 hover:scale-105 
+            transition-all duration-300 px-2"
+            onClick={() => {
+              setPlanetsDropdown(false)
+              setStarsDropdown(!starsDropdown)
+              setGalaxiesDropdown(false)
+            }}
+          >Stars
         </button>
         <button 
-          className="bg-blue-800 text-white py-4 px-6 rounded-xl text-2xl
-            hover:bg-blue-700 hover:scale-105 transition-all duration-300
-            shadow-[0_0_20px_rgba(0,191,255,0.7)] hover:shadow-[0_0_30px_rgba(0,255,255,0.9)]"
-            onClick={() => enterUniverse('SolarSystem')}
-          >Enter Solar System
+          className="rounded-xl hover:text-yellow-200 hover:scale-105 
+            transition-all duration-300 px-2"
+            onClick={() => {
+              setPlanetsDropdown(false)
+              setStarsDropdown(false)
+              setGalaxiesDropdown(!galaxyesDropdown)
+            }}
+          >Galaxies
         </button>
       </div>
-      
-      <BaseDropdown open={true} x={30} y={30}>
-      </BaseDropdown>
+
+      <PlanetsDropdown open={planetsDropdown} x={0} y={0}/>
+      <StarsDropdown open={starsDropdown} x={0} y={0}/>
+      <GalaxiesDropdown open={galaxyesDropdown} x={0} y={0}/>
       
       {/* Top: Title */}
       <div className="flex text-center items-center justify-center p-1 m-1">

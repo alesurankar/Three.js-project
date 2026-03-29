@@ -18,7 +18,6 @@ const BaseDropdown = ({ open, x, y, children }: BaseDropdownProps) => {
       className="pointer-events-auto absolute bg-gray-800/60 text-white p-3 rounded"
       style={{ top: y, left: x }}
     >{children}
-    this is Base Dropdown
     </div>
   );
 };
