@@ -41,6 +41,8 @@ export class AlphaCentauriSystem extends BaseScene
     this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center);
     this.scene.add(this.alpha_centauri_center.orbitPivot);
     this.objects.push(this.alpha_centauri_center);
+    this.objectMap[this.entityMap.alpha_centauri_center.key] = this.alpha_centauri_center;
+    this.primaryEntity = this.alpha_centauri_center;
 
     // Create Alpha Centuri A
     this.alpha_centauri_a = createEntity(this.entityMap.alpha_centauri_a, {
@@ -48,9 +50,10 @@ export class AlphaCentauriSystem extends BaseScene
       posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * 9, 0, 0),
       detail: 3,
       temperature: 5790,
-      parent: this.alpha_centauri_center.objectRoot,
+      parent: this.objectMap[this.entityMap.alpha_centauri_a.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_a);
+    this.objectMap[this.entityMap.alpha_centauri_a.key] = this.alpha_centauri_a;
 
     // Create Alpha Centuri B
     this.alpha_centauri_b = createEntity(this.entityMap.alpha_centauri_b, {
@@ -58,9 +61,10 @@ export class AlphaCentauriSystem extends BaseScene
       posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * (-7.2), 0, 0),
       detail: 3,
       temperature: 5200,
-      parent: this.alpha_centauri_center.objectRoot,
+      parent: this.objectMap[this.entityMap.alpha_centauri_b.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_b);
+    this.objectMap[this.entityMap.alpha_centauri_b.key] = this.alpha_centauri_b;
 
     // Create Proxima Centauri
     this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
@@ -68,22 +72,23 @@ export class AlphaCentauriSystem extends BaseScene
       posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_a * 70, 0, 0),
       detail: 3,
       temperature: 3000,
-      parent: this.alpha_centauri_center.objectRoot,
+      parent: this.objectMap[this.entityMap.proxima_centauri.parentKey].objectRoot,
     });
     this.objects.push(this.proxima_centauri);
+    this.objectMap[this.entityMap.proxima_centauri.key] = this.proxima_centauri;
   }
 
   PlayerEntryPosition() 
   {
-    const targetPos = this.proxima_b.GetPosition();
+    const targetPos = this.proxima_centauri.GetPosition();
     const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
 
-    const scale = this.sizeMap.proxima_centauri;    // TO CHANGE
+    const scale = this.sizeMap.alpha_centauri_a;    // TO CHANGE
     const playerPos = new THREE.Vector3(2*scale, 2*scale, 2*scale);
     this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
     
     // Debug logs
-    console.log("Proxima B position:", target);
+    console.log("Proxima Centaury position:", target);
     console.log("Player set to:", playerPos);
 
     // Face the Sun

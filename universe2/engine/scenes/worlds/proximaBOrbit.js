@@ -13,7 +13,7 @@ export class ProximaBOrbit extends BaseScene
     this.SIZE_SCALE = 14;
     this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
     this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
-    this.near = 40;
+    this.near = 20;
     this.far = 30000;
     this.cameraSettings = { near: this.near, far: this.far };
   }
