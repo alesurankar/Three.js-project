@@ -15,7 +15,7 @@ const BaseDropdown = ({ open, x, y, children }: BaseDropdownProps) => {
 
   return (
     <div
-      className="pointer-events-auto absolute bg-gray-800/60 text-white p-3 rounded"
+      className="pointer-events-auto absolute bg-blue-900/90 text-white p-2 rounded shadow-[0_0_20px_rgba(0,191,255,0.7)]"
       style={{ top: y, left: x }}
     >{children}
     </div>

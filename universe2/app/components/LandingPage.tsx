@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Russo_One } from 'next/font/google';
 import BaseSideWindow from './sideWindow/BaseSideWindow';
-import GalaxiesDropdown from './dropdown/GalaxiesDropdown';
+import GalaxyesDropdown from './dropdown/GalaxyesDropdown';
 import PlanetsDropdown from './dropdown/PlanetsDropdown';
 import StarsDropdown from './dropdown/StarsDropdown';
 
@@ -14,7 +14,7 @@ const russoOne = Russo_One({ subsets: ['latin'], weight: '400' });
 export default function LandingPage() {
   const [planetsDropdown, setPlanetsDropdown] = useState(false);
   const [starsDropdown, setStarsDropdown] = useState(false);
-  const [galaxyesDropdown, setGalaxiesDropdown] = useState(false);
+  const [galaxyesDropdown, setGalaxyesDropdown] = useState(false);
 
 
 
@@ -22,7 +22,7 @@ export default function LandingPage() {
     <div className={`flex flex-col ${russoOne.className} mt-10 text-center text-white w-full h-screen`}>
 
       {/* Top: Navigation Buttons */}
-      <div className="flex justify-center bg-blue-800/30 gap-6 text-white py-2 mx-12 
+      <div className="flex justify-center bg-blue-900/30 gap-6 text-white py-2 mx-12 
         rounded-xl text-2xl shadow-[0_0_20px_rgba(0,191,255,0.7)]">
         <div className="relative">
           <button 
@@ -31,7 +31,7 @@ export default function LandingPage() {
               onClick={() => {
                 setPlanetsDropdown(prev => !prev);
                 setStarsDropdown(false)
-                setGalaxiesDropdown(false)
+                setGalaxyesDropdown(false)
               }}
             >Planets
           </button>
@@ -45,11 +45,11 @@ export default function LandingPage() {
               onClick={() => {
                 setPlanetsDropdown(false)
                 setStarsDropdown(prev => !prev);
-                setGalaxiesDropdown(false)
+                setGalaxyesDropdown(false)
               }}
             >Stars
           </button>
-          <StarsDropdown open={starsDropdown} x={-50} y={50}/>
+          <StarsDropdown open={starsDropdown} x={-70} y={50}/>
         </div>
 
         <div className="relative">
@@ -59,11 +59,11 @@ export default function LandingPage() {
               onClick={() => {
                 setPlanetsDropdown(false)
                 setStarsDropdown(false)
-                setGalaxiesDropdown(prev => !prev);
+                setGalaxyesDropdown(prev => !prev);
               }}
-            >Galaxies
+            >Galaxyes
           </button>
-          <GalaxiesDropdown open={galaxyesDropdown} x={-50} y={50}/>
+          <GalaxyesDropdown open={galaxyesDropdown} x={-50} y={50}/>
         </div>
       </div>
       
