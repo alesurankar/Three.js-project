@@ -24,41 +24,48 @@ export default function LandingPage() {
       {/* Top: Navigation Buttons */}
       <div className="flex justify-center bg-blue-800/30 gap-6 text-white py-2 mx-12 
         rounded-xl text-2xl shadow-[0_0_20px_rgba(0,191,255,0.7)]">
-        <button 
-          className="rounded-xl hover:text-yellow-200 hover:scale-105 
-            transition-all duration-300 px-2"
-            onClick={() => {
-              setPlanetsDropdown(!planetsDropdown)
-              setStarsDropdown(false)
-              setGalaxiesDropdown(false)
-            }}
-          >Planets
-        </button>
-        <button 
-          className="rounded-xl hover:text-yellow-200 hover:scale-105 
-            transition-all duration-300 px-2"
-            onClick={() => {
-              setPlanetsDropdown(false)
-              setStarsDropdown(!starsDropdown)
-              setGalaxiesDropdown(false)
-            }}
-          >Stars
-        </button>
-        <button 
-          className="rounded-xl hover:text-yellow-200 hover:scale-105 
-            transition-all duration-300 px-2"
-            onClick={() => {
-              setPlanetsDropdown(false)
-              setStarsDropdown(false)
-              setGalaxiesDropdown(!galaxyesDropdown)
-            }}
-          >Galaxies
-        </button>
-      </div>
+        <div className="relative">
+          <button 
+            className="rounded-xl hover:text-yellow-200 hover:scale-105 
+              transition-all duration-300 px-2"
+              onClick={() => {
+                setPlanetsDropdown(prev => !prev);
+                setStarsDropdown(false)
+                setGalaxiesDropdown(false)
+              }}
+            >Planets
+          </button>
+          <PlanetsDropdown open={planetsDropdown} x={-50} y={50}/>
+        </div>
 
-      <PlanetsDropdown open={planetsDropdown} x={0} y={0}/>
-      <StarsDropdown open={starsDropdown} x={0} y={0}/>
-      <GalaxiesDropdown open={galaxyesDropdown} x={0} y={0}/>
+        <div className="relative">
+          <button 
+            className="rounded-xl hover:text-yellow-200 hover:scale-105 
+              transition-all duration-300 px-2"
+              onClick={() => {
+                setPlanetsDropdown(false)
+                setStarsDropdown(prev => !prev);
+                setGalaxiesDropdown(false)
+              }}
+            >Stars
+          </button>
+          <StarsDropdown open={starsDropdown} x={-50} y={50}/>
+        </div>
+
+        <div className="relative">
+          <button 
+            className="rounded-xl hover:text-yellow-200 hover:scale-105 
+              transition-all duration-300 px-2"
+              onClick={() => {
+                setPlanetsDropdown(false)
+                setStarsDropdown(false)
+                setGalaxiesDropdown(prev => !prev);
+              }}
+            >Galaxies
+          </button>
+          <GalaxiesDropdown open={galaxyesDropdown} x={-50} y={50}/>
+        </div>
+      </div>
       
       {/* Top: Title */}
       <div className="flex text-center items-center justify-center p-1 m-1">
