@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Russo_One } from 'next/font/google';
-import BaseSideWindow from './sideWindow/BaseSideWindow';
+import SideWindow from './sideWindow/SideWindow';
 import GalaxyesDropdown from './dropdown/GalaxyesDropdown';
 import PlanetsDropdown from './dropdown/PlanetsDropdown';
 import StarsDropdown from './dropdown/StarsDropdown';
@@ -15,6 +15,7 @@ export default function LandingPage() {
   const [planetsDropdown, setPlanetsDropdown] = useState(false);
   const [starsDropdown, setStarsDropdown] = useState(false);
   const [galaxyesDropdown, setGalaxyesDropdown] = useState(false);
+  const [sideWindow, setSideWindow] = useState<string | null>(null);
 
 
 
@@ -35,7 +36,13 @@ export default function LandingPage() {
               }}
             >Planets
           </button>
-          <PlanetsDropdown open={planetsDropdown} x={-50} y={50}/>
+          <PlanetsDropdown 
+            open={planetsDropdown} x={-50} y={50}
+            onSelect={(scene) => {
+              setSideWindow(scene);
+              setPlanetsDropdown(false);
+            }}
+          />
         </div>
 
         <div className="relative">
@@ -49,7 +56,13 @@ export default function LandingPage() {
               }}
             >Stars
           </button>
-          <StarsDropdown open={starsDropdown} x={-70} y={50}/>
+          <StarsDropdown 
+            open={starsDropdown} x={-70} y={50}
+            onSelect={(scene) => {
+              setSideWindow(scene);
+              setStarsDropdown(false);
+            }}
+          />
         </div>
 
         <div className="relative">
@@ -63,7 +76,13 @@ export default function LandingPage() {
               }}
             >Galaxyes
           </button>
-          <GalaxyesDropdown open={galaxyesDropdown} x={-50} y={50}/>
+          <GalaxyesDropdown 
+            open={galaxyesDropdown} x={-10} y={50}
+            onSelect={(scene) => {
+              setSideWindow(scene);
+              setGalaxyesDropdown(false);
+            }}
+          />
         </div>
       </div>
       
@@ -82,8 +101,11 @@ export default function LandingPage() {
 
       {/* Bottom Content */}
       <div className="flex flex-1 text-white p-1 m-1">
-        <BaseSideWindow open={true}>
-        </BaseSideWindow>
+        <SideWindow
+          open={sideWindow !== null}
+          onClose={() => setSideWindow(null)}
+        >{sideWindow}
+        </SideWindow>
       </div>
     </div>
   );
