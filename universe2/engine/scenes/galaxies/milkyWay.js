@@ -8,7 +8,7 @@ export class MilkyWay extends BaseScene
 {
   constructor(scene, camera, player, focus = {}) 
   {
-    super(scene, camera, player, focus);
+    super(scene, camera, player, focus, "GalaxyBox");
     this.timeFactor=200
       
     this.SIZE_SCALE = 5;
@@ -23,7 +23,6 @@ export class MilkyWay extends BaseScene
     this.near = 20;
     this.far = 20000;
     this.cameraSettings = { near: this.near,far: this.far };
-    this.scene.background = SkyBox.Load("GalaxyBox");
     
     const starNum = 2000;
     this.redDwarfNum = starNum * 0.72;

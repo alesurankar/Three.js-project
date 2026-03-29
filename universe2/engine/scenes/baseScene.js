@@ -6,7 +6,7 @@ import { loadEntities } from "../utils/loadEntities.js"
 export class BaseScene 
 {
   // Step 10
-  constructor(scene, camera, player, focus = {}) 
+  constructor(scene, camera, player, focus = {}, skyBoxName = "StarBox") 
   {
     console.log("Scene constructor");
     this.active = true;
@@ -21,7 +21,7 @@ export class BaseScene
     this.far = 16000;
     this.cameraSettings = { near: this.near,far: this.far };
     this.scene = scene;
-    this.scene.background = SkyBox.Load("StarBox");
+    this.scene.background = SkyBox.Load(skyBoxName);
     this.camera = camera;
     this.player = player;
     this.focus = focus;
