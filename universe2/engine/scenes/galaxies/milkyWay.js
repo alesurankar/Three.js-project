@@ -9,7 +9,7 @@ export class MilkyWay extends BaseScene
   constructor(scene, camera, player, focus = {}) 
   {
     super(scene, camera, player, focus, "GalaxyBox");
-    this.timeFactor=200
+    this.timeFactor=200000000
       
     this.SIZE_SCALE = 5;
     this.REGION_SIZE_SCALE = 0.000144 * this.SIZE_SCALE;
@@ -32,7 +32,9 @@ export class MilkyWay extends BaseScene
     this.A_typeNum = starNum * 0.007;
     this.redMasiveNum = starNum * 0.0006;
 
-    this.baseSpeed = StarSystem.OrbitalRotationInDays(250);
+    this.baseSpeed = 0.00000001;
+    this.galaxyNear = 1000;
+    this.galaxyFar = 80000;
   }
     
   randomBetween(min, max) {
@@ -63,62 +65,64 @@ export class MilkyWay extends BaseScene
   CreateObjects()
   {
     // Create Sagittarius A blackhole
-    this.SMBH = createEntity(this.entityMap.sagittarius_a, {
+    this.sagittarius_a = createEntity(this.entityMap.sagittarius_a, {
       size: this.sizeMap.sagittarius_a,
+      axialPeriod: this.timeFactor,
       posToParent: new THREE.Vector3(0, 0, 0),
-      axialRotationSpeed: this.baseSpeed * this.DISTANCE_SCALE * 30,
     });
-    this.scene.add(this.SMBH.orbitPivot);
-    this.objects.push(this.SMBH);
+    this.scene.add(this.sagittarius_a.orbitPivot);
+    this.objects.push(this.sagittarius_a);
+    this.objectMap[this.entityMap.sagittarius_a.key] = this.sagittarius_a;
+    this.primaryEntity = this.sagittarius_a;
 
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
       size: this.sizeMap.sun,
       renderMode: "points",
       posToParent: this.sunPos,
-      orbitalSpeed: this.baseSpeed,
       temperature: 5778,
-      parent: this.SMBH.objectRoot,
+      parent: this.objectMap[this.entityMap.sun.parentKey].objectRoot,
     });
     this.objects.push(this.sun);
+    this.objectMap[this.entityMap.sun.key] = this.sun;
 
     // Create Alpha Centauri
     this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center, {
       posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE, this.sunPos.z-1.0*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE),
-      orbitalSpeed: this.baseSpeed /1000,
-      parent: this.SMBH.objectRoot,
+      parent: this.objectMap[this.entityMap.alpha_centauri_center.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_center);
+    this.objectMap[this.entityMap.alpha_centauri_center.key] = this.alpha_centauri_center;
 
     this.alpha_centauri_a = createEntity(this.entityMap.alpha_centauri_a, {
       size: this.sizeMap.alpha_centauri_a,
       renderMode: "points",
       posToParent: new THREE.Vector3(-this.sizeMap.alpha_centauri_a * 18, 0, 0),
-      orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
       temperature: 5790,
-      parent: this.alpha_centauri_center.objectRoot,
+      parent: this.objectMap[this.entityMap.alpha_centauri_a.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_a);
+    this.objectMap[this.entityMap.alpha_centauri_a.key] = this.alpha_centauri_a;
 
     this.alpha_centauri_b = createEntity(this.entityMap.alpha_centauri_b, {
       size: this.sizeMap.alpha_centauri_b,
       renderMode: "points",
       posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_b * 14, 0, 0),   
-      orbitalSpeed: StarSystem.OrbitalRotationInDays(283),
       temperature: 5200,
-      parent: this.alpha_centauri_center.objectRoot,
+      parent: this.objectMap[this.entityMap.alpha_centauri_b.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_b);
+    this.objectMap[this.entityMap.alpha_centauri_b.key] = this.alpha_centauri_b;
 
     this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
       size: this.sizeMap.proxima_centauri,
       renderMode: "points",
       posToParent: new THREE.Vector3(0, 0, this.sizeMap.alpha_centauri_a* 100),  
-      orbitalSpeed: StarSystem.OrbitalRotationInDays(365000),
       temperature: 3000,
-      parent: this.alpha_centauri_center.objectRoot,
+      parent: this.objectMap[this.entityMap.proxima_centauri.parentKey].objectRoot,
     });
     this.objects.push(this.proxima_centauri);
+    this.objectMap[this.entityMap.proxima_centauri.key] = this.proxima_centauri;
 
     // Create redDwarfs
     for (let i = 0, z = this.redDwarfNum; i < this.redDwarfNum; i++, z--) {
@@ -126,6 +130,7 @@ export class MilkyWay extends BaseScene
       const radius = this.randomBetween(this.DISTANCE_SCALE * this.galaxyNear, this.DISTANCE_SCALE * this.galaxyFar);
       const falloff = 0.7;
       const angularSpeed = this.baseSpeed * Math.sqrt((this.DISTANCE_SCALE * 10000) / radius, falloff);
+      const period = (2 * Math.PI) / angularSpeed;
       const star = new Star({
         name: `redDwarf${i}`,
         size: size,
@@ -135,9 +140,9 @@ export class MilkyWay extends BaseScene
           this.randomBetween(-5, 5),
           Math.sin(i) * radius
         ),
-        orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+        orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(2500, 3300),
-        parent: this.SMBH.objectRoot,
+        parent: this.sagittarius_a.objectRoot,
       });
       this.objects.push(star);
     }   
@@ -148,6 +153,7 @@ export class MilkyWay extends BaseScene
       const radius = this.randomBetween(this.DISTANCE_SCALE * this.galaxyNear, this.DISTANCE_SCALE * this.galaxyFar);
       const falloff = 0.7;
       const angularSpeed = this.baseSpeed * Math.sqrt((this.DISTANCE_SCALE * 10000) / radius, falloff);
+      const period = (2 * Math.PI) / angularSpeed;
       const star = new Star({
         name: `K_type${i}`,
         size: size,
@@ -157,9 +163,9 @@ export class MilkyWay extends BaseScene
           this.randomBetween(-5, 5),
           Math.sin(i) * radius
         ),
-        orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+        orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(3300, 4600),
-        parent: this.SMBH.objectRoot,
+        parent: this.sagittarius_a.objectRoot,
       });
       this.objects.push(star);
     }  
@@ -170,6 +176,7 @@ export class MilkyWay extends BaseScene
       const radius = this.randomBetween(this.DISTANCE_SCALE * this.galaxyNear, this.DISTANCE_SCALE * this.galaxyFar);
       const falloff = 0.7;
       const angularSpeed = this.baseSpeed * Math.sqrt((this.DISTANCE_SCALE * 10000) / radius, falloff);
+      const period = (2 * Math.PI) / angularSpeed;
       const star = new Star({
         name: `G_type${i}`,
         size: size,
@@ -179,9 +186,9 @@ export class MilkyWay extends BaseScene
           this.randomBetween(-5, 5),
           Math.sin(i) * radius
         ),
-        orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+        orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(4600, 6200),
-        parent: this.SMBH.objectRoot,
+        parent: this.sagittarius_a.objectRoot,
       });
       this.objects.push(star);
     }   
@@ -192,6 +199,7 @@ export class MilkyWay extends BaseScene
       const radius = this.randomBetween(this.DISTANCE_SCALE * this.galaxyNear, this.DISTANCE_SCALE * this.galaxyFar);
       const falloff = 0.7;
       const angularSpeed = this.baseSpeed * Math.sqrt((this.DISTANCE_SCALE * 10000) / radius, falloff);
+      const period = (2 * Math.PI) / angularSpeed;
       const star = new Star({
         name: `F_type${i}`,
         size: size,
@@ -201,9 +209,9 @@ export class MilkyWay extends BaseScene
           this.randomBetween(-5, 5),
           Math.sin(i) * radius
         ),
-        orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+        orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(6200, 7500),
-        parent: this.SMBH.objectRoot,
+        parent: this.sagittarius_a.objectRoot,
       });
       this.objects.push(star);
     }   
@@ -214,6 +222,7 @@ export class MilkyWay extends BaseScene
       const radius = this.randomBetween(this.DISTANCE_SCALE * this.galaxyNear, this.DISTANCE_SCALE * this.galaxyFar);
       const falloff = 0.7;
       const angularSpeed = this.baseSpeed * Math.sqrt((this.DISTANCE_SCALE * 10000) / radius, falloff);
+      const period = (2 * Math.PI) / angularSpeed;
       const star = new Star({
         name: `A_type${i}`,
         size: size,
@@ -223,9 +232,9 @@ export class MilkyWay extends BaseScene
           this.randomBetween(-5, 5),
           Math.sin(i) * radius
         ),
-        orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+        orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(7500, 10000),
-        parent: this.SMBH.objectRoot,
+        parent: this.sagittarius_a.objectRoot,
       });
       this.objects.push(star);
     }   
@@ -236,6 +245,7 @@ export class MilkyWay extends BaseScene
       const radius = this.randomBetween(this.DISTANCE_SCALE * this.galaxyNear, this.DISTANCE_SCALE * this.galaxyFar);
       const falloff = 0.7;
       const angularSpeed = this.baseSpeed * Math.sqrt((this.DISTANCE_SCALE * 10000) / radius, falloff);
+      const period = (2 * Math.PI) / angularSpeed;
       const star = new Star({
         name: `redMasive${i}`,
         size: size,
@@ -245,9 +255,9 @@ export class MilkyWay extends BaseScene
           this.randomBetween(-5, 5),
           Math.sin(i) * radius
         ),
-        orbitalSpeed: angularSpeed * this.randomBetween(0.9, 1.1),
+        orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(2000, 3000),
-        parent: this.SMBH.objectRoot,
+        parent: this.sagittarius_a.objectRoot,
       });
       this.objects.push(star);
     }   
@@ -275,7 +285,7 @@ export class MilkyWay extends BaseScene
     console.log("Player forward vector after lookAt:", forward);
   }
     
-  Portals()
+  DefinePortals()
   {
     this.sceneTriggers = [
       { obj: this.sun, threshold: this.sizeMap.sun * 100, scene: "SolarSystem" },

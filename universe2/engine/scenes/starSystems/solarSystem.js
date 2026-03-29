@@ -243,7 +243,7 @@ export class SolarSystem extends BaseScene
 
   SetExitCondition() 
   {
-    this.exitDistance = this.sizeMap.sun * 100;   // TO CHANGE
+    this.exitDistance = this.sizeMap.sun * 90;   // TO CHANGE
   }
 
   DefinePortals()
