@@ -10,14 +10,11 @@ import StarsDropdown from './dropdown/StarsDropdown';
 
 const russoOne = Russo_One({ subsets: ['latin'], weight: '400' });
 
-
 export default function LandingPage() {
   const [planetsDropdown, setPlanetsDropdown] = useState(false);
   const [starsDropdown, setStarsDropdown] = useState(false);
   const [galaxyesDropdown, setGalaxyesDropdown] = useState(false);
   const [sideWindow, setSideWindow] = useState<string | null>(null);
-
-
 
   return (
     <div className={`flex flex-col ${russoOne.className} mt-10 text-center text-white w-full h-screen`}>

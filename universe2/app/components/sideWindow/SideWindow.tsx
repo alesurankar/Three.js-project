@@ -13,9 +13,12 @@ interface SideWindowProps {
 const SideWindow = ({ open, onClose, children }: SideWindowProps) => {
   if (!open) return null;
   const router = useRouter();
+  const scene = typeof children === "string" ? children : "";
   
   const enterUniverse = (scene: string) => {
-    router.push(`/universe?scene=${scene}`);
+    if (scene) {
+      router.push(`/universe?scene=${scene}`);
+    }
   };
 
   return (
@@ -26,6 +29,12 @@ const SideWindow = ({ open, onClose, children }: SideWindowProps) => {
         >X
       </button>
       {children}
+      <button
+        className="cursor-pointer border-2 px-3 py-1 rounded hover:bg-white/20"
+        onClick={() => enterUniverse(scene)}
+      >
+        Enter {scene}
+      </button>
     </div>
   );
 };
