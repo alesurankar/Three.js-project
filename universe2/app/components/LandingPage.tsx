@@ -97,7 +97,7 @@ export default function LandingPage() {
       </div>
 
       {/* Bottom Content */}
-      <div className="flex flex-1 text-white p-1 m-1">
+      <div className="flex flex-1 text-whit">
         <SideWindow
           open={sideWindow !== null}
           onClose={() => setSideWindow(null)}
