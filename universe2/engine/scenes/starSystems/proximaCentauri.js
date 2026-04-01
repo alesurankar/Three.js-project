@@ -84,7 +84,7 @@ export class ProximaCentauri extends BaseScene
     this.exitDistance = this.sizeMap.proxima_centauri * 40;   // TO CHANGE
   }
 
-  Portals()
+  DefinePortals()
   {
     this.sceneTriggers = [
       { obj: this.proxima_b, threshold: this.sizeMap.proxima_b * 4, scene: "ProximaBOrbit" },

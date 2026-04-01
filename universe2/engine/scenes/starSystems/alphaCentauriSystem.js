@@ -38,7 +38,9 @@ export class AlphaCentauriSystem extends BaseScene
   CreateObjects()
   {
     // Create Bary Center
-    this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center);
+    this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center, {
+      orbitalPeriod: 0,
+    });
     this.scene.add(this.alpha_centauri_center.orbitPivot);
     this.objects.push(this.alpha_centauri_center);
     this.objectMap[this.entityMap.alpha_centauri_center.key] = this.alpha_centauri_center;
@@ -105,7 +107,7 @@ export class AlphaCentauriSystem extends BaseScene
     this.exitDistance = this.sizeMap.alpha_centauri_a * 160;   // TO CHANGE
   }
     
-  Portals()
+  DefinePortals()
   {
     this.sceneTriggers = [
       { obj: this.proxima_centauri, threshold: this.sizeMap.proxima_centauri * 4, scene: "ProximaCentauri" },
