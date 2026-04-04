@@ -5,7 +5,7 @@ export class CelestialBody
 {
   constructor({
     renderMode = "mesh",
-    posToParent = new THREE.Vector3(0, 0, 0),
+    orbitRadius = 0,
     axialTilt = 0,
     orbitalTilt = 0,
     axialPeriod = 0,
@@ -54,7 +54,7 @@ export class CelestialBody
     this.axialRotationSpeed = axialRotationSpeed - this.orbitalSpeed;
     this.axialFrame.rotation.z = this.axialTilt;
     this.orbitPivot.rotation.x = this.orbitalTilt;
-    this.objectRoot.position.copy(posToParent)
+    this.objectRoot.position.set(orbitRadius, 0, 0);
 
     // Add to parent if any
     if (parent) parent.add(this.orbitPivot);

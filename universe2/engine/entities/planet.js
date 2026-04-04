@@ -8,7 +8,7 @@ export class Planet extends CelestialBody
     key = "planet",
     size = 4,
     renderMode = "mesh",
-    posToParent = new THREE.Vector3(0, 0, 0),
+    orbitRadius = 0,
     axialTilt = 0,
     orbitalTilt = 0,
     axialPeriod = 0,
@@ -51,7 +51,7 @@ export class Planet extends CelestialBody
     super({
       size,
       renderMode,
-      posToParent,
+      orbitRadius,
       axialTilt,
       orbitalTilt,
       axialPeriod,

@@ -11,7 +11,7 @@ export class Star extends CelestialBody
     renderMode = "mesh",
     lightType = "none",
     targetObject = null,
-    posToParent = new THREE.Vector3(0, 0, 0),
+    orbitRadius = 0,
     axialTilt = 0,
     orbitalTilt = 0,
     axialPeriod = 0,
@@ -63,7 +63,7 @@ export class Star extends CelestialBody
     super({
       size,
       renderMode,
-      posToParent,
+      orbitRadius,
       axialTilt,
       orbitalTilt,
       axialPeriod,
@@ -112,7 +112,7 @@ export class Star extends CelestialBody
       const intensity = maxSizeOnScreen * 10; // scale with star size
       this.light = new THREE.DirectionalLight(starColor, intensity);
 
-      this.light.position.copy(posToParent);
+      this.light.position.copy(this.objectRoot.position);
       const target = targetObject || new THREE.Object3D();
       if (!target.parent) this.objectRoot.add(target); // make sure it's in scene graph
       this.light.target = target;

@@ -62,8 +62,8 @@ export class TestScene extends BaseScene
     // Create Earth
     this.earth = createEntity(this.entityMap.earth, {
       size: this.sizeMap.earth,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 5, 0, 0),
-      parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
+      orbitRadius: this.sizeMap.sun *5,
+      parent: this.sun.objectRoot,
     });
     this.objects.push(this.earth);
     this.objectMap[this.entityMap.earth.key] = this.earth;
@@ -71,8 +71,8 @@ export class TestScene extends BaseScene
     // Create moon
     this.moon = createEntity(this.entityMap.moon, {
       size: this.sizeMap.moon,
-      posToParent: new THREE.Vector3(this.sizeMap.earth * 3, 0, 0),
-      parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
+      orbitRadius: this.sizeMap.earth *3,
+      parent: this.earth.objectRoot,
     });
     this.objects.push(this.moon);
     this.objectMap[this.entityMap.moon.key] = this.moon;
@@ -84,7 +84,7 @@ export class TestScene extends BaseScene
       orbitFarRadius: this.sizeMap.sun * 16,
       orbitNearRadius: this.sizeMap.sun * 14,
       thickness: 50,
-      parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
+      parent: this.sun.objectRoot,
     });
     this.objects.push(this.asteroid_belt);
     this.objectMap[this.entityMap.asteroid_belt.key] = this.asteroid_belt;
@@ -92,8 +92,8 @@ export class TestScene extends BaseScene
     // Create saturn
     this.saturn = createEntity(this.entityMap.saturn, {
       size: this.sizeMap.saturn,
-      posToParent: new THREE.Vector3(this.sizeMap.sun  * 8, 0, 0),
-      parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
+      orbitRadius: this.sizeMap.sun *8,
+      parent: this.sun.objectRoot,
     });
     this.objects.push(this.saturn);
     this.objectMap[this.entityMap.saturn.key] = this.saturn;
@@ -106,7 +106,7 @@ export class TestScene extends BaseScene
       orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
       thickness: 0.6,   
       color: 0xdfe6f0,
-      parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,
+      parent: this.saturn.axialFrame,
     });
     this.objects.push(this.saturn_ring);
     this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
@@ -114,7 +114,7 @@ export class TestScene extends BaseScene
     // Creating Probe1
     this.probe1 = createEntity(this.entityMap.probe1, {
       size: this.sizeMap.probe1,
-      posToParent: new THREE.Vector3(this.sizeMap.sun  * 2, 0, this.sizeMap.sun  * 2),
+      orbitRadius: this.sizeMap.sun *2,
       parent: this.sun.objectRoot
     });
     this.objects.push(this.probe1);

@@ -9,6 +9,7 @@ interface PlanetsDropdownProps {
 }
 
 const objects = [
+  { label: "Test Scene", value: "TestScene" },
   { label: "Mercury Orbit", value: "MercuryOrbit" },
   { label: "Venus Orbit", value: "VenusOrbit" },
   { label: "Earth Orbit", value: "EarthOrbit" },

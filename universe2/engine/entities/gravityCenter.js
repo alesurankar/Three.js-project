@@ -5,7 +5,7 @@ import { CelestialBody } from "./celestialBody.js";
 export class GravityCenter extends CelestialBody 
 {
   constructor({
-    posToParent = new THREE.Vector3(0, 0, 0),
+    orbitRadius = 0,
     axialPeriod = 0,
     orbitalPeriod = 0,
     parent = null,
@@ -14,7 +14,7 @@ export class GravityCenter extends CelestialBody
     // Call base constructor
     super({
       renderMode: "none",
-      posToParent,
+      orbitRadius,
       axialPeriod,
       orbitalPeriod,
       parent,

@@ -7,7 +7,7 @@ export class GlbModel extends ArtificialObject
   constructor({
     key = "station",
     size = 1,
-    posToParent = new THREE.Vector3(0, 0, 0),
+    orbitRadius = 0,
     pitch = 0,  // rotation around X
     yaw = 0,    // rotation around Y
     roll = 0,   // rotation around Z
@@ -20,7 +20,7 @@ export class GlbModel extends ArtificialObject
     super({
       size,
       renderMode: "model",
-      posToParent,
+      orbitRadius,
       orbitalTilt,
       axialPeriod,
       orbitalPeriod,
