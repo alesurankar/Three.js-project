@@ -22,7 +22,7 @@ const SideWindow = ({ open, onClose, children }: SideWindowProps) => {
   };
 
   return (
-    <div className="relative flex flex-col items-center bg-blue-900/10 flex-1 text-white e m-3 rounded  shadow-[0_0_20px_rgba(0,191,255,0.7)]">
+    <div className="relative flex flex-col items-center bg-blue-900/10 flex-1 text-white e m-3 rounded  shadow-[0_0_20px_rgba(0,191,255,0.7)] z-40">
       <button 
         className="absolute top-0 right-0 text-4xl text-red-800 p-3" 
         onClick={onClose}

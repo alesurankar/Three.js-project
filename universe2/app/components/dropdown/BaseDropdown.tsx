@@ -21,7 +21,7 @@ const BaseDropdown = ({ open, x, y, items, onSelect, children }: BaseDropdownPro
   if (!open) return null;
 
   const containerClass = 
-    "pointer-events-auto absolute bg-blue-900/90 text-white p-2 rounded shadow-[0_0_20px_rgba(0,191,255,0.7)]";
+    "pointer-events-auto absolute bg-blue-900/90 text-white p-2 rounded shadow-[0_0_20px_rgba(0,191,255,0.7)] z-50";
 
   const itemClass =
     "hover:text-yellow-200 hover:scale-105 whitespace-nowrap px-2 py-2 text-left w-full";
