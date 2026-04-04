@@ -53,7 +53,7 @@ export class ProximaBOrbit extends BaseScene
     this.proxima_b = createEntity(this.entityMap.proxima_b, {
       size: this.sizeMap.proxima_b, 
       detail: 6,
-      posToParent: new THREE.Vector3(this.far - this.sizeMap.proxima_b * 20, 0, 0),  // TO CHANGE
+      orbitRadius: this.far - this.sizeMap.proxima_b * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.proxima_b.parentKey].objectRoot,
     });
     this.objects.push(this.proxima_b);

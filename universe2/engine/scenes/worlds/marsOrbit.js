@@ -54,7 +54,7 @@ export class MarsOrbit extends BaseScene
     this.mars = createEntity(this.entityMap.mars, {
       size: this.sizeMap.mars,
       detail: 6,
-      posToParent: new THREE.Vector3(this.far - this.sizeMap.mars * 20, 0, 0),  // TO CHANGE
+      orbitRadius: this.far - this.sizeMap.mars * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.mars.parentKey].objectRoot,
     });
     this.objects.push(this.mars);

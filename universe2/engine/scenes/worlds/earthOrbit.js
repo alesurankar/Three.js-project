@@ -60,7 +60,7 @@ export class EarthOrbit extends BaseScene
     this.earth = createEntity(this.entityMap.earth, {
       size: this.sizeMap.earth,
       detail: 6,
-      posToParent: new THREE.Vector3(this.far - this.sizeMap.earth * 20, 0, 0),  // TO CHANGE
+      orbitRadius: this.far - this.sizeMap.earth * 22,  // TO CHANGE
       hasClouds: true,
       parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
     });
@@ -71,7 +71,7 @@ export class EarthOrbit extends BaseScene
     // Create moon
     this.moon = createEntity(this.entityMap.moon, {
       size: this.sizeMap.moon,
-      posToParent: new THREE.Vector3(this.sizeMap.earth * 20, 0, -this.sizeMap.earth * 10),
+      orbitRadius: this.sizeMap.earth * 18,
       detail: 3,
       parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });
@@ -88,13 +88,8 @@ export class EarthOrbit extends BaseScene
       const longitude = Math.random() * Math.PI * 2;
       const latitude = (Math.random() - 0.5) * 0.6;
 
-      const x = radius * Math.cos(longitude) * Math.cos(latitude)
-      const y = radius * Math.sin(latitude)
-      const z = radius * Math.sin(longitude) * Math.cos(latitude)
-
       const probe = createEntity(this.entityMap.probe1, {
         size: 0.3,
-        posToParent: new THREE.Vector3(x, y, z),
         pitch: 0,
         yaw: longitude + Math.PI / 2,
         roll: 0,
@@ -113,13 +108,8 @@ export class EarthOrbit extends BaseScene
       const longitude = Math.random() * Math.PI * 2;
       const latitude = (Math.random() - 0.5) * 0.6;
 
-      const x = radius * Math.cos(longitude) * Math.cos(latitude)
-      const y = radius * Math.sin(latitude)
-      const z = radius * Math.sin(longitude) * Math.cos(latitude)
-
       const probe = createEntity(this.entityMap.probe2, {
         size: 80,
-        posToParent: new THREE.Vector3(-x, -y, -z),
         pitch: 0,
         yaw: longitude + Math.PI / 2,
         roll: 0,

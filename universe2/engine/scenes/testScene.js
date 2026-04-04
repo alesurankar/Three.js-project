@@ -51,7 +51,6 @@ export class TestScene extends BaseScene
       lightType: "pointLight",
       detail: 4,
       temperature: 5778,
-      initialAngle: 0,
       orbitalTilt: 0,
       orbitalPeriod: 0,
       hasTexture: true,

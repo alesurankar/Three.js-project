@@ -55,7 +55,7 @@ export class MoonOrbit extends BaseScene
     // Create Earth
     this.earth = createEntity(this.entityMap.earth, {
       size: this.sizeMap.earth,
-      posToParent: new THREE.Vector3(this.far - this.sizeMap.earth * 20, 0, 0),  // TO CHANGE
+      orbitRadius: this.far - this.sizeMap.earth * 22,  // TO CHANGE
       detail: 3,
       hasClouds: true,
       parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
@@ -66,7 +66,7 @@ export class MoonOrbit extends BaseScene
     // Create Moon
     this.moon = createEntity(this.entityMap.moon, {
       size: this.sizeMap.moon,
-      posToParent: new THREE.Vector3(this.sizeMap.earth * 20, 0, -this.sizeMap.earth * 10),  // TO CHANGE
+      orbitRadius: this.sizeMap.earth * 18,  // TO CHANGE
       detail: 6,
       parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });

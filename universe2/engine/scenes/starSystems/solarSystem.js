@@ -79,7 +79,7 @@ export class SolarSystem extends BaseScene
     // Create Mercury
     this.mercury = createEntity(this.entityMap.mercury, {
       size: this.sizeMap.mercury,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 4, 0, 0),
+      orbitRadius: this.sizeMap.sun * 4,
       parent: this.objectMap[this.entityMap.mercury.parentKey].objectRoot,
     });
     this.objects.push(this.mercury);
@@ -88,7 +88,7 @@ export class SolarSystem extends BaseScene
     // Create venus
     this.venus = createEntity(this.entityMap.venus, {
       size: this.sizeMap.venus,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 7, 0, 0),
+      orbitRadius: this.sizeMap.sun * 7,
       parent: this.objectMap[this.entityMap.venus.parentKey].objectRoot,
     });
     this.objects.push(this.venus);
@@ -97,7 +97,7 @@ export class SolarSystem extends BaseScene
     // Create Earth
     this.earth = createEntity(this.entityMap.earth, {
       size: this.sizeMap.earth,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 10, 0, 0),
+      orbitRadius: this.sizeMap.sun * 10,
       parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
     });
     this.objects.push(this.earth);
@@ -106,7 +106,7 @@ export class SolarSystem extends BaseScene
     // Create moon
     this.moon = createEntity(this.entityMap.moon, {
       size: this.sizeMap.moon,
-      posToParent: new THREE.Vector3(this.sizeMap.earth * 10, 0, 0),
+      orbitRadius: this.sizeMap.earth * 10,
       parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });
     this.objects.push(this.moon);
@@ -115,7 +115,7 @@ export class SolarSystem extends BaseScene
     // Create mars
     this.mars = createEntity(this.entityMap.mars, {
       size: this.sizeMap.mars,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 15, 0, 0),
+      orbitRadius: this.sizeMap.sun * 15,
       parent: this.objectMap[this.entityMap.mars.parentKey].objectRoot,
     });
     this.objects.push(this.mars);
@@ -136,7 +136,7 @@ export class SolarSystem extends BaseScene
     // Create jupiter
     this.jupiter = createEntity(this.entityMap.jupiter, {
       size: this.sizeMap.jupiter,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 26, 0, 0),
+      orbitRadius: this.sizeMap.sun * 26,
       parent: this.objectMap[this.entityMap.jupiter.parentKey].objectRoot,
     });
     this.objects.push(this.jupiter);
@@ -145,7 +145,7 @@ export class SolarSystem extends BaseScene
     // Create saturn
     this.saturn = createEntity(this.entityMap.saturn, {
       size: this.sizeMap.saturn,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 36, 0, 0),
+      orbitRadius: this.sizeMap.sun * 36,
       parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
     });
     this.objects.push(this.saturn);
@@ -167,7 +167,7 @@ export class SolarSystem extends BaseScene
     // Create uranus
     this.uranus = createEntity(this.entityMap.uranus, {
       size: this.sizeMap.uranus,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 46, 0, 0),
+      orbitRadius: this.sizeMap.sun * 46,
       parent: this.objectMap[this.entityMap.uranus.parentKey].objectRoot,
     });
     this.objects.push(this.uranus);
@@ -190,7 +190,7 @@ export class SolarSystem extends BaseScene
     // Create neptune
     this.neptune = createEntity(this.entityMap.neptune, {
       size: this.sizeMap.neptune,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 56, 0, 0),
+      orbitRadius: this.sizeMap.sun * 56,
       parent: this.objectMap[this.entityMap.neptune.parentKey].objectRoot,
     });
     this.objects.push(this.neptune);
@@ -199,7 +199,7 @@ export class SolarSystem extends BaseScene
     // Create pluto
     this.pluto = createEntity(this.entityMap.pluto, {
       size: this.sizeMap.pluto,
-      posToParent: new THREE.Vector3(this.sizeMap.sun * 65, 0, 0),
+      orbitRadius: this.sizeMap.sun * 65,
       parent: this.objectMap[this.entityMap.pluto.parentKey].objectRoot,
     });
     this.objects.push(this.pluto);

@@ -50,7 +50,7 @@ export class ProximaCentauri extends BaseScene
     // Create Proxima B
     this.proxima_b = createEntity(this.entityMap.proxima_b, {
       size: this.sizeMap.proxima_b,
-      posToParent: new THREE.Vector3(this.sizeMap.proxima_b * 68, 0, 0),
+      orbitRadius: this.sizeMap.proxima_b * 68,
       parent: this.objectMap[this.entityMap.proxima_b.parentKey].objectRoot,
     });
     this.objects.push(this.proxima_b);

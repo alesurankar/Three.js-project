@@ -53,7 +53,7 @@ export class JupiterOrbit extends BaseScene
     // Create Jupiter
     this.jupiter = createEntity(this.entityMap.jupiter, {
       size: this.sizeMap.jupiter,
-      posToParent: new THREE.Vector3(this.far - this.sizeMap.jupiter * 20, 0, 0),  // TO CHANGE
+      orbitRadius: this.far - this.sizeMap.jupiter * 20,  // TO CHANGE
       detail: 3,
       parent: this.objectMap[this.entityMap.jupiter.parentKey].objectRoot,
     });

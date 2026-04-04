@@ -56,7 +56,7 @@ export class SaturnOrbit extends BaseScene
     this.saturn = createEntity(this.entityMap.saturn, {
       size: this.sizeMap.saturn,
       detail: 6,
-      posToParent: new THREE.Vector3(this.far - this.sizeMap.saturn * 20, 0, 0),  // TO CHANGE
+      orbitRadius: this.far - this.sizeMap.saturn * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
     });
     this.objects.push(this.saturn);
