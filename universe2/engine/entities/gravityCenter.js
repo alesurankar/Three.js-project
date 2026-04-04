@@ -6,6 +6,7 @@ export class GravityCenter extends CelestialBody
 {
   constructor({
     orbitRadius = 0,
+    initialAngle = null,
     axialPeriod = 0,
     orbitalPeriod = 0,
     parent = null,
@@ -15,6 +16,7 @@ export class GravityCenter extends CelestialBody
     super({
       renderMode: "none",
       orbitRadius,
+      initialAngle,
       axialPeriod,
       orbitalPeriod,
       parent,

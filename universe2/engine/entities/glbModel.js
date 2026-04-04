@@ -8,6 +8,7 @@ export class GlbModel extends ArtificialObject
     key = "station",
     size = 1,
     orbitRadius = 0,
+    initialAngle = null,
     pitch = 0,  // rotation around X
     yaw = 0,    // rotation around Y
     roll = 0,   // rotation around Z
@@ -21,6 +22,7 @@ export class GlbModel extends ArtificialObject
       size,
       renderMode: "model",
       orbitRadius,
+      initialAngle,
       orbitalTilt,
       axialPeriod,
       orbitalPeriod,

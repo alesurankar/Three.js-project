@@ -7,6 +7,7 @@ export class ArtificialObject
   {
     renderMode = "mesh",
     orbitRadius = 0,
+    initialAngle = null,
     axialTilt = 0,
     orbitalTilt = 0,
     axialPeriod = 0,
@@ -47,7 +48,15 @@ export class ArtificialObject
     this.axialRotationSpeed = axialRotationSpeed - this.orbitalSpeed;
     this.axialFrame.rotation.z = this.axialTilt;
     this.orbitPivot.rotation.x = this.orbitalTilt;
-    this.objectRoot.position.set(orbitRadius, 0, 0);
+    
+    if (initialAngle == null) {
+      initialAngle = Math.random() * 2 * Math.PI;
+    }
+    this.objectRoot.position.set(
+      orbitRadius * Math.cos(initialAngle),
+      0,
+      orbitRadius * Math.sin(initialAngle)
+    );
 
     // Add to parent if any
     if (parent) parent.add(this.orbitPivot);
