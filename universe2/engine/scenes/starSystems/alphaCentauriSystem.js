@@ -3,7 +3,6 @@ import { createEntity } from "../../factories/entityFactory.js";
 import { BaseScene } from "../baseScene.js"
 
 
-
 export class AlphaCentauriSystem extends BaseScene
 {
   constructor(scene, camera, player, focus = {}) 

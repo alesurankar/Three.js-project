@@ -298,6 +298,9 @@ export class MilkyWay extends BaseScene
     const entityPos = new THREE.Vector3();
     const playerPos = new THREE.Vector3();
 
+    this.primaryEntity.objectRoot.getWorldPosition(entityPos);
+    this.player.objectRoot.getWorldPosition(playerPos);
+
     for (const trigger of this.sceneTriggers) {
       trigger.obj.objectRoot.getWorldPosition(entityPos);
       const distance = playerPos.distanceTo(entityPos);

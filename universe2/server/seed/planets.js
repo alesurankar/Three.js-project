@@ -47,7 +47,7 @@ export const planets = [
   },
   { 
     key: "proxima_b", name: "Proxima B", type: "planet", 
-    parentKey: "proxima_centauri", systemKey: "alpha_centauri", galaxyKey: "milky_way", 
+    parentKey: "proxima_centauri", systemKey: "alpha_centauri_system", galaxyKey: "milky_way", 
     size: 7000, axialTilt: 0, axialPeriod: 11.2, orbitalTilt: 0, orbitalPeriod: 11.2, 
   },
 ];
