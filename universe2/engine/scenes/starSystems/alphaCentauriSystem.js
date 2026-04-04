@@ -8,7 +8,7 @@ export class AlphaCentauriSystem extends BaseScene
   constructor(scene, camera, player, focus = {}) 
   {
     super(scene, camera, player, focus);
-    this.timeFactor=100
+    this.timeFactor=20000
       
     this.SIZE_SCALE = 1;
     this.REGION_SIZE_SCALE = 0.0001 * this.SIZE_SCALE;
