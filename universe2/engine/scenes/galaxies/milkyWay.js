@@ -68,7 +68,6 @@ export class MilkyWay extends BaseScene
     this.sagittarius_a = createEntity(this.entityMap.sagittarius_a, {
       size: this.sizeMap.sagittarius_a,
       axialPeriod: this.timeFactor,
-      posToParent: new THREE.Vector3(0, 0, 0),
     });
     this.scene.add(this.sagittarius_a.orbitPivot);
     this.objects.push(this.sagittarius_a);
@@ -135,11 +134,7 @@ export class MilkyWay extends BaseScene
         name: `redDwarf${i}`,
         size: size,
         renderMode: "points",
-        posToParent: new THREE.Vector3(
-          Math.cos(i) * radius,
-          this.randomBetween(-5, 5),
-          Math.sin(i) * radius
-        ),
+        orbitRadius: radius,
         orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(2500, 3300),
         parent: this.sagittarius_a.objectRoot,
@@ -158,11 +153,7 @@ export class MilkyWay extends BaseScene
         name: `K_type${i}`,
         size: size,
         renderMode: "points",
-        posToParent: new THREE.Vector3(
-          Math.cos(i) * radius,
-          this.randomBetween(-5, 5),
-          Math.sin(i) * radius
-        ),
+        orbitRadius: radius,
         orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(3300, 4600),
         parent: this.sagittarius_a.objectRoot,
@@ -181,11 +172,7 @@ export class MilkyWay extends BaseScene
         name: `G_type${i}`,
         size: size,
         renderMode: "points",
-        posToParent: new THREE.Vector3(
-          Math.cos(i) * radius,
-          this.randomBetween(-5, 5),
-          Math.sin(i) * radius
-        ),
+        orbitRadius: radius,
         orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(4600, 6200),
         parent: this.sagittarius_a.objectRoot,
@@ -204,11 +191,7 @@ export class MilkyWay extends BaseScene
         name: `F_type${i}`,
         size: size,
         renderMode: "points",
-        posToParent: new THREE.Vector3(
-          Math.cos(i) * radius,
-          this.randomBetween(-5, 5),
-          Math.sin(i) * radius
-        ),
+        orbitRadius: radius,
         orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(6200, 7500),
         parent: this.sagittarius_a.objectRoot,
@@ -227,11 +210,7 @@ export class MilkyWay extends BaseScene
         name: `A_type${i}`,
         size: size,
         renderMode: "points",
-        posToParent: new THREE.Vector3(
-          Math.cos(i) * radius,
-          this.randomBetween(-5, 5),
-          Math.sin(i) * radius
-        ),
+        orbitRadius: radius,
         orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(7500, 10000),
         parent: this.sagittarius_a.objectRoot,
@@ -250,11 +229,7 @@ export class MilkyWay extends BaseScene
         name: `redMasive${i}`,
         size: size,
         renderMode: "points",
-        posToParent: new THREE.Vector3(
-          Math.cos(i) * radius,
-          this.randomBetween(-5, 5),
-          Math.sin(i) * radius
-        ),
+        orbitRadius: radius,
         orbitalPeriod: period * this.randomBetween(0.9, 1.1),
         temperature: this.randomBetween(2000, 3000),
         parent: this.sagittarius_a.objectRoot,

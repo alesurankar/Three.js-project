@@ -10,6 +10,7 @@ export class BaseScene
   {
     console.log("Scene constructor");
     this.active = true;
+    this.initialized = false;
     this.timeFactor=1
 
     this.SIZE_SCALE = 1;
@@ -49,6 +50,7 @@ export class BaseScene
       if (this.DefinePortals) {
         this.DefinePortals();
       }
+      this.initialized = true;
     }
     catch (err) {
       console.error("Failed to load entities", err);
@@ -66,6 +68,8 @@ export class BaseScene
 
   Update(dt) 
   {
+    if (!this.initialized) return;
+
     for (const obj of this.objects) {
       obj.Update(dt * this.timeFactor);
     }
@@ -77,6 +81,7 @@ export class BaseScene
   Dispose() 
   {
     this.active = false;
+    this.initialized = false;
     this.objects.forEach(obj => obj?.Dispose());
     this.objects = [];
     if (this.sceneTriggers) {

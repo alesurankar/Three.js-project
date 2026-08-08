@@ -8,14 +8,21 @@ import { GlbModel } from "../entities/glbModel.js";
 export function createEntity(entityData, extraOptions = {}) 
 {
   const options = { ...entityData, ...extraOptions };
+  let entity;
 
   switch(entityData.type) {
-    case "planet": return new Planet(options);
-    case "star": return new Star(options);
-    case "black_hole": return new BlackHole(options);
-    case "gravity_center": return new GravityCenter(options);
-    case "belt": return new AsteroidBelt(options);
-    case "ring": return new AsteroidBelt(options);
-    case "probe": return new GlbModel(options);
+    case "planet": entity = new Planet(options); break;
+    case "star": entity = new Star(options); break;
+    case "black_hole": entity = new BlackHole(options); break;
+    case "gravity_center": entity = new GravityCenter(options); break;
+    case "belt": entity = new AsteroidBelt(options); break;
+    case "ring": entity = new AsteroidBelt(options); break;
+    case "probe": entity = new GlbModel(options); break;
   }
+
+  if (entity && extraOptions.posToParent) {
+    entity.objectRoot.position.copy(extraOptions.posToParent);
+  }
+
+  return entity;
 }
