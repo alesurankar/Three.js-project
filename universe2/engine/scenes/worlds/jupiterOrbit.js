@@ -41,7 +41,6 @@ export class JupiterOrbit extends BaseScene
       maxSizeOnScreen: 0.1018,
       renderMode: "points",
       lightType: "directionalLight",
-      temperature: 5778,
       orbitalTilt: 0,
       orbitalPeriod: 0,
       sizeAtenuation: false,

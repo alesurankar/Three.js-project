@@ -39,7 +39,6 @@ export class ProximaCentauri extends BaseScene
       size: this.sizeMap.proxima_centauri,
       lightType: "pointLight",
       detail: 4,
-      temperature: 3000,
       orbitalTilt: 0,
       orbitalPeriod: 0,
     });

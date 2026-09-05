@@ -50,7 +50,6 @@ export class TestScene extends BaseScene
       size: this.sizeMap.sun,
       lightType: "pointLight",
       detail: 4,
-      temperature: 5778,
       orbitalTilt: 0,
       orbitalPeriod: 0,
       hasTexture: true,

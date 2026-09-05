@@ -43,7 +43,6 @@ export class MoonOrbit extends BaseScene
       maxSizeOnScreen: 0.52,
       renderMode: "points",
       lightType: "directionalLight",
-      temperature: 5778,
       orbitalTilt: 0,
       orbitalPeriod: 0,
       sizeAtenuation: false,

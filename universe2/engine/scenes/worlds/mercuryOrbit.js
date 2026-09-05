@@ -41,7 +41,6 @@ export class MercuryOrbit extends BaseScene
       maxSizeOnScreen: 1.37,
       renderMode: "points",
       lightType: "directionalLight",
-      temperature: 5778,
       orbitalTilt: 0,
       orbitalPeriod: 0,
       sizeAtenuation: false,

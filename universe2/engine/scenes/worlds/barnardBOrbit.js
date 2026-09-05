@@ -39,7 +39,6 @@ export class BarnardBOrbit extends BaseScene
       maxSizeOnScreen: 4.3, 
       renderMode: "points", 
       lightType: "directionalLight", 
-      temperature: 3134, 
       sizeAtenuation: false 
     });
     this.scene.add(this.barnards_star.orbitPivot);

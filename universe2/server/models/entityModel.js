@@ -28,6 +28,9 @@ const entitySchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    temperature: {
+      type: Number,
+    },
     axialTilt: {
       type: Number,
     },

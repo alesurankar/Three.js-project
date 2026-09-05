@@ -35,7 +35,6 @@ export class PlutoOrbit extends BaseScene
       maxSizeOnScreen: 0.02,
       renderMode: "points",
       lightType: "directionalLight",
-      temperature: 5778,
       orbitalTilt: 0,
       orbitalPeriod: 0,
       sizeAtenuation: false,

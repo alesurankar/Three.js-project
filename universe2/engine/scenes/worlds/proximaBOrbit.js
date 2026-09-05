@@ -40,7 +40,6 @@ export class ProximaBOrbit extends BaseScene
       maxSizeOnScreen: 1.58,
       renderMode: "points",
       lightType: "directionalLight",
-      temperature: 3000,
       sizeAtenuation: false,
     });
     this.scene.add(this.proxima_centauri.orbitPivot);

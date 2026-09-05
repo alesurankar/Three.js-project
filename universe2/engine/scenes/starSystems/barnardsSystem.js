@@ -35,7 +35,6 @@ export class BarnardsSystem extends BaseScene
       size: this.sizeMap.barnards_star,
       lightType: "pointLight",
       detail: 4,
-      temperature: 3134,
       orbitalTilt: 0,
       orbitalPeriod: 0,
     });
