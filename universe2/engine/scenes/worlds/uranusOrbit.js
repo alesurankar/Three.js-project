@@ -54,10 +54,9 @@ export class UranusOrbit extends BaseScene
     this.uranus = createEntity(this.entityMap.uranus, {
       detail: 6,
       orbitRadius: this.far - this.sizeMap.uranus * 20,  // TO CHANGE
-      parent: this.objectMap[this.entityMap.uranus.parentKey].objectRoot,
     });
     this.objects.push(this.uranus);
-    this.objectMap[this.entityMap.uranus.key] = this.uranus;
+    this.objectMap[this.entityMap.uranus.key] = this.uranus;
     this.primaryEntity = this.uranus;
 
     // Create Uranus ring
@@ -67,7 +66,6 @@ export class UranusOrbit extends BaseScene
       orbitNearRadius: this.sizeMap.uranus * 2,
       thickness: 0.3,
       color: 0xffffff,
-      parent: this.objectMap[this.entityMap.uranus_ring.parentKey].axialFrame,
     });
     this.objects.push(this.uranus_ring);
     this.objectMap[this.entityMap.uranus_ring.key] = this.uranus_ring;

@@ -45,7 +45,6 @@ export class PlutoOrbit extends BaseScene
     this.pluto = createEntity(this.entityMap.pluto, {
       detail: 6,
       orbitRadius: this.far - this.sizeMap.pluto * 20,
-      parent: this.objectMap[this.entityMap.pluto.parentKey].objectRoot,
     });
     this.objects.push(this.pluto);
     this.objectMap.pluto = this.pluto;

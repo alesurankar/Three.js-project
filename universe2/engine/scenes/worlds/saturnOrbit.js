@@ -54,7 +54,6 @@ export class SaturnOrbit extends BaseScene
     this.saturn = createEntity(this.entityMap.saturn, {
       detail: 6,
       orbitRadius: this.far - this.sizeMap.saturn * 20,  // TO CHANGE
-      parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
     });
     this.objects.push(this.saturn);
     this.objectMap[this.entityMap.saturn.key] = this.saturn;
@@ -67,7 +66,6 @@ export class SaturnOrbit extends BaseScene
       orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
       thickness: 0.6,   
       color: 0xdfe6f0,
-      parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,
     });
     this.objects.push(this.saturn_ring);
     this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;

@@ -97,7 +97,6 @@ export class MilkyWay extends BaseScene
     this.sun = createEntity(this.entityMap.sun, {
       renderMode: "points",
       posToParent: this.sunPos,
-      parent: this.objectMap[this.entityMap.sun.parentKey].objectRoot,
     });
     this.objects.push(this.sun);
     this.objectMap[this.entityMap.sun.key] = this.sun;
@@ -105,7 +104,6 @@ export class MilkyWay extends BaseScene
     // Create Alpha Centauri
     this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center, {
       posToParent: this.alphaCentauriPos,
-      parent: this.objectMap[this.entityMap.alpha_centauri_center.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_center);
     this.objectMap[this.entityMap.alpha_centauri_center.key] = this.alpha_centauri_center;
@@ -113,7 +111,6 @@ export class MilkyWay extends BaseScene
     this.alpha_centauri_a = createEntity(this.entityMap.alpha_centauri_a, {
       renderMode: "points",
       posToParent: new THREE.Vector3(-this.sizeMap.alpha_centauri_a * 18, 0, 0),
-      parent: this.objectMap[this.entityMap.alpha_centauri_a.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_a);
     this.objectMap[this.entityMap.alpha_centauri_a.key] = this.alpha_centauri_a;
@@ -121,7 +118,6 @@ export class MilkyWay extends BaseScene
     this.alpha_centauri_b = createEntity(this.entityMap.alpha_centauri_b, {
       renderMode: "points",
       posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_b * 14, 0, 0),   
-      parent: this.objectMap[this.entityMap.alpha_centauri_b.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_b);
     this.objectMap[this.entityMap.alpha_centauri_b.key] = this.alpha_centauri_b;
@@ -129,7 +125,6 @@ export class MilkyWay extends BaseScene
     this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
       renderMode: "points",
       posToParent: new THREE.Vector3(0, 0, this.sizeMap.alpha_centauri_a* 100),  
-      parent: this.objectMap[this.entityMap.proxima_centauri.parentKey].objectRoot,
     });
     this.objects.push(this.proxima_centauri);
     this.objectMap[this.entityMap.proxima_centauri.key] = this.proxima_centauri;
@@ -138,7 +133,6 @@ export class MilkyWay extends BaseScene
     this.barnards_star = createEntity(this.entityMap.barnards_star, {
       renderMode: "points",
       posToParent: this.barnardsPos,
-      parent: this.objectMap[this.entityMap.barnards_star.parentKey].objectRoot,
     });
     this.objects.push(this.barnards_star);
     this.objectMap[this.entityMap.barnards_star.key] = this.barnards_star;

@@ -52,7 +52,6 @@ export class MercuryOrbit extends BaseScene
     this.mercury = createEntity(this.entityMap.mercury, {
       detail: 6,
       orbitRadius: this.far - this.sizeMap.mercury * 20,  // TO CHANGE
-      parent: this.objectMap[this.entityMap.mercury.parentKey].objectRoot,
     });
     this.objects.push(this.mercury);
     this.objectMap[this.entityMap.mercury.key] = this.mercury;

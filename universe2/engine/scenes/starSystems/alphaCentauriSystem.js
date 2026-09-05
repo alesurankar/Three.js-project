@@ -50,7 +50,6 @@ export class AlphaCentauriSystem extends BaseScene
       orbitRadius: this.sizeMap.alpha_centauri_a * 9,
       initialAngle: 3.14,
       detail: 3,
-      parent: this.objectMap[this.entityMap.alpha_centauri_a.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_a);
     this.objectMap[this.entityMap.alpha_centauri_a.key] = this.alpha_centauri_a;
@@ -60,7 +59,6 @@ export class AlphaCentauriSystem extends BaseScene
       orbitRadius: this.sizeMap.alpha_centauri_a * (7.2),
       initialAngle: 0,
       detail: 3,
-      parent: this.objectMap[this.entityMap.alpha_centauri_b.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_b);
     this.objectMap[this.entityMap.alpha_centauri_b.key] = this.alpha_centauri_b;
@@ -69,7 +67,6 @@ export class AlphaCentauriSystem extends BaseScene
     this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
       orbitRadius: this.sizeMap.alpha_centauri_a * 70,
       detail: 3,
-      parent: this.objectMap[this.entityMap.proxima_centauri.parentKey].objectRoot,
     });
     this.objects.push(this.proxima_centauri);
     this.objectMap[this.entityMap.proxima_centauri.key] = this.proxima_centauri;

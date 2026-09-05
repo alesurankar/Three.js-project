@@ -59,7 +59,6 @@ export class EarthOrbit extends BaseScene
       detail: 6,
       orbitRadius: this.far - this.sizeMap.earth * 22,  // TO CHANGE
       hasClouds: true,
-      parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
     });
     this.objects.push(this.earth);
     this.objectMap[this.entityMap.earth.key] = this.earth;
@@ -69,7 +68,6 @@ export class EarthOrbit extends BaseScene
     this.moon = createEntity(this.entityMap.moon, {
       orbitRadius: this.sizeMap.earth * 18,
       detail: 3,
-      parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });
     this.objects.push(this.moon);
     this.objectMap[this.entityMap.moon.key] = this.moon;
@@ -93,7 +91,6 @@ export class EarthOrbit extends BaseScene
         axialPeriod: (0.01 + Math.random() * 0.01),
         orbitalTilt: latitude * (180 / Math.PI),
         orbitalPeriod: (baseSpeed1 + Math.random() * 0.01),
-        parent: this.earth.objectRoot
       });
       this.objects.push(probe);
     }
@@ -113,7 +110,6 @@ export class EarthOrbit extends BaseScene
         axialPeriod: (0.02 + Math.random() * 0.02),
         orbitalTilt: latitude * (180 / Math.PI),
         orbitalPeriod: (baseSpeed2 + Math.random() * 0.02),
-        parent: this.earth.objectRoot
       });
       this.objects.push(probe);
     }

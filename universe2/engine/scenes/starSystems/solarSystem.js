@@ -77,7 +77,6 @@ export class SolarSystem extends BaseScene
     // Create Mercury
     this.mercury = createEntity(this.entityMap.mercury, {
       orbitRadius: this.sizeMap.sun * 4,
-      parent: this.objectMap[this.entityMap.mercury.parentKey].objectRoot,
     });
     this.objects.push(this.mercury);
     this.objectMap[this.entityMap.mercury.key] = this.mercury;
@@ -85,7 +84,6 @@ export class SolarSystem extends BaseScene
     // Create venus
     this.venus = createEntity(this.entityMap.venus, {
       orbitRadius: this.sizeMap.sun * 7,
-      parent: this.objectMap[this.entityMap.venus.parentKey].objectRoot,
     });
     this.objects.push(this.venus);
     this.objectMap[this.entityMap.venus.key] = this.venus;
@@ -93,7 +91,6 @@ export class SolarSystem extends BaseScene
     // Create Earth
     this.earth = createEntity(this.entityMap.earth, {
       orbitRadius: this.sizeMap.sun * 10,
-      parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
     });
     this.objects.push(this.earth);
     this.objectMap[this.entityMap.earth.key] = this.earth;
@@ -101,7 +98,6 @@ export class SolarSystem extends BaseScene
     // Create moon
     this.moon = createEntity(this.entityMap.moon, {
       orbitRadius: this.sizeMap.earth * 10,
-      parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });
     this.objects.push(this.moon);
     this.objectMap[this.entityMap.moon.key] = this.moon;
@@ -109,7 +105,6 @@ export class SolarSystem extends BaseScene
     // Create mars
     this.mars = createEntity(this.entityMap.mars, {
       orbitRadius: this.sizeMap.sun * 15,
-      parent: this.objectMap[this.entityMap.mars.parentKey].objectRoot,
     });
     this.objects.push(this.mars);
     this.objectMap[this.entityMap.mars.key] = this.mars;
@@ -120,7 +115,6 @@ export class SolarSystem extends BaseScene
       orbitFarRadius: this.sizeMap.sun * 19,
       orbitNearRadius: this.sizeMap.sun * 17,
       thickness: 50,
-      parent: this.objectMap[this.entityMap.asteroid_belt.parentKey].objectRoot,
     });
     this.objects.push(this.asteroid_belt);
     this.objectMap[this.entityMap.asteroid_belt.key] = this.asteroid_belt;
@@ -128,7 +122,6 @@ export class SolarSystem extends BaseScene
     // Create jupiter
     this.jupiter = createEntity(this.entityMap.jupiter, {
       orbitRadius: this.sizeMap.sun * 26,
-      parent: this.objectMap[this.entityMap.jupiter.parentKey].objectRoot,
     });
     this.objects.push(this.jupiter);
     this.objectMap[this.entityMap.jupiter.key] = this.jupiter;
@@ -136,7 +129,6 @@ export class SolarSystem extends BaseScene
     // Create saturn
     this.saturn = createEntity(this.entityMap.saturn, {
       orbitRadius: this.sizeMap.sun * 36,
-      parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
     });
     this.objects.push(this.saturn);
     this.objectMap[this.entityMap.saturn.key] = this.saturn;
@@ -148,7 +140,6 @@ export class SolarSystem extends BaseScene
       orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
       thickness: 0.6,   
       color: 0xdfe6f0,
-      parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,
     });
     this.objects.push(this.saturn_ring);
     this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
@@ -156,7 +147,6 @@ export class SolarSystem extends BaseScene
     // Create uranus
     this.uranus = createEntity(this.entityMap.uranus, {
       orbitRadius: this.sizeMap.sun * 46,
-      parent: this.objectMap[this.entityMap.uranus.parentKey].objectRoot,
     });
     this.objects.push(this.uranus);
     this.objectMap[this.entityMap.uranus.key] = this.uranus;
@@ -169,7 +159,6 @@ export class SolarSystem extends BaseScene
       thickness: 0.3,   
       //color: 0x444444, // real, to dark
       color: 0xffffff, // not real
-      parent: this.objectMap[this.entityMap.uranus_ring.parentKey].axialFrame,
     });
     this.objects.push(this.uranus_ring);
     this.objectMap[this.entityMap.uranus_ring.key] = this.uranus_ring;
@@ -177,7 +166,6 @@ export class SolarSystem extends BaseScene
     // Create neptune
     this.neptune = createEntity(this.entityMap.neptune, {
       orbitRadius: this.sizeMap.sun * 56,
-      parent: this.objectMap[this.entityMap.neptune.parentKey].objectRoot,
     });
     this.objects.push(this.neptune);
     this.objectMap[this.entityMap.neptune.key] = this.neptune;
@@ -185,7 +173,6 @@ export class SolarSystem extends BaseScene
     // Create pluto
     this.pluto = createEntity(this.entityMap.pluto, {
       orbitRadius: this.sizeMap.sun * 65,
-      parent: this.objectMap[this.entityMap.pluto.parentKey].objectRoot,
     });
     this.objects.push(this.pluto);
     this.objectMap[this.entityMap.pluto.key] = this.pluto;
@@ -197,7 +184,6 @@ export class SolarSystem extends BaseScene
       orbitNearRadius: this.sizeMap.sun * 60,
       thickness: 250,
       color: 0xaaaaaa,
-      parent: this.objectMap[this.entityMap.kuiper_belt.parentKey].objectRoot,
     });
     this.objects.push(this.kuiper_belt);
     this.objectMap[this.entityMap.kuiper_belt.key] = this.kuiper_belt;

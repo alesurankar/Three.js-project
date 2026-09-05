@@ -52,10 +52,9 @@ export class VenusOrbit extends BaseScene
     this.venus = createEntity(this.entityMap.venus, {
       detail: 6,
       orbitRadius: this.far - this.sizeMap.venus * 20,  // TO CHANGE
-      parent: this.objectMap[this.entityMap.venus.parentKey].objectRoot,
     });
     this.objects.push(this.venus);
-    this.objectMap[this.entityMap.venus.key] = this.venus;
+    this.objectMap[this.entityMap.venus.key] = this.venus;
     this.primaryEntity = this.venus;
 
     // Assign light target

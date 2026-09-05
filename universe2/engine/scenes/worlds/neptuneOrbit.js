@@ -45,7 +45,6 @@ export class NeptuneOrbit extends BaseScene
     this.neptune = createEntity(this.entityMap.neptune, {
       detail: 6,
       orbitRadius: this.far - this.sizeMap.neptune * 20,
-      parent: this.objectMap[this.entityMap.neptune.parentKey].objectRoot,
     });
     this.objects.push(this.neptune);
     this.objectMap.neptune = this.neptune;

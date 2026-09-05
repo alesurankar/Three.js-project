@@ -52,7 +52,6 @@ export class JupiterOrbit extends BaseScene
     this.jupiter = createEntity(this.entityMap.jupiter, {
       orbitRadius: this.far - this.sizeMap.jupiter * 20,  // TO CHANGE
       detail: 6,
-      parent: this.objectMap[this.entityMap.jupiter.parentKey].objectRoot,
     });
     this.objects.push(this.jupiter);
     this.objectMap[this.entityMap.jupiter.key] = this.jupiter;

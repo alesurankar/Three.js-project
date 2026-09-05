@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { SkyBox } from "../visuals/skyBox.js";
 import { loadEntities } from "../utils/loadEntities.js"
+import { SetEntityObjectMap, ClearEntityObjectMap } from "../factories/entityFactory.js";
 
 
 export class BaseScene 
@@ -39,7 +40,9 @@ export class BaseScene
       const { entityMap, sizeMap } = await loadEntities(requiredKeys, scaleMap);
       this.entityMap = entityMap;
       this.sizeMap = sizeMap;
+      SetEntityObjectMap(this.objectMap, requiredKeys);
       this.CreateObjects();
+      ClearEntityObjectMap();
       if (this.primaryEntity) {
         this.AttachPlayerTo(this.primaryEntity);
       }
@@ -95,5 +98,6 @@ export class BaseScene
     }
     // Clear objectMap to remove references
     this.objectMap = {};
+    ClearEntityObjectMap();
   }
 }

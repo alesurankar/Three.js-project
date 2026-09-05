@@ -45,7 +45,6 @@ export class BarnardsSystem extends BaseScene
     // Create Bernard B
     this.barnard_b = createEntity(this.entityMap.barnard_b, {
       orbitRadius: this.sizeMap.barnard_b * 68,
-      parent: this.barnards_star.objectRoot,
     });
     this.objects.push(this.barnard_b);
     this.objectMap.barnard_b = this.barnard_b;

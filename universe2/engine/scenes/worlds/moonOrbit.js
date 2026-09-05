@@ -55,7 +55,6 @@ export class MoonOrbit extends BaseScene
       orbitRadius: this.far - this.sizeMap.earth * 22,  // TO CHANGE
       detail: 3,
       hasClouds: true,
-      parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
     });
     this.objects.push(this.earth);
     this.objectMap[this.entityMap.earth.key] = this.earth;
@@ -64,7 +63,6 @@ export class MoonOrbit extends BaseScene
     this.moon = createEntity(this.entityMap.moon, {
       orbitRadius: this.sizeMap.earth * 18,  // TO CHANGE
       detail: 6,
-      parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });
     this.objects.push(this.moon);
     this.objectMap[this.entityMap.moon.key] = this.moon;
