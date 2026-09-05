@@ -3,7 +3,7 @@ import { createEntity } from "../../factories/entityFactory.js";
 import { BaseScene } from "../baseScene.js"
 
 
-export class SaturnOrbit extends BaseScene
+export class UranusOrbit extends BaseScene
 {
   constructor(scene, camera, player, focus = {}) 
   {
@@ -23,14 +23,14 @@ export class SaturnOrbit extends BaseScene
   {
     const requiredKeys = [
       "sun",
-      "saturn",
-      "saturn_ring",
+      "uranus",
+      "uranus_ring",
     ];
 
     const scaleMap = {
       sun: this.REGION_SIZE_SCALE,
-      saturn: this.LOCAL_SIZE_SCALE,
-      saturn_ring: this.INNER_SIZE_SCALE,
+      uranus: this.LOCAL_SIZE_SCALE,
+      uranus_ring: this.INNER_SIZE_SCALE,
     };
     return { requiredKeys, scaleMap };
   }
@@ -52,29 +52,29 @@ export class SaturnOrbit extends BaseScene
     this.objects.push(this.sun);
     this.objectMap[this.entityMap.sun.key] = this.sun;
 
-    // Create Saturn
-    this.saturn = createEntity(this.entityMap.saturn, {
-      size: this.sizeMap.saturn,
+    // Create Uranus
+    this.uranus = createEntity(this.entityMap.uranus, {
+      size: this.sizeMap.uranus,
       detail: 6,
-      orbitRadius: this.far - this.sizeMap.saturn * 20,  // TO CHANGE
-      parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
+      orbitRadius: this.far - this.sizeMap.uranus * 20,  // TO CHANGE
+      parent: this.objectMap[this.entityMap.uranus.parentKey].objectRoot,
     });
-    this.objects.push(this.saturn);
-    this.objectMap[this.entityMap.saturn.key] = this.saturn;
-    this.primaryEntity = this.saturn;
+    this.objects.push(this.uranus);
+    this.objectMap[this.entityMap.uranus.key] = this.uranus;
+    this.primaryEntity = this.uranus;
 
-    // Create saturn ring
-    this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
-      count: 4000,
-      size: this.sizeMap.saturn_ring,
-      orbitFarRadius: this.sizeMap.saturn * 2,
-      orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
-      thickness: 0.6,   
-      color: 0xdfe6f0,
-      parent: this.objectMap[this.entityMap.saturn_ring.parentKey].axialFrame,
+    // Create Uranus ring
+    this.uranus_ring = createEntity(this.entityMap.uranus_ring, {
+      count: 1800,
+      size: this.sizeMap.uranus_ring,
+      orbitFarRadius: this.sizeMap.uranus * 2.3,
+      orbitNearRadius: this.sizeMap.uranus * 2,
+      thickness: 0.3,
+      color: 0xffffff,
+      parent: this.objectMap[this.entityMap.uranus_ring.parentKey].axialFrame,
     });
-    this.objects.push(this.saturn_ring);
-    this.objectMap[this.entityMap.saturn_ring.key] = this.saturn_ring;
+    this.objects.push(this.uranus_ring);
+    this.objectMap[this.entityMap.uranus_ring.key] = this.uranus_ring;
     
     // Assign light target
     this.sun.light.target = this.primaryEntity.objectRoot;
@@ -85,7 +85,7 @@ export class SaturnOrbit extends BaseScene
     const targetPos = this.sun.GetPosition();
     const target = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
 
-    const scale = this.sizeMap.saturn;    // TO CHANGE
+    const scale = this.sizeMap.uranus;    // TO CHANGE
     const playerPos = new THREE.Vector3(2*scale, 2*scale, 2*scale);
     this.player.SetPosition(playerPos.x, playerPos.y, playerPos.z);
 
@@ -104,7 +104,7 @@ export class SaturnOrbit extends BaseScene
 
   SetExitCondition() 
   {
-    this.exitDistance = this.sizeMap.saturn * 18;  // TO CHANGE
+    this.exitDistance = this.sizeMap.uranus * 18;  // TO CHANGE
   }
 
   CheckSceneTransition() 
@@ -118,7 +118,7 @@ export class SaturnOrbit extends BaseScene
     const distanceToParent = playerPos.distanceTo(entityPos);
     if (distanceToParent > this.exitDistance) {
       this.requestedScene = "SolarSystem"; // TO CHANGE
-      this.transitionFrom = "saturn";      // TO CHANGE
+      this.transitionFrom = "uranus";      // TO CHANGE
     }
   }
 }
