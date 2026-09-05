@@ -34,8 +34,6 @@ export class NeptuneOrbit extends BaseScene
       maxSizeOnScreen: 0.04,
       renderMode: "points",
       lightType: "directionalLight",
-      orbitalTilt: 0,
-      orbitalPeriod: 0,
       sizeAtenuation: false,
     });
     this.scene.add(this.sun.orbitPivot);

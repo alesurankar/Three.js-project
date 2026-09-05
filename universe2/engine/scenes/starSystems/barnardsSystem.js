@@ -34,8 +34,6 @@ export class BarnardsSystem extends BaseScene
     this.barnards_star = createEntity(this.entityMap.barnards_star, {
       lightType: "pointLight",
       detail: 4,
-      orbitalTilt: 0,
-      orbitalPeriod: 0,
     });
     this.scene.add(this.barnards_star.orbitPivot);
     this.objects.push(this.barnards_star);

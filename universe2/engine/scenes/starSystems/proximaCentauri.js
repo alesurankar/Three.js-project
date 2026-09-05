@@ -38,8 +38,6 @@ export class ProximaCentauri extends BaseScene
     this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
       lightType: "pointLight",
       detail: 4,
-      orbitalTilt: 0,
-      orbitalPeriod: 0,
     });
     this.scene.add(this.proxima_centauri.orbitPivot);
     this.objects.push(this.proxima_centauri);

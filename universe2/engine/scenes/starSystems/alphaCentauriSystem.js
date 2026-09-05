@@ -38,7 +38,6 @@ export class AlphaCentauriSystem extends BaseScene
   {
     // Create Bary Center
     this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center, {
-      orbitalPeriod: 0,
     });
     this.scene.add(this.alpha_centauri_center.orbitPivot);
     this.objects.push(this.alpha_centauri_center);

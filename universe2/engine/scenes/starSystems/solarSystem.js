@@ -65,8 +65,6 @@ export class SolarSystem extends BaseScene
     this.sun = createEntity(this.entityMap.sun, {
       lightType: "pointLight",
       detail: 4,
-      orbitalTilt: 0,
-      orbitalPeriod: 0,
       hasTexture: true,
     });
     this.scene.add(this.sun.orbitPivot);

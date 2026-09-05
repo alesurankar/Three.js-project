@@ -40,8 +40,6 @@ export class VenusOrbit extends BaseScene
       maxSizeOnScreen: 0.72,
       renderMode: "points",
       lightType: "directionalLight",
-      orbitalTilt: 0,
-      orbitalPeriod: 0,
       sizeAtenuation: false,
     });
     this.scene.add(this.sun.orbitPivot);

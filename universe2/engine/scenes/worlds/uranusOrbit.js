@@ -42,8 +42,6 @@ export class UranusOrbit extends BaseScene
       maxSizeOnScreen: 0.0557,
       renderMode: "points",
       lightType: "directionalLight",
-      orbitalTilt: 0,
-      orbitalPeriod: 0,
       sizeAtenuation: false,
     });
     this.scene.add(this.sun.orbitPivot);
