@@ -86,7 +86,6 @@ export class MilkyWay extends BaseScene
   {
     // Create Sagittarius A blackhole
     this.sagittarius_a = createEntity(this.entityMap.sagittarius_a, {
-      size: this.sizeMap.sagittarius_a,
       axialPeriod: this.timeFactor,
     });
     this.scene.add(this.sagittarius_a.orbitPivot);
@@ -96,7 +95,6 @@ export class MilkyWay extends BaseScene
 
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       renderMode: "points",
       posToParent: this.sunPos,
       parent: this.objectMap[this.entityMap.sun.parentKey].objectRoot,
@@ -113,7 +111,6 @@ export class MilkyWay extends BaseScene
     this.objectMap[this.entityMap.alpha_centauri_center.key] = this.alpha_centauri_center;
 
     this.alpha_centauri_a = createEntity(this.entityMap.alpha_centauri_a, {
-      size: this.sizeMap.alpha_centauri_a,
       renderMode: "points",
       posToParent: new THREE.Vector3(-this.sizeMap.alpha_centauri_a * 18, 0, 0),
       parent: this.objectMap[this.entityMap.alpha_centauri_a.parentKey].objectRoot,
@@ -122,7 +119,6 @@ export class MilkyWay extends BaseScene
     this.objectMap[this.entityMap.alpha_centauri_a.key] = this.alpha_centauri_a;
 
     this.alpha_centauri_b = createEntity(this.entityMap.alpha_centauri_b, {
-      size: this.sizeMap.alpha_centauri_b,
       renderMode: "points",
       posToParent: new THREE.Vector3(this.sizeMap.alpha_centauri_b * 14, 0, 0),   
       parent: this.objectMap[this.entityMap.alpha_centauri_b.parentKey].objectRoot,
@@ -131,7 +127,6 @@ export class MilkyWay extends BaseScene
     this.objectMap[this.entityMap.alpha_centauri_b.key] = this.alpha_centauri_b;
 
     this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
-      size: this.sizeMap.proxima_centauri,
       renderMode: "points",
       posToParent: new THREE.Vector3(0, 0, this.sizeMap.alpha_centauri_a* 100),  
       parent: this.objectMap[this.entityMap.proxima_centauri.parentKey].objectRoot,
@@ -141,7 +136,6 @@ export class MilkyWay extends BaseScene
 
     // Create Barnard's Star
     this.barnards_star = createEntity(this.entityMap.barnards_star, {
-      size: this.sizeMap.barnards_star,
       renderMode: "points",
       posToParent: this.barnardsPos,
       parent: this.objectMap[this.entityMap.barnards_star.parentKey].objectRoot,

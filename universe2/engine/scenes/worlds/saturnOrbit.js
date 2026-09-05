@@ -39,7 +39,6 @@ export class SaturnOrbit extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 0.0557,
       renderMode: "points",
       lightType: "directionalLight",
@@ -53,7 +52,6 @@ export class SaturnOrbit extends BaseScene
 
     // Create Saturn
     this.saturn = createEntity(this.entityMap.saturn, {
-      size: this.sizeMap.saturn,
       detail: 6,
       orbitRadius: this.far - this.sizeMap.saturn * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
@@ -65,7 +63,6 @@ export class SaturnOrbit extends BaseScene
     // Create saturn ring
     this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
       count: 4000,
-      size: this.sizeMap.saturn_ring,
       orbitFarRadius: this.sizeMap.saturn * 2,
       orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
       thickness: 0.6,   

@@ -36,7 +36,6 @@ export class ProximaBOrbit extends BaseScene
   {
     // Create Proxima Centauri
     this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
-      size: this.sizeMap.proxima_centauri,
       maxSizeOnScreen: 1.58,
       renderMode: "points",
       lightType: "directionalLight",
@@ -48,7 +47,6 @@ export class ProximaBOrbit extends BaseScene
 
     // Create Proxima B
     this.proxima_b = createEntity(this.entityMap.proxima_b, {
-      size: this.sizeMap.proxima_b, 
       detail: 6,
       orbitRadius: this.far - this.sizeMap.proxima_b * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.proxima_b.parentKey].objectRoot,

@@ -31,7 +31,6 @@ export class NeptuneOrbit extends BaseScene
   CreateObjects()
   {
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 0.04,
       renderMode: "points",
       lightType: "directionalLight",
@@ -44,7 +43,6 @@ export class NeptuneOrbit extends BaseScene
     this.objectMap.sun = this.sun;
 
     this.neptune = createEntity(this.entityMap.neptune, {
-      size: this.sizeMap.neptune,
       detail: 6,
       orbitRadius: this.far - this.sizeMap.neptune * 20,
       parent: this.objectMap[this.entityMap.neptune.parentKey].objectRoot,

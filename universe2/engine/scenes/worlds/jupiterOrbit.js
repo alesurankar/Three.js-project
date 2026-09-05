@@ -37,7 +37,6 @@ export class JupiterOrbit extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 0.1018,
       renderMode: "points",
       lightType: "directionalLight",
@@ -51,7 +50,6 @@ export class JupiterOrbit extends BaseScene
     
     // Create Jupiter
     this.jupiter = createEntity(this.entityMap.jupiter, {
-      size: this.sizeMap.jupiter,
       orbitRadius: this.far - this.sizeMap.jupiter * 20,  // TO CHANGE
       detail: 6,
       parent: this.objectMap[this.entityMap.jupiter.parentKey].objectRoot,

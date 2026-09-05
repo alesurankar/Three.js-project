@@ -39,7 +39,6 @@ export class UranusOrbit extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 0.0557,
       renderMode: "points",
       lightType: "directionalLight",
@@ -53,7 +52,6 @@ export class UranusOrbit extends BaseScene
 
     // Create Uranus
     this.uranus = createEntity(this.entityMap.uranus, {
-      size: this.sizeMap.uranus,
       detail: 6,
       orbitRadius: this.far - this.sizeMap.uranus * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.uranus.parentKey].objectRoot,
@@ -65,7 +63,6 @@ export class UranusOrbit extends BaseScene
     // Create Uranus ring
     this.uranus_ring = createEntity(this.entityMap.uranus_ring, {
       count: 1800,
-      size: this.sizeMap.uranus_ring,
       orbitFarRadius: this.sizeMap.uranus * 2.3,
       orbitNearRadius: this.sizeMap.uranus * 2,
       thickness: 0.3,

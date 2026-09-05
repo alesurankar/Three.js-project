@@ -63,7 +63,6 @@ export class SolarSystem extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       lightType: "pointLight",
       detail: 4,
       orbitalTilt: 0,
@@ -77,7 +76,6 @@ export class SolarSystem extends BaseScene
 
     // Create Mercury
     this.mercury = createEntity(this.entityMap.mercury, {
-      size: this.sizeMap.mercury,
       orbitRadius: this.sizeMap.sun * 4,
       parent: this.objectMap[this.entityMap.mercury.parentKey].objectRoot,
     });
@@ -86,7 +84,6 @@ export class SolarSystem extends BaseScene
 
     // Create venus
     this.venus = createEntity(this.entityMap.venus, {
-      size: this.sizeMap.venus,
       orbitRadius: this.sizeMap.sun * 7,
       parent: this.objectMap[this.entityMap.venus.parentKey].objectRoot,
     });
@@ -95,7 +92,6 @@ export class SolarSystem extends BaseScene
 
     // Create Earth
     this.earth = createEntity(this.entityMap.earth, {
-      size: this.sizeMap.earth,
       orbitRadius: this.sizeMap.sun * 10,
       parent: this.objectMap[this.entityMap.earth.parentKey].objectRoot,
     });
@@ -104,7 +100,6 @@ export class SolarSystem extends BaseScene
 
     // Create moon
     this.moon = createEntity(this.entityMap.moon, {
-      size: this.sizeMap.moon,
       orbitRadius: this.sizeMap.earth * 10,
       parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,
     });
@@ -113,7 +108,6 @@ export class SolarSystem extends BaseScene
 
     // Create mars
     this.mars = createEntity(this.entityMap.mars, {
-      size: this.sizeMap.mars,
       orbitRadius: this.sizeMap.sun * 15,
       parent: this.objectMap[this.entityMap.mars.parentKey].objectRoot,
     });
@@ -123,7 +117,6 @@ export class SolarSystem extends BaseScene
     // Create asteroid belt
     this.asteroid_belt = createEntity(this.entityMap.asteroid_belt, {
       count: 5000,
-      size: this.sizeMap.asteroid_belt,
       orbitFarRadius: this.sizeMap.sun * 19,
       orbitNearRadius: this.sizeMap.sun * 17,
       thickness: 50,
@@ -134,7 +127,6 @@ export class SolarSystem extends BaseScene
     
     // Create jupiter
     this.jupiter = createEntity(this.entityMap.jupiter, {
-      size: this.sizeMap.jupiter,
       orbitRadius: this.sizeMap.sun * 26,
       parent: this.objectMap[this.entityMap.jupiter.parentKey].objectRoot,
     });
@@ -143,7 +135,6 @@ export class SolarSystem extends BaseScene
     
     // Create saturn
     this.saturn = createEntity(this.entityMap.saturn, {
-      size: this.sizeMap.saturn,
       orbitRadius: this.sizeMap.sun * 36,
       parent: this.objectMap[this.entityMap.saturn.parentKey].objectRoot,
     });
@@ -153,7 +144,6 @@ export class SolarSystem extends BaseScene
     // Create saturn ring
     this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
       count: 4000,
-      size: this.sizeMap.saturn_ring,
       orbitFarRadius: this.sizeMap.saturn * 2,
       orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
       thickness: 0.6,   
@@ -165,7 +155,6 @@ export class SolarSystem extends BaseScene
     
     // Create uranus
     this.uranus = createEntity(this.entityMap.uranus, {
-      size: this.sizeMap.uranus,
       orbitRadius: this.sizeMap.sun * 46,
       parent: this.objectMap[this.entityMap.uranus.parentKey].objectRoot,
     });
@@ -175,7 +164,6 @@ export class SolarSystem extends BaseScene
     // Create uranus ring
     this.uranus_ring = createEntity(this.entityMap.uranus_ring, {
       count: 1800,
-      size: this.sizeMap.uranus_ring,
       orbitFarRadius: this.sizeMap.uranus * 2.3,
       orbitNearRadius: this.sizeMap.uranus * 2,
       thickness: 0.3,   
@@ -188,7 +176,6 @@ export class SolarSystem extends BaseScene
     
     // Create neptune
     this.neptune = createEntity(this.entityMap.neptune, {
-      size: this.sizeMap.neptune,
       orbitRadius: this.sizeMap.sun * 56,
       parent: this.objectMap[this.entityMap.neptune.parentKey].objectRoot,
     });
@@ -197,7 +184,6 @@ export class SolarSystem extends BaseScene
     
     // Create pluto
     this.pluto = createEntity(this.entityMap.pluto, {
-      size: this.sizeMap.pluto,
       orbitRadius: this.sizeMap.sun * 65,
       parent: this.objectMap[this.entityMap.pluto.parentKey].objectRoot,
     });
@@ -207,7 +193,6 @@ export class SolarSystem extends BaseScene
     // Create kuiper belt
     this.kuiper_belt = createEntity(this.entityMap.kuiper_belt, {
       count: 5000,
-      size: this.sizeMap.kuiper_belt,
       orbitFarRadius: this.sizeMap.sun * 70,
       orbitNearRadius: this.sizeMap.sun * 60,
       thickness: 250,

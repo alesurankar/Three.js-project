@@ -37,7 +37,6 @@ export class VenusOrbit extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 0.72,
       renderMode: "points",
       lightType: "directionalLight",
@@ -51,7 +50,6 @@ export class VenusOrbit extends BaseScene
 
     // Create Venus
     this.venus = createEntity(this.entityMap.venus, {
-      size: this.sizeMap.venus,
       detail: 6,
       orbitRadius: this.far - this.sizeMap.venus * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.venus.parentKey].objectRoot,

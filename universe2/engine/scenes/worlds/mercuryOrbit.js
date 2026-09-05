@@ -37,7 +37,6 @@ export class MercuryOrbit extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 1.37,
       renderMode: "points",
       lightType: "directionalLight",
@@ -51,7 +50,6 @@ export class MercuryOrbit extends BaseScene
 
     // Create Mercury
     this.mercury = createEntity(this.entityMap.mercury, {
-      size: this.sizeMap.mercury,
       detail: 6,
       orbitRadius: this.far - this.sizeMap.mercury * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.mercury.parentKey].objectRoot,

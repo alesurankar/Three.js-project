@@ -5,7 +5,7 @@ export async function loadEntities(requiredKeys, scaleMap) {
   const entities = res.data.entities;
 
   // Build lookup map
-  const entityMap = Object.fromEntries(entities.map(e => [e.key, e]));
+  const entityMap = Object.fromEntries(entities.map(e => [e.key, { ...e }]));
   // console.log("Received entity keys:", Object.keys(entityMap));
 
   // Validate required keys
@@ -24,6 +24,7 @@ export async function loadEntities(requiredKeys, scaleMap) {
       throw new Error(`Cannot compute size: entity "${key}" missing`);
     }
     sizeMap[key] = entityMap[key].size * scale;
+    entityMap[key].size = sizeMap[key];
   }
 
   return { entityMap, sizeMap };

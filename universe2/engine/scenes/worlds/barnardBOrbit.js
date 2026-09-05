@@ -35,7 +35,6 @@ export class BarnardBOrbit extends BaseScene
   {
     // Create Bernard's Star
     this.barnards_star = createEntity(this.entityMap.barnards_star, { 
-      size: this.sizeMap.barnards_star, 
       maxSizeOnScreen: 4.3, 
       renderMode: "points", 
       lightType: "directionalLight", 
@@ -47,7 +46,6 @@ export class BarnardBOrbit extends BaseScene
 
     // Create Bernard B
     this.barnard_b = createEntity(this.entityMap.barnard_b, { 
-      size: this.sizeMap.barnard_b, 
       detail: 6, 
       orbitRadius: this.far - this.sizeMap.barnard_b * 20, 
       parent: this.objectMap[this.entityMap.bernard_b.parentKey].objectRoot,

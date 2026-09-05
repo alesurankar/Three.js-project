@@ -31,7 +31,6 @@ export class PlutoOrbit extends BaseScene
   CreateObjects()
   {
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 0.02,
       renderMode: "points",
       lightType: "directionalLight",
@@ -44,7 +43,6 @@ export class PlutoOrbit extends BaseScene
     this.objectMap.sun = this.sun;
 
     this.pluto = createEntity(this.entityMap.pluto, {
-      size: this.sizeMap.pluto,
       detail: 6,
       orbitRadius: this.far - this.sizeMap.pluto * 20,
       parent: this.objectMap[this.entityMap.pluto.parentKey].objectRoot,

@@ -43,7 +43,6 @@ export class EarthOrbit extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 0.52,
       renderMode: "points",
       lightType: "directionalLight",
@@ -57,7 +56,6 @@ export class EarthOrbit extends BaseScene
 
     // Create Earth
     this.earth = createEntity(this.entityMap.earth, {
-      size: this.sizeMap.earth,
       detail: 6,
       orbitRadius: this.far - this.sizeMap.earth * 22,  // TO CHANGE
       hasClouds: true,
@@ -69,7 +67,6 @@ export class EarthOrbit extends BaseScene
     
     // Create moon
     this.moon = createEntity(this.entityMap.moon, {
-      size: this.sizeMap.moon,
       orbitRadius: this.sizeMap.earth * 18,
       detail: 3,
       parent: this.objectMap[this.entityMap.moon.parentKey].objectRoot,

@@ -47,7 +47,6 @@ export class TestScene extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       lightType: "pointLight",
       detail: 4,
       orbitalTilt: 0,
@@ -60,7 +59,6 @@ export class TestScene extends BaseScene
     
     // Create Earth
     this.earth = createEntity(this.entityMap.earth, {
-      size: this.sizeMap.earth,
       orbitRadius: this.sizeMap.sun *5,
       parent: this.sun.objectRoot,
     });
@@ -69,7 +67,6 @@ export class TestScene extends BaseScene
 
     // Create moon
     this.moon = createEntity(this.entityMap.moon, {
-      size: this.sizeMap.moon,
       orbitRadius: this.sizeMap.earth *3,
       parent: this.earth.objectRoot,
     });
@@ -79,7 +76,6 @@ export class TestScene extends BaseScene
     // Create asteroid belt
     this.asteroid_belt = createEntity(this.entityMap.asteroid_belt, {
       count: 6000,
-      size: this.sizeMap.asteroid_belt,
       orbitFarRadius: this.sizeMap.sun * 16,
       orbitNearRadius: this.sizeMap.sun * 14,
       thickness: 50,
@@ -90,7 +86,6 @@ export class TestScene extends BaseScene
     
     // Create saturn
     this.saturn = createEntity(this.entityMap.saturn, {
-      size: this.sizeMap.saturn,
       orbitRadius: this.sizeMap.sun *8,
       parent: this.sun.objectRoot,
     });
@@ -100,7 +95,6 @@ export class TestScene extends BaseScene
     // Create saturn ring
     this.saturn_ring = createEntity(this.entityMap.saturn_ring, {
       count: 4000,
-      size: this.sizeMap.saturn_ring,
       orbitFarRadius: this.sizeMap.saturn * 2,
       orbitNearRadius: this.sizeMap.saturn + this.sizeMap.saturn / 5,
       thickness: 0.6,   
@@ -112,7 +106,6 @@ export class TestScene extends BaseScene
 
     // Creating Probe1
     this.probe1 = createEntity(this.entityMap.probe1, {
-      size: this.sizeMap.probe1,
       orbitRadius: this.sizeMap.sun *2,
       parent: this.sun.objectRoot
     });

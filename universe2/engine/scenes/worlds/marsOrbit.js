@@ -37,7 +37,6 @@ export class MarsOrbit extends BaseScene
   {
     // Create Sun
     this.sun = createEntity(this.entityMap.sun, {
-      size: this.sizeMap.sun,
       maxSizeOnScreen: 0.34,
       renderMode: "points",
       lightType: "directionalLight",
@@ -51,7 +50,6 @@ export class MarsOrbit extends BaseScene
 
     // Create Mars
     this.mars = createEntity(this.entityMap.mars, {
-      size: this.sizeMap.mars,
       detail: 6,
       orbitRadius: this.far - this.sizeMap.mars * 20,  // TO CHANGE
       parent: this.objectMap[this.entityMap.mars.parentKey].objectRoot,

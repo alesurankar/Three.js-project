@@ -47,7 +47,6 @@ export class AlphaCentauriSystem extends BaseScene
 
     // Create Alpha Centuri A
     this.alpha_centauri_a = createEntity(this.entityMap.alpha_centauri_a, {
-      size: this.sizeMap.alpha_centauri_a,
       orbitRadius: this.sizeMap.alpha_centauri_a * 9,
       initialAngle: 3.14,
       detail: 3,
@@ -58,7 +57,6 @@ export class AlphaCentauriSystem extends BaseScene
 
     // Create Alpha Centuri B
     this.alpha_centauri_b = createEntity(this.entityMap.alpha_centauri_b, {
-      size: this.sizeMap.alpha_centauri_b,
       orbitRadius: this.sizeMap.alpha_centauri_a * (7.2),
       initialAngle: 0,
       detail: 3,
@@ -69,7 +67,6 @@ export class AlphaCentauriSystem extends BaseScene
 
     // Create Proxima Centauri
     this.proxima_centauri = createEntity(this.entityMap.proxima_centauri, {
-      size: this.sizeMap.proxima_centauri,
       orbitRadius: this.sizeMap.alpha_centauri_a * 70,
       detail: 3,
       parent: this.objectMap[this.entityMap.proxima_centauri.parentKey].objectRoot,
