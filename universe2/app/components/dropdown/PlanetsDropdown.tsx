@@ -19,6 +19,7 @@ const objects = [
   { label: "Saturn Orbit", value: "SaturnOrbit" },
   { label: "Uranus Orbit", value: "UranusOrbit" },
   { label: "Neptune Orbit", value: "NeptuneOrbit" },
+  { label: "Pluto Orbit", value: "PlutoOrbit" },
   { label: "Proxima B Orbit", value: "ProximaBOrbit" },
 ];
 

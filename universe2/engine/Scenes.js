@@ -15,6 +15,7 @@ import { JupiterOrbit } from "./scenes/worlds/jupiterOrbit.js";
 import { SaturnOrbit } from "./scenes/worlds/saturnOrbit.js";
 import { UranusOrbit } from "./scenes/worlds/uranusOrbit.js";
 import { NeptuneOrbit } from "./scenes/worlds/neptuneOrbit.js";
+import { PlutoOrbit } from "./scenes/worlds/plutoOrbit.js";
 import { ProximaBOrbit } from "./scenes/worlds/proximaBOrbit.js";
 
 
@@ -36,5 +37,6 @@ export const Scenes = {
   SaturnOrbit,
   UranusOrbit,
   NeptuneOrbit,
+  PlutoOrbit,
   ProximaBOrbit,
 };

@@ -11,7 +11,7 @@ export class Engine
       this.Scene = new THREE.Scene();
     }
 
-    const ambientLight = new THREE.AmbientLight(0x404040, 2);
+    const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
     this.Scene.add(ambientLight);
     
     this.container = container;
