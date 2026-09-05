@@ -156,7 +156,7 @@ export class EarthOrbit extends BaseScene
   DefinePortals()
   {
       this.sceneTriggers = [
-          { obj: this.moon, threshold: this.sizeMap.moon * 24, scene: "MoonOrbit" },
+          { obj: this.moon, threshold: this.sizeMap.moon * 10, scene: "MoonOrbit" },
       ];
   }
 
