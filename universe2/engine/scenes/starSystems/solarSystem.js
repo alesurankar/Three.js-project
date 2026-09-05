@@ -256,6 +256,9 @@ export class SolarSystem extends BaseScene
       { obj: this.mars, threshold: this.sizeMap.mars * 4, scene: "MarsOrbit" },
       { obj: this.jupiter, threshold: this.sizeMap.jupiter * 3, scene: "JupiterOrbit" },
       { obj: this.saturn, threshold: this.sizeMap.saturn * 3, scene: "SaturnOrbit" },
+      { obj: this.uranus, threshold: this.sizeMap.uranus * 3, scene: "UranusOrbit" },
+      { obj: this.neptune, threshold: this.sizeMap.neptune * 3, scene: "NeptuneOrbit" },
+      { obj: this.pluto, threshold: this.sizeMap.pluto * 3, scene: "PlutoOrbit" },
     ];
   }
   
