@@ -50,4 +50,9 @@ export const planets = [
     parentKey: "proxima_centauri", systemKey: "alpha_centauri_system", galaxyKey: "milky_way", 
     size: 7000, axialTilt: 0, axialPeriod: 11.2, orbitalTilt: 0, orbitalPeriod: 11.2, 
   },
+  {
+    key: "barnard_b", name: "Barnard b", type: "planet",
+    parentKey: "barnards_star", systemKey: "barnards_system", galaxyKey: "milky_way",
+    size: 4500, axialTilt: 0, axialPeriod: 0, orbitalTilt: 0, orbitalPeriod: 3.1542,
+  },
 ];
