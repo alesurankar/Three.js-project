@@ -50,6 +50,7 @@ export class MilkyWay extends BaseScene
       "alpha_centauri_a",
       "alpha_centauri_b",
       "proxima_centauri",
+      "barnards_star",
     ];
 
     const scaleMap = {
@@ -58,6 +59,7 @@ export class MilkyWay extends BaseScene
       alpha_centauri_a: this.OUTER_SIZE_SCALE,
       alpha_centauri_b: this.OUTER_SIZE_SCALE,
       proxima_centauri: this.OUTER_SIZE_SCALE,
+      barnards_star: this.OUTER_SIZE_SCALE,
     };
     return { requiredKeys, scaleMap };
   }
@@ -122,6 +124,25 @@ export class MilkyWay extends BaseScene
     });
     this.objects.push(this.proxima_centauri);
     this.objectMap[this.entityMap.proxima_centauri.key] = this.proxima_centauri;
+
+    // Create Barnard's Star
+    const alpha_centauri_distance = new THREE.Vector3(
+      3.5,
+      -1.2 + 0.02,
+      -1.0 + 0.02
+    );
+    const barnards_distance = alpha_centauri_distance.length() * (5.96 / 4.37);
+    const barnards_position = alpha_centauri_distance.normalize().multiplyScalar(barnards_distance);
+
+    this.barnards_star = createEntity(this.entityMap.barnards_star, {
+      size: this.sizeMap.barnards_star,
+      renderMode: "points",
+      posToParent: new THREE.Vector3(this.sunPos.x + barnards_position.x * this.LOCAL_SCALE, this.sunPos.y + barnards_position.y * this.LOCAL_SCALE, this.sunPos.z + barnards_position.z * this.LOCAL_SCALE),
+      temperature: 3134,
+      parent: this.objectMap[this.entityMap.barnards_star.parentKey].objectRoot,
+    });
+    this.objects.push(this.barnards_star);
+    this.objectMap[this.entityMap.barnards_star.key] = this.barnards_star;
 
     // Create redDwarfs
     for (let i = 0, z = this.redDwarfNum; i < this.redDwarfNum; i++, z--) {
