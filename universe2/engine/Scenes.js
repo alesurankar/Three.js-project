@@ -5,6 +5,7 @@ import { MilkyWay } from "./scenes/galaxies/milkyWay.js";
 import { SolarSystem } from "./scenes/starSystems/solarSystem.js";
 import { AlphaCentauriSystem } from "./scenes/starSystems/alphaCentauriSystem.js";
 import { ProximaCentauri } from "./scenes/starSystems/proximaCentauri.js";
+import { BarnardsSystem } from "./scenes/starSystems/barnardsSystem.js";
 //Worlds
 import { MercuryOrbit } from "./scenes/worlds/mercuryOrbit.js";
 import { VenusOrbit } from "./scenes/worlds/venusOrbit.js";
@@ -17,6 +18,7 @@ import { UranusOrbit } from "./scenes/worlds/uranusOrbit.js";
 import { NeptuneOrbit } from "./scenes/worlds/neptuneOrbit.js";
 import { PlutoOrbit } from "./scenes/worlds/plutoOrbit.js";
 import { ProximaBOrbit } from "./scenes/worlds/proximaBOrbit.js";
+import { BarnardBOrbit } from "./scenes/worlds/barnardBOrbit.js";
 
 
 export const Scenes = {
@@ -27,6 +29,7 @@ export const Scenes = {
   SolarSystem,
   AlphaCentauriSystem,
   ProximaCentauri,
+  BarnardsSystem,
   //Worlds
   MercuryOrbit,
   VenusOrbit,
@@ -39,4 +42,5 @@ export const Scenes = {
   NeptuneOrbit,
   PlutoOrbit,
   ProximaBOrbit,
+  BarnardBOrbit,
 };

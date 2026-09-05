@@ -296,6 +296,7 @@ export class MilkyWay extends BaseScene
     this.sceneTriggers = [
       { obj: this.sun, threshold: this.sizeMap.sun * 100, scene: "SolarSystem" },
       { obj: this.alpha_centauri_a, threshold: this.sizeMap.alpha_centauri_a * 100, scene: "AlphaCentauriSystem" },
+      { obj: this.barnards_star, threshold: this.sizeMap.barnards_star * 100, scene: "BarnardsSystem" },
     ];
   }
 

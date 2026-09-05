@@ -12,6 +12,7 @@ export class ProximaCentauri extends BaseScene
 
     this.SIZE_SCALE = 2;
     this.REGION_SIZE_SCALE = 0.0004 * this.SIZE_SCALE;
+    this.LOCAL_SIZE_SCALE = 50 * this.REGION_SIZE_SCALE;
     this.near = 10;
     this.far = 10000;
     this.cameraSettings = { near: this.near,far: this.far };

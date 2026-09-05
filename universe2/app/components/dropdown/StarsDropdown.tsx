@@ -12,6 +12,7 @@ const objects = [
   { label: "Solar System", value: "SolarSystem" },
   { label: "Alpha Centauri System", value: "AlphaCentauriSystem" },
   { label: "Proxima Centauri", value: "ProximaCentauri" },
+  { label: "Barnard's Star", value: "BarnardsSystem" },
 ];
 
 const StarsDropdown = ({ open, x, y, onSelect }: StarsDropdownProps) => {
