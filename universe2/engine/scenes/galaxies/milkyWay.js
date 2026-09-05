@@ -18,7 +18,25 @@ export class MilkyWay extends BaseScene
     // Scale constants
     this.DISTANCE_SCALE = 0.1; // 1 unit = 1 light-year
     this.LOCAL_SCALE = 200; // scale down small interstellar distances
-    this.sunPos = new THREE.Vector3(26700 * this.DISTANCE_SCALE, -200, -200);
+    this.sunPos = new THREE.Vector3(
+      26000 * this.DISTANCE_SCALE,
+      0,
+      0
+    );
+
+    // Alpha Centauri
+    this.alphaCentauriPos = this.sunPos.clone().add(new THREE.Vector3(
+      3.147 * this.DISTANCE_SCALE * this.LOCAL_SCALE,
+      -3.067 * this.DISTANCE_SCALE * this.LOCAL_SCALE,
+      -0.052 * this.DISTANCE_SCALE * this.LOCAL_SCALE,
+    ));
+
+    // Barnard's Star
+    this.barnardsPos = this.sunPos.clone().add(new THREE.Vector3(
+      4.950 * this.DISTANCE_SCALE * this.LOCAL_SCALE,
+      2.980 * this.DISTANCE_SCALE * this.LOCAL_SCALE,
+      1.450 * this.DISTANCE_SCALE * this.LOCAL_SCALE,
+    ));
 
     this.near = 20;
     this.far = 20000;
@@ -89,7 +107,7 @@ export class MilkyWay extends BaseScene
 
     // Create Alpha Centauri
     this.alpha_centauri_center = createEntity(this.entityMap.alpha_centauri_center, {
-      posToParent: new THREE.Vector3(this.sunPos.x + 3.5*this.LOCAL_SCALE, this.sunPos.y - 1.2*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE, this.sunPos.z-1.0*this.LOCAL_SCALE + 0.02*this.LOCAL_SCALE),
+      posToParent: this.alphaCentauriPos,
       parent: this.objectMap[this.entityMap.alpha_centauri_center.parentKey].objectRoot,
     });
     this.objects.push(this.alpha_centauri_center);
@@ -126,18 +144,10 @@ export class MilkyWay extends BaseScene
     this.objectMap[this.entityMap.proxima_centauri.key] = this.proxima_centauri;
 
     // Create Barnard's Star
-    const alpha_centauri_distance = new THREE.Vector3(
-      3.5,
-      -1.2 + 0.02,
-      -1.0 + 0.02
-    );
-    const barnards_distance = alpha_centauri_distance.length() * (5.96 / 4.37);
-    const barnards_position = alpha_centauri_distance.normalize().multiplyScalar(barnards_distance);
-
     this.barnards_star = createEntity(this.entityMap.barnards_star, {
       size: this.sizeMap.barnards_star,
       renderMode: "points",
-      posToParent: new THREE.Vector3(this.sunPos.x + barnards_position.x * this.LOCAL_SCALE, this.sunPos.y + barnards_position.y * this.LOCAL_SCALE, this.sunPos.z + barnards_position.z * this.LOCAL_SCALE),
+      posToParent: this.barnardsPos,
       temperature: 3134,
       parent: this.objectMap[this.entityMap.barnards_star.parentKey].objectRoot,
     });
